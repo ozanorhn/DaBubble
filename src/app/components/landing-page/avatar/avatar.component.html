@@ -1,1 +1,17 @@
-<p>avatar works!</p>
+<main class="relative max-w-[398px] flex flex-col items-center py-[26px] px-[21px] rounded-[30px] border">
+    <div (click)="goBack()" class="cursor-pointer bg-icon-arrow-back absolute top-[28px] left-[28px] hover:bg-primary hover:bg-icon-arrow-back-hover w-10 h-10 rounded-[50%]"></div>
+    <div class="flex flex-col items-center gap-6 mb-2 text-center">
+        <h1 class="text-[32px] font-bold">Wähle deinen<br>Avatar</h1>
+        <img class="w-[120px] h-[120px] object-cover object-center border-4 border-transparent rounded-[50%] cursor-pointer hover:border-hovergray" src="assets/imgs/avatar{{ currentAvatar }}.svg" alt="no Avatar">
+        <h2 class="text-[32px] font-bold">Frederik Beck</h2>
+    </div>
+    <div class="flex flex-col gap-4">
+        <p class="text-xl">Wähle deinen Avatar...</p>
+        <div class="flex gap-1">
+            @for (avatar of [1,2,3,4,5,6]; track $index) {
+                <img (click)="changeAvatar(avatar)" class="object-cover object-center w-12 h-12 border-4 border-transparent rounded-[50%] cursor-pointer hover:border-hovergray" src="assets/imgs/avatar{{ avatar }}.svg" alt="Avatar {{ avatar }}">
+            }
+        </div>
+        <button (click)="goForward()" class="self-end px-6 py-3 mt-2 text-lg font-bold text-white bg-purple1 rounded-3xl hover:bg-purple2">Weiter</button>
+    </div>
+</main>
