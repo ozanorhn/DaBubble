@@ -11,7 +11,8 @@ module.exports = {
         'error': '#797EF3',
         'online': '#92c83e',
         'textgray': '#686868',
-        'lightpurple': '#adb0d9'
+        'lightpurple': '#adb0d9',
+        'linkblue': '#1381FF'
       },
     },
   },
