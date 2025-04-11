@@ -3,7 +3,7 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
-      colors:{
+      colors: {
         'primary': '#ECEEFE',
         'purple1': '#444DF2',
         'purple2': '#797EF3',
@@ -14,6 +14,10 @@ module.exports = {
         'lightpurple': '#adb0d9',
         'linkblue': '#1381FF'
       },
+      screens: {
+        'xxs': '320px',
+        'xs': '400px',
+      }
     },
   },
   plugins: [],
