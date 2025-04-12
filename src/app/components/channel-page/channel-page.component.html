@@ -1,8 +1,9 @@
-<div
-  class="min-h-screen w-full flex flex-col items-center justify-betwee relative bg-white text-black"
+<section
+  class="relative flex flex-col items-center w-full min-h-screen text-black bg-white justify-betwee"
 >
   <!-- Header mit Logo -->
 
+<app-header></app-header>
   <!-- Main Content -->
   <div
     class="absolute top-0 left-0 right-0 top-[92px] w-full h-[820px] p-[20px] gap-[25px] bg-white rounded-bl-[30px]rounded-br-[30px]"
@@ -20,6 +21,9 @@
               alt=""
               class="w-[30px] h-[30px]"
             />
+
+
+            
             <div class="flex gap-[4px]">
               <img
                 src="assets/imgs/icons/workspaces.svg"
@@ -32,6 +36,9 @@
                 class="w-[87px] h-[27px]"
               /> -->
               <div class="pt-[3px]">Channels</div>
+
+
+
             </div>
           </div>
           <img
@@ -50,6 +57,7 @@
               alt=""
               class="w-[30px] h-[30px]"
             />
+            <app-user></app-user>
             <div class="flex gap-[4px]">
               <img
                 src="assets/imgs/icons/account_circle.svg"
@@ -62,6 +70,7 @@
                 class="w-[87px] h-[27px]"
               /> -->
               <div class="pt-[2px]">Direktnachrichten</div>
+              
             </div>
           </div>
         </div>
@@ -80,4 +89,4 @@
       </div>
     </section>
   </div>
-</div>
+</section>
