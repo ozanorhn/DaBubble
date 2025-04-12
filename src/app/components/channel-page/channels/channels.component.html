@@ -1,17 +1,24 @@
-<section class="h-64 border border-red-600">
+<section class="border border-red-600 h-fit">
 
-    <div class="flex justify-between w-full">
-        <button class="flex ">
-            <img src="/assets/icons/arrow_drop_down.svg" alt="">
-            <img src="/assets/icons/workspaces.svg" alt="">
-            Channels
+    <div class="flex items-center justify-between w-full h-12">
+
+
+        <button (click)="toggleDropDown()" class="flex items-center gap-4">
+            <img class="size-8" id="droparrow" src="/assets/icons/arrow_drop_down.svg" alt="">
+            <div class="flex gap-2 text-xl font-bold">
+                <img class="size-6" src="/assets/icons/workspaces.svg" alt="">
+                Channels
+            </div>
         </button>
-        <img src="/assets/icons/add.svg" alt="">
+
+
+
+        <img class="size-8" src="/assets/icons/add.svg" alt="">
     </div>
 
-    <ul>
-        <li>Entwicklerteam</li>
-        <li>Channel hinzufügen</li>
+    <ul id="dropList" class="w-full pl-[10%] flex flex-col gap-3">
+        <li># Entwicklerteam</li>
+        <li># Channel hinzufügen</li>
     </ul>
 
 

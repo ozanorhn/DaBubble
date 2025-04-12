@@ -8,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class ChannelsComponent {
 
+  toggleDropDown() {
+    let list = document.getElementById('dropList');
+    list?.classList.toggle('hidden');
+
+    let arrow = document.getElementById('droparrow');
+    arrow?.classList.toggle('-rotate-90')
+  }
+
 }
