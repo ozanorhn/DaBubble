@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors:{
+        'header': "rgba(236, 238, 254, 0.8)",
         'primary': '#ECEEFE',
         'purple1': '#444DF2',
         'purple2': '#797EF3',
@@ -12,7 +13,8 @@ module.exports = {
         'online': '#92c83e',
         'textgray': '#686868',
         'hovergray': '#E6E6E6',
-        'lightpurple': '#adb0d9'
+        'lightpurple': '#adb0d9',
+        'btnBg': "#eff1fe"
       },
       backgroundImage: {
         'icon-arrow-back': "url('/assets/icons/arrow_back.svg')",
@@ -21,5 +23,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
-
+};
