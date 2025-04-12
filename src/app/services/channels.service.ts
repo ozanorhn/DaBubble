@@ -5,5 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class ChannelsService {
 
+  public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'dm';
+  public channelName: string = 'Entwicklerteam';
+  public messages = [
+    {
+
+    }
+  ];
   constructor() { }
 }
