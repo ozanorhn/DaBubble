@@ -1,0 +1,27 @@
+<section class="border border-black shadow-2xl h-96 rounded-3xl max-w-[400px] bg-white py-10 px-3 flex flex-col gap-5">
+
+
+    <div class="flex items-center justify-between h-10 px-5">
+        <h2 class="text-2xl font-bold">Mitglieder</h2>
+
+        <img class="cursor-pointer hover:scale-[1.2] active:scale-[0.9] duration-200" src="/assets/icons/close.svg" alt="">
+    </div>
+
+
+    <div class="flex flex-col w-full gap-3 p-3 overflow-auto h-52">
+
+        @for (item of [0,1,2,3]; track $index) {
+        <app-user></app-user>
+        }
+    </div>
+
+    <div
+        class="flex items-center gap-4 py-3  cursor-pointer h-14 px-7 rounded-[30px] hover:bg-primary mx-5 hover:scale-[1.1] duration-200 shadow-md active:scale-[0.9]">
+        <img src="/assets/icons/person_add.svg" alt="">
+        <span>
+            Mitglieder hinzufüngen
+        </span>
+    </div>
+
+
+</section>
