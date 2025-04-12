@@ -1,9 +1,22 @@
 <section class="box-border mt-20">
-    <app-chat-header></app-chat-header>
-    <div>
-        @for (item of channelService.messages; track $index) {
-    
+    <app-chat-header class="sticky top-[80px]"></app-chat-header>
+    <div class="flex flex-col px-4">
+        @for (message of channelService.messages; track message.time; let i = $index) {
+            <div class="flex gap-5 mt-[25px]"  [ngClass]="{ 'flex-row-reverse': fromCurrentUser(message.user.name)}">
+                <div class="w-max">
+                    <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ message.user.avatar }}.svg" alt="Avatar">
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-5"  [ngClass]="{ 'justify-end': fromCurrentUser(message.user.name)}">
+                        <span class="text-lg font-bold">{{ message.user.name }}</span>
+                        <span class="text-sm">{{ message.time }}</span>
+                    </div>
+                    <div class="bg-primary p-[15px] rounded-[30px] rounded-ss-none" [ngClass]="{ 'rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.user.name)}">
+                        <span>{{ message.content }}</span>
+                    </div>
+                </div>
+            </div>
         }
     </div>
-    <app-chat-input></app-chat-input>
+    <app-chat-input class="sticky bottom-[30px]"></app-chat-input>
 </section>

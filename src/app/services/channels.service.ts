@@ -9,7 +9,132 @@ export class ChannelsService {
   public channelName: string = 'Entwicklerteam';
   public messages = [
     {
-
+      user: {
+        avatar: 2,
+        name: 'Frederik Beck'
+      },
+      time: '16:33 Uhr',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+      emojis: [
+        {
+          id: 11,
+          users: ['jfjkzkhdghkhgf']
+        }
+      ],
+      answers: [
+        {
+          user: {
+            avatar: 5,
+            name: 'Noah Braun'
+          },
+          time: '17:45 Uhr',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+          emojis: [
+            {
+              id: 1,
+              users: ['uxfghjulzfülktdd']
+            }
+          ]
+        }
+      ]
+    },
+    {
+      user: {
+        avatar: 1,
+        name: 'Sandra Bock'
+      },
+      time: '14:09 Uhr',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+      emojis: [
+        {
+          id: 21,
+          users: ['rsrtsthmjjtrjurs', 'uxfghjulzfülktdd']
+        },
+        {
+          id: 7,
+          users: ['rsrtsthmjjtrjurs']
+        }
+      ],
+      answers: [
+        {
+          user: {
+            avatar: 5,
+            name: 'Noah Braun'
+          },
+          time: '0:12 Uhr',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+          emojis: [
+            {
+              id: 5,
+              users: ['uxfghjulzfülktdd']
+            }
+          ]
+        }
+      ]
+    },
+    {
+      user: {
+        avatar: 2,
+        name: 'Frederik Beck'
+      },
+      time: '16:33 Uhr',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+      emojis: [
+        {
+          id: 11,
+          users: ['jfjkzkhdghkhgf']
+        }
+      ],
+      answers: [
+        {
+          user: {
+            avatar: 5,
+            name: 'Noah Braun'
+          },
+          time: '17:45 Uhr',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+          emojis: [
+            {
+              id: 1,
+              users: ['uxfghjulzfülktdd']
+            }
+          ]
+        }
+      ]
+    },
+    {
+      user: {
+        avatar: 1,
+        name: 'Sandra Bock'
+      },
+      time: '14:09 Uhr',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+      emojis: [
+        {
+          id: 21,
+          users: ['rsrtsthmjjtrjurs', 'uxfghjulzfülktdd']
+        },
+        {
+          id: 7,
+          users: ['rsrtsthmjjtrjurs']
+        }
+      ],
+      answers: [
+        {
+          user: {
+            avatar: 5,
+            name: 'Noah Braun'
+          },
+          time: '0:12 Uhr',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+          emojis: [
+            {
+              id: 5,
+              users: ['uxfghjulzfülktdd']
+            }
+          ]
+        }
+      ]
     }
   ];
   constructor() { }
