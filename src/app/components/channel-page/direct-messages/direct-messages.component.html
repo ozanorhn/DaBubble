@@ -1,0 +1,22 @@
+<section class="h-[489px] border border-blue-500">
+
+    <div class="flex justify-between w-full">
+        <button class="flex ">
+            <img src="/assets/icons/arrow_drop_down.svg" alt="">
+            <img src="/assets/icons/account_circle.svg" alt="">
+            Direktnachrichten
+        </button>
+        <img src="/assets/icons/add.svg" alt="">
+    </div>
+
+    <ul class="flex flex-col gap-1">
+
+        @for (item of [0,1,2,3,4,5]; track $index) {
+        <li><app-user></app-user></li>
+        }
+
+
+    </ul>
+
+
+</section>
