@@ -4,16 +4,13 @@ import { ProfileComponent } from "./components/shared/popUp/profile/profile.comp
 import { LogOutComponent } from "./components/shared/popUp/log-out/log-out.component";
 import { MembersComponent } from "./components/shared/popUp/members/members.component";
 import { AddUserComponent } from "./components/shared/popUp/add-user/add-user.component";
+import { AvatarComponent } from "./components/landing-page/avatar/avatar.component";
 
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    ProfileComponent,
-    LogOutComponent,
-    MembersComponent,
-    AddUserComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
