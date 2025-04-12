@@ -1,12 +1,10 @@
-<div
-  class="min-h-screen w-full flex flex-col items-center justify-betwee relative bg-white text-black"
->
+<section class="relative flex flex-col items-center w-full min-h-screen text-black bg-white justify-betwee">
   <!-- Header mit Logo -->
 
+  <app-header></app-header>
   <!-- Main Content -->
   <div
-    class="absolute top-0 left-0 right-0 top-[92px] w-full h-[820px] p-[20px] gap-[25px] bg-white rounded-bl-[30px]rounded-br-[30px]"
-  >
+    class="absolute  left-0 right-0 top-[92px] w-full h-[820px] p-[20px] gap-[25px] bg-white rounded-bl-[30px]rounded-br-[30px]">
     <!-- suchfernster -->
 
     <!-- finalmenu -->
@@ -15,53 +13,40 @@
         <!-- Channels-->
         <div class="w-full h-[48px] pt-[3px] pb-[3px] flex justify-between">
           <div class="flex gap-[8px] cursor-pointer">
-            <img
-              src="assets/imgs/icons/arrow_drop_down.svg"
-              alt=""
-              class="w-[30px] h-[30px]"
-            />
+            <img src="assets/imgs/icons/arrow_drop_down.svg" alt="" class="w-[30px] h-[30px]" />
+
+
+
             <div class="flex gap-[4px]">
-              <img
-                src="assets/imgs/icons/workspaces.svg"
-                alt=""
-                class="w-[24px] h-[24px]"
-              />
+              <img src="assets/imgs/icons/workspaces.svg" alt="" class="w-[24px] h-[24px]" />
               <!--   <img
                 src="assets/imgs/icons/Channels.svg"
                 alt=""
                 class="w-[87px] h-[27px]"
               /> -->
               <div class="pt-[3px]">Channels</div>
+
+
+
             </div>
           </div>
-          <img
-            src="assets/imgs/icons/add.svg"
-            alt=""
-            class="w-[30px] h-[30px] cursor-pointer rounded-full hover:bg-btnBg"
-          />
+          <img src="assets/imgs/icons/add.svg" alt=""
+            class="w-[30px] h-[30px] cursor-pointer rounded-full hover:bg-btnBg" />
         </div>
         <!-- Direktnachrichten -->
-        <div
-          class="w-full h-[48px] pt-[3px] pb-[3px] flex justify-between mt-[40px] cursor-pointer"
-        >
+        <div class="w-full h-[48px] pt-[3px] pb-[3px] flex justify-between mt-[40px] cursor-pointer">
           <div class="flex gap-[8px]">
-            <img
-              src="assets/imgs/icons/arrow_drop_down.svg"
-              alt=""
-              class="w-[30px] h-[30px]"
-            />
+            <img src="assets/imgs/icons/arrow_drop_down.svg" alt="" class="w-[30px] h-[30px]" />
+            <app-user></app-user>
             <div class="flex gap-[4px]">
-              <img
-                src="assets/imgs/icons/account_circle.svg"
-                alt=""
-                class="w-[24px] h-[24px]"
-              />
+              <img src="assets/imgs/icons/account_circle.svg" alt="" class="w-[24px] h-[24px]" />
               <!--  <img
                 src="assets/imgs/icons/Channels.svg"
                 alt=""
                 class="w-[87px] h-[27px]"
               /> -->
               <div class="pt-[2px]">Direktnachrichten</div>
+
             </div>
           </div>
         </div>
@@ -69,15 +54,10 @@
         <!-- add-user-btn -->
 
         <div
-          class="flex justify-center items-center w-[60px] h-[60px] rounded-full bg-[rgba(68,77,242,1)] absolute top-[735px] left-[85%] -translate-x-1/2 cursor-pointer"
-        >
-          <img
-            src="assets/imgs/icons/add-user-btn.svg"
-            alt=""
-            class="w-[40px] h-[40px]"
-          />
+          class="flex justify-center items-center w-[60px] h-[60px] rounded-full bg-[rgba(68,77,242,1)] absolute top-[735px] left-[85%] -translate-x-1/2 cursor-pointer">
+          <img src="assets/imgs/icons/add-user-btn.svg" alt="" class="w-[40px] h-[40px]" />
         </div>
       </div>
     </section>
   </div>
-</div>
+</section>
