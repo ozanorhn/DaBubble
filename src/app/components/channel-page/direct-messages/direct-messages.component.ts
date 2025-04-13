@@ -9,4 +9,13 @@ import { UserComponent } from "../../shared/user/user.component";
 })
 export class DirectMessagesComponent {
 
+
+  directMessagesToggle() {
+    let directMessageArrow = document.getElementById('driectArrow');
+    directMessageArrow?.classList.toggle('-rotate-90');
+
+    let directMessageList = document.getElementById('directList');
+    directMessageList?.classList.toggle('hidden');
+  }
+
 }

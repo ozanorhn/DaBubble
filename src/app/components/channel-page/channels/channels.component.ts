@@ -9,11 +9,11 @@ import { Component } from '@angular/core';
 export class ChannelsComponent {
 
   toggleDropDown() {
+    let arrow = document.getElementById('droparrow');
+    arrow?.classList.toggle('-rotate-90');
+
     let list = document.getElementById('dropList');
     list?.classList.toggle('hidden');
-
-    let arrow = document.getElementById('droparrow');
-    arrow?.classList.toggle('-rotate-90')
   }
 
 }
