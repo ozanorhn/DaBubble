@@ -1,12 +1,12 @@
-<section class="box-border mt-20">
-    <app-chat-header class="sticky top-[80px]"></app-chat-header>
-    <div class="flex flex-col px-4">
+<section class="box-border h-full" [ngClass]="{'mt-[140px]': channelService.chatType === 'channel' || 'thread' || 'search', 'mt-[156px]': channelService.chatType === 'dm' }">
+    <app-chat-header class="fixed top-[80px] right-0 left-0"></app-chat-header>
+    <div class="flex flex-col px-4 pb-[191px] box-border">
         @for (message of channelService.messages; track message.time; let i = $index) {
             <div class="flex gap-5 mt-[25px]"  [ngClass]="{ 'flex-row-reverse': fromCurrentUser(message.user.name)}">
                 <div class="w-max">
                     <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ message.user.avatar }}.svg" alt="Avatar">
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col gap-2">
                     <div class="flex items-center gap-5"  [ngClass]="{ 'justify-end': fromCurrentUser(message.user.name)}">
                         <span class="text-lg font-bold">{{ message.user.name }}</span>
                         <span class="text-sm">{{ message.time }}</span>
@@ -14,9 +14,27 @@
                     <div class="bg-primary p-[15px] rounded-[30px] rounded-ss-none" [ngClass]="{ 'rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.user.name)}">
                         <span>{{ message.content }}</span>
                     </div>
+                    @if (message.answers.length > 0 && channelService.chatType !== 'thread') {
+                        <div class="cursor-pointer flex flex-col xs:flex-row xs:items-center xs:gap-[20px]" [ngClass]="{'self-end': fromCurrentUser(message.user.name)}">
+                            <span (click)="openThread()" class="text-base text-purple3 hover:font-bold">{{ message.answers.length }} Antworten</span>
+                            <span class="text-sm text-textgray">Letzte Antwort {{ message.answers[message.answers.length - 1].time }}</span>
+                        </div>
+                    }
+                    @if (message.emojis.length > 0) {
+                        <div class="flex items-center gap-2 w-max" [ngClass]="{'self-end pr-[5px]': fromCurrentUser(message.user.name)}">
+                            @for (emoji of message.emojis; track $index) {
+                                <button class="flex items-center border-lightpurple border-[1px] rounded-full gap-[10px] py-[5px] px-[10px]">
+                                    <img class="size-6" src="assets/icons/edit.svg" alt="Emoji"><span class="text-base">{{ emoji.users.length }}</span>
+                                </button>
+                            }
+                            <button>
+                                <img src="assets/icons/add_emoji.svg" alt="Add emoji">
+                            </button>
+                        </div>
+                    }
                 </div>
             </div>
         }
     </div>
-    <app-chat-input class="sticky bottom-[30px]"></app-chat-input>
+    <app-chat-input class="fixed bottom-[30px] left-0 right-0"></app-chat-input>
 </section>

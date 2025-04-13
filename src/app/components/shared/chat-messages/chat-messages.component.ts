@@ -15,12 +15,14 @@ export class ChatMessagesComponent {
  channelService = inject(ChannelsService);
  authService = inject(AuthService);
 
+ openThread() {
+  this.channelService.chatType = 'thread';
+ }
+
  fromCurrentUser(id: string): boolean {
   if (id === this.authService.currentUser) {
-    console.log('true');
     return true;
   } else {
-    console.log('false');
     return false;
   }
  }

@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ChannelsService {
 
-  public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'dm';
+  public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'channel';
   public channelName: string = 'Entwicklerteam';
   public messages = [
     {
@@ -32,6 +32,20 @@ export class ChannelsService {
           emojis: [
             {
               id: 1,
+              users: ['uxfghjulzfülktdd']
+            }
+          ]
+        },
+        {
+          user: {
+            avatar: 5,
+            name: 'Noah Braun'
+          },
+          time: '0:12 Uhr',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+          emojis: [
+            {
+              id: 5,
               users: ['uxfghjulzfülktdd']
             }
           ]
