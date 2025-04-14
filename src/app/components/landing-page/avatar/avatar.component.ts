@@ -19,10 +19,11 @@ export class AvatarComponent {
   }
 
   goBack() {
-
+    this.landing.landing.set('register')
   }
 
   goForward() {
+    console.log('Konto erstellt');
     
   }
 }
