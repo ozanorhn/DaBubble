@@ -9,7 +9,7 @@
         <p class="text-xl">Wähle deinen Avatar...</p>
         <div class="flex gap-[2px] min-[370px]:gap-1  min-[500px]:gap-2">
             @for (avatar of [1,2,3,4,5,6]; track $index) {
-                <img (click)="changeAvatar(avatar)" class="object-cover object-center w-11 h-11 border-4 border-transparent rounded-[50%] cursor-pointer hover:border-hovergray active:border-primary min-[360px]:w-12 min-[360px]:h-12 min-[400px]:w-14 min-[400px]:h-14 min-[450px]:w-16 min-[450px]:h-16" src="assets/imgs/avatar{{ avatar }}.svg" alt="Avatar {{ avatar }}">
+                <img (click)="changeAvatar(avatar)" class="object-cover object-center size-11 border-4 border-transparent rounded-[50%] cursor-pointer hover:border-hovergray active:border-primary min-[360px]:w-12 min-[360px]:h-12 min-[400px]:w-14 min-[400px]:h-14 min-[450px]:w-16 min-[450px]:h-16" src="assets/imgs/avatar{{ avatar }}.svg" alt="Avatar {{ avatar }}">
             }
         </div>
         <button (click)="goForward()" class="self-end px-6 py-3 mt-2 text-lg font-bold text-white transition-all bg-purple1 rounded-3xl hover:bg-purple2 active:bg-purple1">Weiter</button>
