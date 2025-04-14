@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { AvatarComponent } from './avatar/avatar.component';
+import { LoginComponent } from "./login/login.component";
+import { RegisterComponent } from "./register/register.component";
+import { ResetpwRequestComponent } from "./resetpw-request/resetpw-request.component";
+import { ResetpwConfirmComponent } from "./resetpw-confirm/resetpw-confirm.component";
 
 @Component({
   selector: 'app-landing-page',
-  imports: [
-    RouterLink
-  ],
+  standalone: true,
+  imports: [AvatarComponent, LoginComponent, RegisterComponent, ResetpwRequestComponent, ResetpwConfirmComponent],
   templateUrl: './landing-page.component.html',
-  styleUrl: './landing-page.component.scss'
+  styleUrls: ['./landing-page.component.scss']
 })
-export class LandingPageComponent {
-
-}
+export class LandingPageComponent {}

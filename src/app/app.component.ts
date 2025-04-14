@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 
@@ -9,8 +10,9 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   imports: [
     RouterOutlet
 ],
+
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'dabubble';
