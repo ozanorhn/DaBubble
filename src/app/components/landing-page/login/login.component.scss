@@ -1,0 +1,9 @@
+.input-fancy::placeholder {
+    color: #686868;
+    transition: color 0.2s ease;
+  }
+  
+  .input-fancy:focus::placeholder {
+    color: transparent;
+  }
+  

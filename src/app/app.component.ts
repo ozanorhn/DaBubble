@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/shared/header/header.component';
 import { ChannelPageComponent } from './components/channel-page/channel-page.component';
@@ -9,14 +10,13 @@ import { ChannelPageComponent } from './components/channel-page/channel-page.com
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet,
-    RouterLink,
-    HeaderComponent,
-    ChannelPageComponent
-   
+
+    RouterOutlet
+
 ],
+
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'dabubble';
