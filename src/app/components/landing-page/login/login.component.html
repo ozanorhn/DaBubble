@@ -23,7 +23,7 @@
         </div>
   
         <div class="text-right">
-          <a href="#" class="text-sm text-purple2 hover:underline">Passwort vergessen?</a>
+          <span (click)="change()" class="text-sm text-purple2 hover:underline">Passwort vergessen?</span>
         </div>
   
         <div class="flex items-center justify-center space-x-2">
@@ -42,7 +42,7 @@
           <button type="submit" class="flex-1 py-2 text-white rounded-full bg-purple1 hover:bg-purple3">
             Anmelden
           </button>
-          <button type="button"
+          <button routerLink="channel" type="button"
             class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary">
             Gäste-Login
           </button>
@@ -53,6 +53,7 @@
   <div class="pt-4 space-y-4 text-center border-t border-lightpurple">
     <p class="text-base text-black">Neu bei DABubble?</p>
     <button
+    (click)="goToRegister()"
       class="px-6 py-2 font-semibold transition border rounded-full text-purple1 border-purple1 hover:bg-primary">
       Konto erstellen
     </button>
