@@ -1,6 +1,30 @@
-<p>landing-page works!</p>
+<div class="flex flex-col items-center justify-center min-h-screen px-4 space-y-6 bg-primary">
+  <img src="assets/imgs/icons/logo.svg" alt="Logo" class="h-16" />
 
 
-<div class="bg-primary">
+
+  @if (landingService.landing() == 'login') {
+    <app-login></app-login>
+    }
+  
+    @if (landingService.landing() == 'register') {
+    <app-register></app-register>
+    }
+    @if (landingService.landing() == 'avatar') {
+    <app-avatar></app-avatar>
+    }
+    @if (landingService.landing() == 'confirm') {
+    <app-resetpw-confirm></app-resetpw-confirm>
+    }
+    @if (landingService.landing() == 'request') {
+    <app-resetpw-request></app-resetpw-request>
+    }
+
+
+
+
+
+
+
 
 </div>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PasswordComponent } from './password.component';
+import { DirectMessagesComponent } from './direct-messages.component';
 
-describe('PasswordComponent', () => {
-  let component: PasswordComponent;
-  let fixture: ComponentFixture<PasswordComponent>;
+describe('DirectMessagesComponent', () => {
+  let component: DirectMessagesComponent;
+  let fixture: ComponentFixture<DirectMessagesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PasswordComponent]
+      imports: [DirectMessagesComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PasswordComponent);
+    fixture = TestBed.createComponent(DirectMessagesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
