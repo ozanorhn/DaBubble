@@ -6,7 +6,11 @@ import { DirectMessagesComponent } from "./direct-messages/direct-messages.compo
 
 @Component({
   selector: 'app-channel-page',
+
+  standalone: true,
+ 
   imports: [HeaderComponent, SearchComponent, ChannelsComponent, DirectMessagesComponent],
+
   templateUrl: './channel-page.component.html',
   styleUrl: './channel-page.component.scss'
 })
