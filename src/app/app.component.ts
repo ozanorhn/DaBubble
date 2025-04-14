@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './components/shared/header/header.component';
+import { ChannelPageComponent } from './components/channel-page/channel-page.component';
 
 
 
@@ -8,8 +10,9 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet,
-    RouterLink
+
+    RouterOutlet
+
 ],
 
   templateUrl: './app.component.html',
