@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 export class ChatMessagesComponent {
  channelService = inject(ChannelsService);
  authService = inject(AuthService);
+ newDay = true;
 
  openThread() {
   this.channelService.chatType = 'thread';

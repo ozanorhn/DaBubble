@@ -2,6 +2,19 @@
     <app-chat-header class="fixed top-[80px] right-0 left-0"></app-chat-header>
     <div class="flex flex-col px-4 pb-[191px] box-border">
         @for (message of channelService.messages; track message.time; let i = $index) {
+            @if (newDay) {
+                <div class="flex items-center text-[18px] my-[10px]">
+                    <div class="w-full h-[1px] bg-lightpurple">
+
+                    </div>
+                    <div class="border-lightpurple border-[1px] rounded-full py-[5px] px-[15px]">
+                        <p>Heute</p>
+                    </div>
+                    <div class="w-full h-[1px] bg-lightpurple">
+
+                    </div>
+                </div>
+            }
             <div class="flex gap-5 mt-[25px]"  [ngClass]="{ 'flex-row-reverse': fromCurrentUser(message.user.name)}">
                 <div class="w-max">
                     <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ message.user.avatar }}.svg" alt="Avatar">
@@ -11,7 +24,7 @@
                         <span class="text-lg font-bold">{{ message.user.name }}</span>
                         <span class="text-sm">{{ message.time }}</span>
                     </div>
-                    <div class="bg-primary p-[15px] rounded-[30px] rounded-ss-none" [ngClass]="{ 'rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.user.name)}">
+                    <div class="bg-primary p-[15px] rounded-[30px]" [ngClass]="{ 'rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.user.name), ' rounded-ss-none': !fromCurrentUser(message.user.name) }">
                         <span>{{ message.content }}</span>
                     </div>
                     @if (message.answers.length > 0 && channelService.chatType !== 'thread') {
