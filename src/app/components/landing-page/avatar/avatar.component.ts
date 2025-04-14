@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LandingPageService } from '../../../services/landing-page.service';
 
 @Component({
   selector: 'app-avatar',
@@ -9,15 +10,20 @@ import { Component } from '@angular/core';
 export class AvatarComponent {
   public currentAvatar: number = 0;
 
+  constructor(public landing: LandingPageService){
+
+  }
+
   changeAvatar(i: number) {
     this.currentAvatar = i;
   }
 
   goBack() {
-
+    this.landing.landing.set('register')
   }
 
   goForward() {
+    console.log('Konto erstellt');
     
   }
 }
