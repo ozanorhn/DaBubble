@@ -4,6 +4,7 @@ import { ChannelPageComponent } from './components/channel-page/channel-page.com
 import { ChatPageComponent } from './components/chat-page/chat-page.component';
 import { ContactPageComponent } from './components/contact-page/contact-page.component';
 import { ProfileComponent } from './components/shared/popUp/profile/profile.component';
+import { EditProfilComponent } from './components/shared/popUp/edit-profil/edit-profil.component';
 
 export const routes: Routes = [
     { path: "", component: LandingPageComponent },
@@ -12,5 +13,6 @@ export const routes: Routes = [
     { path: "contact", component: ContactPageComponent },
     { path: "imprint", component: ContactPageComponent },
     { path: "privacy", component: ContactPageComponent },
-    { path: "profile", component: ProfileComponent }
+    { path: "profile", component: ProfileComponent },
+    { path: "edit-profil", component: EditProfilComponent }
 ];
