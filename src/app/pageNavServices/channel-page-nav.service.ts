@@ -6,7 +6,7 @@ import { Injectable, signal } from '@angular/core';
 export class ChannelPageNavService {
 
 
-  addChannelPopUp = signal(false);
+  addChannelPopUp = signal(true);
 
   constructor() {}
 
