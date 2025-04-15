@@ -7,6 +7,7 @@ export class ChannelsService {
 
   public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'channel';
   public channelName: string = 'Entwicklerteam';
+  public threadHeadMessage: any;
   public messages = [
     {
       user: {
@@ -152,4 +153,10 @@ export class ChannelsService {
     }
   ];
   constructor() { }
+
+  openThread(message: any) {
+    this.messages = message['answers'];
+    this.threadHeadMessage = message;
+    this.chatType = 'thread';
+  }
 }

@@ -16,9 +16,9 @@ export class ChatMessagesComponent {
  authService = inject(AuthService);
  newDay = true;
 
- openThread() {
-  this.channelService.chatType = 'thread';
- }
+//  openThread() {
+//   this.channelService.chatType = 'thread';
+//  }
 
  fromCurrentUser(id: string): boolean {
   if (id === this.authService.currentUser) {
