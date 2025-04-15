@@ -8,12 +8,27 @@ import { Component } from '@angular/core';
 })
 export class ChannelsComponent {
 
-  toggleDropDown() {
-    let arrow = document.getElementById('droparrow');
+  channels = [
+    {name : 'Entwicklerteam'},
+    {name: 'Frontend'},
+    {name: 'Backend'},
+    {name: 'DevOps'},
+    {name: 'Design-Team'},
+    {name : 'Office-team'},
+    {name: 'Support'},
+  ]
+
+
+
+  turnCannelArrow() {
+    let arrow = document.getElementById('channel-arrow');
     arrow?.classList.toggle('-rotate-90');
 
     let list = document.getElementById('dropList');
     list?.classList.toggle('hidden');
   }
+
+
+
 
 }
