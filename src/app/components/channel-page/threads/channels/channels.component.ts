@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ChannelsService } from '../../../../services/channels/channels.service';
+import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-nav.service';
 
 
 @Component({
@@ -11,17 +12,13 @@ import { ChannelsService } from '../../../../services/channels/channels.service'
 export class ChannelsComponent {
 
 
-  constructor(public channelService: ChannelsService){}
+  constructor(public channelService: ChannelsService, public channelNavService: ChannelPageNavService){}
 
-  // channels = [
-  //   {name : 'Entwicklerteam'},
-  //   {name: 'Frontend'},
-  //   {name: 'Backend'},
-  //   {name: 'DevOps'},
-  //   {name: 'Design-Team'},
-  //   {name : 'Office-team'},
-  //   {name: 'Support'},
-  // ]
+
+
+  // addCannelPopup(){
+  //   this.channelNavService.addChannelPopUp.update(popup => !popup)
+  // }
 
 
 
