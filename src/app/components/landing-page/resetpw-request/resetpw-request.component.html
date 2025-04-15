@@ -1,27 +1,33 @@
 <div class="relative w-full max-w-sm p-6 mx-auto bg-white rounded-3xl">
 
-  <!-- Zurück-Pfeil oben links -->
-  <img 
-    src="/assets/icons/arrow.svg" 
-    alt="Zurück" 
-    class="absolute w-12 h-12 cursor-pointer top-4 left-4" 
-    (click)="goToLogin()" 
-  />
+  <div 
+  class="absolute top-4 left-4 w-12 h-12 flex items-center justify-center rounded-full cursor-pointer transition hover:bg-[#f0f0ff] group"
+  (click)="goToLogin()"
+>
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    fill="none" 
+    viewBox="0 0 24 24"
+    stroke-width="2" 
+    stroke="currentColor" 
+    class="w-6 h-6 text-gray-500 transition group-hover:text-[#444DF2]"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+  </svg>
+</div>
 
-  <!-- Inhalt -->
+
+
   <div class="flex flex-col items-center pt-10 space-y-6 text-center">
     
-    <!-- Überschrift -->
     <h1 class="text-[28px] leading-tight font-bold text-[#444DF2]">
       Passwort<br />zurücksetzen
     </h1>
 
-    <!-- Beschreibung -->
     <p class="text-base text-black">
       Bitte geben Sie Ihre E-Mail-Adresse ein.
     </p>
 
-    <!-- Input-Feld mit Icon -->
     <div class="w-full flex items-center px-4 py-3 rounded-full bg-[#F0F0FF] space-x-3">
       <img src="/assets/icons/mail.svg" alt="Mail Icon" class="w-5 h-5" />
       <input 
@@ -31,13 +37,11 @@
       />
     </div>
 
-    <!-- Erklärungstext -->
     <p class="text-sm text-center text-gray-600">
       Wir senden Ihnen eine E-Mail, über die<br />
       Sie Ihr Passwort ändern können.
     </p>
 
-    <!-- Button unten rechts -->
     <div class="flex justify-end w-full">
       <button class="px-6 py-2 text-white bg-gray-700 rounded-full">
         E-Mail senden
