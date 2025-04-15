@@ -10,13 +10,13 @@
             </div>
         </button>
 
-        <img class="size-8" src="/assets/icons/add.svg" alt="">
+        <!-- <img class="size-8" src="/assets/icons/add.svg" alt=""> -->
     </div>
 
     <ul id="directList" class="flex flex-col gap-1">
 
-        @for (item of [0,1,2,3,4,5]; track $index) {
-        <li><app-user></app-user></li>
+        @for (userItem of userService.users; track $index) {
+        <li><app-user [userInfo]="userItem" ></app-user></li>
         }
 
 

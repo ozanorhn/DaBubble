@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { ChannelsComponent } from "../channels/channels.component";
-import { DirectMessagesComponent } from "../direct-messages/direct-messages.component";
+import { ChannelsComponent } from "./channels/channels.component";
+import { DirectMessagesComponent } from './direct-messages/direct-messages.component';
+
 
 @Component({
   selector: 'app-threads',

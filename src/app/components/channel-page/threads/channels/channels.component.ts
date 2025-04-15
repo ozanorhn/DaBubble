@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ChannelsService } from '../../../../services/channels/channels.service';
+
 
 @Component({
   selector: 'app-channels',
@@ -8,15 +10,18 @@ import { Component } from '@angular/core';
 })
 export class ChannelsComponent {
 
-  channels = [
-    {name : 'Entwicklerteam'},
-    {name: 'Frontend'},
-    {name: 'Backend'},
-    {name: 'DevOps'},
-    {name: 'Design-Team'},
-    {name : 'Office-team'},
-    {name: 'Support'},
-  ]
+
+  constructor(public channelService: ChannelsService){}
+
+  // channels = [
+  //   {name : 'Entwicklerteam'},
+  //   {name: 'Frontend'},
+  //   {name: 'Backend'},
+  //   {name: 'DevOps'},
+  //   {name: 'Design-Team'},
+  //   {name : 'Office-team'},
+  //   {name: 'Support'},
+  // ]
 
 
 

@@ -3,13 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class ThreadsService {
+export class MessagesService {
 
   constructor() { }
-
-
-
-
-
-  
 }
