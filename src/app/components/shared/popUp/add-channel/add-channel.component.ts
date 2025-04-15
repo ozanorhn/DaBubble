@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-nav.service';
 
 @Component({
   selector: 'app-add-channel',
@@ -7,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './add-channel.component.scss'
 })
 export class AddChannelComponent {
+
+  constructor(public channelNavService: ChannelPageNavService) { }
 
 }

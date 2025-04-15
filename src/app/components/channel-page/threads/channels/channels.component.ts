@@ -16,9 +16,7 @@ export class ChannelsComponent {
 
 
 
-  // addCannelPopup(){
-  //   this.channelNavService.addChannelPopUp.update(popup => !popup)
-  // }
+
 
 
 
@@ -29,6 +27,9 @@ export class ChannelsComponent {
     let list = document.getElementById('dropList');
     list?.classList.toggle('hidden');
   }
+
+
+ 
 
 
 
