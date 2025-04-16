@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LandingPageService } from '../../../services/landing-page.service';
+import { LandingPageService } from '../../../pageNavServices/landing-page.service';
 
 @Component({
   selector: 'app-resetpw-confirm',

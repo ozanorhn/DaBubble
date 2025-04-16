@@ -8,6 +8,8 @@ export class ChannelPageNavService {
 
   hideAddChannelPopUp = signal(true);
 
+  hideAddUserPopUp = signal(true);
+
   constructor() { }
 
 
@@ -16,8 +18,8 @@ export class ChannelPageNavService {
   }
 
 
-  showChannels() {
-
+  addUserPopup() {
+    this.hideAddUserPopUp.update(popup => !popup)
   }
 
 

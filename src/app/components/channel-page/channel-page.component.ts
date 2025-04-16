@@ -5,6 +5,7 @@ import { ThreadsComponent } from "./threads/threads.component";
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
 import { ChannelPageNavService } from '../../pageNavServices/channel-page-nav.service';
 import { CommonModule } from '@angular/common';
+import { AddUser1Component } from "../shared/popUp/add-user1/add-user1.component";
 
 @Component({
   selector: 'app-channel-page',
@@ -16,8 +17,9 @@ import { CommonModule } from '@angular/common';
     SearchComponent,
     ThreadsComponent,
     AddChannelComponent,
-    CommonModule
-  ],
+    CommonModule,
+    AddUser1Component
+],
 
   templateUrl: './channel-page.component.html',
   styleUrl: './channel-page.component.scss'
