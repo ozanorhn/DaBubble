@@ -1,5 +1,5 @@
-<section class="box-border h-full" [ngClass]="{'mt-[140px]': channelService.chatType === 'channel' || 'thread' || 'search', 'mt-[156px] pb-[191px]': channelService.chatType === 'dm' }">
-    <app-chat-header class="fixed top-[80px] right-0 left-0"></app-chat-header>
+<section class="box-border relative bg-white" [ngClass]="{'mt-[140px]': channelService.chatType === 'channel' || 'thread' || 'search', 'mt-[156px] pb-[191px]': channelService.chatType === 'dm' }">
+    <!-- <app-chat-header class="fixed top-[80px] right-0 left-0"></app-chat-header> -->
     <div class="box-border flex flex-col px-4" [ngClass]="{ 'pb-[191px]': channelService.chatType !== 'dm'}">
         @if (channelService.chatType === 'thread') {
             <div class="flex gap-5 mt-[25px]"  [ngClass]="{ 'flex-row-reverse': fromCurrentUser(channelService.threadHeadMessage.user.name)}">
@@ -83,5 +83,5 @@
             <p class="text-xl text-textgray">Diese Unterhaltung findet nur zwischen <span class="text-purple3">&#64;Sofia Müller</span> und dir statt.</p>
         </div>
     }
-    <app-chat-input class="fixed bottom-[30px] left-0 right-0"></app-chat-input>
+    <!-- <app-chat-input class="fixed bottom-[30px] left-0 right-0"></app-chat-input> -->
 </section>

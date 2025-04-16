@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { ChannelsService } from '../../../../services/channels/channels.service';
-import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-nav.service';
+import { ChannelsService } from '../../../services/channels/channels.service';
+import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav.service';
+
 
 
 @Component({

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChannelPageComponent } from './channel-page.component';
+import { ThreadsComponent } from './navigation.component';
 
-describe('ChannelPageComponent', () => {
-  let component: ChannelPageComponent;
-  let fixture: ComponentFixture<ChannelPageComponent>;
+describe('ThreadsComponent', () => {
+  let component: ThreadsComponent;
+  let fixture: ComponentFixture<ThreadsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChannelPageComponent]
+      imports: [ThreadsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ChannelPageComponent);
+    fixture = TestBed.createComponent(ThreadsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
