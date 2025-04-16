@@ -3,12 +3,12 @@
 <section class="flex h-screen gap-3 p-3 bg-primary">
 
 
-    <div class="flex flex-1">
+    <div class="flex">
         <app-navigation></app-navigation>
     </div>
 
     @if (true) {
-        <div class="h-[100vh - 80px] flex-2">
+        <div class="h-[100vh - 80px] flex-2 border border-black">
             <app-chat-header class="fixed"></app-chat-header>
             <app-chat-messages></app-chat-messages>
             <app-chat-input class="fixed"></app-chat-input>
@@ -16,7 +16,7 @@
     }
 
     @if (true) {
-        <div class="flex-1 border border-black rounded-[30px] p-3 min-w-[480px] bg-white">
+        <div class=" border border-black rounded-[30px] p-3 min-w-[480px] bg-white">
             Thread
         </div>     
     }
