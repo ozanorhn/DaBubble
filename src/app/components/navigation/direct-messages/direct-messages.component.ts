@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { UserComponent } from '../../../shared/user/user.component';
-import { UsersService } from '../../../../services/users/users.service';
+import { UserComponent } from '../../shared/user/user.component';
 import { CommonModule } from '@angular/common';
-import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-nav.service';
+import { UsersService } from '../../../services/users/users.service';
+import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav.service';
+
 
 
 @Component({
@@ -16,7 +17,7 @@ import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-
 })
 export class DirectMessagesComponent {
 
-  constructor(public userService: UsersService, public channelPageServive: ChannelPageNavService){}
+  constructor(public userService: UsersService, public channelPageServive: ChannelPageNavService) { }
 
 
   directMessagesToggle() {

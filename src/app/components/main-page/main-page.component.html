@@ -3,5 +3,16 @@
 
 <div>
     <app-navigation></app-navigation>
-    
+
+</div>
+
+
+<div [ngClass]="{ hidden: channelNavService.hideAddChannelPopUp() }"
+    class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">
+    <app-add-channel class="top-[20%]"></app-add-channel>
+</div>
+
+
+<div class="absolute bottom-0" [ngClass]="{ 'hidden' : channelNavService.hideAddUserPopUp()}">
+    <app-add-user1></app-add-user1>
 </div>

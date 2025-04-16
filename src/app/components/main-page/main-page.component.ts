@@ -1,16 +1,26 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
-import { ThreadsComponent } from "../channel-page/navigation/navigation.component";
+import { NavigationComponent } from '../navigation/navigation.component';
+import { ChannelPageNavService } from '../../pageNavServices/channel-page-nav.service';
+import { AddUser1Component } from "../shared/popUp/add-user1/add-user1.component";
+import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main-page',
   imports: [
     HeaderComponent,
-    ThreadsComponent
-],
+    NavigationComponent,
+    AddUser1Component,
+    AddChannelComponent,
+    CommonModule
+  ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
 export class MainPageComponent {
+
+
+  constructor(public channelNavService: ChannelPageNavService) { }
 
 }

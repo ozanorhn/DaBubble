@@ -12,6 +12,6 @@ import { DirectMessagesComponent } from './direct-messages/direct-messages.compo
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
 })
-export class ThreadsComponent {
+export class NavigationComponent {
 
 }
