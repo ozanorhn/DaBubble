@@ -1,0 +1,32 @@
+<section class="h-[609px]  flex flex-col px-5 py-10 gap-6 text-lg bg-white rounded-[30px] max-w-[870px]">
+
+    <div class="flex justify-between">
+        <h2 class="text-2xl font-bold">Channel erstellen</h2>
+
+        <img (click)="channelNavService.addCannelPopup()" class="hover:scale-[1.1] duration-150 active:scale-[0.9] cursor-pointer" src="/assets/icons/close.svg" alt="">
+    </div>
+    
+
+    <p>
+        Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum Beispiel.
+    </p>
+
+
+    <div class="flex flex-col gap-5">
+        <span class="font-bold">Channel-Name</span>
+        <input class="px-5 py-4 border border-black rounded-[40px]" type="text" placeholder="#  z.B. Kooperationsprojekte">
+    </div>
+
+
+    <div class="flex flex-col gap-5">
+        <span class="font-bold">Channel-Name</span>
+        <input class="px-5 py-4 border border-black rounded-[40px]" type="text" placeholder="Dein Text hier">
+    </div>
+
+    <button class="w-32 h-12 bg-purple1 rounded-[25px] text-white hover:scale-[1.1] duration-150 active:scale-[0.9] self-end">
+        Erstellen
+    </button>
+
+
+
+</section>
