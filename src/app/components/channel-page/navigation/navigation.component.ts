@@ -4,13 +4,13 @@ import { DirectMessagesComponent } from './direct-messages/direct-messages.compo
 
 
 @Component({
-  selector: 'app-threads',
+  selector: 'app-navigation',
   imports: [
     ChannelsComponent,
     DirectMessagesComponent
   ],
-  templateUrl: './threads.component.html',
-  styleUrl: './threads.component.scss'
+  templateUrl: './navigation.component.html',
+  styleUrl: './navigation.component.scss'
 })
 export class ThreadsComponent {
 

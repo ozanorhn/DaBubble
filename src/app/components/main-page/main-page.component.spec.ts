@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ThreadsComponent } from './threads.component';
+import { MainPageComponent } from './main-page.component';
 
-describe('ThreadsComponent', () => {
-  let component: ThreadsComponent;
-  let fixture: ComponentFixture<ThreadsComponent>;
+describe('MainPageComponent', () => {
+  let component: MainPageComponent;
+  let fixture: ComponentFixture<MainPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ThreadsComponent]
+      imports: [MainPageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ThreadsComponent);
+    fixture = TestBed.createComponent(MainPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
