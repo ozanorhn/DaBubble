@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+/* import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-chat-page',
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './chat-page.component.html',
+  templateUrl: './chat-page.component.html', 
   styleUrl: './chat-page.component.scss'
 })
 export class ChatPageComponent {
@@ -36,3 +36,4 @@ isOwnMessage(msg: string): boolean {
   return msg.includes('Danke'); 
 }
 }
+ */
