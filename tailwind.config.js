@@ -3,7 +3,7 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     extend: {
-      colors:{
+      colors: {
         'header': "rgba(236, 238, 254, 0.8)",
 
         'primary': '#ECEEFE',
@@ -12,10 +12,10 @@ module.exports = {
         'purple3': '#535AF1',
         'error': '#797EF3',
         'online': '#92c83e',
-        'textgray': '#686868',
+        'offline': '#686868',
         'lightpurple': '#adb0d9',
         'linkblue': '#1381FF',
-       'hovergray': '#E6E6E6',
+        'hovergray': '#E6E6E6',
         'btnBg': "#eff1fe"
       },
       screens: {
