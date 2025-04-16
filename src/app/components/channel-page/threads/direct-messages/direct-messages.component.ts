@@ -1,13 +1,21 @@
 import { Component } from '@angular/core';
-import { UserComponent } from "../../shared/user/user.component";
+import { UserComponent } from '../../../shared/user/user.component';
+import { UsersService } from '../../../../services/users/users.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-direct-messages',
-  imports: [UserComponent],
+  imports: [
+    UserComponent,
+    CommonModule
+  ],
   templateUrl: './direct-messages.component.html',
   styleUrl: './direct-messages.component.scss'
 })
 export class DirectMessagesComponent {
+
+  constructor(public userService: UsersService){}
 
 
   directMessagesToggle() {

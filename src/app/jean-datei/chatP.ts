@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-chat-page',
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './chat-page.component.html',
+  templateUrl: './chat-page.component.html', 
   styleUrl: './chat-page.component.scss'
 })
 export class ChatPageComponent {

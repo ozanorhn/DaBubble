@@ -1,20 +1,13 @@
-<section class="flex flex-col h-screen p-2">
-  <app-header></app-header>
-  <div class="h-full border border-black pt-28">
-    <app-search></app-search>
-    <div class="flex flex-col h-full mx-6 my-6 border border-yellow-400">
-      <app-channels></app-channels>
-      <app-direct-messages></app-direct-messages>
-    </div>
-  </div>
+<app-header></app-header>
 
-  <div
-    class="flex justify-center items-center w-[60px] h-[60px] rounded-full bg-[rgba(68,77,242,1)] absolute top-[815px] left-[85%] -translate-x-1/2 cursor-pointer"
-  >
-    <img
-      src="assets/imgs/icons/add-user-btn.svg"
-      alt=""
-      class="w-[40px] h-[40px]"
-    />
-  </div>
+<section class="flex flex-col h-[100vh - 80px] p-5">
+  <app-search></app-search>
+  <app-threads></app-threads>
 </section>
+
+<div
+  [ngClass]="{ hidden: channelNavService.hideAddChannelPopUp() }"
+  class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center"
+>
+  <app-add-channel class="top-[20%]"></app-add-channel>
+</div>
