@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ChannelsService } from '../../../services/channels.service';
+import { ChannelsService } from '../../../services/channels/channels.service';
 
 @Component({
   selector: 'app-chat-header',

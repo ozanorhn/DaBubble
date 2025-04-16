@@ -5,7 +5,7 @@ import { RegisterComponent } from "./register/register.component";
 import { ResetpwRequestComponent } from "./resetpw-request/resetpw-request.component";
 import { ResetpwConfirmComponent } from "./resetpw-confirm/resetpw-confirm.component";
 import { CommonModule } from '@angular/common';
-import { LandingPageService } from '../../services/landing-page.service';
+import { LandingPageService } from '../../pageNavServices/landing-page.service';
 
 @Component({
   selector: 'app-landing-page',

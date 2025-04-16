@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { ChatHeaderComponent } from "../chat-header/chat-header.component";
 import { ChatInputComponent } from "../chat-input/chat-input.component";
-import { ChannelsService } from '../../../services/channels.service';
-import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { ChannelsService } from '../../../services/channels/channels.service';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-chat-messages',
@@ -16,9 +16,9 @@ export class ChatMessagesComponent {
  authService = inject(AuthService);
  newDay = true;
 
- openThread() {
-  this.channelService.chatType = 'thread';
- }
+//  openThread() {
+//   this.channelService.chatType = 'thread';
+//  }
 
  fromCurrentUser(id: string): boolean {
   if (id === this.authService.currentUser) {
