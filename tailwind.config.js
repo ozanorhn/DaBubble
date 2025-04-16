@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+
         header: "rgba(236, 238, 254, 0.8)",
 
         primary: "#ECEEFE",
@@ -31,6 +32,18 @@ module.exports = {
       },
       fontWeight: {
         800: 800,
+        'icon-arrow-back': "url('/assets/icons/arrow_back.svg')",
+        'icon-arrow-back-hover': "url('/assets/icons/arrow_back_hover.svg')",
+      }, 
+      keyframes: {
+        'slide-fade-up': {
+          '0%': { opacity: '0', transform: 'translateY(50%)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'slide-fade-up': 'slide-fade-up 0.7s ease-out forwards',
+
       },
     },
   },
