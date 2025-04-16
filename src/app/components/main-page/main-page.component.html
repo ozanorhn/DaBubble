@@ -1,10 +1,28 @@
 <app-header></app-header>
 
+<section class="flex gap-3 bg-primary">
+    <div class="flex">
+        <app-navigation></app-navigation>
 
-<div>
-    <app-navigation></app-navigation>
+    </div>
 
-</div>
+    @if (true) {
+        <div class="h-[100vh - 80px]">
+            <app-chat-header class="fixed"></app-chat-header>
+            <app-chat-messages></app-chat-messages>
+            <app-chat-input class="fixed"></app-chat-input>
+        </div>
+    }
+
+    @if (true) {
+        <div>
+            
+        </div>
+        
+    }
+
+
+</section>
 
 
 <div [ngClass]="{ hidden: channelNavService.hideAddChannelPopUp() }"
