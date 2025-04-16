@@ -12,6 +12,7 @@ module.exports = {
         purple3: "#535AF1",
         error: "#797EF3",
         online: "#92c83e",
+        offline: "#686868",
         textgray: "#686868",
         lightpurple: "#adb0d9",
         linkblue: "#1381FF",
