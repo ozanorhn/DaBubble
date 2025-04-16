@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+/* import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -36,3 +36,4 @@ isOwnMessage(msg: string): boolean {
   return msg.includes('Danke'); 
 }
 }
+ */
