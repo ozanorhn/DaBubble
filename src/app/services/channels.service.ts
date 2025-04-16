@@ -5,9 +5,34 @@ import { Injectable } from '@angular/core';
 })
 export class ChannelsService {
 
-  public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'channel';
+  public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'dm';
   public channelName: string = 'Entwicklerteam';
-  public messages = [
+  public threadHeadMessage: any;
+  public messages: {
+    user: {
+      avatar: number;
+      name: string;
+    };
+    time: string; //number
+    content: string;
+    emojis: {
+      id: number;
+      users: string[];
+    }[];
+    answers?: {
+      user: {
+        avatar: number;
+        name: string;
+      };
+      time: string; //number
+      content: string;
+      emojis: {
+        id: number;
+        users: string[];
+      }[];
+    }[];
+
+  }[] = [
     {
       user: {
         avatar: 2,
@@ -152,4 +177,10 @@ export class ChannelsService {
     }
   ];
   constructor() { }
+
+  openThread(message: any) {
+    this.messages = message['answers'];
+    this.threadHeadMessage = message;
+    this.chatType = 'thread';
+  }
 }
