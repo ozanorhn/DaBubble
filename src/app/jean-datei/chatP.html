@@ -1,0 +1,87 @@
+<div
+  class="absolute top-0 left-0 right-0 w-full h-[80px] flex justify-between items-center bg-header pr-[16px] pl-[16px] pb-[15px]"
+>
+  <img
+    [routerLink]="['/channel']"
+    src="assets/imgs/devspace-logo1.svg"
+    alt="DaBubble Logo"
+    class="h-[50px] mt-4"
+  />
+  <img
+    src="assets/imgs/avatar6.svg"
+    alt="DaBubble avatar"
+    class="h-16 mt-4 rounded-full cursor-pointer"
+    (click)="toggleOverlay()"
+  />
+</div>
+<!-- ----------------------- -->
+
+<section class="border border-red-600 h-fit">
+  <div
+    class="w-full h-[60pc] mt-[80px] pt-[10px] pb-[10px] pr-[16px] pl-[16px] flex justify-between"
+  >
+    <div><img src="assets/imgs/entwicklerteam.svg" alt="" /></div>
+    <img
+      class="w-[34px] h-[34px]"
+      src="assets/imgs/icons/add-members.svg"
+      alt=""
+    />
+  </div>
+
+  <!-- Nachrichtenanzeige -->
+
+  <div
+    *ngFor="let msg of messages"
+    [ngClass]="{
+      'self-end bg-blue-500 text-white': isOwnMessage(msg),
+      'self-start bg-white': !isOwnMessage(msg)
+    }"
+    class="rounded-xl p-3 max-w-[70%] shadow"
+  >
+    {{ msg }}
+  </div>
+
+  <!-- Eingabefeld -->
+  <div class="mt-4 flex items-center gap-2">
+    <input
+      type="text"
+      [(ngModel)]="newMessage"
+      (keydown.enter)="sendMessage()"
+      placeholder="Nachricht schreiben..."
+      class="w-[398px] h-[145px] mb-[0] rounded-[20px] border-2 border-white-rgba bg-gray-100 z-10"
+    />
+    <button
+      (click)="sendMessage()"
+      class="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600"
+    >
+      Senden
+    </button>
+  </div>
+</section>
+
+<!-- Overlay-Popup unten -->
+<div
+  *ngIf="showOverlay"
+  appClickOutside
+  (appClickOutside)="closeOverlay()"
+  class="fixed bottom-0 left-0 w-full h-[206px] bg-white px-[26px] py-[30px] rounded-t-[30px] flex flex-col items-start gap-[25px] shadow-lg z-50 border-2 border-rgba(255, 255, 255, 1)"
+>
+  <div class="flex justify-center w-full mb-[10px]">
+    <div
+      class="w-[62px] h-[6px] rounded-[23px]"
+      style="background: rgba(217, 217, 217, 1)"
+    ></div>
+  </div>
+  <button class="text-purple4 font-medium text-base">
+    <div class="flex justify-center" [routerLink]="['/profile']">
+      <img src="assets/imgs/icons/account_circle.svg" alt="" />
+      <p class="pl-[8px]">Profil</p>
+    </div>
+  </button>
+  <button class="text-purple4 font-medium text-base">
+    <div class="flex justify-center" [routerLink]="['/login']">
+      <img src="assets/icons/logout.svg" alt="" />
+      <p>Log out</p>
+    </div>
+  </button>
+</div>
