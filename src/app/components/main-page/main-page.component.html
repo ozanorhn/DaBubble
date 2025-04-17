@@ -1,27 +1,36 @@
 <app-header></app-header>
 
-<section class="flex gap-3 bg-primary">
-    <div class="flex">
-        <app-navigation></app-navigation>
 
-    </div>
 
-    @if (true) {
-        <div class="h-[100vh - 80px]">
-            <app-chat-header class="fixed"></app-chat-header>
-            <app-chat-messages></app-chat-messages>
-            <app-chat-input class="fixed"></app-chat-input>
+<section class="flex h-full gap-3 bg-primary p-3">
+  
+    @if (!channelNavService.showChannel && channelNavService.mobile && !channelNavService.showThread || !channelNavService.mobile) {
+        <div class="flex">
+            <app-navigation></app-navigation>
         </div>
     }
 
-    @if (true) {
-        <div>
-            
+    @if (channelNavService.showChannel && channelNavService.mobile && !channelNavService.showThread || !channelNavService.mobile) {
+        <div class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
+            <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
+            <div class="flex flex-1 w-full overflow-y-auto">
+                <app-chat-messages [messages]="channelMessageService.messages" [chatType]="'channel'"></app-chat-messages>
+            </div>
+            <app-chat-input class=""></app-chat-input>
         </div>
-        
+
     }
 
-
+    @if (channelMessageService.messages[0].answers !== undefined && (!channelNavService.showChannel && channelNavService.mobile && channelNavService.showThread || !channelNavService.mobile)) {
+        <div class="flex flex-col w-full max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
+            <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
+            <div class="flex flex-1 w-full overflow-y-auto">
+                <app-chat-messages [messages]="channelMessageService.messages[0].answers" [chatType]="'thread'" [threadHeadMessage]="channelMessageService.messages[0]"></app-chat-messages>
+            </div>
+            <app-chat-input class=""></app-chat-input>
+        </div>
+    }
+  
 </section>
 
 
