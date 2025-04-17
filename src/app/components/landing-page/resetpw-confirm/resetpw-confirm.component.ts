@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LandingPageService } from '../../../pageNavServices/landing-page.service';
 
 @Component({
   selector: 'app-resetpw-confirm',
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './resetpw-confirm.component.scss'
 })
 export class ResetpwConfirmComponent {
+   constructor(public landing: LandingPageService){}
 
 }

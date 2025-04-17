@@ -1,0 +1,45 @@
+<app-header></app-header>
+
+
+
+<section class="flex h-full gap-3 bg-primary p-3">
+  
+    @if (!channelNavService.showChannel && channelNavService.mobile && !channelNavService.showThread || !channelNavService.mobile) {
+        <div class="flex">
+            <app-navigation></app-navigation>
+        </div>
+    }
+
+    @if (channelNavService.showChannel && channelNavService.mobile && !channelNavService.showThread || !channelNavService.mobile) {
+        <div class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
+            <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
+            <div class="flex flex-1 w-full overflow-y-auto">
+                <app-chat-messages [messages]="channelMessageService.messages" [chatType]="'channel'"></app-chat-messages>
+            </div>
+            <app-chat-input class=""></app-chat-input>
+        </div>
+
+    }
+
+    @if (channelMessageService.messages[0].answers !== undefined && (!channelNavService.showChannel && channelNavService.mobile && channelNavService.showThread || !channelNavService.mobile)) {
+        <div class="flex flex-col w-full max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
+            <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
+            <div class="flex flex-1 w-full overflow-y-auto">
+                <app-chat-messages [messages]="channelMessageService.messages[0].answers" [chatType]="'thread'" [threadHeadMessage]="channelMessageService.messages[0]"></app-chat-messages>
+            </div>
+            <app-chat-input class=""></app-chat-input>
+        </div>
+    }
+  
+</section>
+
+
+<div [ngClass]="{ hidden: channelNavService.hideAddChannelPopUp() }"
+    class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">
+    <app-add-channel class="top-[20%]"></app-add-channel>
+</div>
+
+
+<div class="absolute bottom-0" [ngClass]="{ 'hidden' : channelNavService.hideAddUserPopUp()}">
+    <app-add-user1></app-add-user1>
+</div>

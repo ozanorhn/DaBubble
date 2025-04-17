@@ -1,0 +1,26 @@
+<div
+  id="splash-screen"
+  *ngIf="showSplash"
+  class="fixed inset-0 z-[1000] flex items-center justify-center bg-gradient-to-b from-[#6368cd] to-[#363FE5] overflow-hidden transition-opacity duration-1000"
+  [ngClass]="{ 'opacity-0': !showSplash, 'opacity-100': showSplash }"
+>
+  <div
+    class="flex items-center justify-center text-white animate-containerMoveMobile md:animate-containerMoveDesktop delay-[2000ms] md:delay-[1000ms]"
+  >
+    <img
+      src="assets/icons/Logo.png"
+      alt="DA-Bubble Logo"
+      class="w-auto h-[100px] max-[500px]:h-[70px]"
+    />
+    <h1
+    class="text-white text-[30.8px] font-[800] font-nunito whitespace-nowrap ml-4 animate-moveIn"
+    style="width: 156.29px; overflow: hidden;"
+  >
+    DABubble
+  </h1>
+  
+  
+  
+
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<section class="py-4 h-fit">
+
+    <div class="flex items-center justify-between w-full h-12 px-2">
+        <button (click)="turnCannelArrow()" class="flex items-center gap-4">
+            <img class="size-8" id="channel-arrow" src="/assets/icons/arrow_drop_down.svg" alt="">
+            <div class="flex gap-2 text-xl font-bold">
+                <img class="size-6" src="/assets/icons/workspaces.svg" alt="">
+                Channels
+            </div>
+        </button>
+        <img (click)="channelNavService.addCannelPopup()" class="cursor-pointer size-8 hover:scale-[1.1] duration-150 active:scale-[0.9]" src="/assets/icons/add.svg" alt="">
+    </div>
+
+    <ul id="dropList" class="flex flex-col w-full gap-2 text-lg">
+
+        @for (channel of channelService.channels; track $index) {
+            <li (click)="channelNavService.openChannel()" class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3"> <span class="font-bold">#</span> {{channel.name}}</li>
+        }
+        <li (click)="channelNavService.addCannelPopup()" class="flex gap-3 cursor-pointer hover:text-purple3 pl-7 hover:font-bold"><img src="/assets/icons/add_circle.svg" alt=""> Channel hinzufügen</li>
+    </ul>
+
+</section>

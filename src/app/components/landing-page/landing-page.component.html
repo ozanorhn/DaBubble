@@ -1,6 +1,28 @@
-<div class="flex flex-col items-center justify-center min-h-screen px-4 space-y-6 bg-primary">
-    <img src="assets/imgs/icons/logo.svg" alt="Logo" class="h-16" />
+<app-splash-screen *ngIf="showSplash" class="splash-screen"></app-splash-screen>
 
+
+  <div
+    class="flex flex-col items-center justify-center min-h-screen px-4 transition-opacity duration-700 ease-in-out"
+    [ngClass]="{ 'opacity-0': !showContent, 'opacity-100': showContent }"
+  >
+    <img *ngIf="showContent" src="assets/imgs/icons/logo.svg" alt="Logo" class="h-16 mb-4" />
+
+    <div class="w-full max-w-sm animate-slide-fade-up">
+      @if (landingService.landing() == 'login') {
+        <app-login></app-login>
+      }
+      @if (landingService.landing() == 'register') {
+        <app-register></app-register>
+      }
+      @if (landingService.landing() == 'avatar') {
+        <app-avatar></app-avatar>
+      }
+      @if (landingService.landing() == 'confirm') {
+        <app-resetpw-confirm></app-resetpw-confirm>
+      }
+      @if (landingService.landing() == 'request') {
+        <app-resetpw-request></app-resetpw-request>
+      }
+    </div>
 
   </div>
-  
