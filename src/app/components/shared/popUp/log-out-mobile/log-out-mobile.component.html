@@ -1,0 +1,27 @@
+<div
+  *ngIf="isVisible"
+  appClickOutside
+  (appClickOutside)="onClickOutside()"
+  class="fixed bottom-0 left-0 w-full h-[206px] bg-white px-[26px] py-[30px] rounded-t-[30px] flex flex-col items-start gap-[25px] shadow-lg z-50 border-2 border-white"
+>
+  <div class="flex justify-center w-full mb-[10px]">
+    <div
+      class="w-[62px] h-[6px] rounded-[23px]"
+      style="background: rgba(217, 217, 217, 1)"
+    ></div>
+  </div>
+
+  <button class="text-base font-medium text-purple4">
+    <div class="flex justify-center" [routerLink]="['/profile']">
+      <img src="assets/imgs/icons/account_circle.svg" alt="" />
+      <p class="pl-[8px]">Profil</p>
+    </div>
+  </button>
+
+  <button class="text-base font-medium text-purple4">
+    <div class="flex justify-center">
+      <img src="assets/icons/logout.svg" alt="" />
+      <p>Log out</p>
+    </div>
+  </button>
+</div>
