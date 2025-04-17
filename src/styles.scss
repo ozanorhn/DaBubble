@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
+body {
+    width: 100%;
+    max-height: 100vh;
+    overflow-y: hidden;
+}
 
 @font-face {
     font-family: 'Nunito';
