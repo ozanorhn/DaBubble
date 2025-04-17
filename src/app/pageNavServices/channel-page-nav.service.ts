@@ -28,7 +28,7 @@ export class ChannelPageNavService {
   }
 
   checkScreenView() {
-    if (window.innerWidth >= 1024) {
+    if (window.innerWidth >= 1280) {
       if (!this.bigScreen) console.log('bigScreen');
       this.bigScreen = true;
       this.mediumScreen = false;
