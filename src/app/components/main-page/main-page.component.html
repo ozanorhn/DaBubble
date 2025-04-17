@@ -4,13 +4,13 @@
 
 <section class="flex h-full gap-3 p-3 border border-green-600 bg-primary">
   
-    @if (!channelNavService.showChannel && channelNavService.mobile && !channelNavService.showThread || !channelNavService.mobile) {
+    @if (channelNavService.showNav()) {
         <div class="flex w-full h-[100% - 3rem] lg:max-w-[366px] my-6  rounded-[30px]">
             <app-navigation class="w-full"></app-navigation>
         </div>
     }
 
-    @if (channelNavService.showChannel && channelNavService.mobile && !channelNavService.showThread || !channelNavService.mobile) {
+    @if (channelNavService.showChannel()) {
         <div class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
             <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
             <div class="flex flex-1 w-full overflow-y-auto">
@@ -18,10 +18,9 @@
             </div>
             <app-chat-input class=""></app-chat-input>
         </div>
-
     }
 
-    @if (channelMessageService.messages[0].answers !== undefined && (!channelNavService.showChannel && channelNavService.mobile && channelNavService.showThread || !channelNavService.mobile)) {
+    @if (channelMessageService.messages[0].answers !== undefined && channelNavService.showThread()) {
         <div class="flex flex-col w-full lg:max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
             <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
             <div class="flex flex-1 w-full overflow-y-auto">
