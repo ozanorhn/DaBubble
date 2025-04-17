@@ -1,13 +1,13 @@
-<section class="flex items-center justify-between  bg-white py-[13px] px-4 header">
-    @if (channelService.chatType === 'channel') {
+<section class="flex items-center justify-between box-border bg-white py-[13px] px-4 header rounded-ss-[30px] rounded-se-[30px]">
+    @if (chatType === 'channel') {
         <div class="flex items-center gap-[14px] py-[3px] px-[10px] w-max rounded-full cursor-pointer text-xl font-bold hover:bg-primary">
             <img class="size-[22px]" src="assets/icons/hashtag.svg" alt="hashtag"><span>{{ channelService.channelName }}</span><img class="ml-[14px]" src="assets/icons/arrow_down.svg" alt="">
         </div>
-    } @else if (channelService.chatType === 'thread') {
+    } @else if (chatType === 'thread') {
         <div class="flex items-center gap-[14px] w-max rounded-full text-xl font-bold">
             <span>Thread </span><span class="text-purple2 text-[14px]"># {{ channelService.channelName }}</span>
         </div>
-    } @else if (channelService.chatType === 'dm') {
+    } @else if (chatType === 'dm') {
         <div class="flex items-center gap-4">
             <div class="relative">
                 <img class="size-[50px] rounded-full" src="assets/imgs/avatar1.svg" alt="Avatar">
@@ -15,18 +15,18 @@
             </div>
             <p class="text-xl font-bold">Sofia Müller</p>
         </div>
-    } @else if (channelService.chatType === 'search') {
+    } @else if (chatType === 'search') {
         <div class="">
             <p class="text-lg font-bold">Search</p>
         </div>
     }
     <div>
-        @if (channelService.chatType === 'channel') {
+        @if (chatType === 'channel') {
             <button class="flex items-center justify-center rounded-full size-[34px] bg-primary">
                 <img src="assets/icons/add_user.svg" alt="Add user">
             </button>
-        } @else if (channelService.chatType === 'thread' || channelService.chatType === 'search') {
-            <button class="flex items-center justify-center rounded-full size-[34px] hover:bg-primary">
+        } @else if (chatType === 'thread' || chatType === 'search') {
+            <button (click)="channelNavService.openChannel()" class="flex items-center justify-center rounded-full size-[34px] hover:bg-primary">
                 <img src="assets/icons/close.svg" alt="Add user">
             </button>
         }

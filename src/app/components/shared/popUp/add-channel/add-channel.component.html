@@ -7,7 +7,7 @@
     </div>
     
 
-    <p>
+    <p >
         Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum Beispiel.
     </p>
 
@@ -23,7 +23,7 @@
         <input class="px-5 py-4 border border-black rounded-[40px]" type="text" placeholder="Dein Text hier">
     </div>
 
-    <button class="w-32 h-12 bg-purple1 rounded-[25px] text-white hover:scale-[1.1] duration-150 active:scale-[0.9] self-end">
+    <button (click)="channelNavService.addUserPopup()" class="w-32 h-12 bg-purple1 rounded-[25px] text-white hover:scale-[1.1] duration-150 active:scale-[0.9] self-end">
         Erstellen
     </button>
 
