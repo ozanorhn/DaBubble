@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LandingPageService } from '../../../services/landing-page.service';
+import { LandingPageService } from '../../../pageNavServices/landing-page.service';
 
 @Component({
   selector: 'app-login',

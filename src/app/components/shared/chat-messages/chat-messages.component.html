@@ -1,24 +1,26 @@
-<section class="box-border h-full" [ngClass]="{'mt-[140px]': channelService.chatType === 'channel' || 'thread' || 'search', 'mt-[156px] pb-[191px]': channelService.chatType === 'dm' }">
-    <app-chat-header class="fixed top-[80px] right-0 left-0"></app-chat-header>
-    <div class="box-border flex flex-col px-4" [ngClass]="{ 'pb-[191px]': channelService.chatType !== 'dm'}">
-        @if (channelService.chatType === 'thread') {
-            <div class="flex gap-5 mt-[25px]"  [ngClass]="{ 'flex-row-reverse': fromCurrentUser(channelService.threadHeadMessage.user.name)}">
+<section class="box-border pb-4 bg-white">
+    <!-- <app-chat-header class="fixed top-[80px] right-0 left-0"></app-chat-header> -->
+    <div class="box-border flex flex-col px-4" [ngClass]="{ 'pb-[0]': chatType !== 'dm'}">
+        @if (chatType === 'thread' && threadHeadMessage !== undefined) {
+            <div class="flex gap-5 mt-[25px]"  [ngClass]="{ 'flex-row-reverse': fromCurrentUser(threadHeadMessage.user.name)}">
                 <div class="w-max">
-                    <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ channelService.threadHeadMessage.user.avatar }}.svg" alt="Avatar">
+                    <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ threadHeadMessage.user.avatar }}.svg" alt="Avatar">
                 </div>
                 <div class="flex flex-col gap-2">
-                    <div class="flex items-center gap-5"  [ngClass]="{ 'justify-end': fromCurrentUser(channelService.threadHeadMessage.user.name)}">
-                        <span class="text-lg font-bold">{{ channelService.threadHeadMessage.user.name }}</span>
-                        <span class="text-sm">{{ channelService.threadHeadMessage.time }}</span>
+                    <div class="flex items-center gap-5"  [ngClass]="{ 'justify-end': fromCurrentUser(threadHeadMessage.user.name)}">
+                        <span class="text-lg font-bold">{{ threadHeadMessage.user.name }}</span>
+                        <span class="text-sm">{{ threadHeadMessage.time }}</span>
                     </div>
-                    <div class="bg-primary p-[15px] rounded-[30px]" [ngClass]="{ 'rounded-se-none rounded-ss-[30px]': fromCurrentUser(channelService.threadHeadMessage.user.name), ' rounded-ss-none': !fromCurrentUser(channelService.threadHeadMessage.user.name) }">
-                        <span>{{ channelService.threadHeadMessage.content }}</span>
+                    <div class=" p-[15px] rounded-[30px]" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser(threadHeadMessage.user.name), 'bg-primary rounded-ss-none': !fromCurrentUser(threadHeadMessage.user.name) }">
+                        <span>{{ threadHeadMessage.content }}</span>
                     </div>
                 </div>
             </div>
             <div class="flex items-center text-[18px] my-[10px]">
                 <div class="py-[5px] px-[15px] whitespace-nowrap">
-                    <p>{{ channelService.threadHeadMessage.answers.length }} Antworten</p>
+                    @if (threadHeadMessage.answers !== undefined) {
+                        <p>{{ threadHeadMessage.answers.length }} Antworten</p>
+                    }
                 </div>
                 <div class="w-full h-[1px] bg-lightpurple"></div>
 
@@ -26,7 +28,7 @@
         }
         <!-- @if (channelService.messages.length > 0) { -->
 
-            @for (message of channelService.messages; track message; let i = $index) {
+            @for (message of messages; track message; let i = $index) {
                 @if (newDay) {
                     <div class="flex items-center text-[18px] my-[10px]">
                         <div class="w-full h-[1px] bg-lightpurple">
@@ -46,13 +48,13 @@
                             <span class="text-lg font-bold">{{ message.user.name }}</span>
                             <span class="text-sm">{{ message.time }}</span>
                         </div>
-                        <div class="bg-primary p-[15px] rounded-[30px]" [ngClass]="{ 'rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.user.name), ' rounded-ss-none': !fromCurrentUser(message.user.name) }">
+                        <div class="bg-primary p-[15px] rounded-[30px]" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.user.name), ' rounded-ss-none': !fromCurrentUser(message.user.name) }">
                             <span>{{ message.content }}</span>
                         </div>
                         @if (message.answers) {
-                            @if (channelService.chatType !== 'thread' && message.answers.length > 0) {
+                            @if (chatType !== 'thread' && message.answers.length > 0) {
                                 <div class="cursor-pointer flex flex-col xs:flex-row xs:items-center xs:gap-[20px]" [ngClass]="{'self-end': fromCurrentUser(message.user.name)}">
-                                    <span (click)="channelService.openThread(message)" class="text-base text-purple3 hover:font-bold">{{ message.answers.length }} Antworten</span>
+                                    <span (click)="channelNavService.openThread()" class="text-base text-purple3 hover:font-bold">{{ message.answers.length }} Antworten</span>
                                     <span class="text-sm text-textgray">Letzte Antwort {{ message.answers[message.answers.length - 1].time }}</span>
                                 </div>
                             }
@@ -74,7 +76,7 @@
             }
         <!-- } -->
     </div>
-    @if (channelService.chatType === 'dm') {
+    @if (chatType === 'dm') {
         <div class="flex flex-col gap-6 ml-4">
             <div class="flex items-end">
                 <img class="size-[88px] rounded-full" src="assets/imgs/avatar1.svg" alt="Avatar">
@@ -83,5 +85,5 @@
             <p class="text-xl text-textgray">Diese Unterhaltung findet nur zwischen <span class="text-purple3">&#64;Sofia Müller</span> und dir statt.</p>
         </div>
     }
-    <app-chat-input class="fixed bottom-[30px] left-0 right-0"></app-chat-input>
+    <!-- <app-chat-input class="fixed bottom-[30px] left-0 right-0"></app-chat-input> -->
 </section>

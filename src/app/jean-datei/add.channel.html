@@ -1,17 +1,9 @@
-<section
-  class="font-nunito flex flex-col min-w-80 w-full h-fit mt-[0px] rounded-[0px] gap-9 p-10 text-xl"
->
+<section class="font-nunito flex flex-col min-w-80 w-full h-fit mt-[0px] rounded-[0px] gap-9 p-10 text-xl">
   <div class="flex justify-between w-full">
-    <span class="text-2xl channel font-bold leading-[100%] tracking-[-0%]"
-      >Channel erstellen</span
-    >
+    <span class="text-2xl channel font-bold leading-[100%] tracking-[-0%]">Channel erstellen</span>
 
-    <img
-      (click)="closeProfile()"
-      class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]"
-      src="/assets/icons/close.svg"
-      alt=""
-    />
+    <img (click)="closeProfile()" class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]"
+      src="/assets/icons/close.svg" alt="" />
   </div>
 
   <div class="w-full h-[69px]">
@@ -26,13 +18,9 @@
   </div>
   <div class="flex items-start gap-5">
     <div
-      class="w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px]"
-    >
-      <input
-        type="text"
-        placeholder="#  z.B Kooperationsprojekte"
-        class="w-full h-full bg-transparent border-none text-gray-800 placeholder-gray-400 focus:outline-none"
-      />
+      class="w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px]">
+      <input type="text" placeholder="#  z.B Kooperationsprojekte"
+        class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none" />
     </div>
   </div>
   <div class="flex gap-2 text-xl font-bold mb-[-32px] p-[8px]">
@@ -43,21 +31,15 @@
   </div>
   <div class="flex items-start gap-5">
     <div
-      class="w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px]"
-    >
-      <input
-        type="text"
-        placeholder="Dein Text hier"
-        class="w-full h-full bg-transparent border-none text-gray-800 placeholder-gray-400 focus:outline-none"
-      />
+      class="w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px]">
+      <input type="text" placeholder="Dein Text hier"
+        class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none" />
     </div>
   </div>
 
   <div class="flex justify-end w-full">
-    <button
-      class="w-[141px] h-[49px] rounded-[50px] border-2 border-purple2 bg-purple1 text-white"
-      (click)="toggleOverlay()"
-    >
+    <button class="w-[141px] h-[49px] rounded-[50px] border-2 border-purple2 bg-purple1 text-white"
+      (click)="toggleOverlay()">
       Erstellen
     </button>
     <button></button>
@@ -101,72 +83,51 @@
 </div> -->
 
 <!-- Overlay-Popup unten---------------------------------- -->
-<div
-  *ngIf="showOverlay"
-  appClickOutside
-  (appClickOutside)="closeOverlay()"
-  class="fixed bottom-0 left-0 w-full h-fit bg-white px-[26px] py-[30px] rounded-t-[30px] flex flex-col items-start shadow-lg z-50 gap-[25px] border-2 border-rgba(255, 255, 255, 1)"
->
+
+@if(showOverlay){
+<div appClickOutside (appClickOutside)="closeOverlay()"
+  class="fixed bottom-0 left-0 w-full h-fit bg-white px-[26px] py-[30px] rounded-t-[30px] flex flex-col items-start shadow-lg z-50 gap-[25px] border-2 border-rgba(255, 255, 255, 1)">
   <div class="flex justify-between w-full">
     <span class="text-2xl channel font-bold leading-[100%] tracking-[-0%]">
       Leute hinzufügen
     </span>
 
-    <img
-      (click)="closeProfile()"
-      class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]"
-      src="/assets/icons/close.svg"
-      alt=""
-    />
+    <img (click)="closeProfile()" class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]"
+      src="/assets/icons/close.svg" alt="" />
   </div>
+  }
 
-  <div class="w-full flex flex-col gap-4">
+
+  <div class="flex flex-col w-full gap-4">
     <!-- Option 1 -->
     <label class="flex items-center gap-3 cursor-pointer">
-      <input
-        type="radio"
-        name="addOption"
-        [(ngModel)]="addOption"
-        value="all"
-        class="accent-purple1"
-      />
+      <input type="radio" name="addOption" [(ngModel)]="addOption" value="all" class="accent-purple1" />
       <span class="w-full h-[25px]">
         Alle Mitglieder von
-        <a href="" class="text-purple1 font-semibold">Office Team</a> hinzufügen
+        <a href="" class="font-semibold text-purple1">Office Team</a> hinzufügen
       </span>
     </label>
 
     <!-- Option 2 -->
     <label class="flex items-center gap-3 cursor-pointer">
-      <input
-        type="radio"
-        name="addOption"
-        [(ngModel)]="addOption"
-        value="custom"
-        class="accent-purple1"
-      />
+      <input type="radio" name="addOption" [(ngModel)]="addOption" value="custom" class="accent-purple1" />
       <span>Bestimmte Leute hinzufügen</span>
     </label>
 
     <!-- Eingabefeld erscheint nur bei "custom" -->
+    @if(addOption === 'custom' ){
     <div
-      *ngIf="addOption === 'custom'"
-      class="pl-7 w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px"
-    >
-      <input
-        type="text"
-        [(ngModel)]="customName"
-        placeholder="Name eingeben..."
-        class="w-full h-full bg-transparent border-none text-gray-800 placeholder-gray-400 focus:outline-none"
-      />
+      class="pl-7 w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px">
+      <input type="text" [(ngModel)]="customName" placeholder="Name eingeben..."
+        class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none" />
     </div>
   </div>
+  }
 
-  <div class="flex justify-end w-full mt-4 gap-4">
-    <button
-      class="w-[141px] h-[49px] rounded-[50px] border-2 border-purple2 bg-purple1 text-white"
-      (click)="toggleOverlay()"
-    >
+
+  <div class="flex justify-end w-full gap-4 mt-4">
+    <button class="w-[141px] h-[49px] rounded-[50px] border-2 border-purple2 bg-purple1 text-white"
+      (click)="toggleOverlay()">
       Erstellen
     </button>
   </div>
