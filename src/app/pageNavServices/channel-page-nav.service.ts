@@ -9,9 +9,7 @@ export class ChannelPageNavService {
   showChannel = false;
   showThread = false;
   showDirectMessage = false;
-
   hideAddChannelPopUp = signal(true);
-
   hideAddUserPopUp = signal(true);
 
   constructor(private router: Router) { }
