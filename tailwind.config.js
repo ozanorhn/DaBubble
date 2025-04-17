@@ -1,12 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: ["./src/**/*.{html,ts}"], // Angular kompatibel
   theme: {
     extend: {
       colors: {
-
         header: "rgba(236, 238, 254, 0.8)",
-
         primary: "#ECEEFE",
         purple1: "#444DF2",
         purple2: "#797EF3",
@@ -32,18 +30,33 @@ module.exports = {
       },
       fontWeight: {
         800: 800,
-        'icon-arrow-back': "url('/assets/icons/arrow_back.svg')",
-        'icon-arrow-back-hover': "url('/assets/icons/arrow_back_hover.svg')",
-      }, 
+      },
       keyframes: {
-        'slide-fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(50%)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+        moveIn: {
+          '0%': {
+            opacity: '0',
+            transform: 'translateX(-100%)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateX(10%)',
+          },
+        },
+        containerMoveMobile: {
+          '0%': {
+            opacity: '1',
+            transform: 'translate(0, 0)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translate(0, -35vh) scale(0.8)',
+          },
         },
       },
       animation: {
-        'slide-fade-up': 'slide-fade-up 0.7s ease-out forwards',
-
+        moveIn: 'moveIn 1s ease-in forwards',
+        containerMoveMobile: 'containerMoveMobile 1s ease-in forwards',
+        containerMoveDesktop: 'containerMoveDesktop 1s ease-in forwards',
       },
     },
   },
