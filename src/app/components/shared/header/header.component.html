@@ -10,6 +10,13 @@
   />
 </div>
 
+
+<app-log-out-mobile
+*ngIf="isMobile"
+  [isVisible]="showOverlay"
+  (close)="closeOverlay()"
+></app-log-out-mobile>
+
 <!-- Overlay-Popup unten -->
 <div
   *ngIf="showOverlay"
@@ -36,3 +43,4 @@
     </div>
   </button>
 </div>
+
