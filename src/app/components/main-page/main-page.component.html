@@ -1,6 +1,9 @@
 <app-header></app-header>
 
-<section class="flex h-full gap-3 bg-primary">
+
+
+<section class="flex h-full gap-3 bg-primary p-3">
+  
     @if (!channelNavService.showChannel && channelNavService.mobile && !channelNavService.showThread || !channelNavService.mobile) {
         <div class="flex">
             <app-navigation></app-navigation>
@@ -15,6 +18,7 @@
             </div>
             <app-chat-input class=""></app-chat-input>
         </div>
+
     }
 
     @if (channelMessageService.messages[0].answers !== undefined && (!channelNavService.showChannel && channelNavService.mobile && channelNavService.showThread || !channelNavService.mobile)) {
@@ -26,6 +30,7 @@
             <app-chat-input class=""></app-chat-input>
         </div>
     }
+  
 </section>
 
 
