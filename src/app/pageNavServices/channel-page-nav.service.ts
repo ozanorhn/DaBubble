@@ -5,7 +5,10 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class ChannelPageNavService {
-
+  mobile = false;
+  showChannel = false;
+  showThread = false;
+  showDirectMessage = false;
 
   hideAddChannelPopUp = signal(true);
 
@@ -18,6 +21,20 @@ export class ChannelPageNavService {
       this.router.navigate(['/desktop-page'])
     } else {
       this.router.navigate(['/chat'])
+    }
+  }
+
+  openChannel() {
+    if (this.mobile) {
+      this.showChannel = true;
+      this.showThread = false;
+    }
+  }
+
+  openThread() {
+    if (this.mobile) {
+      this.showChannel = false;
+      this.showThread = true;
     }
   }
 

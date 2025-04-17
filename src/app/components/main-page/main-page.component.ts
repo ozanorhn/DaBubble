@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ChatMessagesComponent } from "../shared/chat-messages/chat-messages.component";
 import { ChatHeaderComponent } from "../shared/chat-header/chat-header.component";
 import { ChatInputComponent } from "../shared/chat-input/chat-input.component";
+import { ChannelsService } from '../../services/channels/channels.service';
 
 @Component({
   selector: 'app-main-page',
@@ -27,6 +28,6 @@ import { ChatInputComponent } from "../shared/chat-input/chat-input.component";
 export class MainPageComponent {
 
 
-  constructor(public channelNavService: ChannelPageNavService) { }
+  constructor(public channelNavService: ChannelPageNavService, public channelMessageService: ChannelsService) { }
 
 }
