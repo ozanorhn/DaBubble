@@ -12,19 +12,21 @@ export class ChannelPageNavService {
   channel = false;
   thread = false;
   showDirectMessage = false;
-  
+
   constructor(private router: Router, channelsService: ChannelsService) { }
+
+  navigate() { }
 
   showNav() {
     return !this.channel && this.mobile && !this.thread || this.mediumScreen && !this.thread || this.bigScreen;
-  } 
+  }
 
   showChannel() {
     return this.channel && this.mobile && !this.thread || this.mediumScreen || this.bigScreen;
   }
 
   showThread() {
-    return !this.channel && this.mobile && this.thread || this.mediumScreen && this.thread || this.bigScreen;
+    return !this.channel && this.mobile && this.thread || this.mediumScreen && this.thread || this.bigScreen && this.thread;
   }
 
   checkScreenView() {
@@ -33,7 +35,7 @@ export class ChannelPageNavService {
       this.bigScreen = true;
       this.mediumScreen = false;
       this.mobile = false;
-    } else if(window.innerWidth >= 768) {
+    } else if (window.innerWidth >= 810) {
       if (!this.mediumScreen) console.log('mediumScreen');
       this.bigScreen = false;
       this.mediumScreen = true;
@@ -43,6 +45,9 @@ export class ChannelPageNavService {
       this.bigScreen = false;
       this.mediumScreen = false;
       this.mobile = true;
+      if (this.channel && this.thread) {
+        this.channel = false;
+      }
     }
   }
 
@@ -51,17 +56,15 @@ export class ChannelPageNavService {
   hideAddUserPopUp = signal(true);
 
   openChannel() {
-    if (this.mobile || this.mediumScreen) {
-      this.channel = true;
-      this.thread = false;
-    }
+    this.channel = true;
+    this.thread = false;
   }
 
   openThread() {
     if (this.mobile) {
       this.channel = false;
       this.thread = true;
-    } else if (this.mediumScreen) {
+    } else if (this.mediumScreen || this.bigScreen) {
       this.channel = true;
       this.thread = true;
     }
@@ -75,6 +78,4 @@ export class ChannelPageNavService {
   addUserPopup() {
     this.hideAddUserPopUp.update(popup => !popup)
   }
-
-
 }
