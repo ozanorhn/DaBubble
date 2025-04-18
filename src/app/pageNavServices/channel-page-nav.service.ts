@@ -11,7 +11,6 @@ export class ChannelPageNavService {
   showDirectMessage = false;
 
   hideAddChannelPopUp = signal(true);
-
   hideAddUserPopUp = signal(true);
 
   constructor(private router: Router) { }
