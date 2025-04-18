@@ -49,8 +49,16 @@
   <app-add-channel class="top-[20%]"></app-add-channel>
 </div>
 
+
+
 <div class="absolute bottom-0" [ngClass]="{
     hidden: channelNavService.hideAddUserPopUp() || showMessagesOnly
   }">
   <app-add-user1></app-add-user1>
+</div>
+
+
+
+<div class="flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)]">
+  <app-edit-channel></app-edit-channel>
 </div>

@@ -10,6 +10,7 @@ import { ChatHeaderComponent } from "../shared/chat-header/chat-header.component
 import { ChatInputComponent } from "../shared/chat-input/chat-input.component";
 import { ChannelsService } from '../../services/channels/channels.service';
 import { SearchComponent } from "../shared/search/search.component";
+import { EditChannelComponent } from "../shared/popUp/edit-channel/edit-channel.component";
 
 @Component({
   selector: 'app-main-page',
@@ -22,7 +23,8 @@ import { SearchComponent } from "../shared/search/search.component";
     ChatMessagesComponent,
     ChatHeaderComponent,
     ChatInputComponent,
-    SearchComponent
+    SearchComponent,
+    EditChannelComponent
 ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'

@@ -10,8 +10,8 @@
 
     <div class="flex flex-col w-full gap-3 p-3 overflow-auto h-52">
 
-        @for (item of [0,1,2,3]; track $index) {
-        <app-user></app-user>
+        @for (item of usersService.users; track $index) {
+        <app-user [userInfo]="item" ></app-user>
         }
     </div>
 
