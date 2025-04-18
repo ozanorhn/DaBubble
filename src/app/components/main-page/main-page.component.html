@@ -1,45 +1,85 @@
-<app-header></app-header>
+<app-header *ngIf="!showMessagesOnly"></app-header>
 
+<button
+  (click)="toggleMessagesView()"
+  class="w-[60px] h-[347px] fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] gap-[10px] shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/20 transition-all ease-in duration-100 z-50"
+>
+  Msg
+</button>
 
-
-<section class="flex h-full gap-3 p-3 border border-green-600 bg-primary">
-  
-    @if (!channelNavService.showChannel && channelNavService.mobile && !channelNavService.showThread || !channelNavService.mobile) {
-        <div class="flex w-full h-[100% - 3rem] lg:max-w-[366px] my-6  rounded-[30px]">
-            <app-navigation class="w-full"></app-navigation>
-        </div>
-    }
-
-    @if (channelNavService.showChannel && channelNavService.mobile && !channelNavService.showThread || !channelNavService.mobile) {
-        <div class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
-            <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
-            <div class="flex flex-1 w-full overflow-y-auto">
-                <app-chat-messages [messages]="channelMessageService.messages" [chatType]="'channel'"></app-chat-messages>
-            </div>
-            <app-chat-input class=""></app-chat-input>
-        </div>
-
-    }
-
-    @if (channelMessageService.messages[0].answers !== undefined && (!channelNavService.showChannel && channelNavService.mobile && channelNavService.showThread || !channelNavService.mobile)) {
-        <div class="flex flex-col w-full lg:max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
-            <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
-            <div class="flex flex-1 w-full overflow-y-auto">
-                <app-chat-messages [messages]="channelMessageService.messages[0].answers" [chatType]="'thread'" [threadHeadMessage]="channelMessageService.messages[0]"></app-chat-messages>
-            </div>
-            <app-chat-input class=""></app-chat-input>
-        </div>
-    }
-  
+<section
+  *ngIf="!showMessagesOnly"
+  class="flex h-full gap-3 p-3 border border-green-600 bg-primary"
+>
+  @if (!channelNavService.showChannel && channelNavService.mobile &&
+  !channelNavService.showThread || !channelNavService.mobile) {
+  <div class="flex w-full h-[100% - 3rem] lg:max-w-[366px] my-6 rounded-[30px]">
+    <app-navigation class="w-full"></app-navigation>
+  </div>
+  } @if (channelNavService.showChannel && channelNavService.mobile &&
+  !channelNavService.showThread || !channelNavService.mobile) {
+  <div
+    class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]"
+  >
+    <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
+    <div class="flex flex-1 w-full overflow-y-auto">
+      <app-chat-messages
+        [messages]="channelMessageService.messages"
+        [chatType]="'channel'"
+      ></app-chat-messages>
+    </div>
+    <app-chat-input class=""></app-chat-input>
+  </div>
+  } @if (channelMessageService.messages[0].answers !== undefined &&
+  (!channelNavService.showChannel && channelNavService.mobile &&
+  channelNavService.showThread || !channelNavService.mobile)) {
+  <div
+    class="flex flex-col w-full lg:max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]"
+  >
+    <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
+    <div class="flex flex-1 w-full overflow-y-auto">
+      <app-chat-messages
+        [messages]="channelMessageService.messages[0].answers"
+        [chatType]="'thread'"
+        [threadHeadMessage]="channelMessageService.messages[0]"
+      ></app-chat-messages>
+    </div>
+    <app-chat-input class=""></app-chat-input>
+  </div>
+  }
 </section>
 
+<!-- Nur Nachrichtenansicht bei Button-Klick -->
+<app-header></app-header>
+<section
+  *ngIf="showMessagesOnly"
+  class="flex flex-col w-full h-full p-3 bg-white rounded-[30px] transition-all ease-in duration-100"
+>
+  <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
+  <div class="flex flex-1 w-full overflow-y-auto">
+    <app-chat-messages
+      [messages]="channelMessageService.messages"
+      [chatType]="'channel'"
+    ></app-chat-messages>
+  </div>
+  <app-chat-input></app-chat-input>
+</section>
 
-<div [ngClass]="{ hidden: channelNavService.hideAddChannelPopUp() }"
-    class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">
-    <app-add-channel class="top-[20%]"></app-add-channel>
+<!-- Pop-ups -->
+<div
+  [ngClass]="{
+    hidden: channelNavService.hideAddChannelPopUp() || showMessagesOnly
+  }"
+  class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center"
+>
+  <app-add-channel class="top-[20%]"></app-add-channel>
 </div>
 
-
-<div class="absolute bottom-0" [ngClass]="{ 'hidden' : channelNavService.hideAddUserPopUp()}">
-    <app-add-user1></app-add-user1>
+<div
+  class="absolute bottom-0"
+  [ngClass]="{
+    hidden: channelNavService.hideAddUserPopUp() || showMessagesOnly
+  }"
+>
+  <app-add-user1></app-add-user1>
 </div>
