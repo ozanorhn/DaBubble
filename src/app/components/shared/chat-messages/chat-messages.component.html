@@ -1,8 +1,8 @@
 <section class="box-border pb-4 bg-white">
     <!-- <app-chat-header class="fixed top-[80px] right-0 left-0"></app-chat-header> -->
-    <div class="box-border flex flex-col px-4" [ngClass]="{ 'pb-[0]': chatType !== 'dm'}">
+    <div class="box-border flex flex-col" [ngClass]="{ 'pb-[0]': chatType !== 'dm'}">
         @if (chatType === 'thread' && threadHeadMessage !== undefined) {
-            <div class="flex gap-5 mt-[25px]"  [ngClass]="{ 'flex-row-reverse': fromCurrentUser(threadHeadMessage.user.name)}">
+            <div class="flex gap-5 mt-[25px] px-4" [ngClass]="{ 'flex-row-reverse': fromCurrentUser(threadHeadMessage.user.name)}">
                 <div class="w-max">
                     <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ threadHeadMessage.user.avatar }}.svg" alt="Avatar">
                 </div>
@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex items-center text-[18px] my-[10px]">
+            <div class="flex items-center text-[18px] my-[10px] px-4">
                 <div class="py-[5px] px-[15px] whitespace-nowrap">
                     @if (threadHeadMessage.answers !== undefined) {
                         <p>{{ threadHeadMessage.answers.length }} Antworten</p>
@@ -30,7 +30,7 @@
 
             @for (message of messages; track message; let i = $index) {
                 @if (newDay) {
-                    <div class="flex items-center text-[18px] my-[10px]">
+                    <div class="flex items-center text-[18px] my-[10px] px-4">
                         <div class="w-full h-[1px] bg-lightpurple">
                         </div>
                         <div class="border-lightpurple border-[1px] rounded-full py-[5px] px-[15px]">
@@ -39,7 +39,7 @@
                         <div class="w-full h-[1px] bg-lightpurple"></div>
                     </div>
                 }
-                <div class="flex gap-5 mt-[25px] hover:bg-primary"  [ngClass]="{ 'flex-row-reverse': fromCurrentUser(message.user.name)}">
+                <div class="flex gap-5 mt-[25px] px-4 py-2 hover:bg-primary"  [ngClass]="{ 'flex-row-reverse': fromCurrentUser(message.user.name),  '[&>div>#msg-content]:hover:bg-white': !fromCurrentUser(message.user.name)}">
                     <div class="w-max">
                         <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ message.user.avatar }}.svg" alt="Avatar">
                     </div>
@@ -48,7 +48,7 @@
                             <span class="text-lg font-bold">{{ message.user.name }}</span>
                             <span class="text-sm">{{ message.time }}</span>
                         </div>
-                        <div class="msg-content bg-primary p-[15px] rounded-[30px]" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.user.name), ' rounded-ss-none': !fromCurrentUser(message.user.name) }">
+                        <div id="msg-content" class="bg-primary p-[15px] rounded-[30px]" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.user.name), ' rounded-ss-none': !fromCurrentUser(message.user.name) }">
                             <span>{{ message.content }}</span>
                         </div>
                         @if (message.answers) {
@@ -77,7 +77,7 @@
         <!-- } -->
     </div>
     @if (chatType === 'dm') {
-        <div class="flex flex-col gap-6 ml-4">
+        <div class="flex flex-col gap-6 px-4 ml-4">
             <div class="flex items-end">
                 <img class="size-[88px] rounded-full" src="assets/imgs/avatar1.svg" alt="Avatar">
                 <p class="text-2xl font-bold">Sofia Müller</p>
