@@ -15,19 +15,11 @@ export class AppComponent {
   title = 'dabubble';
 
   constructor(private channelPageNavService: ChannelPageNavService) {
-    this.checkMobileView();
+    this.channelPageNavService.checkScreenView();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.checkMobileView()
-  }
-
-  checkMobileView() {
-    if (window.innerWidth >= 1024) {
-      this.channelPageNavService.mobile = false;
-    } else {
-      this.channelPageNavService.mobile = true;
-    }
+    this.channelPageNavService.checkScreenView();
   }
 }
