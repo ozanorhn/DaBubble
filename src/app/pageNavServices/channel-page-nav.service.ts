@@ -26,6 +26,7 @@ export class ChannelPageNavService {
   channelArray = this.channels.channels
   userArray = this.users.users
 
+
   filteredResults = computed(() => {
     const searchTerm = this.searchValue().toLowerCase();
     if (searchTerm.startsWith('@')) {
@@ -35,26 +36,26 @@ export class ChannelPageNavService {
       return this.filterChannels(searchTerm)
     }
     else {
-     return this.filterAll(searchTerm)
+      return this.filterAll(searchTerm)
     }
   });
 
 
-  filterUsers(searchTerm:string) {
+  filterUsers(searchTerm: string) {
     const userSearch = searchTerm.substring(1);
     return this.userArray.filter(user =>
       user.name.toLowerCase().includes(userSearch)
     )
   }
 
-  filterChannels(searchTerm:string){
+  filterChannels(searchTerm: string) {
     const channelSearch = searchTerm.substring(1);
     return this.channelArray.filter(channel =>
       channel.name.toLowerCase().includes(channelSearch)
     )
   }
 
-  filterAll(searchTerm: string){
+  filterAll(searchTerm: string) {
     const userResults = this.userArray.filter(user =>
       user.name.toLowerCase().includes(searchTerm)
     )
@@ -116,6 +117,7 @@ export class ChannelPageNavService {
 
   hideAddChannelPopUp = signal(true);
   hideAddUserPopUp = signal(true);
+  hideEditChannelPopUp = signal(true);
 
   openChannel() {
     this.channel = true;
@@ -136,8 +138,11 @@ export class ChannelPageNavService {
     this.hideAddChannelPopUp.update(popup => !popup);
   }
 
-
   addUserPopup() {
-    this.hideAddUserPopUp.update(popup => !popup)
+    this.hideAddUserPopUp.update(popup => !popup);
+  }
+
+  editChannelPopup() {
+    this.hideEditChannelPopUp.update(popup => !popup);
   }
 }

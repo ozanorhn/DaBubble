@@ -24,7 +24,8 @@ import { EditChannelComponent } from "../shared/popUp/edit-channel/edit-channel.
     ChatHeaderComponent,
     ChatInputComponent,
     SearchComponent,
-    EditChannelComponent
+     EditChannelComponent
+  
 ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
@@ -32,7 +33,7 @@ import { EditChannelComponent } from "../shared/popUp/edit-channel/edit-channel.
 export class MainPageComponent {
   showMessagesOnly = false;
 
-  constructor(public channelNavService: ChannelPageNavService, public channelMessageService: ChannelsService) { }
+  constructor(public channelNavService: ChannelPageNavService, public channelMessageService: ChannelsService) {}
 
 
   toggleMessagesView() {
