@@ -62,7 +62,6 @@ export class ChannelPageNavService {
   }
 
   hideAddChannelPopUp = signal(true);
-
   hideAddUserPopUp = signal(true);
 
   openChannel() {
