@@ -19,44 +19,49 @@ export class ChannelPageNavService {
 
 
   searchValue = signal('')
+
   users = inject(UsersService);
   channels = inject(ChannelsService);
 
   channelArray = this.channels.channels
   userArray = this.users.users
 
-
   filteredResults = computed(() => {
     const searchTerm = this.searchValue().toLowerCase();
     if (searchTerm.startsWith('@')) {
-      const userSearch = searchTerm.substring(1); // Entferne das '@'
-      return this.userArray.filter(user =>
-        user.name.toLowerCase().includes(userSearch)
-      )// Füge '@' für die Anzeige hinzu
+      return this.filterUsers(searchTerm)
     }
     else if (searchTerm.startsWith('#')) {
-      const channelSearch = searchTerm.substring(1); // Entferne das '#'
-      return this.channelArray.filter(channel =>
-        channel.name.toLowerCase().includes(channelSearch)
-      ) // Füge '#' für die Anzeige hinzu
+      return this.filterChannels(searchTerm)
     }
     else {
-      // Allgemeine Suche (beides oder keins)
-      const userResults = this.userArray.filter(user =>
-        user.name.toLowerCase().includes(searchTerm)
-      )
-
-      const channelResults = this.channelArray.filter(channel =>
-        channel.name.toLowerCase().includes(searchTerm)
-      )
-
-      return [...userResults, ...channelResults];
+     return this.filterAll(searchTerm)
     }
   });
 
 
-  filterUsers() {
+  filterUsers(searchTerm:string) {
+    const userSearch = searchTerm.substring(1);
+    return this.userArray.filter(user =>
+      user.name.toLowerCase().includes(userSearch)
+    )
+  }
 
+  filterChannels(searchTerm:string){
+    const channelSearch = searchTerm.substring(1);
+    return this.channelArray.filter(channel =>
+      channel.name.toLowerCase().includes(channelSearch)
+    )
+  }
+
+  filterAll(searchTerm: string){
+    const userResults = this.userArray.filter(user =>
+      user.name.toLowerCase().includes(searchTerm)
+    )
+    const channelResults = this.channelArray.filter(channel =>
+      channel.name.toLowerCase().includes(searchTerm)
+    )
+    return [...userResults, ...channelResults];
   }
 
 
