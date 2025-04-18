@@ -21,19 +21,27 @@ export class ChannelPageNavService {
 
   toggleNav() {
     if (this.nav) {
-      if (!this.channel && !this.thread || this.mediumScreen && !this.channel) {
-        this.channel = true;
-      }
-      this.nav = false;
+      this.closeNav();
     } else {
-      this.nav = true;
-      if (this.mediumScreen && this.channel && this.thread) {
-        this.channel = false;
-      }
-      if (this.mobile) {
-        this.channel = false;
-        this.thread = false;
-      }
+      this.openNav();
+    }
+  }
+
+  closeNav() {
+    if (!this.channel && !this.thread || this.mediumScreen && !this.channel) {
+      this.channel = true;
+    }
+    this.nav = false;
+  }
+
+  openNav() {
+    this.nav = true;
+    if (this.mediumScreen && this.channel && this.thread) {
+      this.channel = false;
+    }
+    if (this.mobile) {
+      this.channel = false;
+      this.thread = false;
     }
   }
 
