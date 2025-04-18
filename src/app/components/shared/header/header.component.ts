@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LogOutMobileComponent } from "../popUp/log-out-mobile/log-out-mobile.component";
+import { SearchComponent } from "../search/search.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, LogOutMobileComponent],
+  imports: [CommonModule, RouterModule, LogOutMobileComponent, SearchComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

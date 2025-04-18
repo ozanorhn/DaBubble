@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-nav.service';
 
+
 @Component({
   selector: 'app-add-channel',
   imports: [],
@@ -10,5 +11,9 @@ import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-
 export class AddChannelComponent {
 
   constructor(public channelNavService: ChannelPageNavService) { }
+
+  closeOverlay() {
+    this.channelNavService.addUserPopup(); // toggelt das Signal
+  }
 
 }

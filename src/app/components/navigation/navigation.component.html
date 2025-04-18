@@ -1,8 +1,19 @@
-<section class="flex flex-col h-full  my-6 min-w-96  max-w-[1024px] rounded-[30px] border  border-black bg-white">
+<section class="flex flex-col h-full max-w-[1024px] rounded-[30px]  bg-white border border-red-600 overflow-auto">
+
+    <div class="items-center justify-between hidden w-full p-3 lg:flex">
+
+        <div class="flex items-center gap-4 text-2xl font-bold">
+            <img src="/assets/imgs/workspace-logo.svg" alt="">
+            Devspace
+        </div>
+
+        <img class="cursor-pointer hover:scale-[1.1] active:scale-[0.9] duration-150 size-8"
+            src="/assets/icons/edit_square.svg" alt="">
+    </div>
 
 
     <app-channels></app-channels>
     <app-direct-messages></app-direct-messages>
 
-    
+
 </section>

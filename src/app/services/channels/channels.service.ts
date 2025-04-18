@@ -22,7 +22,7 @@ export class ChannelsService {
 
 
 
-  public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'channel';
+  // public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'channel';
   public channelName: string = 'Entwicklerteam';
   public threadHeadMessage: {
     user: {
@@ -261,11 +261,11 @@ export class ChannelsService {
   ];
  
 
-  openThread(message: any) {
-    this.messages = message['answers'];
-    this.threadHeadMessage = message;
-    this.chatType = 'thread';
-  }
+  // openThread(message: any) {
+  //   this.messages = message['answers'];
+  //   this.threadHeadMessage = message;
+  //   this.chatType = 'thread';
+  // }
 }
 
 

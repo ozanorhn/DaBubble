@@ -2,7 +2,7 @@
 
 
   <div
-    class="flex flex-col items-center justify-center min-h-screen px-4 transition-opacity duration-700 ease-in-out"
+    class="flex flex-col items-center justify-center min-h-screen px-4 transition-opacity duration-700 ease-in-out bg-primary"
     [ngClass]="{ 'opacity-0': !showContent, 'opacity-100': showContent }"
   >
     <img *ngIf="showContent" src="assets/imgs/icons/logo.svg" alt="Logo" class="h-16 mb-4" />
@@ -23,6 +23,11 @@
       @if (landingService.landing() == 'request') {
         <app-resetpw-request></app-resetpw-request>
       }
+    </div>
+
+    <div class="flex gap-4 p-5 m-0 ">
+      <button routerLink="legal" class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border border-textgray rounded-full text-textgray">Legal Notice</button>
+      <button class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border border-textgray rounded-full text-textgray">Privacy Policy</button>
     </div>
 
   </div>
