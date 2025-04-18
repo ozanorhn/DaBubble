@@ -12,8 +12,10 @@ export class ChannelPageNavService {
   channel = true;
   thread = false;
   nav = true;
-  showDirectMessage = false;
+  directMessage = true;
 
+  hideAddChannelPopUp = signal(true);
+  hideAddUserPopUp = signal(true);
 
   constructor(private router: Router, channelsService: ChannelsService) { }
 
@@ -57,6 +59,7 @@ export class ChannelPageNavService {
     return !this.channel && this.mobile && this.thread && !this.nav || this.mediumScreen && this.thread || this.bigScreen && this.thread;
   }
 
+  // Runs in a Hostlistener in app.component.ts
   checkScreenView() {
     if (window.innerWidth >= 1280) {
       this.setScreen('big');
@@ -98,15 +101,16 @@ export class ChannelPageNavService {
     }
   }
 
-  hideAddChannelPopUp = signal(true);
-
-  hideAddUserPopUp = signal(true);
-
-  openChannel() {
+  openChannel(dm = false) {
     this.channel = true;
     this.thread = false;
     if (this.mobile) {
       this.nav = false
+    }
+    if (dm) {
+      this.directMessage = true;
+    } else {
+      this.directMessage = false;
     }
   }
 
@@ -125,7 +129,6 @@ export class ChannelPageNavService {
   addCannelPopup() {
     this.hideAddChannelPopUp.update(popup => !popup);
   }
-
 
   addUserPopup() {
     this.hideAddUserPopUp.update(popup => !popup)

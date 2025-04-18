@@ -9,7 +9,7 @@
   Msg
 </button>
 
-<section class="flex h-full gap-3 py-3 border bg-primary">
+<section class="flex h-full gap-3 p-3 border bg-primary">
 
     @if (channelNavService.showNav()) {
         <div class="flex flex-col h-[100% - 3rem] min-w-[366px] my-6 rounded-[30px] border border-blue-700">
@@ -20,10 +20,17 @@
 
     @if (channelNavService.showChannel()) {
         <div class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
-            <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
-            <div class="flex flex-1 w-full overflow-y-auto">
-                <app-chat-messages class="flex flex-col w-full" [messages]="channelMessageService.messages" [chatType]="'channel'"></app-chat-messages>
-            </div>
+            @if (channelNavService.directMessage) {
+                <app-chat-header [chatType]="'dm'" class="mb-[10px]"></app-chat-header>
+                <div class="flex flex-1 w-full overflow-y-auto">
+                    <app-chat-messages class="flex flex-col w-full" [messages]="channelMessageService.messages" [chatType]="'dm'"></app-chat-messages>
+                </div>
+            } @else {
+                <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
+                <div class="flex flex-1 w-full overflow-y-auto">
+                    <app-chat-messages class="flex flex-col w-full" [messages]="channelMessageService.messages" [chatType]="'channel'"></app-chat-messages>
+                </div>
+            }
             <app-chat-input class=""></app-chat-input>
         </div>
     }
