@@ -13,22 +13,20 @@
 
     <div>
 
+
         @if (mainNavService.searchValue().length >= 1) {
         <ul class="flex flex-col">
             @for (item of mainNavService.filteredResults(); track $index) {
-
-            @if (item.startsWith('@')) {
-            <li>{{item}}</li>
-
-            
-            } @else if (item.startsWith('#')) {
+            @if (isUser(item)) {
+            <!-- <li>{{item.name}}</li> -->
+            <app-user (click)="mainNavService.navigate()" [userInfo]="item"></app-user>
+            } @else if (isChannel(item)) {
             <!-- <li>{{item}}</li> -->
             <li (click)="mainNavService.openChannel()"
                 class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
-                <span class="font-bold">#</span> {{item}}
+                <span class="font-bold">#</span> {{item.name}}
             </li>
             }
-
             }
         </ul>
         }

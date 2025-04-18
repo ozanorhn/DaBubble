@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { ChannelsService } from '../services/channels/channels.service';
 import { UsersService } from '../services/users/users.service';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,44 +19,48 @@ export class ChannelPageNavService {
 
 
   searchValue = signal('')
-
-
   users = inject(UsersService);
   channels = inject(ChannelsService);
 
-  // Beispiel-Daten
-  channelArray = this.channels.channels.map( channel => channel.name);
-  userArray = this.users.users.map(user => user.name);
+  channelArray = this.channels.channels
+  userArray = this.users.users
+
 
   filteredResults = computed(() => {
     const searchTerm = this.searchValue().toLowerCase();
-
     if (searchTerm.startsWith('@')) {
       const userSearch = searchTerm.substring(1); // Entferne das '@'
       return this.userArray.filter(user =>
-        user.toLowerCase().includes(userSearch)
-      ).map(user => `@${user}`); // Füge '@' für die Anzeige hinzu
+        user.name.toLowerCase().includes(userSearch)
+      )// Füge '@' für die Anzeige hinzu
     }
     else if (searchTerm.startsWith('#')) {
-      // Channel-Suche
       const channelSearch = searchTerm.substring(1); // Entferne das '#'
       return this.channelArray.filter(channel =>
-        channel.toLowerCase().includes(channelSearch)
-      ).map(channel => `#${channel}`); // Füge '#' für die Anzeige hinzu
+        channel.name.toLowerCase().includes(channelSearch)
+      ) // Füge '#' für die Anzeige hinzu
     }
     else {
       // Allgemeine Suche (beides oder keins)
       const userResults = this.userArray.filter(user =>
-        user.toLowerCase().includes(searchTerm)
-      ).map(user => `@${user}`);
+        user.name.toLowerCase().includes(searchTerm)
+      )
 
       const channelResults = this.channelArray.filter(channel =>
-        channel.toLowerCase().includes(searchTerm)
-      ).map(channel => `#${channel}`);
+        channel.name.toLowerCase().includes(searchTerm)
+      )
 
       return [...userResults, ...channelResults];
     }
   });
+
+
+  filterUsers() {
+
+  }
+
+
+
 
 
   constructor(private router: Router, channelsService: ChannelsService) { }
