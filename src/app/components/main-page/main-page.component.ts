@@ -9,6 +9,7 @@ import { ChatMessagesComponent } from "../shared/chat-messages/chat-messages.com
 import { ChatHeaderComponent } from "../shared/chat-header/chat-header.component";
 import { ChatInputComponent } from "../shared/chat-input/chat-input.component";
 import { ChannelsService } from '../../services/channels/channels.service';
+import { SearchComponent } from "../shared/search/search.component";
 
 @Component({
   selector: 'app-main-page',
@@ -20,7 +21,8 @@ import { ChannelsService } from '../../services/channels/channels.service';
     CommonModule,
     ChatMessagesComponent,
     ChatHeaderComponent,
-    ChatInputComponent
+    ChatInputComponent,
+    SearchComponent
 ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
