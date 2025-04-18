@@ -23,6 +23,13 @@ export class ChannelPageNavService {
     return !this.channel && this.mobile && !this.thread && this.nav || this.mediumScreen && !this.thread && this.nav || this.bigScreen && this.nav;
   }
 
+  toggleNav() {
+    if (this.nav) {
+      this.nav = false;
+    } else {
+      this.nav = true;
+    }
+  }
 
   showChannel() {
     return this.channel && this.mobile && !this.thread || this.mediumScreen || this.bigScreen;
