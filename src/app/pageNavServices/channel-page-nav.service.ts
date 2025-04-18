@@ -11,6 +11,7 @@ export class ChannelPageNavService {
   bigScreen = false;
   channel = false;
   thread = false;
+  nav = true;
   showDirectMessage = false;
 
   constructor(private router: Router, channelsService: ChannelsService) { }
@@ -18,7 +19,7 @@ export class ChannelPageNavService {
   navigate() { }
 
   showNav() {
-    return !this.channel && this.mobile && !this.thread || this.mediumScreen && !this.thread || this.bigScreen;
+    return !this.channel && this.mobile && !this.thread && this.nav || this.mediumScreen && !this.thread && this.nav || this.bigScreen && this.nav;
   }
 
   showChannel() {
