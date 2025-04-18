@@ -1,6 +1,6 @@
-<section class="flex flex-col h-full max-w-[1024px] rounded-[30px]  bg-white overflow-auto">
+<section class="flex flex-col h-full max-w-[1024px] rounded-[30px]  bg-white overflow-auto relative">
 
-    <div class="items-center justify-between hidden w-full p-3 lg:flex">
+    <div class="sticky top-0 items-center justify-between hidden w-full p-3 bg-white lg:flex">
 
         <div class="flex items-center gap-4 text-2xl font-bold">
             <img src="/assets/imgs/workspace-logo.svg" alt="">
@@ -11,9 +11,35 @@
             src="/assets/icons/edit_square.svg" alt="">
     </div>
 
+    <div>
 
-    <app-channels></app-channels>
-    <app-direct-messages></app-direct-messages>
+        @if (mainNavService.searchValue().length >= 1) {
+        <ul class="flex flex-col">
+            @for (item of mainNavService.filteredResults(); track $index) {
+
+            @if (item.startsWith('@')) {
+            <li>{{item}}</li>
+
+            
+            } @else if (item.startsWith('#')) {
+            <!-- <li>{{item}}</li> -->
+            <li (click)="mainNavService.openChannel()"
+                class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
+                <span class="font-bold">#</span> {{item}}
+            </li>
+            }
+
+            }
+        </ul>
+        }
+
+        @if(mainNavService.searchValue().length < 1){ <app-channels></app-channels>
+            <app-direct-messages></app-direct-messages>
+            }
+
+
+    </div>
+
 
 
 </section>
