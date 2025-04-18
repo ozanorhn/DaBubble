@@ -1,6 +1,13 @@
+
 <app-header></app-header>
 
 
+<button
+  (click)="toggleMessagesView()"
+  class="w-[60px] h-[347px] fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] gap-[10px] shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/20 transition-all ease-in duration-100 z-50"
+>
+  Msg
+</button>
 
 <section class="flex h-full gap-3 p-3 border border-green-600 bg-primary">
 
@@ -31,15 +38,26 @@
         </div>
     }
   
+
 </section>
 
 
-<div [ngClass]="{ hidden: channelNavService.hideAddChannelPopUp() }"
-    class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">
-    <app-add-channel class="top-[20%]"></app-add-channel>
+
+
+<div
+  [ngClass]="{
+    hidden: channelNavService.hideAddChannelPopUp() || showMessagesOnly
+  }"
+  class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center"
+>
+  <app-add-channel class="top-[20%]"></app-add-channel>
 </div>
 
-
-<div class="absolute bottom-0" [ngClass]="{ 'hidden' : channelNavService.hideAddUserPopUp()}">
-    <app-add-user1></app-add-user1>
+<div
+  class="absolute bottom-0"
+  [ngClass]="{
+    hidden: channelNavService.hideAddUserPopUp() || showMessagesOnly
+  }"
+>
+  <app-add-user1></app-add-user1>
 </div>
