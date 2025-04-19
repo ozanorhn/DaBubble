@@ -20,6 +20,7 @@
 ></app-log-out-mobile>
 <app-profile *ngIf="ui.showProfileOverlay()"></app-profile>
 <app-edit-profil *ngIf="ui.showEditProfileOverlay()"></app-edit-profil>
+
 <!-- Overlay-Popup unten -->
 <div
   *ngIf="showOverlay"
@@ -40,7 +41,7 @@
     </div>
   </button>
   <button class="text-base font-medium text-purple4">
-    <div class="flex justify-center">
+    <div class="flex justify-center" (click)="logout()">
       <img src="assets/icons/logout.svg" alt="" />
       <p>Log out</p>
     </div>
