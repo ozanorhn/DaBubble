@@ -1,20 +1,26 @@
 <div class="h-fit border border-black rounded-[20px] p-5 gap-5 flex flex-col">
     <div class="flex justify-between font-bold">
         <span>Beschreibung</span>
-        <img class="cursor-pointer hover:scale-[1.1] duration-150" src="/assets/icons/edit.svg" alt="">
+        <img (click)="editDescription()" class="cursor-pointer hover:scale-[1.1] duration-150"
+            src="/assets/icons/edit.svg" alt="">
     </div>
 
+
+
+    @if(edit){
+    <textarea [(ngModel)]="channelService.channels[0].description"
+        class="px-5 py-4 border h-48 border-black rounded-[40px]" name="" id=""></textarea>
+    } @else {
     <p>
-        Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team Meetings
-        abhalten, Dokumente teilen und Entscheidungen treffen.
+        {{channelService.channels[0].description}}
     </p>
+    }
 
     <span class="w-full h-[1px] bg-[#ADB0D9]"></span>
 
     <div class="flex flex-col">
         Erstellt von
-        <span>Noah Braun</span>
+        <span> {{channelService.channels[0].createdBy}}</span>
     </div>
 
-    
 </div>

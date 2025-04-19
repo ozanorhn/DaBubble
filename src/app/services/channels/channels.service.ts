@@ -9,11 +9,16 @@ import { Channel } from '../../classes/channel.class';
 export class ChannelsService {
 
 
-  constructor() { console.log('Channel Array', this.channels);
+  constructor() {
+    console.log('Channel Array', this.channels);
   }
 
   channels = [
-    new Channel({ name: 'Entwicklerteam' }),
+    new Channel({
+      name: 'Entwicklerteam',
+      description: 'Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team Meetings abhalten, Dokumente teilen und Entscheidungen treffen.',
+      createdBy: 'Noah Braun'
+    }),
     new Channel({ name: 'Frontend' }),
     new Channel({ name: 'Backend' }),
     new Channel({ name: 'DevOps' }),
