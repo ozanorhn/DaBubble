@@ -9,6 +9,8 @@
             "online": false,
             "createdAt": "timestamp"
         },
+
+
         "userId2": {
             "id": "",
             "username": "username",
@@ -171,6 +173,7 @@
           }
         }
       },
+      
 
       "threadId": {
         "channelId": "channelId",
