@@ -1,12 +1,11 @@
-<p>edit-profil works!</p>
 <section
-  class="flex flex-col min-w-80 w-full h-fit mt-[80px] rounded-[30px] gap-9 p-10 text-xl shadow-2xl border-2 border-rgba(255, 255, 255, 1)"
+  class="fixed top-24 left-4 right-4 bg-white/100 z-50 flex justify-center items-center flex flex-col h-fit mt-[88px] rounded-[30px] gap-9 p-10 text-xl shadow-2xl border-2 border-rgba(255, 255, 255, 1)"
 >
   <div class="flex justify-between w-full">
     <span class="text-2xl font-bold">Dein Profil bearbeiten</span>
 
     <img
-      (click)="closeProfile()"
+      (click)="closeOverlay()"
       class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]"
       src="/assets/icons/close.svg"
       alt=""
@@ -35,7 +34,7 @@
     </div>
   </div>
 
-  <div class="flex justify-around w-full">
+  <div class="flex justify-around w-full gap-2">
     <button
       class="w-[141px] h-[49px] rounded-[50px] border-2 border-purple2 text-purple1"
     >
@@ -46,6 +45,5 @@
     >
       Speichern
     </button>
-    <button></button>
   </div>
 </section>

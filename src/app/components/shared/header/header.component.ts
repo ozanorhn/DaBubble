@@ -5,12 +5,13 @@ import { LogOutMobileComponent } from "../popUp/log-out-mobile/log-out-mobile.co
 import { SearchComponent } from "../search/search.component";
 import { ProfileComponent } from "../popUp/profile/profile.component";
 import { OverlayUiService } from '../../../services/profil/overlay-ui-service.service';
+import { EditProfilComponent } from "../popUp/edit-profil/edit-profil.component";
 
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, LogOutMobileComponent, SearchComponent, ProfileComponent],
+  imports: [CommonModule, RouterModule, LogOutMobileComponent, SearchComponent, ProfileComponent, EditProfilComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

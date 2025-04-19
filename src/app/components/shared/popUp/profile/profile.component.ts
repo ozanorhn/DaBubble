@@ -9,6 +9,8 @@ import { OverlayUiService } from '../../../../services/profil/overlay-ui-service
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
+  
+
 
   constructor(private router: Router, private location: Location, private ui:  OverlayUiService) {}
   closeProfile() {
@@ -19,6 +21,11 @@ export class ProfileComponent {
 
   close() {
     this.ui.closeProfile();
+  }
+
+  openEditProfileOverlay() {
+    this.ui.closeProfile();      
+    this.ui.openEditProfile();
   }
 
 }
