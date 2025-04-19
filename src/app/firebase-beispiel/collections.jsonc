@@ -1,0 +1,234 @@
+// Users Collection
+{
+    "users": {
+        "userId1": {
+            "id": "",
+            "username": "username",
+            "email": "user@example.com",
+            "avatar": "url_to_avatar",
+            "online": false,
+            "createdAt": "timestamp"
+        },
+        "userId2": {
+            "id": "",
+            "username": "username",
+            "email": "user@example.com",
+            "avatar": "url_to_avatar",
+            "online": false,
+            "createdAt": "timestamp"
+        }
+    }
+}
+
+
+
+// Channels Collection
+{
+    "channels": {
+
+
+
+
+
+
+        "channelId1": {
+            "id": "5234523",
+            "name": "channelName",
+            "description": "Allgemeiner Channel",
+            "createdBy": "userId",
+            "createdAt": "timestamp",
+            "messages": "messagesID",
+            "members": [
+                {
+                    "userID": "3243453124"
+                },
+                {
+                    "userID": "3243453124"
+                },
+                {
+                    "userID": "3243453124"
+                },
+                {
+                    "userID": "3243453124"
+                }
+            ]
+        },
+
+
+
+
+        "channelId2": {
+            "id": "5234523",
+            "name": "channelName",
+            "description": "Allgemeiner Channel",
+            "createdBy": "userId",
+            "createdAt": "timestamp",
+            "messages": "messagesID",
+            "members": [
+                {
+                    "userID": "3243453124"
+                },
+                {
+                    "userID": "3243453124"
+                },
+                {
+                    "userID": "3243453124"
+                },
+                {
+                    "userID": "3243453124"
+                }
+            ]
+        }
+    }
+
+
+
+
+}
+
+
+
+
+
+
+// Messages Collection
+{
+    "messages": {
+
+
+
+        "messageId1": {
+            "channelId": "channelId",
+            "message": "Nachrichteninhalt",
+            "sender": "userId",
+            "timestamp": "timestamp",
+            "reactions": {
+                "emoji1": [
+                    "userId1",
+                    "userId2"
+                ],
+                "emoji2": [
+                    "userId3"
+                ]
+            },
+            "thread": "threadID"
+        },
+
+
+
+
+        "messageId1": {
+            "channelId": "channelId",
+            "message": "Nachrichteninhalt",
+            "sender": "userId",
+            "timestamp": "timestamp",
+            "reactions": {
+                "emoji1": [
+                    "userId1",
+                    "userId2"
+                ],
+                "emoji2": [
+                    "userId3"
+                ]
+            },
+            "thread": "threadID"
+        }
+
+
+
+
+
+
+    }
+
+}
+
+
+
+// Threads Collection
+
+
+{
+    "threads": {
+
+
+
+
+
+      "threadId": {
+        "channelId": "channelId",
+        "parentMessageId": "messageId",
+        "messages": {
+          "threadMessageId": {
+            "content": "Thread Antwort",
+            "sender": "userId",
+            "timestamp": "timestamp"
+          }
+        }
+      },
+
+      "threadId": {
+        "channelId": "channelId",
+        "parentMessageId": "messageId",
+        "messages": {
+          "threadMessageId": {
+            "content": "Thread Antwort",
+            "sender": "userId",
+            "timestamp": "timestamp"
+          }
+        }
+      }
+
+
+
+
+
+    }
+  }
+  
+
+
+
+
+// Direct Messages Collection
+{
+    "directMessages": {
+
+
+
+
+        "dmId1": {
+            "participants": [
+                "userId1",
+                "userId2"
+            ],
+            "messages": {
+                "messageId": {
+                    "message": "DM Inhalt",
+                    "sender": "userId",
+                    "timestamp": "timestamp",
+                }
+            }
+        },
+
+
+        "dmId2": {
+            "participants": [
+                "userId1",
+                "userId2"
+            ],
+            "messages": {
+                "messageId": {
+                    "message": "DM Inhalt",
+                    "sender": "userId",
+                    "timestamp": "timestamp",
+                }
+            }
+        }
+
+
+
+
+
+    }
+}
