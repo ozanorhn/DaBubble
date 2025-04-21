@@ -17,7 +17,9 @@ export class UserComponent {
     { av3: '/assets/imgs/avatar3.svg' },
     { av4: '/assets/imgs/avatar4.svg' },
     { av5: '/assets/imgs/avatar5.svg' },
-    { av6: '/assets/imgs/avatar6.svg' }
+    { av6: '/assets/imgs/avatar6.svg' },
+    { av7: '/assets/imgs/avatar7.svg' },
+    { av8: '/assets/imgs/avatar8.svg' }
   ]
 
 
@@ -29,7 +31,4 @@ export class UserComponent {
     avatar: 'av1',
     online: false
   }
-
-
-
 }

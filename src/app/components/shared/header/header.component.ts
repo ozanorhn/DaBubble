@@ -52,6 +52,6 @@ constructor(public ui: OverlayUiService, private router: Router) {}
     this.showOverlay = false;         // Overlay schließen
     this.ui.closeProfile();           // falls Profile Overlay offen ist
     this.ui.closeEditProfile();       // falls Edit Overlay offen ist
-    this.router.navigate(['/login']); // zur Loginseite weiterleiten
+    this.router.navigate(['']); // zur Landing-page weiterleiten
   }
 }
