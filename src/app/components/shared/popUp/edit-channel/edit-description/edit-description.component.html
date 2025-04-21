@@ -1,8 +1,18 @@
 <div class="h-fit border border-black rounded-[20px] p-5 gap-5 flex flex-col">
     <div class="flex justify-between font-bold">
         <span>Beschreibung</span>
+
+
+        @if (edit) {
+            <button (click)="editDescription()">Speichern</button>
+            } @else {
+            <button class="hidden sm:block" (click)="editDescription()">Bearbeiten</button>
+            <img (click)="editDescription()" class="sm:hidden cursor-pointer hover:scale-[1.1] duration-150"
+                src="/assets/icons/edit.svg" alt="">
+            }
+<!-- 
         <img (click)="editDescription()" class="cursor-pointer hover:scale-[1.1] duration-150"
-            src="/assets/icons/edit.svg" alt="">
+            src="/assets/icons/edit.svg" alt=""> -->
     </div>
 
 
