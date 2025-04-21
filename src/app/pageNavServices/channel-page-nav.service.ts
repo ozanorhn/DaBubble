@@ -13,6 +13,7 @@ export class ChannelPageNavService {
   thread = false;
   nav = true;
   directMessage = true;
+  hideChannelMembers = false;
 
   hideAddChannelPopUp = signal(true);
   hideAddUserPopUp = signal(true);
@@ -63,6 +64,7 @@ export class ChannelPageNavService {
   checkScreenView() {
     if (window.innerWidth >= 1280) {
       this.setScreen('big');
+      this.setHeaderMembers();
     } else if (window.innerWidth >= 810) {
       this.setScreen('medium');
       this.adjustMediumScreen();
@@ -79,6 +81,18 @@ export class ChannelPageNavService {
     if (size === 'big') this.bigScreen = true;
     if (size === 'medium') this.mediumScreen = true;
     if (size === 'mobile') this.mobile = true;
+  }
+
+  setHeaderMembers() {
+    if (this.bigScreen) {
+      if (window.innerWidth < 1400 && this.thread) {
+        this.hideChannelMembers = true;
+      } else {
+        this.hideChannelMembers = false;
+      }
+    } else {
+      this.hideChannelMembers = false;
+    }
   }
 
   adjustMediumScreen() {
@@ -112,6 +126,7 @@ export class ChannelPageNavService {
     } else {
       this.directMessage = false;
     }
+    this.setHeaderMembers();
   }
 
   openThread() {
@@ -124,6 +139,12 @@ export class ChannelPageNavService {
     } else if (this.bigScreen) {
       this.thread = true;
     }
+    this.setHeaderMembers();
+  }
+
+  editMessage(id: number, chatType: string) {
+    console.log(chatType, id);
+    
   }
 
   addCannelPopup() {

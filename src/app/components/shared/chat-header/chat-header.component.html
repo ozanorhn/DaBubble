@@ -22,7 +22,7 @@
     }
     <div class="flex items-center gap-[10px]">
         @if (chatType === 'channel') {
-            <div class="flex items-center px-[10px] py-[3px] rounded-full cursor-pointer hover:bg-primary max-[1024px]:hidden">
+            <div class="flex items-center px-[10px] py-[3px] rounded-full cursor-pointer hover:bg-primary max-[1024px]:hidden" [ngClass]="{'hidden': channelNavService.hideChannelMembers}">
                 @for (user of channelService.channels[0].users; track user; let i = $index) {
                     @if (i < 4) {
                         <img class="size-9 mr-[-10px] border-2 border-white rounded-full" src="assets/imgs/avatar{{ user.avatar }}.svg" alt="Member">
