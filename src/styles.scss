@@ -43,3 +43,8 @@ body {
 .d-none {
     display: none;
 }
+
+.writing-vertical-lr {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg); /* Damit der Text von unten nach oben läuft */
+  }

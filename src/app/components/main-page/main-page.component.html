@@ -1,12 +1,25 @@
-
 <app-header></app-header>
-
-
+@if (!channelNavService.mobile) {
 <button
   (click)="channelNavService.toggleNav()"
-  class="w-[60px] h-[347px] fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] gap-[10px] shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/20 transition-all ease-in duration-100 z-50"
+  class="w-[60px] h-fit fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50"
 >
-  Msg
+  <span class="mt-2 text-xl">
+    @if (channelNavService.nav) {
+    <span><img src="assets/imgs/directions.svg" alt="" /></span>
+    } @if (!channelNavService.nav) {
+    <span
+      ><img class="rotate-180" src="assets/imgs/directions.svg" alt=""
+    /></span>
+    }
+  </span>
+  <span class="rotate-180 writing-vertical-lr text-l text-center leading-tight">
+    {{
+      channelNavService.nav
+        ? "Workspace-Menü\nschließen"
+        : "Workspace-Menü\nöffnen"
+    }}
+  </span>
 </button>
 
 <section class="flex h-full gap-3 p-3 border bg-primary">
@@ -44,12 +57,7 @@
             <app-chat-input class=""></app-chat-input>
         </div>
     }
-  
-
 </section>
-
-
-
 
 <div
   [ngClass]="{
