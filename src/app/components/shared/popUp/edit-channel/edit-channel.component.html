@@ -1,7 +1,9 @@
 <section class="flex flex-col w-screen h-screen bg-white  max-w-[870px] lg:h-fit rounded-[30px] lg:p-4">
     
     <div class="flex justify-between px-4 py-10 text-xl font-bold">
-        <h2># {{channelService.channels[0].name}}</h2>
+        @if (channelService.channels.length > 0) {
+            <h2># {{channelService.channels[0].name}}</h2>
+        }
 
         <img (click)="mainService.editChannelPopup()" class="hover:scale-[1.1] cursor-pointer duration-150" src="/assets/icons/close.svg" alt="">
     </div>

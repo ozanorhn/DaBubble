@@ -16,7 +16,7 @@
     />
   </div>
   <!-- Rest deines overlays -->
-  <div class="w-full flex flex-col gap-4">
+  <div class="flex flex-col w-full gap-4">
     <label class="flex items-center gap-3 cursor-pointer">
       <input
         type="radio"
@@ -27,7 +27,7 @@
       />
       <span class="w-full h-[25px]">
         Alle Mitglieder von
-        <a href="" class="text-purple1 font-semibold">Office Team</a> hinzufügen
+        <a href="" class="font-semibold text-purple1">Office Team</a> hinzufügen
       </span>
     </label>
     <label class="flex items-center gap-3 cursor-pointer">
@@ -48,13 +48,14 @@
         type="text"
         [(ngModel)]="customName"
         placeholder="Name eingeben..."
-        class="w-full h-full bg-transparent border-none text-gray-800 placeholder-gray-400 focus:outline-none"
+        class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none"
       />
     </div>
     }
   </div>
-  <div class="flex justify-end w-full mt-4 gap-4">
+  <div class="flex justify-end w-full gap-4 mt-4">
     <button
+      (click)="channelNavService.createChannel()"
       class="w-[141px] h-[49px] rounded-[50px] border-2 border-purple2 bg-purple1 text-white"
     >
       Erstellen

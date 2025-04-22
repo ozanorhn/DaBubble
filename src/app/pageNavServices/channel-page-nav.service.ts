@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ChannelsService } from '../services/channels/channels.service';
 import { UsersService } from '../services/users/users.service';
 
+import { Channel } from '../classes/channel.class';
 
 
 @Injectable({
@@ -73,7 +74,7 @@ export class ChannelPageNavService {
 
 
 
-  constructor(private router: Router, channelsService: ChannelsService) { }
+  constructor(private router: Router,public channelsService: ChannelsService) { }
 
   navigate() { }
 
@@ -215,4 +216,18 @@ export class ChannelPageNavService {
   editChannelPopup() {
     this.hideEditChannelPopUp.update(popup => !popup);
   }
+
+
+  newChannel = {
+    name: '',
+    description: '',
+  }
+  
+
+
+  createChannel() {
+    this.channelsService.channels.push(new Channel(this.newChannel));
+    this.channelsService.addChannel(new Channel(this.newChannel));
+  }
+
 }

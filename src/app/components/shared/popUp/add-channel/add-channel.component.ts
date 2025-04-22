@@ -22,16 +22,13 @@ export class AddChannelComponent {
   }
 
 
-  newChannel = {
-    name: '',
-    description: '',
-  }
 
 
 
-  createChannel() {
-    this.channelService.channels.push(new Channel(this.newChannel));
-  }
+
+  // createChannel() {
+  //   this.channelService.channels.push(new Channel(this.newChannel));
+  // }
 
 
 
