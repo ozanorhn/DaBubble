@@ -1,17 +1,37 @@
 import { Injectable } from '@angular/core';
 
+import { Channel } from '../../classes/channel.class';
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class ChannelsService {
 
 
-  constructor() { }
-
-
+  constructor() {
+    console.log('Channel Array', this.channels);
+  }
 
   channels = [
-    { name: 'Entwicklerteam', users: [{avatar: 3}, {avatar: 6}, {avatar: 5}, {avatar: 1}, {avatar: 3}, {avatar: 2}, {avatar: 4}] },
+    new Channel({
+      name: 'Entwicklerteam',
+      description: 'Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team Meetings abhalten, Dokumente teilen und Entscheidungen treffen.',
+      createdBy: 'Noah Braun'
+    }),
+    new Channel({ name: 'Frontend' }),
+    new Channel({ name: 'Backend' }),
+    new Channel({ name: 'DevOps' }),
+    new Channel({ name: 'Design-Team' }),
+    new Channel({ name: 'Office-team' }),
+    new Channel({ name: 'Support' }),
+
+
+  ]
+  
+  
+  channels2 = [
+        { name: 'Entwicklerteam', users: [{avatar: 3}, {avatar: 6}, {avatar: 5}, {avatar: 1}, {avatar: 3}, {avatar: 2}, {avatar: 4}] },
     { name: 'Frontend' },
     { name: 'Backend' },
     { name: 'DevOps' },
@@ -19,6 +39,9 @@ export class ChannelsService {
     { name: 'Office-team' },
     { name: 'Support' },
   ]
+
+
+
 
 
 
@@ -48,50 +71,50 @@ export class ChannelsService {
       }[];
     }[];
   }[] = [
-  {
-    user: {
-      avatar: 2,
-      name: 'Frederik Beck'
-    },
-    time: '16:33 Uhr',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-    emojis: [
-      {
-        id: 11,
-        users: ['jfjkzkhdghkhgf']
-      }
-    ],
-    answers: [
       {
         user: {
-          avatar: 5,
-          name: 'Noah Braun'
+          avatar: 2,
+          name: 'Frederik Beck'
         },
-        time: '17:45 Uhr',
+        time: '16:33 Uhr',
         content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
         emojis: [
           {
-            id: 1,
-            users: ['uxfghjulzfülktdd']
+            id: 11,
+            users: ['jfjkzkhdghkhgf']
           }
-        ]
-      },
-      {
-        user: {
-          avatar: 5,
-          name: 'Noah Braun'
-        },
-        time: '0:12 Uhr',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-        emojis: [
+        ],
+        answers: [
           {
-            id: 5,
-            users: ['uxfghjulzfülktdd']
+            user: {
+              avatar: 5,
+              name: 'Noah Braun'
+            },
+            time: '17:45 Uhr',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+            emojis: [
+              {
+                id: 1,
+                users: ['uxfghjulzfülktdd']
+              }
+            ]
+          },
+          {
+            user: {
+              avatar: 5,
+              name: 'Noah Braun'
+            },
+            time: '0:12 Uhr',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+            emojis: [
+              {
+                id: 5,
+                users: ['uxfghjulzfülktdd']
+              }
+            ]
           }
         ]
-      }
-    ]
-  }];
+      }];
   public messages: {
     user: {
       avatar: number;
@@ -116,150 +139,150 @@ export class ChannelsService {
       }[];
     }[];
   }[] = [
-    {
-      user: {
-        avatar: 2,
-        name: 'Frederik Beck'
-      },
-      time: '16:33 Uhr',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-      emojis: [
-        {
-          id: 11,
-          users: ['jfjkzkhdghkhgf']
-        }
-      ],
-      answers: [
-        {
-          user: {
-            avatar: 5,
-            name: 'Noah Braun'
-          },
-          time: '17:45 Uhr',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-          emojis: [
-            {
-              id: 1,
-              users: ['uxfghjulzfülktdd']
-            }
-          ]
+      {
+        user: {
+          avatar: 2,
+          name: 'Frederik Beck'
         },
-        {
-          user: {
-            avatar: 5,
-            name: 'Noah Braun'
+        time: '16:33 Uhr',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+        emojis: [
+          {
+            id: 11,
+            users: ['jfjkzkhdghkhgf']
+          }
+        ],
+        answers: [
+          {
+            user: {
+              avatar: 5,
+              name: 'Noah Braun'
+            },
+            time: '17:45 Uhr',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+            emojis: [
+              {
+                id: 1,
+                users: ['uxfghjulzfülktdd']
+              }
+            ]
           },
-          time: '0:12 Uhr',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-          emojis: [
-            {
-              id: 5,
-              users: ['uxfghjulzfülktdd']
-            }
-          ]
-        }
-      ]
-    },
-    {
-      user: {
-        avatar: 1,
-        name: 'Sandra Bock'
+          {
+            user: {
+              avatar: 5,
+              name: 'Noah Braun'
+            },
+            time: '0:12 Uhr',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+            emojis: [
+              {
+                id: 5,
+                users: ['uxfghjulzfülktdd']
+              }
+            ]
+          }
+        ]
       },
-      time: '14:09 Uhr',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-      emojis: [
-        {
-          id: 21,
-          users: ['rsrtsthmjjtrjurs', 'uxfghjulzfülktdd']
+      {
+        user: {
+          avatar: 1,
+          name: 'Sandra Bock'
         },
-        {
-          id: 7,
-          users: ['rsrtsthmjjtrjurs']
-        }
-      ],
-      answers: [
-        {
-          user: {
-            avatar: 5,
-            name: 'Noah Braun'
+        time: '14:09 Uhr',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+        emojis: [
+          {
+            id: 21,
+            users: ['rsrtsthmjjtrjurs', 'uxfghjulzfülktdd']
           },
-          time: '0:12 Uhr',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-          emojis: [
-            {
-              id: 5,
-              users: ['uxfghjulzfülktdd']
-            }
-          ]
-        }
-      ]
-    },
-    {
-      user: {
-        avatar: 2,
-        name: 'Frederik Beck'
+          {
+            id: 7,
+            users: ['rsrtsthmjjtrjurs']
+          }
+        ],
+        answers: [
+          {
+            user: {
+              avatar: 5,
+              name: 'Noah Braun'
+            },
+            time: '0:12 Uhr',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+            emojis: [
+              {
+                id: 5,
+                users: ['uxfghjulzfülktdd']
+              }
+            ]
+          }
+        ]
       },
-      time: '16:33 Uhr',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-      emojis: [
-        {
-          id: 11,
-          users: ['jfjkzkhdghkhgf']
-        }
-      ],
-      answers: [
-        {
-          user: {
-            avatar: 5,
-            name: 'Noah Braun'
-          },
-          time: '17:45 Uhr',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-          emojis: [
-            {
-              id: 1,
-              users: ['uxfghjulzfülktdd']
-            }
-          ]
-        }
-      ]
-    },
-    {
-      user: {
-        avatar: 1,
-        name: 'Sandra Bock'
-      },
-      time: '14:09 Uhr',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-      emojis: [
-        {
-          id: 21,
-          users: ['rsrtsthmjjtrjurs', 'uxfghjulzfülktdd']
+      {
+        user: {
+          avatar: 2,
+          name: 'Frederik Beck'
         },
-        {
-          id: 7,
-          users: ['rsrtsthmjjtrjurs']
-        }
-      ],
-      answers: [
-        {
-          user: {
-            avatar: 5,
-            name: 'Noah Braun'
+        time: '16:33 Uhr',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+        emojis: [
+          {
+            id: 11,
+            users: ['jfjkzkhdghkhgf']
+          }
+        ],
+        answers: [
+          {
+            user: {
+              avatar: 5,
+              name: 'Noah Braun'
+            },
+            time: '17:45 Uhr',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+            emojis: [
+              {
+                id: 1,
+                users: ['uxfghjulzfülktdd']
+              }
+            ]
+          }
+        ]
+      },
+      {
+        user: {
+          avatar: 1,
+          name: 'Sandra Bock'
+        },
+        time: '14:09 Uhr',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+        emojis: [
+          {
+            id: 21,
+            users: ['rsrtsthmjjtrjurs', 'uxfghjulzfülktdd']
           },
-          time: '0:12 Uhr',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-          emojis: [
-            {
-              id: 5,
-              users: ['uxfghjulzfülktdd']
-            }
-          ]
-        }
-      ]
-    }
-  ];
- 
+          {
+            id: 7,
+            users: ['rsrtsthmjjtrjurs']
+          }
+        ],
+        answers: [
+          {
+            user: {
+              avatar: 5,
+              name: 'Noah Braun'
+            },
+            time: '0:12 Uhr',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
+            emojis: [
+              {
+                id: 5,
+                users: ['uxfghjulzfülktdd']
+              }
+            ]
+          }
+        ]
+      }
+    ];
+
 
   // openThread(message: any) {
   //   this.messages = message['answers'];

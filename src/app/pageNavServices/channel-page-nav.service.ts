@@ -1,6 +1,9 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChannelsService } from '../services/channels/channels.service';
+import { UsersService } from '../services/users/users.service';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +20,58 @@ export class ChannelPageNavService {
 
   hideAddChannelPopUp = signal(true);
   hideAddUserPopUp = signal(true);
+  hideEditChannelPopUp = signal(true);
+
+  searchValue = signal('')
+
+  users = inject(UsersService);
+  channels = inject(ChannelsService);
+
+  channelArray = this.channels.channels
+  userArray = this.users.users
+
+
+  filteredResults = computed(() => {
+    const searchTerm = this.searchValue().toLowerCase();
+    if (searchTerm.startsWith('@')) {
+      return this.filterUsers(searchTerm)
+    }
+    else if (searchTerm.startsWith('#')) {
+      return this.filterChannels(searchTerm)
+    }
+    else {
+      return this.filterAll(searchTerm)
+    }
+  });
+
+
+  filterUsers(searchTerm: string) {
+    const userSearch = searchTerm.substring(1);
+    return this.userArray.filter(user =>
+      user.name.toLowerCase().includes(userSearch)
+    )
+  }
+
+  filterChannels(searchTerm: string) {
+    const channelSearch = searchTerm.substring(1);
+    return this.channelArray.filter(channel =>
+      channel.name.toLowerCase().includes(channelSearch)
+    )
+  }
+
+  filterAll(searchTerm: string) {
+    const userResults = this.userArray.filter(user =>
+      user.name.toLowerCase().includes(searchTerm)
+    )
+    const channelResults = this.channelArray.filter(channel =>
+      channel.name.toLowerCase().includes(searchTerm)
+    )
+    return [...userResults, ...channelResults];
+  }
+
+
+
+
 
   constructor(private router: Router, channelsService: ChannelsService) { }
 
@@ -95,6 +150,7 @@ export class ChannelPageNavService {
     }
   }
 
+
   adjustMediumScreen() {
     if (this.thread && this.nav) {
       this.channel = false;
@@ -102,6 +158,7 @@ export class ChannelPageNavService {
       this.channel = true;
     }
   }
+
 
   adjustMobileScreen() {
     if (this.channel && this.thread) {
@@ -152,6 +209,10 @@ export class ChannelPageNavService {
   }
 
   addUserPopup() {
-    this.hideAddUserPopUp.update(popup => !popup)
+    this.hideAddUserPopUp.update(popup => !popup);
+  }
+
+  editChannelPopup() {
+    this.hideEditChannelPopUp.update(popup => !popup);
   }
 }

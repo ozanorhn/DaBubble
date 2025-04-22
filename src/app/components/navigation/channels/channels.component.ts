@@ -16,11 +16,6 @@ export class ChannelsComponent {
   constructor(public channelService: ChannelsService, public channelNavService: ChannelPageNavService){}
 
 
-
-
-
-
-
   turnCannelArrow() {
     let arrow = document.getElementById('channel-arrow');
     arrow?.classList.toggle('-rotate-90');
