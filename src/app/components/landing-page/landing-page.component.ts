@@ -37,6 +37,6 @@ export class LandingPageComponent {
       setTimeout(() => {
         this.showSplash = false;
       }, 700); 
-    }, 3000); 
+    }, 950); 
   }
 }
