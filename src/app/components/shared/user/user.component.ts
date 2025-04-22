@@ -29,12 +29,12 @@ export class UserComponent {
 
 
 
-  @Input() userInfo = {
-    id: '',
-    name: 'Frederik Beck',
-    email: 'frederick@mail.com',
-    avatar: 'av1',
-    online: false
-  }
+//  @Input() userInfo = {
+//     id: '',
+//     name: 'Frederik Beck',
+//     email: 'frederick@mail.com',
+//     avatar: 'av1',
+//     online: false
+//   }
 
 }

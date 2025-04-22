@@ -1,4 +1,5 @@
 export class Channel {
+[x: string]: any;
     id?: string;
     name: string;
     description: string;
