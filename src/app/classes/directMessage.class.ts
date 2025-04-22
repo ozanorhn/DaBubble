@@ -6,21 +6,20 @@ export class Message {
         user1: string;
         user2: string;
     }];
-    sender: string;
-    timestamp: string;
-    messages: string;
-    createdBy: string;
-    reactions: [{
-        id: number;
-        user: string;
-    }];
-    thread: string;
+    messages: {
+        messageId: string;
+        content: [];
+        
+
+    };
+ 
+   
 
     constructor(obj?: any) {
         this.id = obj?.id || '';
         this.participants = obj ? obj.participants : '';
         this.sender = obj ? obj.sender : '';
-        this.timestamp = obj ? obj.timestamp : '';
+        this.timestamp = obj ? obj.timestamp : 0;
         this.messages = obj ? obj.message : '';
         this.createdBy = obj ? obj.createdBy : '';
         this.reactions =  obj ? obj.reactions : [];
