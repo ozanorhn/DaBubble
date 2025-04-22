@@ -13,12 +13,15 @@ import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav
 export class ChannelsComponent {
 
 
-  constructor(public channelService: ChannelsService, public channelNavService: ChannelPageNavService){}
+  constructor(public channelService: ChannelsService, public channelNavService: ChannelPageNavService, public channelPageNavService: ChannelPageNavService){}
 
 
-
-
-
+  ngOnInit() {
+    this.channelPageNavService.checkScreenView();
+    window.addEventListener('resize', () => {
+      this.channelPageNavService.checkScreenView();
+    });
+  }
 
 
   turnCannelArrow() {
@@ -28,11 +31,6 @@ export class ChannelsComponent {
     let list = document.getElementById('dropList');
     list?.classList.toggle('hidden');
   }
-
-
- 
-
-
 
 
 }
