@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { User } from '../../../classes/user.class';
 
 @Component({
   selector: 'app-user',
@@ -11,6 +12,7 @@ import { Component, Input } from '@angular/core';
 })
 export class UserComponent {
 
+
   avatar = [
     { av1: '/assets/imgs/avatar1.svg' },
     { av2: '/assets/imgs/avatar2.svg' },
@@ -18,9 +20,12 @@ export class UserComponent {
     { av4: '/assets/imgs/avatar4.svg' },
     { av5: '/assets/imgs/avatar5.svg' },
     { av6: '/assets/imgs/avatar6.svg' },
-    { av7: '/assets/imgs/avatar7.svg' },
-    { av8: '/assets/imgs/avatar8.svg' }
+ 
   ]
+
+
+  @Input() userInfo!: User; 
+  
 
 
 
@@ -31,4 +36,5 @@ export class UserComponent {
     avatar: 'av1',
     online: false
   }
+
 }

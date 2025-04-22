@@ -1,0 +1,26 @@
+<div class="h-fit border border-lightpurple rounded-[20px] p-5 flex flex-col gap-5">
+    <div class="flex justify-between font-bold">
+        <span>Channel-Name</span>
+
+
+        @if (edit) {
+        <button class="text-purple3" (click)="editName()">Speichern</button>
+        } @else {
+        <button class="hidden sm:block text-purple3" (click)="editName()">Bearbeiten</button>
+        <img (click)="editName()" class="sm:hidden cursor-pointer hover:scale-[1.1] duration-150"
+            src="/assets/icons/edit.svg" alt="">
+        }
+
+    </div>
+
+
+    @if(edit){
+    <input [(ngModel)]="channelService.channels[0].name" class="px-5 py-4 border border-lightpurple rounded-[40px]"
+        type="text">
+    } @else {
+    <p># {{channelService.channels[0].name}}</p>
+    }
+
+
+
+</div>

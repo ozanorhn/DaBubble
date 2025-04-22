@@ -20,7 +20,7 @@ export class AppComponent {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
+  onResize(event: Event) {
     this.channelPageNavService.checkScreenView();
   }
 }

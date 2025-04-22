@@ -1,4 +1,16 @@
 <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
+
+  <div class="absolute hidden md:block top-4 right-4">
+    
+    <p class="text-base text-black">Neu bei DABubble?</p>
+    <button
+      (click)="goToRegister()"
+      class="px-6 py-2 text-sm font-semibold transition border rounded-full text-purple1 border-purple1 hover:bg-primary"
+    >
+      Konto erstellen
+    </button>
+  </div>
+
   <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
     <h1 class="text-[32px] leading-[38.4px] text-center text-purple1">
       Anmeldung
@@ -85,7 +97,8 @@
     </form>
   </div>
 </div>
-<div class="pt-4 space-y-4 text-center border-t border-lightpurple">
+
+<div class="pt-4 space-y-4 text-center border-t border-lightpurple md:hidden">
   <p class="text-base text-black">Neu bei DABubble?</p>
   <button
     (click)="goToRegister()"
@@ -94,3 +107,4 @@
     Konto erstellen
   </button>
 </div>
+
