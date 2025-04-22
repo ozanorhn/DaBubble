@@ -11,7 +11,7 @@ export class ChannelsService {
 
 
   channels = [
-    { name: 'Entwicklerteam' },
+    { name: 'Entwicklerteam', users: [{avatar: 3}, {avatar: 6}, {avatar: 5}, {avatar: 1}, {avatar: 3}, {avatar: 2}, {avatar: 4}] },
     { name: 'Frontend' },
     { name: 'Backend' },
     { name: 'DevOps' },
