@@ -53,6 +53,17 @@ module.exports = {
             transform: 'translate(0, -35vh) scale(0.8)',
           },
         },
+        containerMoveDesktop: {
+          '0%': {
+            opacity: '1',
+            transform: 'translate(0, 0)',
+          },
+         '100%': {
+  opacity: '1',
+  transform: 'translate(-40vw, -43vh) scale(0.8)',
+},
+
+        },
       },
       animation: {
         moveIn: 'moveIn 1s ease-in forwards',

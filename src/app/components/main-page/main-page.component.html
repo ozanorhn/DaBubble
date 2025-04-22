@@ -1,9 +1,28 @@
 <app-header></app-header>
 
 
-<button (click)="channelNavService.toggleNav()"
-  class="w-[60px] h-[347px] fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] gap-[10px] shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/20 transition-all ease-in duration-100 z-50">
-  Msg
+
+@if (!channelNavService.mobile) {
+<button
+  (click)="channelNavService.toggleNav()"
+  class="w-[60px] h-fit fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50"
+>
+  <span class="mt-2 text-xl">
+    @if (channelNavService.nav) {
+    <span><img src="assets/imgs/directions.svg" alt="" /></span>
+    } @if (!channelNavService.nav) {
+    <span
+      ><img class="rotate-180" src="assets/imgs/directions.svg" alt=""
+    /></span>
+    }
+  </span>
+  <span class="rotate-180 writing-vertical-lr text-l text-center leading-tight">
+    {{
+      channelNavService.nav
+        ? "Workspace-Menü\nschließen"
+        : "Workspace-Menü\nöffnen"
+    }}
+  </span>
 </button>
 
 <section class="flex h-full gap-3 p-3 bg-primary">
@@ -15,34 +34,38 @@
     <app-navigation class="w-full h-full"></app-navigation>
   </div>
   }
+  
 
-  @if (channelNavService.showChannel()) {
-  <div class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
-    <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
-    <div class="flex flex-1 w-full overflow-y-auto">
-      <app-chat-messages [messages]="channelMessageService.messages" [chatType]="'channel'"></app-chat-messages>
-    </div>
-    <app-chat-input class=""></app-chat-input>
-  </div>
-  }
+    @if (channelNavService.showChannel()) {
+        <div class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
+            @if (channelNavService.directMessage) {
+                <app-chat-header [chatType]="'dm'" class="mb-[10px]"></app-chat-header>
+                <div class="flex flex-1 w-full overflow-y-auto">
+                    <app-chat-messages class="flex flex-col w-full" [messages]="channelMessageService.messages" [chatType]="'dm'"></app-chat-messages>
+                </div>
+            } @else {
+                <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
+                <div class="flex flex-1 w-full overflow-y-auto">
+                    <app-chat-messages class="flex flex-col w-full" [messages]="channelMessageService.messages" [chatType]="'channel'"></app-chat-messages>
+                </div>
+            }
+            <app-chat-input class=""></app-chat-input>
+        </div>
+    }
 
-  @if (channelMessageService.messages[0].answers !== undefined && channelNavService.showThread()) {
-  <div class="flex flex-col w-full xl:max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
-    <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
-    <div class="flex flex-1 w-full overflow-y-auto">
-      <app-chat-messages [messages]="channelMessageService.messages[0].answers" [chatType]="'thread'"
-        [threadHeadMessage]="channelMessageService.messages[0]"></app-chat-messages>
-    </div>
-    <app-chat-input class=""></app-chat-input>
-  </div>
-  }
-
-
+    @if (channelMessageService.messages[0].answers !== undefined && channelNavService.showThread()) {
+        <div class="flex flex-col w-full xl:max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
+            <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
+            <div class="flex flex-1 w-full overflow-y-auto">
+                <app-chat-messages [messages]="channelMessageService.messages[0].answers" [chatType]="'thread'" [threadHeadMessage]="channelMessageService.messages[0]"></app-chat-messages>
+            </div>
+            <app-chat-input class=""></app-chat-input>
+        </div>
+    }
 </section>
 
-
-
-<div [ngClass]="{
+<div
+  [ngClass]="{
     hidden: channelNavService.hideAddChannelPopUp() || showMessagesOnly
   }"
   class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">

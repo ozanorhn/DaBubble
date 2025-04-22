@@ -25,6 +25,19 @@ export class ChannelsService {
     new Channel({ name: 'Design-Team' }),
     new Channel({ name: 'Office-team' }),
     new Channel({ name: 'Support' }),
+
+
+  ]
+  
+  
+  channels2 = [
+        { name: 'Entwicklerteam', users: [{avatar: 3}, {avatar: 6}, {avatar: 5}, {avatar: 1}, {avatar: 3}, {avatar: 2}, {avatar: 4}] },
+    { name: 'Frontend' },
+    { name: 'Backend' },
+    { name: 'DevOps' },
+    { name: 'Design-Team' },
+    { name: 'Office-team' },
+    { name: 'Support' },
   ]
 
 
