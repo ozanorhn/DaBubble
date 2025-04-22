@@ -7,6 +7,7 @@ import { ResetpwConfirmComponent } from './resetpw-confirm/resetpw-confirm.compo
 import { CommonModule } from '@angular/common';
 import { LandingPageService } from '../../pageNavServices/landing-page.service';
 import { SplashScreenComponent } from './splash-screen/splash-screen.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
@@ -19,6 +20,7 @@ import { SplashScreenComponent } from './splash-screen/splash-screen.component';
     ResetpwConfirmComponent,
     CommonModule,
     SplashScreenComponent,
+    RouterLink
   ],
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.scss'],
