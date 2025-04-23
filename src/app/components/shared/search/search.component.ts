@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav.service';
+import { FilterService } from '../../../pageServices/filters/filter.service';
 
 @Component({
   selector: 'app-search',
@@ -16,7 +16,7 @@ export class SearchComponent {
 
   devspace = ''
 
-  constructor(public mainNavService: ChannelPageNavService) {}
+  constructor(public filterService: FilterService) {}
 
 
 }

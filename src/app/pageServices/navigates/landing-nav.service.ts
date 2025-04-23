@@ -4,11 +4,5 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class LandingPageService {
-
-  landing = signal<string>('login')
-
-  constructor() { 
-    console.log(this.landing());
-    
-  }
+  landing = signal<string>('login');
 }

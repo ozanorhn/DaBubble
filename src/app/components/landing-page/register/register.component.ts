@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LandingPageService } from '../../../pageNavServices/landing-page.service';
+import { LandingPageService } from '../../../pageServices/navigates/landing-nav.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

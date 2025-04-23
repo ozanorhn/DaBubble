@@ -5,7 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { ResetpwRequestComponent } from './resetpw-request/resetpw-request.component';
 import { ResetpwConfirmComponent } from './resetpw-confirm/resetpw-confirm.component';
 import { CommonModule } from '@angular/common';
-import { LandingPageService } from '../../pageNavServices/landing-page.service';
+import { LandingPageService } from '../../pageServices/navigates/landing-nav.service';
 import { SplashScreenComponent } from './splash-screen/splash-screen.component';
 import { RouterLink } from '@angular/router';
 

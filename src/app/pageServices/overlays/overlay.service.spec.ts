@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LandingPageService } from './landing-page.service';
+import { OverlayService } from './overlay.service';
 
-describe('LandingPageService', () => {
-  let service: LandingPageService;
+describe('OverlayService', () => {
+  let service: OverlayService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LandingPageService);
+    service = TestBed.inject(OverlayService);
   });
 
   it('should be created', () => {
