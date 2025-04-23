@@ -1,6 +1,6 @@
 
 
-export class Message {
+export class DirectMessage {
     id?: string;
     participants: [{
         user1: string;

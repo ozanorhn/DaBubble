@@ -18,34 +18,39 @@ export class ChatMessagesComponent {
     public channelService: ChannelsService,
     public authService: AuthService,
     public messageService: MessagesService) {
+      setTimeout(() => {
+        console.log('messages array: ', messageService.messages());
+
+      }, 1000);
+      
   }
 
   newDay = true;
   @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
-  @Input() public messages: {
-    user: {
-      avatar: number;
-      name: string;
-    };
-    time: string; //number
-    content: string;
-    emojis: {
-      id: number;
-      users: string[];
-    }[];
-    answers?: {
-      user: {
-        avatar: number;
-        name: string;
-      };
-      time: string; //number
-      content: string;
-      emojis: {
-        id: number;
-        users: string[];
-      }[];
-    }[];
-  }[] = [];
+  // @Input() public messages: {
+  //   user: {
+  //     avatar: number;
+  //     name: string;
+  //   };
+  //   time: string; //number
+  //   content: string;
+  //   emojis: {
+  //     id: number;
+  //     users: string[];
+  //   }[];
+  //   answers?: {
+  //     user: {
+  //       avatar: number;
+  //       name: string;
+  //     };
+  //     time: string; //number
+  //     content: string;
+  //     emojis: {
+  //       id: number;
+  //       users: string[];
+  //     }[];
+  //   }[];
+  // }[] = [];
 
   @Input() public threadHeadMessage: {
     user: {

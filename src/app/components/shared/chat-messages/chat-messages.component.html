@@ -31,7 +31,7 @@
 
       <!-- Messages  -->
 
-          @for (message of messages; track message; let i = $index) {
+          @for (message of messageService.messages(); track message; let i = $index) {
               @if (newDay) {
                   <div class="flex items-center text-[18px] my-[10px] px-4">
                       <div class="w-full h-[1px] bg-lightpurple">
@@ -42,19 +42,19 @@
                       <div class="w-full h-[1px] bg-lightpurple"></div>
                   </div>
               }
-              <div id="{{ chatType }}{{ i }}" (click)="mainNavService.editMessage(i, chatType)" class="flex gap-5 mt-[25px] px-4 py-2 cursor-pointer hover:bg-primary" [ngClass]="{ 'flex-row-reverse': fromCurrentUser(message.user.name),  '[&>div>#msg-content]:hover:bg-white': !fromCurrentUser(message.user.name)}">
+              <div id="{{ chatType }}{{ i }}" (click)="mainNavService.editMessage(i, chatType)" class="flex gap-5 mt-[25px] px-4 py-2 cursor-pointer hover:bg-primary" [ngClass]="{ 'flex-row-reverse': fromCurrentUser(message.sender),  '[&>div>#msg-content]:hover:bg-white': !fromCurrentUser(message.sender)}">
                   <div class="w-max">
-                      <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ message.user.avatar }}.svg" alt="Avatar">
+                      <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ message.sender }}.svg" alt="Avatar">
                   </div>
                   <div class="flex flex-col gap-2">
-                      <div class="flex items-center gap-5" [ngClass]="{ 'justify-end': fromCurrentUser(message.user.name)}">
-                          <span class="text-lg font-bold">{{ message.user.name }}</span>
-                          <span class="text-sm">{{ message.time }}</span>
+                      <div class="flex items-center gap-5" [ngClass]="{ 'justify-end': fromCurrentUser(message.createdBy)}">
+                          <span class="text-lg font-bold">{{ message.createdBy }}</span>
+                          <span class="text-sm">{{ message.timestamp}}</span>
                       </div>
-                      <div id="msg-content" class="bg-primary p-[15px] rounded-[30px]" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.user.name), ' rounded-ss-none': !fromCurrentUser(message.user.name) }">
-                          <span>{{ message.content }}</span>
+                      <div id="msg-content" class="bg-primary p-[15px] rounded-[30px]" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser(message.sender), ' rounded-ss-none': !fromCurrentUser(message.sender) }">
+                          <span>{{ message.message }}</span>
                       </div>
-                      @if (message.answers) {
+                      <!-- @if (message.answers) {
                           @if (chatType !== 'thread' && message.answers.length > 0) {
                               <div class="cursor-pointer flex flex-col xs:flex-row xs:items-center xs:gap-[20px]" [ngClass]="{'self-end': fromCurrentUser(message.user.name)}">
                                   <span (click)="mainNavService.openThread()" class="text-base text-purple3 hover:font-bold">{{ message.answers.length }} Antworten</span>
@@ -73,7 +73,7 @@
                                   <img src="assets/icons/add_emoji.svg" alt="Add emoji">
                               </button>
                           </div>
-                      }
+                      } -->
                   </div>
               </div>
           }
