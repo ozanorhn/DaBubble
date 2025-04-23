@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { MembersComponent } from "../members/members.component";
 import { EditDescriptionComponent } from "./edit-description/edit-description.component";
 import { EditNameComponent } from "./edit-name/edit-name.component";
-import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-nav.service';
 import { ChannelsService } from '../../../../services/channels/channels.service';
+import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 
 @Component({
   selector: 'app-edit-channel',
@@ -14,7 +14,7 @@ import { ChannelsService } from '../../../../services/channels/channels.service'
 export class EditChannelComponent {
 
 
-  constructor(public mainService: ChannelPageNavService, public channelService: ChannelsService) {
+  constructor(public overlayService: OverlayService, public channelService: ChannelsService) {
   
   }
 

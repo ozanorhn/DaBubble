@@ -1,16 +1,12 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { ChannelsService } from '../services/channels/channels.service';
-import { UsersService } from '../services/users/users.service';
-
-import { Channel } from '../classes/channel.class';
-import { MessagesService } from '../services/messages/messages.service';
+import { Injectable } from '@angular/core';
+import { ChannelsService } from '../../services/channels/channels.service';
+import { MessagesService } from '../../services/messages/messages.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ChannelPageNavService {
+export class MainNavService {
   mobile = false;
   mediumScreen = false;
   bigScreen = false;
@@ -20,64 +16,11 @@ export class ChannelPageNavService {
   directMessage = true;
   hideChannelMembers = false;
 
-  hideAddChannelPopUp = signal(true);
-  hideAddUserPopUp = signal(true);
-  hideEditChannelPopUp = signal(true);
 
-  searchValue = signal('')
+  constructor(
+    public channelsService: ChannelsService,
+    public messageService: MessagesService) { }
 
-  users = inject(UsersService);
-  channels = inject(ChannelsService);
-
-  channelArray = this.channels.channels
-  userArray = this.users.users
-
-
-  filteredResults = computed(() => {
-    const searchTerm = this.searchValue().toLowerCase();
-    if (searchTerm.startsWith('@')) {
-      return this.filterUsers(searchTerm)
-    }
-    else if (searchTerm.startsWith('#')) {
-      return this.filterChannels(searchTerm)
-    }
-    else {
-      return this.filterAll(searchTerm)
-    }
-  });
-
-
-  filterUsers(searchTerm: string) {
-    const userSearch = searchTerm.substring(1);
-    return this.userArray.filter(user =>
-      user.name.toLowerCase().includes(userSearch)
-    )
-  }
-
-  filterChannels(searchTerm: string) {
-    const channelSearch = searchTerm.substring(1);
-    return this.channelArray.filter(channel =>
-      channel.name.toLowerCase().includes(channelSearch)
-    )
-  }
-
-  filterAll(searchTerm: string) {
-    const userResults = this.userArray.filter(user =>
-      user.name.toLowerCase().includes(searchTerm)
-    )
-    const channelResults = this.channelArray.filter(channel =>
-      channel.name.toLowerCase().includes(searchTerm)
-    )
-    return [...userResults, ...channelResults];
-  }
-
-
-
-
-
-  constructor(private router: Router,public channelsService: ChannelsService, public messageService: MessagesService) { }
-
-  
 
   toggleNav() {
     if (this.nav) {
@@ -117,7 +60,7 @@ export class ChannelPageNavService {
     return !this.channel && this.mobile && this.thread && !this.nav || this.mediumScreen && this.thread || this.bigScreen && this.thread;
   }
 
-  
+
   // Runs in a Hostlistener in app.component.ts
   checkScreenView() {
     if (window.innerWidth >= 1280) {
@@ -204,32 +147,32 @@ export class ChannelPageNavService {
 
   editMessage(id: number, chatType: string) {
     console.log(chatType, id);
-    
+
   }
 
-  addCannelPopup() {
-    this.hideAddChannelPopUp.update(popup => !popup);
-  }
+  // addCannelPopup() {
+  //   this.hideAddChannelPopUp.update(popup => !popup);
+  // }
 
-  addUserPopup() {
-    this.hideAddUserPopUp.update(popup => !popup);
-  }
+  // addUserPopup() {
+  //   this.hideAddUserPopUp.update(popup => !popup);
+  // }
 
-  editChannelPopup() {
-    this.hideEditChannelPopUp.update(popup => !popup);
-  }
-
-
-  newChannel = {
-    name: '',
-    description: '',
-  }
-  
+  // editChannelPopup() {
+  //   this.hideEditChannelPopUp.update(popup => !popup);
+  // }
 
 
-  createChannel() {
-    this.channelsService.channels.push(new Channel(this.newChannel));
-    this.channelsService.addChannel(new Channel(this.newChannel));
-  }
+  // newChannel = {
+  //   name: '',
+  //   description: '',
+  // }
+
+
+
+  // createChannel() {
+  //   this.channelsService.channels.push(new Channel(this.newChannel));
+  //   this.channelsService.addChannel(new Channel(this.newChannel));
+  // }
 
 }
