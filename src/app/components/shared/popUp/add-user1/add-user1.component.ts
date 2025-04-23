@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-nav.service';
+import { ChannelsService } from '../../../../services/channels/channels.service';
 
 @Component({
   selector: 'app-add-user1',
@@ -17,7 +18,7 @@ export class AddUser1Component {
   customName: string | undefined;
 
   showOverlay = false;
-  constructor(public channelNavService: ChannelPageNavService) {}
+  constructor(public channelNavService: ChannelPageNavService,private channelService: ChannelsService) {}
 
   toggleOverlay(): void {
     this.showOverlay = !this.showOverlay;

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ChannelsService } from '../../../services/channels/channels.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav.service';
+import { MessagesService } from '../../../services/messages/messages.service';
 
 @Component({
   selector: 'app-chat-messages',
@@ -14,6 +15,7 @@ export class ChatMessagesComponent {
  channelService = inject(ChannelsService);
  authService = inject(AuthService);
  channelNavService = inject(ChannelPageNavService);
+ messageService = inject(MessagesService);
  newDay = true;
  @Input()chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
  @Input() public messages: {

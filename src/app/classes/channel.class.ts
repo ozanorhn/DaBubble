@@ -1,19 +1,18 @@
 export class Channel {
-[x: string]: any;
     id?: string;
     name: string;
     description: string;
-    members: string;
-    messages: string;
+    members?: string;
+    messages?: string;
     createdBy: string
 
     constructor(obj?: any) {
         this.id = obj?.id || '';
-        this.name = obj ? obj.name : '';
-        this.description = obj ? obj.description : '';
-        this.members = obj ? obj.members : '';
-        this.messages = obj ? obj.message : '';
-        this.createdBy = obj ? obj.createdBy : '';
+        this.name = obj.name || '';
+        this.description = obj.description || '';
+        this.members = obj?.members || '';
+        this.messages = obj?.message || '';
+        this.createdBy = obj.createdBy || '';
     }
 
     public toJSON() {

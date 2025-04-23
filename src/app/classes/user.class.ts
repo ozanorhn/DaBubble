@@ -4,6 +4,7 @@ export class User {
     email: string;
     avatar: string;
     online: boolean;
+    createdAt: number;
 
 
     constructor(obj?: any) {
@@ -12,6 +13,7 @@ export class User {
         this.email = obj ? obj.email : '';
         this.avatar = obj ? obj.avatar : '';
         this.online = obj ? obj.online : false;
+        this.createdAt = obj ? obj.createdAt : null;
 
     }
 
@@ -22,7 +24,8 @@ export class User {
             name: this.name,
             email: this.email,
             avatar: this.avatar,
-            online: this.online
+            online: this.online,
+            createdAt: this.createdAt
         }
     }
 
