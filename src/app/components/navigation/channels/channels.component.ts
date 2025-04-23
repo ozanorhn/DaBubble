@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ChannelsService } from '../../../services/channels/channels.service';
 import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav.service';
+import { MessagesService } from '../../../services/messages/messages.service';
+
+
 
 
 
@@ -13,7 +16,7 @@ import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav
 export class ChannelsComponent {
 
 
-  constructor(public channelService: ChannelsService, public channelNavService: ChannelPageNavService, public channelPageNavService: ChannelPageNavService){}
+  constructor(public channelService: ChannelsService, public channelNavService: ChannelPageNavService, public channelPageNavService: ChannelPageNavService, public messageService: MessagesService){}
 
 
   ngOnInit() {

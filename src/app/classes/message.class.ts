@@ -3,37 +3,40 @@ export class Message {
         message: string;
         sender: string;
         timestamp: number;
-        messages: string;
         createdBy: string;
         reactions: [{
             id: number;
             user: string;
         }];
-        thread: string;
+        threadId: string;
+        channelId: string;
     
         constructor(obj?: any) {
             this.id = obj?.id || '';
             this.message = obj ? obj.message : '';
             this.sender = obj ? obj.sender : '';
+            // this.timestamp = obj ? obj.timestamp : 0;
             this.timestamp = obj ? obj.timestamp : 0;
-            this.messages = obj ? obj.message : '';
             this.createdBy = obj ? obj.createdBy : '';
             this.reactions =  obj ? obj.reactions : [];
-            this.thread =  obj ? obj.thread : [];
+            this.threadId =  obj ? obj.thread : [];
+            this.channelId =  obj ? obj.channelId : [];
         }
     
         public toJSON() {
             return {
                 id: this.id,
-                name: this.message,
-                description: this.sender,
+                message: this.message,
+                sender: this.sender,
                 timestamp: this.timestamp,
-                message: this.messages,
                 createdBy: this.createdBy,
                 reactions: this.reactions,
-                thread: this.thread
+                threadId: this.threadId,
+                channelId: this.channelId
             }
         }
+
+
     
     }
 

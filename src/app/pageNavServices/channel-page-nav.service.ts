@@ -4,6 +4,7 @@ import { ChannelsService } from '../services/channels/channels.service';
 import { UsersService } from '../services/users/users.service';
 
 import { Channel } from '../classes/channel.class';
+import { MessagesService } from '../services/messages/messages.service';
 
 
 @Injectable({
@@ -74,9 +75,9 @@ export class ChannelPageNavService {
 
 
 
-  constructor(private router: Router,public channelsService: ChannelsService) { }
+  constructor(private router: Router,public channelsService: ChannelsService, public messageService: MessagesService) { }
 
-  navigate() { }
+  
 
   toggleNav() {
     if (this.nav) {
@@ -116,6 +117,7 @@ export class ChannelPageNavService {
     return !this.channel && this.mobile && this.thread && !this.nav || this.mediumScreen && this.thread || this.bigScreen && this.thread;
   }
 
+  
   // Runs in a Hostlistener in app.component.ts
   checkScreenView() {
     if (window.innerWidth >= 1280) {

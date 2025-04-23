@@ -3,7 +3,8 @@ import { inject, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Channel } from '../../classes/channel.class';
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
-
+import { signal } from '@angular/core';
+import { MessagesService } from '../messages/messages.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,12 @@ export class ChannelsService implements OnInit, OnDestroy {
   private unsubscribe!: () => void;
 
   channelsCollection;
-  currentId: string = '';
+
+  // currentId: string = '';
+
+  currentId = signal<string>('');
+
+
   currentChannel: Channel | undefined;
   editName = '';
 
@@ -65,7 +71,7 @@ export class ChannelsService implements OnInit, OnDestroy {
 
   async edit() {
     if (this.currentChannel) {
-      await updateDoc(doc(this.channelsCollection, this.currentId), this.currentChannel.toJSON());
+      await updateDoc(doc(this.channelsCollection, this.currentId()), this.currentChannel.toJSON());
     }
   }
 
@@ -89,13 +95,27 @@ export class ChannelsService implements OnInit, OnDestroy {
     }
   }
 
-  openChannel(id: string | undefined) {
+
+  // Ohne Signals 
+  // openChannel(id: string | undefined) {
+  //   if (id) {
+  //     console.log(id);
+  //     this.currentId = id;
+  //     this.getCurrentChannel(id);
+  //   }
+  // }
+
+// Mit Signals testen
+    openChannel(id: string | undefined) {
     if (id) {
       console.log(id);
-      this.currentId = id;
+      this.currentId.set(id) ;
       this.getCurrentChannel(id);
+    //  this.messageService.getMessages(id)
     }
+    
   }
+
 
   getCurrentChannel(id: string) {
     this.channels.filter((x) => {
