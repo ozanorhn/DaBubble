@@ -12,7 +12,7 @@
 
     <ul id="directList" class="flex flex-col gap-1">
         @for (userItem of userService.users; track $index) {
-        <li><app-user (click)="channelPageServive.navigate()" [userInfo]="userItem" ></app-user></li>
+        <li><app-user [userInfo]="userItem" ></app-user></li>
         }
     </ul>
 

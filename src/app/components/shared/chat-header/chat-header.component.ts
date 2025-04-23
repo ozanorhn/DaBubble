@@ -1,7 +1,9 @@
 import { Component, inject, Input } from '@angular/core';
 import { ChannelsService } from '../../../services/channels/channels.service';
-import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav.service';
+
 import { CommonModule } from '@angular/common';
+import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
+import { OverlayService } from '../../../pageServices/overlays/overlay.service';
 
 @Component({
   selector: 'app-chat-header',
@@ -10,8 +12,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './chat-header.component.scss'
 })
 export class ChatHeaderComponent {
-  channelService = inject(ChannelsService);
-  channelNavService = inject(ChannelPageNavService);
-  @Input()chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
+
+  constructor(
+    public channelService: ChannelsService,
+    public mainNavService: MainNavService,
+    public overlayService: OverlayService) {
+
+  }
+  @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
 
 }

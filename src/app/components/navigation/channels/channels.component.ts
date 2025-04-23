@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { ChannelsService } from '../../../services/channels/channels.service';
-import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav.service';
 import { MessagesService } from '../../../services/messages/messages.service';
+import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
+import { OverlayService } from '../../../pageServices/overlays/overlay.service';
+
 
 
 
@@ -16,13 +18,17 @@ import { MessagesService } from '../../../services/messages/messages.service';
 export class ChannelsComponent {
 
 
-  constructor(public channelService: ChannelsService, public channelNavService: ChannelPageNavService, public channelPageNavService: ChannelPageNavService, public messageService: MessagesService){}
+  constructor(
+    public channelService: ChannelsService,
+    public mainNavService: MainNavService,
+    public messageService: MessagesService,
+    public overlayService: OverlayService) { }
 
 
   ngOnInit() {
-    this.channelPageNavService.checkScreenView();
+    this.mainNavService.checkScreenView();
     window.addEventListener('resize', () => {
-      this.channelPageNavService.checkScreenView();
+      this.mainNavService.checkScreenView();
     });
   }
 

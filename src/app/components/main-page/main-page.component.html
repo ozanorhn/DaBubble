@@ -2,15 +2,15 @@
 
 
 
-@if (!channelNavService.mobile) {}
+@if (!mainNavService.mobile) {}
 <button
-  (click)="channelNavService.toggleNav()"
+  (click)="mainNavService.toggleNav()"
   class="w-[60px] h-fit fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50"
 >
   <span class="mt-2 text-xl">
-    @if (channelNavService.nav) {
+    @if (mainNavService.nav) {
     <span><img src="assets/imgs/directions.svg" alt="" /></span>
-    } @if (!channelNavService.nav) {
+    } @if (!mainNavService.nav) {
     <span
       ><img class="rotate-180" src="assets/imgs/directions.svg" alt=""
     /></span>
@@ -18,7 +18,7 @@
   </span>
   <span class="leading-tight text-center rotate-180 writing-vertical-lr text-l">
     {{
-      channelNavService.nav
+      mainNavService.nav
         ? "Workspace-Menü\nschließen"
         : "Workspace-Menü\nöffnen"
     }}
@@ -28,7 +28,7 @@
 <section class="flex h-full gap-3 p-3 bg-primary">
 
 
-  @if (channelNavService.showNav()) {
+  @if (mainNavService.showNav()) {
   <div class="flex flex-col w-full h-[100% - 3rem] lg:max-w-[366px] my-6  rounded-[30px]  overflow-hidden bg-white">
     <app-search class="lg:hidden"></app-search>
     <app-navigation class="w-full h-full"></app-navigation>
@@ -36,28 +36,28 @@
   }
   
 
-    @if (channelNavService.showChannel()) {
+    @if (mainNavService.showChannel()) {
         <div class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
-            @if (channelNavService.directMessage) {
+            @if (mainNavService.directMessage) {
                 <app-chat-header [chatType]="'dm'" class="mb-[10px]"></app-chat-header>
                 <div class="flex flex-1 w-full overflow-y-auto">
-                    <app-chat-messages class="flex flex-col w-full" [messages]="channelMessageService.messages" [chatType]="'dm'"></app-chat-messages>
+                    <app-chat-messages class="flex flex-col w-full" [messages]="channelService.messages" [chatType]="'dm'"></app-chat-messages>
                 </div>
             } @else {
                 <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
                 <div class="flex flex-1 w-full overflow-y-auto">
-                    <app-chat-messages class="flex flex-col w-full" [messages]="channelMessageService.messages" [chatType]="'channel'"></app-chat-messages>
+                    <app-chat-messages class="flex flex-col w-full" [messages]="channelService.messages" [chatType]="'channel'"></app-chat-messages>
                 </div>
             }
             <app-chat-input class=""></app-chat-input>
         </div>
     }
 
-    @if (channelMessageService.messages[0].answers !== undefined && channelNavService.showThread()) {
+    @if (channelService.messages[0].answers !== undefined && mainNavService.showThread()) {
         <div class="flex flex-col w-full xl:max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
             <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
             <div class="flex flex-1 w-full overflow-y-auto">
-                <app-chat-messages [messages]="channelMessageService.messages[0].answers" [chatType]="'thread'" [threadHeadMessage]="channelMessageService.messages[0]"></app-chat-messages>
+                <app-chat-messages [messages]="channelService.messages[0].answers" [chatType]="'thread'" [threadHeadMessage]="channelService.messages[0]"></app-chat-messages>
             </div>
             <app-chat-input class=""></app-chat-input>
         </div>
@@ -66,7 +66,7 @@
 
 <div
   [ngClass]="{
-    hidden: channelNavService.hideAddChannelPopUp() || showMessagesOnly
+    hidden: overlayService.hideAddChannelPopUp() || showMessagesOnly
   }"
   class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">
   <app-add-channel class="top-[20%]"></app-add-channel>
@@ -75,14 +75,14 @@
 
 
 <div class="absolute bottom-0" [ngClass]="{
-    hidden: channelNavService.hideAddUserPopUp() || showMessagesOnly
+    hidden: overlayService.hideAddUserPopUp() || showMessagesOnly
   }">
   <app-add-user1></app-add-user1>
 </div>
 
 
 
-<div [ngClass]="{hidden: channelNavService.hideEditChannelPopUp()}"
+<div [ngClass]="{hidden: overlayService.hideEditChannelPopUp()}"
   class="flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)]">
   <app-edit-channel></app-edit-channel>
 </div>
