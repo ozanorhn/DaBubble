@@ -34,33 +34,32 @@
     <app-navigation class="w-full h-full"></app-navigation>
   </div>
   }
-  
-
     @if (mainNavService.showChannel()) {
         <div class="flex flex-col w-full h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
             @if (mainNavService.directMessage) {
                 <app-chat-header [chatType]="'dm'" class="mb-[10px]"></app-chat-header>
                 <div class="flex flex-1 w-full overflow-y-auto">
-                    <app-chat-messages class="flex flex-col w-full" [messages]="channelService.messages" [chatType]="'dm'"></app-chat-messages>
+                    <app-chat-messages class="flex flex-col w-full" [messages]="dummyThreatService.messages" [chatType]="'dm'"></app-chat-messages>
                 </div>
             } @else {
                 <app-chat-header [chatType]="'channel'" class="mb-[10px]"></app-chat-header>
                 <div class="flex flex-1 w-full overflow-y-auto">
-                    <app-chat-messages class="flex flex-col w-full" [messages]="channelService.messages" [chatType]="'channel'"></app-chat-messages>
+                    <app-chat-messages class="flex flex-col w-full" [messages]="dummyThreatService.messages" [chatType]="'channel'"></app-chat-messages>
                 </div>
             }
             <app-chat-input class=""></app-chat-input>
         </div>
     }
 
-    @if (channelService.messages[0].answers !== undefined && mainNavService.showThread()) {
-        <div class="flex flex-col w-full xl:max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
+    @if (mainNavService.showThread()) {
+        <!-- <div class="flex flex-col w-full xl:max-w-[485px] h-[100% - 3rem] my-6 pb-4 bg-white rounded-[30px]">
             <app-chat-header [chatType]="'thread'" class="mb-[10px]"></app-chat-header>
             <div class="flex flex-1 w-full overflow-y-auto">
                 <app-chat-messages [messages]="channelService.messages[0].answers" [chatType]="'thread'" [threadHeadMessage]="channelService.messages[0]"></app-chat-messages>
             </div>
             <app-chat-input class=""></app-chat-input>
-        </div>
+        </div> -->
+        <app-thread class="w-full h-[100% - 3rem] xl:max-w-[485px] my-6"></app-thread>
     }
 </section>
 

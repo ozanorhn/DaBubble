@@ -12,6 +12,7 @@ import { SearchComponent } from "../shared/search/search.component";
 import { EditChannelComponent } from "../shared/popUp/edit-channel/edit-channel.component";
 import { MainNavService } from '../../pageServices/navigates/main-nav.service';
 import { OverlayService } from '../../pageServices/overlays/overlay.service';
+import { ThreadComponent } from './thread/thread.component';
 
 @Component({
   selector: 'app-main-page',
@@ -25,8 +26,8 @@ import { OverlayService } from '../../pageServices/overlays/overlay.service';
     ChatHeaderComponent,
     ChatInputComponent,
     SearchComponent,
-    EditChannelComponent
-
+    EditChannelComponent,
+    ThreadComponent
   ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
@@ -34,10 +35,40 @@ import { OverlayService } from '../../pageServices/overlays/overlay.service';
 export class MainPageComponent {
   showMessagesOnly = false;
 
+  dummyThreatService = {
+    messages: [{
+      id: 'string',
+      message: 'string',
+      sender: 'Florian Rauh',
+      timestamp: 12,
+      createdBy: 'string',
+      reactions: [{
+        id: 0,
+        users: ['Sandra Peters'],
+      }],
+      threadId: 'string',
+      channelId: 'string',
+    }],
+    chatMessage: {
+      id: 'string',
+      message: 'string',
+      sender: 'Florian Rauh',
+      timestamp: 12,
+      createdBy: 'string',
+      reactions: [{
+        id: 0,
+        users: ['Sandra Peters'],
+      }],
+      threadId: 'string',
+      channelId: 'string',
+    }
+  }
+
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
-    public overlayService: OverlayService) { }
+    public overlayService: OverlayService
+  ) { }
 
 
   toggleMessagesView() {
