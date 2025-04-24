@@ -11,7 +11,7 @@ export class ThreadsService {
   threadCollection;
 
   constructor(public firestore: Firestore) {
-    this.threadCollection = collection(this.firestore, 'thread');
+    this.threadCollection = collection(this.firestore, 'threads');
   }
 
 
