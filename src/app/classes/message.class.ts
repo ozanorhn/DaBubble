@@ -6,7 +6,7 @@ export class Message {
         createdBy: string;
         reactions: [{
             id: number;
-            user: string;
+            users: string[];
         }];
         threadId: string;
         channelId: string;

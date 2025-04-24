@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
 import { addDoc, collection, Firestore, getDocs, query, where } from '@angular/fire/firestore';
 
@@ -12,7 +12,7 @@ import { Message } from '../../classes/message.class';
 export class MessagesService {
 
   messageCollection;
- Message[] = [];
+  Message:[] = [];
 
   // messages: Message[] = [];
   messages = signal<Message[]>([]);
