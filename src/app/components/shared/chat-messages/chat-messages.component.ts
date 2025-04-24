@@ -4,7 +4,9 @@ import { ChannelsService } from '../../../services/channels/channels.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
+
 import { Message } from '../../../classes/message.class';
+
 
 @Component({
   selector: 'app-chat-messages',
@@ -18,7 +20,6 @@ export class ChatMessagesComponent {
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
     public authService: AuthService,
-
     public messageService: MessagesService
   ) {
 

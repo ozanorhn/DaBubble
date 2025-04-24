@@ -15,7 +15,6 @@ export class Message {
             this.id = obj?.id || '';
             this.message = obj ? obj.message : '';
             this.sender = obj ? obj.sender : '';
-            // this.timestamp = obj ? obj.timestamp : 0;
             this.timestamp = obj ? obj.timestamp : 0;
             this.createdBy = obj ? obj.createdBy : '';
             this.reactions =  obj ? obj.reactions : [];
