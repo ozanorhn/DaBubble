@@ -92,7 +92,6 @@ export class ChannelsService implements OnInit, OnDestroy {
     }
   }
 
-
   getCurrentChannel(id: string) {
     this.channels.filter((x) => {
       if (x.id === id) {

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
 import { addDoc, collection, Firestore, getDocs, query, where } from '@angular/fire/firestore';
+
 import { Message } from '../../classes/message.class';
+
 
 
 @Injectable({
@@ -10,7 +12,11 @@ import { Message } from '../../classes/message.class';
 export class MessagesService {
 
   messageCollection;
-  messages: Message[] = [];
+ Message[] = [];
+
+  // messages: Message[] = [];
+  messages = signal<Message[]>([]);
+
 
 
   constructor(public channelService: ChannelsService, public firestore: Firestore) {
@@ -33,15 +39,26 @@ export class MessagesService {
 
 
   async getMessages(channelId: string | undefined) {
+
     const q = query(this.messageCollection, where('channelId', '==', channelId));
+
     const querySnapshot = await getDocs(q);
     const messages = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    }));
-    console.log('Message Array', messages);
+
+    }) as Message);
+
+
+    // this.messages = messages;
+    this.messages.set(messages)
+
+    console.log('Message Array', this.messages());
+
     return messages;
   }
+
+
 
 
   async sendMessage() {
