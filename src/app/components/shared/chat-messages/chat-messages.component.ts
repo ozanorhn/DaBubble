@@ -18,8 +18,10 @@ export class ChatMessagesComponent {
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
     public authService: AuthService,
+
     public messageService: MessagesService
   ) {
+
 
   }
   
@@ -67,31 +69,6 @@ export class ChatMessagesComponent {
       channelId: 'string',
     }
   }
-
-  // @Input() public threadHeadMessage: {
-  //   user: {
-  //     avatar: number;
-  //     name: string;
-  //   };
-  //   time: string; //number
-  //   content: string;
-  //   emojis: {
-  //     id: number;
-  //     users: string[];
-  //   }[];
-  //   answers?: {
-  //     user: {
-  //       avatar: number;
-  //       name: string;
-  //     };
-  //     time: string; //number
-  //     content: string;
-  //     emojis: {
-  //       id: number;
-  //       users: string[];
-  //     }[];
-  //   }[];
-  // } | undefined;
 
   fromCurrentUser(id: string): boolean {
     if (id === this.authService.currentUser) {

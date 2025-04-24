@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LandingPageService } from '../../../pageServices/navigates/landing-nav.service';
 import { CommonModule } from '@angular/common';
+import { UsersService } from '../../../services/users/users.service';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class RegisterComponent {
 
-   constructor(public landing: LandingPageService){
+   constructor(public landing: LandingPageService, public userService: UsersService){
   
     }
     goToLogin(){
