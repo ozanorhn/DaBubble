@@ -9,6 +9,8 @@ import { User } from '../../classes/user.class';
 import { Channel } from '../../classes/channel.class';
 import { MainNavService } from '../../pageServices/navigates/main-nav.service';
 import { FilterService } from '../../pageServices/filters/filter.service';
+import { ThreadsService } from '../../services/threads/threads.service';
+import { DirectMessagesService } from '../../services/directMessages/direct-messages.service';
 
 
 @Component({
@@ -24,8 +26,11 @@ import { FilterService } from '../../pageServices/filters/filter.service';
 })
 export class NavigationComponent {
   constructor(
+    public threadService: ThreadsService,
     public mainNavService: MainNavService,
-    public filterService: FilterService) {
+    public filterService: FilterService,
+    public directMessageService: DirectMessagesService
+    ) {
 
   }
 

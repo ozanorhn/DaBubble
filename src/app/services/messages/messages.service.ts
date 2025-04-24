@@ -1,8 +1,8 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
 import { addDoc, collection, Firestore, getDocs, query, where } from '@angular/fire/firestore';
-import { Message } from '../../classes/directMessage.class';
-import { Timestamp } from '@angular/fire/firestore';
+import { Message } from '../../classes/message.class';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class MessagesService {
 
   messageCollection;
   messages: Message[] = [];
-  
+
 
   constructor(public channelService: ChannelsService, public firestore: Firestore) {
     this.messageCollection = collection(this.firestore, 'messages');
@@ -32,20 +32,15 @@ export class MessagesService {
   }
 
 
- async  getMessages(channelId: string | undefined){
-  const q = query(this.messageCollection, where('channelId', '==', channelId)); 
-    
-  const querySnapshot = await getDocs(q);
-  const messages = querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  }));
-
-
-  console.log('Message Array', messages);
-  
-  
-  return messages;
+  async getMessages(channelId: string | undefined) {
+    const q = query(this.messageCollection, where('channelId', '==', channelId));
+    const querySnapshot = await getDocs(q);
+    const messages = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    console.log('Message Array', messages);
+    return messages;
   }
 
 
