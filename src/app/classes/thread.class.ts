@@ -1,7 +1,22 @@
+
+/* export class Thread {
+    id?: string;
+    message: string;
+    sender: string;
+    timestamp: number;
+    messages: string;
+    createdBy: string
+    reactions: [{
+        id: number;
+        user: string;
+    }];;
+    thread: string
+
 export class Thread {
   threadId: string;
   threadMessageId: string;
   content: [];
+
 
   constructor(obj?: any) {
       this.threadId = obj?.threadId || '';
@@ -19,4 +34,18 @@ export class Thread {
 }
 
 
+
+
+"threadId": {
+        "channelId": "channelId",
+        "parentMessageId": "messageId",
+        "messages": {
+          "threadMessageId": {
+            "content": "Thread Antwort",
+            "sender": "userId",
+            "timestamp": "timestamp"
+          }
+        }
+      },
+ */
 

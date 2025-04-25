@@ -9,6 +9,7 @@ import { Message } from '../../../classes/message.class';
 
 
 @Component({
+  standalone: true,
   selector: 'app-chat-messages',
   imports: [CommonModule],
   templateUrl: './chat-messages.component.html',
@@ -21,13 +22,37 @@ export class ChatMessagesComponent {
     public channelService: ChannelsService,
     public authService: AuthService,
     public messageService: MessagesService
-  ) {
-
-
-  }
+  ) { }
   
   newDay = true;
   @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
+
+  @Input() messages: any[] | undefined; // oder der passende Typ
+  // @Input() public messages: {
+  //   user: {
+  //     avatar: number;
+  //     name: string;
+  //   };
+  //   time: string; //number
+  //   content: string;
+  //   emojis: {
+  //     id: number;
+  //     users: string[];
+  //   }[];
+  //   answers?: {
+  //     user: {
+  //       avatar: number;
+  //       name: string;
+  //     };
+  //     time: string; //number
+  //     content: string;
+  //     emojis: {
+  //       id: number;
+  //       users: string[];
+  //     }[];
+  //   }[];
+  // }[] = [];
+
   @Input() public messages = [{
     id: 'string',
       message: 'string',
@@ -41,6 +66,7 @@ export class ChatMessagesComponent {
       threadId: 'string',
       channelId: 'string',
   }];
+
 
   dummyThreatService = {
     messages: [{
