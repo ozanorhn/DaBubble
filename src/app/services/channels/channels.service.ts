@@ -1,10 +1,8 @@
-import { inject, Injectable, OnDestroy, OnInit } from '@angular/core';
-
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Channel } from '../../classes/channel.class';
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
 import { signal } from '@angular/core';
-import { MessagesService } from '../messages/messages.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,39 +10,23 @@ import { MessagesService } from '../messages/messages.service';
 export class ChannelsService implements OnInit, OnDestroy {
 
 
-  // constructor(private firestore: Firestore) {
-  //   console.log('Channel Array', this.channels);
-  // }
-
-
-  // channels = [
-  //   new Channel({
-  //     name: 'Entwicklerteam',
-  //     description: 'Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team Meetings abhalten, Dokumente teilen und Entscheidungen treffen.',
-  //     createdBy: 'Noah Braun'
-  //   }),
-  //   new Channel({ name: 'Frontend' }),
-  //   new Channel({ name: 'Backend' }),
-  //   new Channel({ name: 'DevOps' }),
-  //   new Channel({ name: 'Design-Team' }),
-  //   new Channel({ name: 'Office-team' }),
-  //   new Channel({ name: 'Support' }),
-  // ]
-
   channels: Channel[] = [];
+  currentIndex = signal<number>(0);
+  channelsCollection;
+
+  createChannel = new Channel({ createdBy: 'UserID343783' });
+
+  constructor(public firestore: Firestore) {
+    this.channelsCollection = collection(this.firestore, 'channels');
+    this.initChannelsListener();
+  }
+
+
+  ngOnInit(): void { }
 
   private unsubscribe!: () => void;
 
-  channelsCollection;
-  currentId = signal<string>('');
-  currentChannel: Channel | undefined;
-  editName = '';
-
-
-  constructor(public firestore: Firestore) {
-
-    this.channelsCollection = collection(this.firestore, 'channels');
-
+  private initChannelsListener() {
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
       this.channels = snapshot.docs.map((doc) => {
         const data = doc.data() as Channel;
@@ -56,10 +38,17 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  async addChannel(channel: Channel) {
-    console.log('current channel is', channel);
+  ngOnDestroy(): void {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+  }
+
+
+  async addChannel(channelData: Channel) {
+    console.log('current channel is', channelData);
     try {
-      const docRef = await addDoc(this.channelsCollection, channel.toJSON())
+      const docRef = await addDoc(this.channelsCollection, this.createChannel.toJSON())
       console.log('Channel added with ID', docRef.id);
     } catch (error) {
       console.error('Error adding channel', error);
@@ -68,38 +57,35 @@ export class ChannelsService implements OnInit, OnDestroy {
 
 
   async edit() {
-    if (this.currentChannel) {
-      await updateDoc(doc(this.channelsCollection, this.currentId()), this.currentChannel.toJSON());
+    const index = this.currentIndex();
+    const channel = this.channels[index];
+    const channelData = {
+      name: channel.name,
+      description: channel.description,
+      members: channel.members,
+      messagesID: channel.messagesID,
+      createdBy: channel.createdBy
+    };
+
+    if (!channel || !channel.id) {
+      console.error('Channel nicht gefunden oder hat keine ID');
+      return;
+    }
+
+    await updateDoc(
+      doc(this.channelsCollection, channel.id),
+      channelData
+    );
+  }
+
+
+  openChannel(obj: Channel, i: number) {
+    if (obj) {
+      console.log(obj);
+      this.currentIndex.set(i);
     }
   }
 
-
-  ngOnInit(): void { }
-
-
-  ngOnDestroy(): void {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
-  }
-
-
-  openChannel(id: string | undefined) {
-    if (id) {
-      console.log(id);
-      this.currentId.set(id);
-      this.getCurrentChannel(id);
-    }
-  }
-
-  getCurrentChannel(id: string) {
-    this.channels.filter((x) => {
-      if (x.id === id) {
-        this.currentChannel = x;
-        console.log('Channel Obj ', this.currentChannel);
-      }
-    })
-  }
 
 
   channels2 = [
