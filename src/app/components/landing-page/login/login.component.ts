@@ -28,6 +28,15 @@ export class LoginComponent {
     try {
       const user = await this.userService.login(this.email, this.password);
       console.log('Login erfolgreich:', user);
+      /* ---------------------------------- */
+    // Avatar aus Firestore holen
+    const profile = this.userService.getUserByEmail(user.email || '');
+    if (profile) {
+    console.log('Eingeloggter User:', profile);
+    // Z. B. im Service speichern für globalen Zugriff
+    this.userService.setTempUser(profile);
+}
+
       this.router.navigate(['/main']); 
     } catch (error: any) {
       this.error = this.getErrorMessage(error.code ?? '');

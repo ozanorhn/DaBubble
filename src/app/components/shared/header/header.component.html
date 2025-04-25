@@ -6,7 +6,7 @@
   <app-search class="w-[50%] hidden lg:block self-end"></app-search>
 
   <img
-    src="assets/imgs/avatar6.svg"
+    [src]="avatarUrl"
     alt="DaBubble avatar"
     class="h-16 mt-4 rounded-full cursor-pointer"
     (click)="toggleOverlay()"

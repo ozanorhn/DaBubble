@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import { OverlayUiService } from '../../../../services/profil/overlay-ui-service.service';
+import { UsersService } from '../../../../services/users/users.service';
 @Component({
   selector: 'app-profile',
   imports: [RouterModule, CommonModule ],
@@ -10,9 +11,19 @@ import { OverlayUiService } from '../../../../services/profil/overlay-ui-service
 })
 export class ProfileComponent {
   
+  avatarUrl: string = '';
+  name: string = '';
+email: string = '';
 
+  constructor(public userService: UsersService, private router: Router, private location: Location, private ui:  OverlayUiService) {}
 
-  constructor(private router: Router, private location: Location, private ui:  OverlayUiService) {}
+  ngOnInit() {
+    const user = this.userService.getTempUser();
+    this.avatarUrl = user.avatar ?? '/assets/imgs/avatar1.svg';
+    this.name = user.name ?? '';
+  this.email = user.email ?? '';
+  }
+
   closeProfile() {
     //this.router.navigate(['/channel']); // oder wohin du zurück möchtest
     //this.router.navigate(['..']);

@@ -147,6 +147,11 @@ export class UsersService implements OnDestroy{
     }
   }
 
+  //E-Mail den User aus Firestore zurückgibt
+  getUserByEmail(email: string): User | undefined {
+    return this.users.find(user => user.email === email);
+  }
+
 
 
 }
