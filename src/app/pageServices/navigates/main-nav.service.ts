@@ -150,29 +150,5 @@ export class MainNavService {
 
   }
 
-  // addCannelPopup() {
-  //   this.hideAddChannelPopUp.update(popup => !popup);
-  // }
-
-  // addUserPopup() {
-  //   this.hideAddUserPopUp.update(popup => !popup);
-  // }
-
-  // editChannelPopup() {
-  //   this.hideEditChannelPopUp.update(popup => !popup);
-  // }
-
-
-  // newChannel = {
-  //   name: '',
-  //   description: '',
-  // }
-
-
-
-  // createChannel() {
-  //   this.channelsService.channels.push(new Channel(this.newChannel));
-  //   this.channelsService.addChannel(new Channel(this.newChannel));
-  // }
-
+ 
 }

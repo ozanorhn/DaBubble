@@ -1,3 +1,4 @@
+
 /* export class Thread {
     id?: string;
     message: string;
@@ -11,31 +12,27 @@
     }];;
     thread: string
 
-    constructor(obj?: any) {
-        this.id = obj?.id || '';
-        this.message = obj ? obj.message : '';
-        this.sender = obj ? obj.sender : '';
-        this.timestamp = obj ? obj.timestamp : 0;
-        this.messages = obj ? obj.message : '';
-        this.createdBy = obj ? obj.createdBy : '';
-        this.reactions =  obj ? obj.reactions : [];
-        this.thread =  obj ? obj.thread : [];
-    }
+export class Thread {
+  threadId: string;
+  threadMessageId: string;
+  content: [];
 
-    public toJSON() {
-        return {
-            id: this.id,
-            name: this.message,
-            description: this.sender,
-            timestamp: this.timestamp,
-            message: this.messages,
-            createdBy: this.createdBy,
-            reactions: this.reactions,
-            thread: this.thread
-        }
-    }
 
+  constructor(obj?: any) {
+      this.threadId = obj?.threadId || '';
+      this.threadMessageId = obj?.threadMessageId || '';
+      this.content = obj?.content || [];
+  }
+
+  public toJSON() {
+      return {
+          threadId: this.threadId,
+          threadMessageId: this.threadMessageId,
+          content: this.content
+      }
+  }
 }
+
 
 
 
@@ -51,3 +48,4 @@
         }
       },
  */
+

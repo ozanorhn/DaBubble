@@ -36,16 +36,13 @@ export class ChannelsService implements OnInit, OnDestroy {
   private unsubscribe!: () => void;
 
   channelsCollection;
-
-  // currentId: string = '';
-
   currentId = signal<string>('');
-
-
   currentChannel: Channel | undefined;
   editName = '';
 
+
   constructor(public firestore: Firestore) {
+
     this.channelsCollection = collection(this.firestore, 'channels');
 
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
@@ -55,9 +52,9 @@ export class ChannelsService implements OnInit, OnDestroy {
         return data;
       })
       console.log('Aktuelle Channels', this.channels);
-
     })
   }
+
 
   async addChannel(channel: Channel) {
     console.log('current channel is', channel);
@@ -69,6 +66,7 @@ export class ChannelsService implements OnInit, OnDestroy {
     }
   }
 
+
   async edit() {
     if (this.currentChannel) {
       await updateDoc(doc(this.channelsCollection, this.currentId()), this.currentChannel.toJSON());
@@ -76,17 +74,7 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  ngOnInit(): void {
-
-
-    // const chennelRef = doc(db, "cities", "DC");
-
-    // // Set the "capital" field of the city 'DC'
-    // await updateDoc(washingtonRef, {
-    //   capital: true
-    // });
-
-  }
+  ngOnInit(): void { }
 
 
   ngOnDestroy(): void {
@@ -96,22 +84,11 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  // Ohne Signals 
-  // openChannel(id: string | undefined) {
-  //   if (id) {
-  //     console.log(id);
-  //     this.currentId = id;
-  //     this.getCurrentChannel(id);
-  //   }
-  // }
-
-// Mit Signals testen
-    openChannel(id: string | undefined) {
+  openChannel(id: string | undefined) {
     if (id) {
       console.log(id);
-      this.currentId.set(id) ;
+      this.currentId.set(id);
       this.getCurrentChannel(id);
-    //  this.messageService.getMessages(id)
     }
   }
 
@@ -124,6 +101,7 @@ export class ChannelsService implements OnInit, OnDestroy {
     })
   }
 
+
   channels2 = [
     { name: 'Entwicklerteam', users: [{ avatar: 3 }, { avatar: 6 }, { avatar: 5 }, { avatar: 1 }, { avatar: 3 }, { avatar: 2 }, { avatar: 4 }] },
     { name: 'Frontend' },
@@ -133,10 +111,6 @@ export class ChannelsService implements OnInit, OnDestroy {
     { name: 'Office-team' },
     { name: 'Support' },
   ]
-
-
-
-
 
 
   // public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'channel';
