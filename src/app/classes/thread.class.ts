@@ -1,4 +1,4 @@
-export class Thread {
+/* export class Thread {
     id?: string;
     message: string;
     sender: string;
@@ -50,3 +50,4 @@ export class Thread {
           }
         }
       },
+ */

@@ -6,13 +6,14 @@ import { MessagesService } from '../../../services/messages/messages.service';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 
 @Component({
+  standalone: true,
   selector: 'app-chat-messages',
   imports: [CommonModule],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
 export class ChatMessagesComponent {
-
+  
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
@@ -27,6 +28,7 @@ export class ChatMessagesComponent {
 
   newDay = true;
   @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
+  @Input() messages: any[] | undefined; // oder der passende Typ
   // @Input() public messages: {
   //   user: {
   //     avatar: number;
