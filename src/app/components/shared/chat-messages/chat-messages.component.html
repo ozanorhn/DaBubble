@@ -26,6 +26,8 @@
                         <span>{{ message.message }}</span>
                     </div>
 
+                    <Button (click)="test()">TEST</Button>
+
                     @if (dummyThreatService.messages) {
                         @if (chatType !== 'thread' && dummyThreatService.messages.length > 0) {
                             <div class="cursor-pointer flex flex-col xs:flex-row xs:items-center xs:gap-[20px]"

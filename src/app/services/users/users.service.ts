@@ -119,6 +119,7 @@ export class UsersService implements OnDestroy{
   }
   
   getTempUser() {
+    console.log('Current User ???', this.tempUser);
     return this.tempUser;
   }
 

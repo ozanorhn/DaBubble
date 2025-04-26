@@ -4,6 +4,7 @@ import { ChannelsService } from '../../../services/channels/channels.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
+import { UsersService } from '../../../services/users/users.service';
 
 @Component({
   standalone: true,
@@ -16,10 +17,18 @@ export class ChatMessagesComponent {
 
   constructor(    
     public mainNavService: MainNavService,
-    public channelService: ChannelsService,
+    // public channelService: ChannelsService,
     public authService: AuthService,
-    public messageService: MessagesService
-  ) { }
+    public messageService: MessagesService,
+    public userService: UsersService
+  ) {
+   
+   }
+
+   test() {
+    // console.log('TEST GET USER BY ID ', this.messageService.getUserById('PG6Ir3hx8xlEENP26Uhi'));
+    console.log('Users ', this.userService.users);
+   }
   
   newDay = true;
   @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';

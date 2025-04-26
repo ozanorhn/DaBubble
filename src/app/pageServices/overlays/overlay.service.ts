@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { ChannelsService } from '../../services/channels/channels.service';
 import { Channel } from '../../classes/channel.class';
+import { UsersService } from '../../services/users/users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,31 @@ export class OverlayService {
   hideAddUserPopUp = signal(true);
   hideEditChannelPopUp = signal(true);
 
+
+
+
+  constructor(
+    public channelsService: ChannelsService,
+    public userService: UsersService
+  ) { }
+
+
   newChannel = {
     name: '',
     description: '',
+    members: [{
+      name: "Nicolas Developer",
+      email: "nicolas@test.com",
+      createdAt: {
+        seconds: 1745499997,
+        nanoseconds: 173000000
+      },
+      avatar: "/assets/imgs/avatar6.svg",
+      online: false,
+      id: "6xN38YGFasqdAqssgnO9"
+    }]
   }
 
-  constructor(public channelsService: ChannelsService) { }
-
-  
   addCannelPopup() {
     this.hideAddChannelPopUp.update(popup => !popup);
   }
@@ -33,6 +51,7 @@ export class OverlayService {
   createChannel() {
     this.channelsService.channels.push(new Channel(this.newChannel));
     this.channelsService.addChannel(new Channel(this.newChannel));
+    console.log('My added Channel obj', this.newChannel);
   }
 
 }
