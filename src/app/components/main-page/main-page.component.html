@@ -27,8 +27,7 @@
     <app-search class="lg:hidden"></app-search>
     <app-navigation class="w-full h-full"></app-navigation>
   </div>
-  }
-
+  
   @if (mainNavService.showChannel()) {
     @if (mainNavService.newMessage) {
       <app-new-message class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-new-message>
@@ -46,7 +45,7 @@
 </section>
 
 <div [ngClass]="{
-    hidden: overlayService.hideAddChannelPopUp() || showMessagesOnly
+    hidden: overlayService.hideAddChannelPopUp()
   }"
   class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">
   <app-add-channel class="top-[20%]"></app-add-channel>
