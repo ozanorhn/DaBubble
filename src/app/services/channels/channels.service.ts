@@ -338,15 +338,7 @@ export class ChannelsService implements OnInit, OnDestroy {
     ];
 
 
-  // openThread(message: any) {
-  //   this.messages = message['answers'];
-  //   this.threadHeadMessage = message;
-  //   this.chatType = 'thread';
-  // }
 
-  //   addChannel() {
-
-  //   }
 }
 
 
