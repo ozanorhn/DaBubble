@@ -13,7 +13,8 @@ export class MainNavService {
   channel = true;
   thread = false;
   nav = true;
-  directMessage = true;
+  directMessage = false;
+  newMessage = true;
   hideChannelMembers = false;
 
 
@@ -119,6 +120,7 @@ export class MainNavService {
   }
 
   openChannel(dm = false) {
+    this.newMessage = false;
     this.channel = true;
     this.thread = false;
     if (this.mobile) {

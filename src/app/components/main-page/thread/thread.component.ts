@@ -80,5 +80,5 @@ export class ThreadComponent {
       threadId: 'string',
       channelId: 'string',
     }
-  }
+  };
 }
