@@ -42,6 +42,8 @@ export class UsersService implements OnDestroy{
   
   
   async addUser() {
+
+    // const user = new User()
   
     const user = {
       id: '',

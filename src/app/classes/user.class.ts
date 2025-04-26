@@ -4,7 +4,6 @@ export class User {
     email: string;
     avatar:  string; 
     online: boolean;
-    //createdAt: string;
     createdAt: number;
     password?: string;
 
