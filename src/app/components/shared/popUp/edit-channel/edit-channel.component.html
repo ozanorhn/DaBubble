@@ -2,7 +2,7 @@
     
     <div class="flex justify-between px-4 py-10 text-xl font-bold">
         @if (channelService.channels.length > 0) {
-            <h2># {{channelService.channels[0].name}}</h2>
+            <h2># {{channelService.channels[channelService.currentIndex()].name}}</h2>
         }
 
         <img (click)="overlayService.editChannelPopup()" class="hover:scale-[1.1] cursor-pointer duration-150" src="/assets/icons/close.svg" alt="">

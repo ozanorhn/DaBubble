@@ -21,6 +21,9 @@ export class EditNameComponent {
 
   editName() {
     this.edit = !this.edit
-    this.channelService.edit();
+    if (!this.edit) {
+      this.channelService.edit();
+    }
+    
   }
 }
