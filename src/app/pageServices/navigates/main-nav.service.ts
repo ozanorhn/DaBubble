@@ -13,7 +13,8 @@ export class MainNavService {
   channel = true;
   thread = false;
   nav = true;
-  directMessage = true;
+  directMessage = false;
+  newMessage = true;
   hideChannelMembers = false;
 
 
@@ -119,6 +120,7 @@ export class MainNavService {
   }
 
   openChannel(dm = false) {
+    this.newMessage = false;
     this.channel = true;
     this.thread = false;
     if (this.mobile) {
@@ -150,29 +152,5 @@ export class MainNavService {
 
   }
 
-  // addCannelPopup() {
-  //   this.hideAddChannelPopUp.update(popup => !popup);
-  // }
-
-  // addUserPopup() {
-  //   this.hideAddUserPopUp.update(popup => !popup);
-  // }
-
-  // editChannelPopup() {
-  //   this.hideEditChannelPopUp.update(popup => !popup);
-  // }
-
-
-  // newChannel = {
-  //   name: '',
-  //   description: '',
-  // }
-
-
-
-  // createChannel() {
-  //   this.channelsService.channels.push(new Channel(this.newChannel));
-  //   this.channelsService.addChannel(new Channel(this.newChannel));
-  // }
-
+ 
 }

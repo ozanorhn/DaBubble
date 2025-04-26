@@ -6,22 +6,21 @@ import { SearchComponent } from "../search/search.component";
 import { ProfileComponent } from "../popUp/profile/profile.component";
 import { OverlayUiService } from '../../../services/profil/overlay-ui-service.service';
 import { EditProfilComponent } from "../popUp/edit-profil/edit-profil.component";
-
-
+import { UsersService } from '../../../services/users/users.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [CommonModule, RouterModule, LogOutMobileComponent, SearchComponent, ProfileComponent, EditProfilComponent],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrls: ['./header.component.scss'],  // Korrektes Property: styleUrls
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   showOverlay = false;
   isMobile = false;
+  avatarUrl: string = '';
 
-
-constructor(public ui: OverlayUiService, private router: Router) {} 
+  constructor(public ui: OverlayUiService, private router: Router, private userService: UsersService) {}
 
   toggleOverlay() {
     this.showOverlay = !this.showOverlay;
@@ -38,6 +37,9 @@ constructor(public ui: OverlayUiService, private router: Router) {}
   ngOnInit() {
     this.updateMobileStatus();
     window.addEventListener('resize', this.updateMobileStatus.bind(this));
+
+    const user = this.userService.getTempUser();
+    this.avatarUrl = user.avatar ?? '/assets/imgs/avatar1.svg'; // Avatar setzen
   }
 
   ngOnDestroy() {
@@ -49,9 +51,9 @@ constructor(public ui: OverlayUiService, private router: Router) {}
   }
 
   logout() {
-    this.showOverlay = false;         // Overlay schließen
-    this.ui.closeProfile();           // falls Profile Overlay offen ist
-    this.ui.closeEditProfile();       // falls Edit Overlay offen ist
+    this.showOverlay = false; // Overlay schließen
+    this.ui.closeProfile(); // falls Profile Overlay offen ist
+    this.ui.closeEditProfile(); // falls Edit Overlay offen ist
     this.router.navigate(['']); // zur Landing-page weiterleiten
   }
 }

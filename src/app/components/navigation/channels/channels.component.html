@@ -16,8 +16,9 @@
 
     <ul id="dropList" class="flex flex-col w-full gap-2 text-lg">
 
-        @for (channel of channelService.channels; track $index) {
-                <li (click)="mainNavService.openChannel(); channelService.openChannel(channel.id); messageService.getMessages(channel.id)"
+        
+        @for (channel of channelService.channels; track $index; let i = $index) {
+                <li (click)="mainNavService.openChannel(); channelService.openChannel(channel,i); messageService.getMessages(channel)"
                     class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
                     <span class="font-bold">#</span> {{channel.name}}
                 </li>

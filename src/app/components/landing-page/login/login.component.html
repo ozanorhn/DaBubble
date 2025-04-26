@@ -1,7 +1,5 @@
 <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
-
   <div class="absolute hidden md:block top-4 right-4">
-    
     <p class="text-base text-black">Neu bei DABubble?</p>
     <button
       (click)="goToRegister()"
@@ -21,7 +19,7 @@
       verwendest.
     </p>
 
-    <form class="space-y-4">
+    <form class="space-y-4" (ngSubmit)="login()">
       <div class="relative">
         <img
           src="assets/imgs/icons/mail.svg"
@@ -30,7 +28,9 @@
         />
         <input
           type="email"
-          name="login_email"
+          name="email"
+          [(ngModel)]="email"
+          required
           placeholder="beispielname@email.com"
           autocomplete="disabled"
           autocapitalize="off"
@@ -46,7 +46,9 @@
         />
         <input
           type="password"
-          name="login_password"
+          name="password"
+          [(ngModel)]="password"
+          required
           placeholder="Passwort"
           autocomplete="disabled"
           autocapitalize="off"
@@ -66,9 +68,12 @@
         <span class="text-sm text-black">ODER</span>
         <div class="flex-grow h-px bg-lightpurple"></div>
       </div>
-
+      <p *ngIf="error" class="text-red-500 text-sm text-center w-full">
+        {{ error }}
+      </p>
       <button
-        type="button"
+        (click)="googleLogin()"
+        type="submit"
         class="flex items-center justify-center w-full px-4 py-2 space-x-2 border rounded-full border-lightpurple hover:bg-primary"
       >
         <img
@@ -107,4 +112,3 @@
     Konto erstellen
   </button>
 </div>
-

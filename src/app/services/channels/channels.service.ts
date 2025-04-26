@@ -1,10 +1,8 @@
-import { inject, Injectable, OnDestroy, OnInit } from '@angular/core';
-
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Channel } from '../../classes/channel.class';
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
 import { signal } from '@angular/core';
-import { MessagesService } from '../messages/messages.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,42 +10,23 @@ import { MessagesService } from '../messages/messages.service';
 export class ChannelsService implements OnInit, OnDestroy {
 
 
-  // constructor(private firestore: Firestore) {
-  //   console.log('Channel Array', this.channels);
-  // }
-
-
-  // channels = [
-  //   new Channel({
-  //     name: 'Entwicklerteam',
-  //     description: 'Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team Meetings abhalten, Dokumente teilen und Entscheidungen treffen.',
-  //     createdBy: 'Noah Braun'
-  //   }),
-  //   new Channel({ name: 'Frontend' }),
-  //   new Channel({ name: 'Backend' }),
-  //   new Channel({ name: 'DevOps' }),
-  //   new Channel({ name: 'Design-Team' }),
-  //   new Channel({ name: 'Office-team' }),
-  //   new Channel({ name: 'Support' }),
-  // ]
-
   channels: Channel[] = [];
-
-  private unsubscribe!: () => void;
-
+  currentIndex = signal<number>(0);
   channelsCollection;
 
-  // currentId: string = '';
-
-  currentId = signal<string>('');
-
-
-  currentChannel: Channel | undefined;
-  editName = '';
+  createChannel = new Channel({ createdBy: 'UserID343783' });
 
   constructor(public firestore: Firestore) {
     this.channelsCollection = collection(this.firestore, 'channels');
+    this.initChannelsListener();
+  }
 
+
+  ngOnInit(): void { }
+
+  private unsubscribe!: () => void;
+
+  private initChannelsListener() {
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
       this.channels = snapshot.docs.map((doc) => {
         const data = doc.data() as Channel;
@@ -55,37 +34,7 @@ export class ChannelsService implements OnInit, OnDestroy {
         return data;
       })
       console.log('Aktuelle Channels', this.channels);
-
     })
-  }
-
-  async addChannel(channel: Channel) {
-    console.log('current channel is', channel);
-    try {
-      const docRef = await addDoc(this.channelsCollection, channel.toJSON())
-      console.log('Channel added with ID', docRef.id);
-    } catch (error) {
-      console.error('Error adding channel', error);
-    }
-  }
-
-  async edit() {
-    if (this.currentChannel) {
-      await updateDoc(doc(this.channelsCollection, this.currentId()), this.currentChannel.toJSON());
-    }
-  }
-
-
-  ngOnInit(): void {
-
-
-    // const chennelRef = doc(db, "cities", "DC");
-
-    // // Set the "capital" field of the city 'DC'
-    // await updateDoc(washingtonRef, {
-    //   capital: true
-    // });
-
   }
 
 
@@ -96,35 +45,48 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  // Ohne Signals 
-  // openChannel(id: string | undefined) {
-  //   if (id) {
-  //     console.log(id);
-  //     this.currentId = id;
-  //     this.getCurrentChannel(id);
-  //   }
-  // }
-
-// Mit Signals testen
-    openChannel(id: string | undefined) {
-    if (id) {
-      console.log(id);
-      this.currentId.set(id) ;
-      this.getCurrentChannel(id);
-    //  this.messageService.getMessages(id)
+  async addChannel(channelData: Channel) {
+    console.log('current channel is', channelData);
+    try {
+      const docRef = await addDoc(this.channelsCollection, this.createChannel.toJSON())
+      console.log('Channel added with ID', docRef.id);
+    } catch (error) {
+      console.error('Error adding channel', error);
     }
-    
   }
 
 
-  getCurrentChannel(id: string) {
-    this.channels.filter((x) => {
-      if (x.id === id) {
-        this.currentChannel = x;
-        console.log('Channel Obj ', this.currentChannel);
-      }
-    })
+  async edit() {
+    const index = this.currentIndex();
+    const channel = this.channels[index];
+    const channelData = {
+      name: channel.name,
+      description: channel.description,
+      members: channel.members,
+      messagesID: channel.messagesID,
+      createdBy: channel.createdBy
+    };
+
+    if (!channel || !channel.id) {
+      console.error('Channel nicht gefunden oder hat keine ID');
+      return;
+    }
+
+    await updateDoc(
+      doc(this.channelsCollection, channel.id),
+      channelData
+    );
   }
+
+
+  openChannel(obj: Channel, i: number) {
+    if (obj) {
+      console.log(obj);
+      this.currentIndex.set(i);
+    }
+  }
+
+
 
   channels2 = [
     { name: 'Entwicklerteam', users: [{ avatar: 3 }, { avatar: 6 }, { avatar: 5 }, { avatar: 1 }, { avatar: 3 }, { avatar: 2 }, { avatar: 4 }] },
@@ -135,10 +97,6 @@ export class ChannelsService implements OnInit, OnDestroy {
     { name: 'Office-team' },
     { name: 'Support' },
   ]
-
-
-
-
 
 
   // public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'channel';
@@ -380,15 +338,7 @@ export class ChannelsService implements OnInit, OnDestroy {
     ];
 
 
-  // openThread(message: any) {
-  //   this.messages = message['answers'];
-  //   this.threadHeadMessage = message;
-  //   this.chatType = 'thread';
-  // }
 
-  //   addChannel() {
-
-  //   }
 }
 
 
