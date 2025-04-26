@@ -12,7 +12,7 @@
                     <span class="text-lg font-bold">{{ dummmyAuthService.users[0].name }}</span>
                     <span class="text-sm">{{ dummyThreatService.chatMessage.timestamp }}</span>
                 </div>
-                <div class=" p-[15px] rounded-[30px]" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser('user.id'), 'bg-primary rounded-ss-none': !fromCurrentUser('user.id') }">
+                <div class=" p-[15px] rounded-[30px] w-min" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser('user.id'), 'bg-primary rounded-ss-none': !fromCurrentUser('user.id') }">
                     <span>{{ dummyThreatService.chatMessage.message }}</span>
                 </div>
             </div>
@@ -20,8 +20,8 @@
 
         <div class="flex items-center text-[18px] my-[10px] px-4">
             <div class="py-[5px] px-[15px] whitespace-nowrap">
-                @if (dummyThreatService.messages.length > 0) {
-                    <p>{{ dummyThreatService.messages.length }} Antworten</p>
+                @if (threadService.getThread().content.length > 0) {
+                    <p>{{ threadService.getThread().content.length }} Antworten</p>
                 }
             </div>
             <div class="w-full h-[1px] bg-lightpurple"></div>
