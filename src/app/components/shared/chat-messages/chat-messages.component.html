@@ -64,7 +64,7 @@
                           }
                       }
 
-                      @if (message.reactions.length > 0) {
+                      @if (message.reactions > 0) {
                           <div class="flex items-center gap-2 w-max" [ngClass]="{'self-end pr-[5px]': fromCurrentUser('user.id')}">
                               @for (reaction of message.reactions; track $index) {
                                   <button class="flex items-center border-lightpurple border-[1px] rounded-full gap-[10px] py-[5px] px-[10px]">
