@@ -4,11 +4,12 @@ import { ChannelsService } from '../../../services/channels/channels.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
+import { ChatSeperatorComponent } from '../chat-seperator/chat-seperator.component';
 
 @Component({
   standalone: true,
   selector: 'app-chat-messages',
-  imports: [CommonModule],
+  imports: [CommonModule, ChatSeperatorComponent],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })

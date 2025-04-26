@@ -5,9 +5,9 @@
     class="w-[60px] h-fit fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50">
     <span class="mt-2 text-xl">
       @if (mainNavService.nav) {
-      <span><img src="assets/imgs/directions.svg" alt="" /></span>
+        <span><img src="assets/imgs/directions.svg" alt="" /></span>
       } @if (!mainNavService.nav) {
-      <span><img class="rotate-180" src="assets/imgs/directions.svg" alt="" /></span>
+        <span><img class="rotate-180" src="assets/imgs/directions.svg" alt="" /></span>
       }
     </span>
     <span class="leading-tight text-center rotate-180 writing-vertical-lr text-l">
@@ -23,10 +23,11 @@
 <section class="flex h-[calc(100vh-80px)] gap-3 p-3 bg-primary">
 
   @if (mainNavService.showNav()) {
-  <div class="flex flex-col w-full h-[calc(100% - 3rem)] lg:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white">
-    <app-search class="lg:hidden"></app-search>
-    <app-navigation class="w-full h-full"></app-navigation>
-  </div>
+    <div class="flex flex-col w-full h-[calc(100% - 3rem)] lg:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white">
+      <app-search class="lg:hidden"></app-search>
+      <app-navigation class="w-full h-full"></app-navigation>
+    </div>
+  }
   
   @if (mainNavService.showChannel()) {
     @if (mainNavService.newMessage) {
