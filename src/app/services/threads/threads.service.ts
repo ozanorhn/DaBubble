@@ -27,13 +27,13 @@ export class ThreadsService {
           timestamp: new Date()
         },
         {
-          message: 'Hallo ich bin eine die zweite Thread Nachricht',
+          message: 'Hallo ich bin die zweite Thread Nachricht',
           sender: 'User Id ',
           reactions: [],
           timestamp: new Date()
         },
         {
-          message: 'Hallo ich bin eine die dritte Thread Nachricht',
+          message: 'Hallo ich bin die dritte Thread Nachricht',
           sender: 'User Id ',
           reactions: [],
           timestamp: new Date()

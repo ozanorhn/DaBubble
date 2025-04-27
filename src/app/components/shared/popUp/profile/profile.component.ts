@@ -16,12 +16,18 @@ export class ProfileComponent {
   name: string = '';
   email: string = '';
 
+  editProfil = false;
+  usersProfil = false;
+
   constructor(
     public userService: UsersService,
     private router: Router,
     private location: Location,
     private ui: OverlayUiService,
     public overlayService: OverlayService) { }
+
+
+
 
   ngOnInit() {
     const user = this.userService.getTempUser();
@@ -43,6 +49,12 @@ export class ProfileComponent {
   openEditProfileOverlay() {
     this.ui.closeProfile();
     this.ui.openEditProfile();
+  }
+
+
+
+  editProfile() {
+    this.editProfil = !this.editProfil
   }
 
 }

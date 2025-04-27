@@ -5,8 +5,8 @@
 
   <div class="flex justify-between w-full">
     <span class="text-2xl font-bold">Profil</span>
-    <img  (click)="overlayService.profileOverlay()" class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]"
-      src="/assets/icons/close.svg" alt="" />
+    <img (click)="overlayService.profileOverlay()"
+      class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]" src="/assets/icons/close.svg" alt="" />
   </div>
 
 
@@ -16,13 +16,31 @@
   </div>
 
 
+  @if (editProfil) {
+  <div class="flex flex-col w-full gap-2">
+    <div class="flex items-center gap-5 font-bold">
+      <img src="/assets/icons/account_circle.svg" alt="">
 
-  <div class="flex flex-col h-20">
+      <p>Vollständiger Name</p>
+    </div>
+    <input class="w-full px-5 py-4 border border-lightpurple rounded-[30px]" type="text" placeholder="Frederik Beck">
+  </div>
+  } @else {
+  <div class="flex flex-col h-20 gap-4">
+
     <div class="flex justify-between">
-      <p class="flex text-3xl font-bold w-fit mr-[24px]">{{ name }}</p>
+      <p class="flex text-3xl font-bold w-fit mr-[24px]">Frederik Beck</p>
+
+      @if (usersProfil) {} @else {
       <img
-        class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9] w-[40px] h-[40px] rounded-[40px] p-[3px] gap-[0px] transition-all ease-out"
+        class="max-[500px]:block cursor-pointer hidden hover:scale-[1.2] duration-200 active:scale-[0.9] w-[40px] h-[40px] rounded-[40px] p-[3px]"
+        (click)="editProfile()"
         src="/assets/icons/edit2.svg" alt="" />
+      <span
+        class="max-[500px]:hidden cursor-pointer hover:scale-[1.2] duration-200 active:scale-[0.9]  p-[3px] gap-[0px] transition-all text-purple1 ease-out"
+        (click)="editProfile()">Bearbeiten</span>
+      }
+
     </div>
 
     <div class="flex items-center gap-4">
@@ -30,10 +48,7 @@
       Aktiv
     </div>
 
-
   </div>
-
-
 
   <div class="flex items-start gap-5">
     <img src="/assets/icons/mail.svg" alt="" />
@@ -44,17 +59,37 @@
     </div>
   </div>
 
+  }
 
 
+
+  @if (usersProfil) {
   <div class="flex justify-center w-full">
-
     <button
       class="flex text-white px-6 py-3 bg-purple1 rounded-[50px] gap-3 hover:scale-[1.2] duration-200 active:scale-[0.9]">
       <img src="/assets/icons/mode_comment.svg" alt="" />
       Nachricht
     </button>
-    
   </div>
+  }
+
+
+
+  @if(editProfil){
+  <div class="flex justify-center w-full gap-8">
+    <button
+      class="flex  px-6 py-3 border border-purple2 text-purple1 rounded-[50px] gap-3 hover:scale-[1.2] duration-200 active:scale-[0.9]"
+      (click)="editProfile()">
+      Abbrechen
+    </button>
+
+    <button
+      class="flex text-white px-6 py-3 bg-purple1 rounded-[50px] gap-3 hover:scale-[1.2] duration-200 active:scale-[0.9]">
+      Speichern
+    </button>
+  </div>
+  }
+
 
 
 
