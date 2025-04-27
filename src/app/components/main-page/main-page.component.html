@@ -51,10 +51,11 @@
   <app-add-channel class="top-[20%]"></app-add-channel>
 </div>
 
-<div class="absolute bottom-0" [ngClass]="{
+<div class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center lg:items-center" [ngClass]="{
     hidden: overlayService.hideAddUserPopUp() || showMessagesOnly
   }">
-  <app-add-user1></app-add-user1>
+  <!-- <app-add-user1></app-add-user1> -->
+   <app-add-user class="w-full max-w-[710px]"></app-add-user>
 </div>
 
 <div [ngClass]="{hidden: overlayService.hideEditChannelPopUp()}"

@@ -13,13 +13,14 @@ import { ThreadComponent } from './thread/thread.component';
 import { ChannelComponent } from './channel/channel.component';
 import { NewMessageComponent } from './new-message/new-message.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
+import { AddUserComponent } from "../shared/popUp/add-user/add-user.component";
 
 @Component({
   selector: 'app-main-page',
   imports: [
     HeaderComponent,
     NavigationComponent,
-    AddUser1Component,
+    // AddUser1Component,
     AddChannelComponent,
     CommonModule,
     SearchComponent,
@@ -27,8 +28,9 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
     ThreadComponent,
     ChannelComponent,
     NewMessageComponent,
-    DirectMessageComponent
-  ],
+    DirectMessageComponent,
+    AddUserComponent,
+],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
