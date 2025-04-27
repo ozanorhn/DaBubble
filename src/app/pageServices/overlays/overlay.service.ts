@@ -7,9 +7,15 @@ import { UsersService } from '../../services/users/users.service';
   providedIn: 'root'
 })
 export class OverlayService {
+
+
   hideAddChannelPopUp = signal(true);
   hideAddUserPopUp = signal(true);
   hideEditChannelPopUp = signal(true);
+
+  hideProfileOverlay = true;
+
+  hideLogoutOverlay = true;
 
 
 
@@ -20,6 +26,10 @@ export class OverlayService {
   ) { }
 
 
+
+
+  //////////////////////////
+  /// Geht in den ChannelService 
   newChannel = {
     name: '',
     description: '',
@@ -36,6 +46,15 @@ export class OverlayService {
     }]
   }
 
+  createChannel() {
+    this.channelsService.channels.push(new Channel(this.newChannel));
+    this.channelsService.addChannel(new Channel(this.newChannel));
+    console.log('My added Channel obj', this.newChannel);
+  }
+  ///////////////////////////////////////////////////////////
+
+
+
   addCannelPopup() {
     this.hideAddChannelPopUp.update(popup => !popup);
   }
@@ -48,10 +67,16 @@ export class OverlayService {
     this.hideEditChannelPopUp.update(popup => !popup);
   }
 
-  createChannel() {
-    this.channelsService.channels.push(new Channel(this.newChannel));
-    this.channelsService.addChannel(new Channel(this.newChannel));
-    console.log('My added Channel obj', this.newChannel);
+
+  profileOverlay(){
+    this.hideProfileOverlay = !this.hideProfileOverlay
   }
+
+  logoutOvelay(){
+    this.hideLogoutOverlay =  !this.hideLogoutOverlay
+  }
+
+
+
 
 }
