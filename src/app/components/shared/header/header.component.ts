@@ -12,7 +12,11 @@ import { OverlayService } from '../../../pageServices/overlays/overlay.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, SearchComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    SearchComponent
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],  // Korrektes Property: styleUrls
 })
@@ -21,7 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isMobile = false;
   avatarUrl: string = '';
 
-  constructor(public ui: OverlayUiService, private userService: UsersService, public overlayService: OverlayService) {}
+  constructor(public ui: OverlayUiService, private userService: UsersService, public overlayService: OverlayService) { }
 
   toggleOverlay() {
     this.showOverlay = !this.showOverlay;
