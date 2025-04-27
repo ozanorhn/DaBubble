@@ -50,31 +50,31 @@
 
 <!--Overlays-->
 
-<div [ngClass]="{ hidden: overlayService.hideAddChannelPopUp()}"
+<div (click)="overlayService.addCannelOverlay()" [ngClass]="{hidden: overlayService.hideAddChannel}"
   class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">
-  <app-add-channel class="top-[20%]"></app-add-channel>
+  <app-add-channel (click)="$event.stopPropagation()" class="top-[20%]"></app-add-channel>
 </div>
 
 
-<div class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center lg:items-center" [ngClass]="{
-    hidden: overlayService.hideAddUserPopUp() || showMessagesOnly
-  }">
-  <app-add-user class="w-full max-w-[710px]"></app-add-user>
+<div (click)="overlayService.addUserOverlay()" class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center lg:items-center"
+  [ngClass]="{hidden: overlayService.hideAddUser}">
+  <app-add-user (click)="$event.stopPropagation()" class="w-full max-w-[710px]"></app-add-user>
 </div>
 
 
-<div [ngClass]="{hidden: overlayService.hideEditChannelPopUp()}"
-  class="flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)]">
-  <app-edit-channel></app-edit-channel>
+<div (click)="overlayService.editChannel()" [ngClass]="{hidden: overlayService.hideEditChannel}"
+  class="flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.4)]">
+  <app-edit-channel (click)="$event.stopPropagation()"></app-edit-channel>
 </div>
 
 
-<div [ngClass]="{hidden: overlayService.hideProfileOverlay}"
-  class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center z-[1]">
-  <app-profile class="w-full max-w-lg"></app-profile>
+<div (click)="overlayService.profileOverlay()" [ngClass]="{hidden: overlayService.hideProfileOverlay}"
+  class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center z-[1] bg-[rgba(0,0,0,0.4)]">
+  <app-profile (click)="$event.stopPropagation()" class="w-full max-w-lg"></app-profile>
 </div>
 
 
-<div (click)="overlayService.logoutOvelay()" [ngClass]="{hidden: overlayService.hideLogoutOverlay}" class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center lg:items-start lg:justify-end">
+<div (click)="overlayService.logoutOvelay()" [ngClass]="{hidden: overlayService.hideLogoutOverlay}"
+  class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
   <app-log-out class="w-full lg:w-fit lg:mt-24 lg:mr-4"></app-log-out>
 </div>

@@ -9,12 +9,10 @@ import { UsersService } from '../../services/users/users.service';
 export class OverlayService {
 
 
-  hideAddChannelPopUp = signal(true);
-  hideAddUserPopUp = signal(true);
-  hideEditChannelPopUp = signal(true);
-
+  hideAddChannel = true;
+  hideAddUser = true;
+  hideEditChannel = true;
   hideProfileOverlay = true;
-
   hideLogoutOverlay = true;
 
 
@@ -55,16 +53,16 @@ export class OverlayService {
 
 
 
-  addCannelPopup() {
-    this.hideAddChannelPopUp.update(popup => !popup);
+  addCannelOverlay() {
+    this.hideAddChannel = !this.hideAddChannel
   }
 
-  addUserPopup() {
-    this.hideAddUserPopUp.update(popup => !popup);
+  addUserOverlay() {
+    this.hideAddUser = !this.hideAddUser;
   }
 
-  editChannelPopup() {
-    this.hideEditChannelPopUp.update(popup => !popup);
+  editChannel() {
+    this.hideEditChannel = !this.hideEditChannel
   }
 
 
