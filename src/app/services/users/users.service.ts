@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, onSnapshot } from '@firebase/firestore';
+import {doc, updateDoc, addDoc, collection, onSnapshot } from '@firebase/firestore';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider,  User as FirebaseUser } from '@angular/fire/auth';
 
 @Injectable({
@@ -107,7 +107,7 @@ export class UsersService implements OnDestroy{
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       console.log('Login erfolgreich:', userCredential.user.email);
       return userCredential.user;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Login fehlgeschlagen:', error);
       throw error;
     }
@@ -155,6 +155,17 @@ export class UsersService implements OnDestroy{
     return this.users.find(user => user.email === email);
   }
 
+  async updateUser(userId: string, updatedData: Partial<User>) {
+    const userDocRef = doc(this.firestore, 'users', userId);
+    try {
+      await updateDoc(userDocRef, updatedData);
+      console.log('User erfolgreich aktualisiert:', updatedData);
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Users:', error);
+      throw error;
+    }
+  } 
 
+ 
 
 }
