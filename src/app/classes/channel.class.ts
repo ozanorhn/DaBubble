@@ -4,7 +4,7 @@ export class Channel {
     id?: string;
     name: string;
     description: string;
-    members:{} [];
+    members: string[];
     messagesID: string;
     createdBy: string
 
