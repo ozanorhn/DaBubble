@@ -2,24 +2,24 @@ import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, onSnapshot } from '@firebase/firestore';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider,  User as FirebaseUser } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService implements OnDestroy{
+export class UsersService implements OnDestroy {
   // private auth = inject(Auth);
 
   private firestore = inject(Firestore);
   private auth = inject(Auth);
- 
+
 
 
   usersCollection = collection(this.firestore, 'users');
   unsubscribe: () => void;
   users: User[] = [];
   tempUser: Partial<User> = {};
- 
+
   constructor() {
     console.log('UsersService gestartet');
 
@@ -39,12 +39,12 @@ export class UsersService implements OnDestroy{
       this.unsubscribe();
     }
   }
-  
-  
+
+
   async addUser() {
 
     // const user = new User()
-  
+
     const user = {
       id: '',
       name: this.tempUser.name ?? '',
@@ -55,7 +55,7 @@ export class UsersService implements OnDestroy{
       //createdAt: new Date().toISOString()
       createdAt: Date.now()
     };
-  
+
     try {
       const docRef = await addDoc(this.usersCollection, user);
       console.log('User erstellt mit ID:', docRef.id);
@@ -72,24 +72,24 @@ export class UsersService implements OnDestroy{
     const password = this.tempUser.password ?? '';
     const name = this.tempUser.name ?? '';
     const avatarPath = this.tempUser.avatar ?? '/assets/imgs/avatar1.svg';
-  
+
     try {
       // Schritt 1: Erstelle einen neuen Benutzer bei Firebase Authentication
       // mit der E-Mail und dem Passwort.
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       // Nach erfolgreicher Anmeldung enthält userCredential das Firebase-User-Objekt.
       const firebaseUser = userCredential.user;
-  
+
       // Schritt 2: Erstelle ein Nutzerprofil für Firestore, ohne das Passwort zu speichern.
       const userProfile: Partial<User> = {
-        name,            
-        email,           
-        avatar: avatarPath, 
+        name,
+        email,
+        avatar: avatarPath,
         online: true,     // Der Nutzer ist online (Status)
         //createdAt: new Date().toISOString() // Zeitstempel der Registrierung
         createdAt: Date.now()
       };
-  
+
       // Schritt 3: Speichere das Nutzerprofil in der Firestore-Collection 'users'.
       await addDoc(this.usersCollection, userProfile);
       console.log('Registrierung erfolgreich:', userProfile); // Erfolgsmeldung in der Konsole
@@ -99,7 +99,7 @@ export class UsersService implements OnDestroy{
       throw error; // Fehler wird nach oben weitergereicht, damit er z.B. im UI verarbeitet werden kann.
     }
   }
-  
+
 
   // 🔓 Login mit E-Mail & Passwort
   async login(email: string, password: string): Promise<FirebaseUser> {
@@ -117,7 +117,7 @@ export class UsersService implements OnDestroy{
     this.tempUser = { ...this.tempUser, ...data };
     console.log('TempUser gesetzt:', this.tempUser);  // Überprüfe, ob der Avatar korrekt gesetzt wird
   }
-  
+
   getTempUser() {
     console.log('Current User ???', this.tempUser);
     return this.tempUser;
@@ -138,7 +138,7 @@ export class UsersService implements OnDestroy{
         email: user.email || '',
         avatar: user.photoURL || '/assets/imgs/avatar1.svg', // Standard-Avatar
         online: true,
-       //createdAt: new Date().toISOString()
+        //createdAt: new Date().toISOString()
         createdAt: Date.now()
       };
 
@@ -154,6 +154,33 @@ export class UsersService implements OnDestroy{
   getUserByEmail(email: string): User | undefined {
     return this.users.find(user => user.email === email);
   }
+
+
+
+// getUserById2(id: string) {
+//   const user = this.users.find(u => u.id === id);
+//   return user?.name;
+// }
+
+
+
+getUserById2(id: string) {
+
+  console.log('Filter id bey Name ',this.users.find((user) => id === user.id)?.name );
+  console.log('Users Array ',this.users);
+  
+  
+  return this.users.find((user) => id === user.id)?.name;
+}
+
+
+// getUserById(id: string) {
+//   this.users.filter((user) => {
+//     if (id == user.id) {
+//       return user.name
+//     }
+//   });
+// }
 
 
 
