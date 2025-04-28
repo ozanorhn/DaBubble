@@ -15,10 +15,11 @@ export class FilterService {
   searchValue = signal('');
   
   channelArray = this.channels.channels;
-  userArray = this.users.users;
+  // userArray = this.users.users;
 
 
   filteredResults = computed(() => {
+    // debugger;
     const searchTerm = this.searchValue().toLowerCase();
     if (searchTerm.startsWith('@')) {
       return this.filterUsers(searchTerm)
@@ -31,30 +32,45 @@ export class FilterService {
     }
   });
 
-
+  
   filterUsers(searchTerm: string) {
     const userSearch = searchTerm.substring(1);
-    return this.userArray.filter(user =>
+
+    
+    console.log('Filter Array ', this.users.users.filter(user =>
+      user.name.toLowerCase().includes(userSearch)));
+    
+    return this.users.users.filter(user =>
       user.name.toLowerCase().includes(userSearch)
     )
   }
 
+
   filterChannels(searchTerm: string) {
     const channelSearch = searchTerm.substring(1);
-    return this.channelArray.filter(channel =>
+
+    console.log('Filter Array Channel ', this.channels.channels.filter(user =>
+      user.name.toLowerCase().includes(channelSearch)));
+
+    return this.channels.channels.filter(channel =>
       channel.name.toLowerCase().includes(channelSearch)
     )
   }
 
+
   filterAll(searchTerm: string) {
-    const userResults = this.userArray.filter(user =>
+
+    const userResults = this.users.users.filter(user =>
       user.name.toLowerCase().includes(searchTerm)
     )
-    const channelResults = this.channelArray.filter(channel =>
+
+    const channelResults = this.channels.channels.filter(channel =>
       channel.name.toLowerCase().includes(searchTerm)
     )
+
+    console.log('All Filter',[...userResults, ...channelResults]);
+
     return [...userResults, ...channelResults];
   }
-
   
 }
