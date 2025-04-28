@@ -30,16 +30,17 @@
         </ul>
         }
 
-        @if(filterService.searchValue().length < 1) { 
-            <app-channels></app-channels>
+        @if(filterService.searchValue().length < 1) { <app-channels></app-channels>
             <app-direct-messages></app-direct-messages>
             }
 
 
     </div>
 
-    <button class="absolute p-2 text-white border bottom-16 left-4 bg-slate-500" (click)="directMessageService.sendDirectMessage()" >Send Test DirectMessages to Firebase</button>
+    <button class="absolute p-2 text-white border bottom-16 left-4 bg-slate-500"
+        (click)="directMessageService.sendDirectMessage()">Send Test DirectMessages to Firebase</button>
 
-    <button class="absolute p-2 text-white border bottom-2 left-4 bg-slate-500" (click)="threadService.sendThread()">Send Test Thread to Firebase</button>
+    <button class="absolute p-2 text-white border bottom-2 left-4 bg-slate-500"
+        (click)="threadService.sendThread()">Send Test Thread to Firebase</button>
 
 </section>

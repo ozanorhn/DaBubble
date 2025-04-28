@@ -1,13 +1,14 @@
+import { Timestamp } from "@angular/fire/firestore";
+
 export class Message {
         id?: string;
         message: string;
         sender: string;
-        timestamp: number;
-        createdBy: string;
+        timestamp: Timestamp;
         reactions: [{
             id: number;
             users: string[];
-        }];
+        }] | [];
         threadId: string;
         channelId: string;
     
@@ -16,9 +17,8 @@ export class Message {
             this.message = obj ? obj.message : '';
             this.sender = obj ? obj.sender : '';
             this.timestamp = obj ? obj.timestamp : 0;
-            this.createdBy = obj ? obj.createdBy : '';
             this.reactions =  obj ? obj.reactions : [];
-            this.threadId =  obj ? obj.thread : [];
+            this.threadId =  obj ? obj.threadId : '';
             this.channelId =  obj ? obj.channelId : [];
         }
     
@@ -28,7 +28,6 @@ export class Message {
                 message: this.message,
                 sender: this.sender,
                 timestamp: this.timestamp,
-                createdBy: this.createdBy,
                 reactions: this.reactions,
                 threadId: this.threadId,
                 channelId: this.channelId

@@ -18,7 +18,7 @@ import { MainNavService } from '../../../pageServices/navigates/main-nav.service
 })
 export class DirectMessagesComponent {
 
-  constructor(public userService: UsersService, private mainNavService: MainNavService) { }
+  constructor(public userService: UsersService, public mainNavService: MainNavService) { }
 
 
   directMessagesToggle() {

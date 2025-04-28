@@ -24,11 +24,11 @@ export class ChatHeaderComponent {
 
   getChannelName() {
     setTimeout(() => {
-      // if (this.channelService.channels[this.channelService.currentIndex()].name) {
-      //   return this.channelService.channels[this.channelService.currentIndex()].name;
-      // } else {
+      if (this.channelService.channels[this.channelService.currentIndex()].name) {
+        return this.channelService.channels[this.channelService.currentIndex()].name;
+      } else {
         return 'NameFail'
-      // }
+      }
     }, 1000);
   }
 
