@@ -32,7 +32,7 @@ export class ChatMessagesComponent {
   ) { }
 
   newDay = true;
-  @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
+  @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
   @Input() threadHeadMessage: any;
   @Input() messages: any[] | undefined; // oder der passende Typ
 
