@@ -22,6 +22,18 @@ export class ChatHeaderComponent {
   @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
 
 
+  getChannelName() {
+    setTimeout(() => {
+      // if (this.channelService.channels[this.channelService.currentIndex()].name) {
+      //   return this.channelService.channels[this.channelService.currentIndex()].name;
+      // } else {
+        return 'NameFail'
+      // }
+    }, 1000);
+  }
+
+
   // headline = signal({});
+
 
 }
