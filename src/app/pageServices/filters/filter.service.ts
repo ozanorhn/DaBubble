@@ -34,12 +34,7 @@ export class FilterService {
 
   
   filterUsers(searchTerm: string) {
-    const userSearch = searchTerm.substring(1);
-
-    
-    console.log('Filter Array ', this.users.users.filter(user =>
-      user.name.toLowerCase().includes(userSearch)));
-    
+    const userSearch = searchTerm.substring(1);  
     return this.users.users.filter(user =>
       user.name.toLowerCase().includes(userSearch)
     )
@@ -48,10 +43,6 @@ export class FilterService {
 
   filterChannels(searchTerm: string) {
     const channelSearch = searchTerm.substring(1);
-
-    console.log('Filter Array Channel ', this.channels.channels.filter(user =>
-      user.name.toLowerCase().includes(channelSearch)));
-
     return this.channels.channels.filter(channel =>
       channel.name.toLowerCase().includes(channelSearch)
     )
@@ -59,17 +50,13 @@ export class FilterService {
 
 
   filterAll(searchTerm: string) {
-
     const userResults = this.users.users.filter(user =>
       user.name.toLowerCase().includes(searchTerm)
     )
-
     const channelResults = this.channels.channels.filter(channel =>
       channel.name.toLowerCase().includes(searchTerm)
     )
-
-    console.log('All Filter',[...userResults, ...channelResults]);
-
+    // console.log('All Filter',[...userResults, ...channelResults]);
     return [...userResults, ...channelResults];
   }
   
