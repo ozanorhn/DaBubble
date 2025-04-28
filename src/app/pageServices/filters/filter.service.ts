@@ -12,9 +12,10 @@ export class FilterService {
   users = inject(UsersService);
   channels = inject(ChannelsService);
 
-  searchValue = signal('')
-  channelArray = this.channels.channels
-  userArray = this.users.users
+  searchValue = signal('');
+  
+  channelArray = this.channels.channels;
+  userArray = this.users.users;
 
 
   filteredResults = computed(() => {

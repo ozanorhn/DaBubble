@@ -4,6 +4,8 @@ import { addDoc, collection, Firestore, getDocs, query, where } from '@angular/f
 
 import { Message } from '../../classes/message.class';
 import { Channel } from '../../classes/channel.class';
+import { UsersService } from '../users/users.service';
+import { User } from '../../classes/user.class';
 
 
 
@@ -17,30 +19,35 @@ export class MessagesService {
 
   messages = signal<Message[]>([]);
 
+  members: [] = [];
 
-
-  constructor(public channelService: ChannelsService, public firestore: Firestore) {
+  constructor(
+    public channelService: ChannelsService,
+    public firestore: Firestore,
+    public userService: UsersService
+  ) {
     this.messageCollection = collection(this.firestore, 'messages');
     this.channelService.currentIndex();
+
+    // this.getUserById('5Ld4OSJtEIoZ9hCNDIJ1')
   }
 
 
   getMessage() {
     return {
       name: 'Hallo Test 2',
-      sender: 'UserIdd4t45t34tf',
+      sender: '5Ld4OSJtEIoZ9hCNDIJ1',
       timestamp: new Date(),
-      createdBy: '84592305',
       reactions: [],
-      threadId: '',
-      channelId: this.channelService.currentIndex()
+      threadId: 'WIDsWo1ivqW8d8csYtiS',
+      channelId: this.channelService.channels[this.channelService.currentIndex()].id
     }
   }
 
 
-  // async getMessages(channelId: string | undefined) {
-
-  //   const q = query(this.messageCollection, where('channelId', '==', channelId));
+  //// Test Get Members
+  // async getMember() {
+  //   const q = query(this.userService.usersCollection, where('channelId', '==', obj.id));
   //   const querySnapshot = await getDocs(q);
   //   const messages = querySnapshot.docs.map(doc => ({
   //     id: doc.id,
@@ -51,6 +58,32 @@ export class MessagesService {
   //   console.log('Message Array', this.messages());
   //   return messages;
   // }
+
+
+  // getUserById(id: string) {
+  //   let thisUser: undefined | User = undefined;
+  //   this.userService.users.forEach(user => {
+  //     if (user.id === id) {
+  //       console.log('Return User', user);
+  //       thisUser = user;
+  //     }
+  //   });
+  //   return thisUser;
+  // }
+
+  // getUserNameById(id: string) {
+  //   let user: User | undefined = this.getUserById(id);
+  //   if (user instanceof User) {
+  //     return user.name
+  //   }
+  // }
+
+  getMembers() {
+    // for (let i = 0; i < members.length; i++) {
+    //   this.getUserById()
+
+    // }
+  }
 
 
   async getMessages(obj: Channel) {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ChatHeaderComponent } from "../../shared/chat-header/chat-header.component";
 import { ChatMessagesComponent } from "../../shared/chat-messages/chat-messages.component";
 import { ChatInputComponent } from "../../shared/chat-input/chat-input.component";
+import { MessagesService } from '../../../services/messages/messages.service';
 
 @Component({
   selector: 'app-channel',
@@ -10,12 +11,13 @@ import { ChatInputComponent } from "../../shared/chat-input/chat-input.component
   styleUrl: './channel.component.scss'
 })
 export class ChannelComponent {
+
   dummyThreatService = {
     messages: [{
       id: 'string',
       message: 'string',
       sender: 'Florian Rauh',
-      timestamp: 12,
+      timestamp: '24. April 2025 um 22:44:45 UTC+2',
       createdBy: 'string',
       reactions: [{
         id: 0,
@@ -28,7 +30,7 @@ export class ChannelComponent {
       id: 'string',
       message: 'string',
       sender: 'Florian Rauh',
-      timestamp: 12,
+      timestamp: '26. April 2025 um 22:44:45 UTC+2',
       createdBy: 'string',
       reactions: [{
         id: 0,
@@ -41,7 +43,7 @@ export class ChannelComponent {
       id: 'string',
       message: 'string',
       sender: 'Florian Rauh',
-      timestamp: 12,
+      timestamp: '26. April 2025 um 22:44:45 UTC+2',
       createdBy: 'string',
       reactions: [{
         id: 0,
@@ -54,7 +56,7 @@ export class ChannelComponent {
       id: 'string',
       message: 'string',
       sender: 'Florian Rauh',
-      timestamp: 12,
+      timestamp: '26. April 2025 um 22:44:45 UTC+2',
       createdBy: 'string',
       reactions: [{
         id: 0,
@@ -64,4 +66,9 @@ export class ChannelComponent {
       channelId: 'string',
     }
   };
+
+  constructor(
+   public messageService: MessagesService
+  ) {}
+
 }

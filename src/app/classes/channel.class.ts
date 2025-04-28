@@ -1,8 +1,10 @@
+import { User } from "./user.class";
+
 export class Channel {
     id?: string;
     name: string;
     description: string;
-    members: string[];
+    members:{} [];
     messagesID: string;
     createdBy: string
 

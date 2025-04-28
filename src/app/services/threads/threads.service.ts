@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { addDoc, collection } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
+import { timestamp } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,22 +19,24 @@ export class ThreadsService {
   getThread() {
     return {
       threadId: 'Test Thread',
-      threadMessageId: 'UserIdd4t45t34tf',
       content: [
         {
           message: 'Hallo ich bin die erste Thread Nachricht',
           sender: 'User Id ',
-          reactions: []
+          reactions: [],
+          timestamp: new Date()
         },
         {
-          message: 'Hallo ich bin eine die zweite Thread Nachricht',
+          message: 'Hallo ich bin die zweite Thread Nachricht',
           sender: 'User Id ',
-          reactions: []
+          reactions: [],
+          timestamp: new Date()
         },
         {
-          message: 'Hallo ich bin eine die dritte Thread Nachricht',
+          message: 'Hallo ich bin die dritte Thread Nachricht',
           sender: 'User Id ',
-          reactions: []
+          reactions: [],
+          timestamp: new Date()
         }
       ]
     }

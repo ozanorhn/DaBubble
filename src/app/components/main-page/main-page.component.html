@@ -5,9 +5,9 @@
     class="w-[60px] h-fit fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50">
     <span class="mt-2 text-xl">
       @if (mainNavService.nav) {
-      <span><img src="assets/imgs/directions.svg" alt="" /></span>
+        <span><img src="assets/imgs/directions.svg" alt="" /></span>
       } @if (!mainNavService.nav) {
-      <span><img class="rotate-180" src="assets/imgs/directions.svg" alt="" /></span>
+        <span><img class="rotate-180" src="assets/imgs/directions.svg" alt="" /></span>
       }
     </span>
     <span class="leading-tight text-center rotate-180 writing-vertical-lr text-l">
@@ -23,41 +23,58 @@
 <section class="flex h-[calc(100vh-80px)] gap-3 p-3 bg-primary">
 
   @if (mainNavService.showNav()) {
-  <div class="flex flex-col w-full h-[calc(100% - 3rem)] lg:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white">
-    <app-search class="lg:hidden"></app-search>
-    <app-navigation class="w-full h-full"></app-navigation>
-  </div>
+    <div class="flex flex-col w-full h-[calc(100% - 3rem)] lg:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white">
+      <app-search class="lg:hidden"></app-search>
+      <app-navigation class="w-full h-full"></app-navigation>
+    </div>
+  }
   
   @if (mainNavService.showChannel()) {
-    @if (mainNavService.newMessage) {
-      <app-new-message class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-new-message>
-    } @else if (mainNavService.directMessage) {
-      <app-direct-message class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-direct-message>
-    } @else {
-      <app-channel class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-channel>
-    }
+  @if (mainNavService.newMessage) {
+  <app-new-message
+    class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-new-message>
+  } @else if (mainNavService.directMessage) {
+  <app-direct-message
+    class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-direct-message>
+  } @else {
+  <app-channel class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-channel>
+  }
   }
 
   @if (mainNavService.showThread()) {
-    <app-thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
-  }
+  <app-thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
   }
 </section>
 
-<div [ngClass]="{
-    hidden: overlayService.hideAddChannelPopUp()
-  }"
+
+
+<!--Overlays-->
+
+<div (click)="overlayService.addCannelOverlay()" [ngClass]="{hidden: overlayService.hideAddChannel}"
   class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">
-  <app-add-channel class="top-[20%]"></app-add-channel>
+  <app-add-channel (click)="$event.stopPropagation()" class="top-[20%]"></app-add-channel>
 </div>
 
-<div class="absolute bottom-0" [ngClass]="{
-    hidden: overlayService.hideAddUserPopUp() || showMessagesOnly
-  }">
-  <app-add-user1></app-add-user1>
+
+<div (click)="overlayService.addUserOverlay()" class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center lg:items-center"
+  [ngClass]="{hidden: overlayService.hideAddUser}">
+  <app-add-user (click)="$event.stopPropagation()" class="w-full max-w-[710px]"></app-add-user>
 </div>
 
-<div [ngClass]="{hidden: overlayService.hideEditChannelPopUp()}"
-  class="flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)]">
-  <app-edit-channel></app-edit-channel>
+
+<div (click)="overlayService.editChannel()" [ngClass]="{hidden: overlayService.hideEditChannel}"
+  class="flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.4)]">
+  <app-edit-channel (click)="$event.stopPropagation()"></app-edit-channel>
+</div>
+
+
+<div (click)="overlayService.profileOverlay()" [ngClass]="{hidden: overlayService.hideProfileOverlay}"
+  class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center z-[1] bg-[rgba(0,0,0,0.4)]">
+  <app-profile (click)="$event.stopPropagation()" class="w-full max-w-lg"></app-profile>
+</div>
+
+
+<div (click)="overlayService.logoutOvelay()" [ngClass]="{hidden: overlayService.hideLogoutOverlay}"
+  class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
+  <app-log-out class="w-full lg:w-fit lg:mt-24 lg:mr-4"></app-log-out>
 </div>
