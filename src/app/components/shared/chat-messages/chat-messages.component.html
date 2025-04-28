@@ -35,7 +35,8 @@
                     @if (message.threadId !== '' && chatType !== 'thread') {
                         <app-chat-message-answer
                             class="cursor-pointer flex flex-col xs:flex-row xs:items-center xs:gap-[20px]"
-                            [ngClass]="{'self-end': fromCurrentUser('user.id')}">
+                            [ngClass]="{'self-end': fromCurrentUser('user.id')}"
+                            [message]="message">
                         </app-chat-message-answer>
                     }
 

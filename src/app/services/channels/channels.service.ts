@@ -15,6 +15,8 @@ export class ChannelsService implements OnDestroy {
   currentIndex = signal<number>(0);
   channelsCollection;
 
+  choiceMembers = signal(true);
+  choiceMembersArray = [];
 
   createChannel = new Channel({
     createdBy: 'UserID343783',
@@ -51,8 +53,12 @@ export class ChannelsService implements OnDestroy {
   }
 
   async addChannel() {
-    this.createChannel.members = this.userService.users.map(user => user.id);
 
+    if (this.choiceMembers()) {
+      this.createChannel.members = this.choiceMembersArray
+    } else {
+      this.createChannel.members = this.userService.users.map(user => user.id);
+    }
     console.log('current channel is', this.createChannel);
 
     try {

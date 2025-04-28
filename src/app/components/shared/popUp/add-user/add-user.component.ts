@@ -2,18 +2,23 @@ import { Component } from '@angular/core';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 import { CommonModule } from '@angular/common';
 import { ChannelsService } from '../../../../services/channels/channels.service';
+import { FormsModule } from '@angular/forms';
+import { FilterService } from '../../../../pageServices/filters/filter.service';
+import { UserComponent } from '../../user/user.component';
 
 @Component({
   selector: 'app-add-user',
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    // UserComponent
   ],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.scss'
 })
 export class AddUserComponent {
 
-  constructor(public overlayService: OverlayService, public channelService: ChannelsService) {
+  constructor(public overlayService: OverlayService, public channelService: ChannelsService, public filterService: FilterService) {
 
   }
 
@@ -26,8 +31,10 @@ export class AddUserComponent {
       allPicker.checked = true;
       choiseUser.checked = false;
       this.choiceInput = false;
+      this.channelService.choiceMembers.set(false);
     }
   }
+
 
   checkAll() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
@@ -36,8 +43,10 @@ export class AddUserComponent {
       allPicker.checked = false;
       choiseUser.checked = true;
       this.choiceInput = true
+      this.channelService.choiceMembers.set(true);
     }
   }
+
 
   addChannel(){
     this.channelService.addChannel();
