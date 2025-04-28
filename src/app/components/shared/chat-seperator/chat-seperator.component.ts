@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-chat-seperator',
@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './chat-seperator.component.scss'
 })
 export class ChatSeperatorComponent {
-
+  @Input() date: string | void = '';
 }

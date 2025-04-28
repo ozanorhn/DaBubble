@@ -15,7 +15,7 @@ export class ChannelComponent {
       id: 'string',
       message: 'string',
       sender: 'Florian Rauh',
-      timestamp: 12,
+      timestamp: '24. April 2025 um 22:44:45 UTC+2',
       createdBy: 'string',
       reactions: [{
         id: 0,
@@ -28,7 +28,7 @@ export class ChannelComponent {
       id: 'string',
       message: 'string',
       sender: 'Florian Rauh',
-      timestamp: 12,
+      timestamp: '26. April 2025 um 22:44:45 UTC+2',
       createdBy: 'string',
       reactions: [{
         id: 0,
@@ -41,7 +41,7 @@ export class ChannelComponent {
       id: 'string',
       message: 'string',
       sender: 'Florian Rauh',
-      timestamp: 12,
+      timestamp: '26. April 2025 um 22:44:45 UTC+2',
       createdBy: 'string',
       reactions: [{
         id: 0,
@@ -54,7 +54,7 @@ export class ChannelComponent {
       id: 'string',
       message: 'string',
       sender: 'Florian Rauh',
-      timestamp: 12,
+      timestamp: '26. April 2025 um 22:44:45 UTC+2',
       createdBy: 'string',
       reactions: [{
         id: 0,
