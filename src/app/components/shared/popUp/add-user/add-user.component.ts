@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 import { CommonModule } from '@angular/common';
+import { ChannelsService } from '../../../../services/channels/channels.service';
 
 @Component({
   selector: 'app-add-user',
@@ -12,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AddUserComponent {
 
-  constructor(public overlayService: OverlayService) {
+  constructor(public overlayService: OverlayService, public channelService: ChannelsService) {
 
   }
 
@@ -36,6 +37,11 @@ export class AddUserComponent {
       choiseUser.checked = true;
       this.choiceInput = true
     }
+  }
+
+  addChannel(){
+    this.channelService.addChannel();
+    this.overlayService.addUserOverlay();
   }
 
 }

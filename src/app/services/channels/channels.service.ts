@@ -3,6 +3,8 @@ import { Channel } from '../../classes/channel.class';
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
 import { signal } from '@angular/core';
+import { UsersService } from '../users/users.service';
+import { User } from '../../classes/user.class';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +16,19 @@ export class ChannelsService implements OnDestroy {
   currentIndex = signal<number>(0);
   channelsCollection;
 
-  createChannel = new Channel({ createdBy: 'UserID343783' });
+  // allUsers = this.userService.users.map( (user) =>  { user.toJSON()})
 
-  constructor(public firestore: Firestore) {
+
+
+  createChannel = new Channel({
+    createdBy: 'UserID343783',
+    members: []
+  });
+
+  constructor(
+    public firestore: Firestore,
+    public userService: UsersService
+  ) {
     this.channelsCollection = collection(this.firestore, 'channels');
     this.initChannelsListener();
   }
@@ -43,9 +55,14 @@ export class ChannelsService implements OnDestroy {
     }
   }
 
+  async addChannel() {
 
-  async addChannel(channelData: Channel) {
-    console.log('current channel is', channelData);
+    this.createChannel.members = this.userService.users.map(user => ({
+      User: user.id // oder user.userId - je nachdem wie die ID heißt
+    }));
+
+    console.log('current channel is', this.createChannel);
+
     try {
       const docRef = await addDoc(this.channelsCollection, this.createChannel.toJSON())
       console.log('Channel added with ID', docRef.id);

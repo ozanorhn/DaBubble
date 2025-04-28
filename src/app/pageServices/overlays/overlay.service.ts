@@ -28,27 +28,27 @@ export class OverlayService {
 
   //////////////////////////
   /// Geht in den ChannelService 
-  newChannel = {
-    name: '',
-    description: '',
-    members: [{
-      name: "Nicolas Developer",
-      email: "nicolas@test.com",
-      createdAt: {
-        seconds: 1745499997,
-        nanoseconds: 173000000
-      },
-      avatar: "/assets/imgs/avatar6.svg",
-      online: false,
-      id: "6xN38YGFasqdAqssgnO9"
-    }]
-  }
+  // newChannel = {
+  //   name: '',
+  //   description: '',
+  //   members: [{
+  //     name: "Nicolas Developer",
+  //     email: "nicolas@test.com",
+  //     createdAt: {
+  //       seconds: 1745499997,
+  //       nanoseconds: 173000000
+  //     },
+  //     avatar: "/assets/imgs/avatar6.svg",
+  //     online: false,
+  //     id: "6xN38YGFasqdAqssgnO9"
+  //   }]
+  // }
 
-  createChannel() {
-    this.channelsService.channels.push(new Channel(this.newChannel));
-    this.channelsService.addChannel(new Channel(this.newChannel));
-    console.log('My added Channel obj', this.newChannel);
-  }
+  // createChannel() {
+  //   this.channelsService.channels.push(new Channel(this.newChannel));
+  //   this.channelsService.addChannel(new Channel(this.newChannel));
+  //   console.log('My added Channel obj', this.newChannel);
+  // }
   ///////////////////////////////////////////////////////////
 
 
