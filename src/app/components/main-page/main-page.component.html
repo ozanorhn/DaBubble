@@ -30,19 +30,17 @@
   }
   
   @if (mainNavService.showChannel()) {
-  @if (mainNavService.newMessage) {
-  <app-new-message
-    class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-new-message>
-  } @else if (mainNavService.directMessage) {
-  <app-direct-message
-    class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-direct-message>
-  } @else {
-  <app-channel class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-channel>
-  }
+    @if (mainNavService.newMessage) {
+      <app-new-message class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-new-message>
+    } @else if (mainNavService.directMessage) {
+      <app-direct-message class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-direct-message>
+    } @else {
+      <app-channel class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-channel>
+    }
   }
 
   @if (mainNavService.showThread()) {
-  <app-thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
+    <app-thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
   }
 </section>
 

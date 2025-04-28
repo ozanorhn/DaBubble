@@ -1,12 +1,15 @@
 <section class="flex items-center justify-between box-border bg-white py-[13px] px-4 header rounded-ss-[30px] rounded-se-[30px]">
     @if (chatType === 'channel') {
-<!--
-        <div class="flex items-center gap-[14px] py-[3px] px-[10px] w-max rounded-full cursor-pointer text-xl font-bold hover:bg-primary" (click)="overlayService.editChannelPopup()">
-            <img class="size-[22px]" src="assets/icons/hashtag.svg" alt="hashtag"><span>{{ getChannelName() }} </span><img class="ml-[14px]" src="assets/icons/arrow_down.svg" alt="">
--->
-        <div class="flex items-center gap-[14px] py-[3px] px-[10px] w-max rounded-full cursor-pointer text-xl font-bold hover:bg-primary" (click)="overlayService.editChannel()">
-            <img class="size-[22px]" src="assets/icons/hashtag.svg" alt="hashtag"><span>{{ channelService.channels[this.channelService.currentIndex()].name }}</span><img class="ml-[14px]" src="assets/icons/arrow_down.svg" alt="">
 
+        <!-- <div class="flex items-center gap-[14px] py-[3px] px-[10px] w-max rounded-full cursor-pointer text-xl font-bold hover:bg-primary" (click)="overlayService.editChannel()">
+            <img class="size-[22px]" src="assets/icons/hashtag.svg" alt="hashtag"><span>{{ getChannelName() }} </span><img class="ml-[14px]" src="assets/icons/arrow_down.svg" alt="">
+            </div> -->
+        <div class="flex items-center gap-[14px] py-[3px] px-[10px] w-max rounded-full cursor-pointer text-xl font-bold hover:bg-primary" (click)="overlayService.editChannel()">
+            <img class="size-[22px]" src="assets/icons/hashtag.svg" alt="hashtag">
+            @if (channelService.channels[this.channelService.currentIndex()]) {
+                <span>{{ channelService.channels[this.channelService.currentIndex()].name }}</span>
+            }
+            <img class="ml-[14px]" src="assets/icons/arrow_down.svg" alt="">
         </div>
     } @else if (chatType === 'thread') {
         <div class="flex items-center gap-[14px] w-max rounded-full text-xl font-bold">
