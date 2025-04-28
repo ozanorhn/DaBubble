@@ -24,6 +24,7 @@
                         <span>{{ message.message }}</span>
                     </div>
 
+
                     @if (message.threadId !== '' && chatType !== 'thread') {
                         @if (dummyThreatService.messages.length > 0) {
                             <app-chat-message-answer

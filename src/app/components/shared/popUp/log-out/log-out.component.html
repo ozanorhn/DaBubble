@@ -1,19 +1,18 @@
-<section
-  class="max-w-md border border-black h-52 rounded-[30px] px-7 py-8 bg-white text-2xl shadow-2xl"
->
+<section class="w-full lg:max-w-md  h-52 rounded-[30px] lg:rounded-none lg:rounded-tl-[30px] lg:rounded-bl-[30px] lg:rounded-br-[30px] px-7 py-8 bg-white text-2xl shadow-2xl">
+
+  
   <div class="flex flex-col h-full">
-    <div
-      class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.1] active:scale-[0.9]"
-    >
+    <div (click)="overlayService.profileOverlay()"
+      class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.05] active:scale-[0.9]">
       <img src="/assets/icons/account_circle.svg" alt="" />
       <span>Profile</span>
     </div>
 
-    <div
-      class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.1] active:scale-[0.9]"
-    >
+    <div routerLink=""
+      class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.05] active:scale-[0.9]">
       <img src="/assets/icons/logout.svg" alt="" />
       <span>Log out</span>
     </div>
   </div>
+
 </section>

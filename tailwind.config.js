@@ -21,6 +21,7 @@ module.exports = {
       screens: {
         xxs: "320px",
         xs: "400px",
+        "3xl": "1920px"
       },
       backgroundImage: {
         "icon-arrow-back": "url('/assets/icons/arrow_back.svg')",

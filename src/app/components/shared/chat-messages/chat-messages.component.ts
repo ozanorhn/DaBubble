@@ -10,6 +10,7 @@ import { ChatMessageAnswerComponent } from '../chat-message-answer/chat-message-
 import { formatDate } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { UsersService } from '../../../services/users/users.service';
 registerLocaleData(localeDe);
 
 @Component({
@@ -25,11 +26,17 @@ export class ChatMessagesComponent {
 
   constructor(
     public mainNavService: MainNavService,
-    public channelService: ChannelsService,
+    // public channelService: ChannelsService,
     public authService: AuthService,
-    public messageService: MessagesService
+    public messageService: MessagesService,
+    public userService: UsersService
   ) { }
 
+   test() {
+    // console.log('TEST GET USER BY ID ', this.messageService.getUserById('PG6Ir3hx8xlEENP26Uhi'));
+    console.log('Users ', this.userService.users);
+   }
+  
   newDay = true;
   @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
   @Input() threadHeadMessage: any;

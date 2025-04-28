@@ -18,11 +18,15 @@ export class AddChannelComponent {
   constructor(public overlayService: OverlayService, public channelService: ChannelsService) { }
 
   closeOverlay() {
-    this.overlayService.addUserPopup(); // toggelt das Signal
+    this.overlayService.addUserOverlay(); // toggelt das Signal
   }
 
 
 
+  openAddUser(){
+    this.overlayService.addCannelOverlay()
+    this.overlayService.addUserOverlay()
+  }
 
 
 

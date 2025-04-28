@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { ChannelsService } from '../../../services/channels/channels.service';
 
 import { CommonModule } from '@angular/common';
@@ -21,6 +21,7 @@ export class ChatHeaderComponent {
   }
   @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
 
+
   getChannelName() {
     setTimeout(() => {
       // if (this.channelService.channels[this.channelService.currentIndex()].name) {
@@ -30,5 +31,9 @@ export class ChatHeaderComponent {
       // }
     }, 1000);
   }
+
+
+  // headline = signal({});
+
 
 }

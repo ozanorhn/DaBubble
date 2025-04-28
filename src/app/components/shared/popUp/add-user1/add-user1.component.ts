@@ -37,6 +37,6 @@ export class AddUser1Component {
   // }
 
   closeOverlay() {
-    this.overlayService.addUserPopup(); // toggelt das Signal
+    this.overlayService.addUserOverlay(); // toggelt das Signal
   }
 }
