@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
 import { addDoc, collection, Firestore, getDocs, query, Timestamp, where } from '@angular/fire/firestore';
-
 import { Message } from '../../classes/message.class';
 import { Channel } from '../../classes/channel.class';
 import { UsersService } from '../users/users.service';
@@ -19,7 +18,7 @@ export class MessagesService {
   messages = signal<Message[]>([]);
   members: [] = [];
   lastDate: Date = new Date();
-  date = new Date()
+  date = new Date();
 
   constructor(
     public channelService: ChannelsService,
@@ -43,19 +42,6 @@ export class MessagesService {
       message: 'Ich bin eine TestMessage'
     })
   }
-
-
-  // async getMessages(obj: Channel) {
-  //   const q = query(this.messageCollection, where('channelId', '==', obj.id));
-  //   const querySnapshot = await getDocs(q);
-  //   const messages = querySnapshot.docs.map(doc => ({
-  //     id: doc.id,
-  //     ...doc.data()
-  //   }) as Message);
-  //   this.messages.set(messages)
-  //   console.log('Message Array', this.messages());
-  //   return messages;
-  // }
 
 
   async getMessages(obj: Channel) {
@@ -104,7 +90,7 @@ export class MessagesService {
     } else if (this.isSameDay(date, yesterday)) {
       return 'Gestern';
     } else {
-      return formatDate(date, 'EEEE dd.MM.yyyy', 'de-DE');
+      return formatDate(date, 'EEEE, dd.MM.yyyy', 'de-DE');
     }
   }
 

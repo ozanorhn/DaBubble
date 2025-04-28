@@ -11,19 +11,16 @@ import { User } from '../../classes/user.class';
 })
 export class ChannelsService implements OnDestroy {
 
-
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
-
-  // allUsers = this.userService.users.map( (user) =>  { user.toJSON()})
-
 
 
   createChannel = new Channel({
     createdBy: 'UserID343783',
     members: []
   });
+
 
   constructor(
     public firestore: Firestore,
@@ -33,9 +30,7 @@ export class ChannelsService implements OnDestroy {
     this.initChannelsListener();
   }
 
-
   private unsubscribe!: () => void;
-
 
   private initChannelsListener() {
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
@@ -101,7 +96,6 @@ export class ChannelsService implements OnDestroy {
       this.currentIndex.set(i);
     }
   }
-
 
 
   channels2 = [

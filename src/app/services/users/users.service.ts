@@ -14,7 +14,6 @@ export class UsersService implements OnDestroy {
   private auth = inject(Auth);
 
 
-
   usersCollection = collection(this.firestore, 'users');
   unsubscribe: () => void;
   users: User[] = [];
