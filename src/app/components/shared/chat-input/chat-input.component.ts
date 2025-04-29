@@ -2,10 +2,11 @@ import { Component, Input } from '@angular/core';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chat-input',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './chat-input.component.html',
   styleUrl: './chat-input.component.scss'
 })

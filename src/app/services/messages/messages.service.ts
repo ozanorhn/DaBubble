@@ -12,7 +12,27 @@ registerLocaleData(localeDe);
 @Injectable({
   providedIn: 'root'
 })
+
+
+/**
+ * Service for message operations (Firestore integration)
+ * @class MessagesService
+ * @Injectable providedIn: 'root'
+ */
 export class MessagesService {
+
+  message: Message = new Message({
+    id: '',
+    message: '',
+    sender: '',
+    timestamp: Timestamp.now(),
+    reactions: [],
+    threadId: '',
+    channelId: '',
+    answers: 0,
+    lastAnswer: null
+  });
+
 
   messageCollection;
   Message: [] = [];
@@ -20,6 +40,8 @@ export class MessagesService {
   members: [] = [];
   lastDate: Date = new Date();
   date = new Date();
+  tempChannel = new Channel();
+
 
   constructor(
     public channelService: ChannelsService,
@@ -33,20 +55,13 @@ export class MessagesService {
   }
 
 
-  getMessage(): Message {
-    return new Message({
-      name: 'Hallo Test 2',
-      sender: '6xN38YGFasqdAqssgnO9',
-      timestamp: Timestamp.now(),
-      reactions: [],
-      threadId: 'WIDsWo1ivqW8d8csYtiS',
-      channelId: this.channelService.channels[this.channelService.currentIndex()].id,
-      message: 'Ich bin eine TestMessage'
-    })
-  }
-
-
+  /**
+   * Fetches messages for a channel
+   * @param {Channel} obj - Channel object
+   * @returns {Promise<Message[]>} Sorted messages
+   */
   async getMessages(obj: Channel) {
+    this.tempChannel = obj;
     const q = query(this.messageCollection, where('channelId', '==', obj.id));
     const querySnapshot = await getDocs(q);
     const messages = querySnapshot.docs.map(doc => ({
@@ -59,21 +74,34 @@ export class MessagesService {
   }
 
 
+  /**
+  * Sorts messages by timestamp (ascending)
+  * @param {Message[]} messages - Messages to sort
+  * @returns {Message[]} Sorted messages
+  */
   sortMessages(messages: Message[]): Message[] {
     return messages.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
   }
 
 
+  /**
+   * Sends a new message
+   * @async
+   */
   async sendMessage() {
-    const message = this.getMessage().toJSON()
-    console.log('To JSON OBjsect Test', message);
+    this.message.timestamp = Timestamp.now(),
+      this.message.channelId = this.channelService.channels[this.channelService.currentIndex()].id;
+    console.log('To JSON OBjsect Test', this.message);
     try {
-      const docRef = await addDoc(this.messageCollection, message)
+      const docRef = await addDoc(this.messageCollection, this.message.toJSON())
+      this.getMessages(this.tempChannel);
     } catch (error) {
       console.error('Error adding message', error);
     }
   }
 
+
+  //// Geht noch nicht  
   async editMessage(id: string) {
     const updatedMessage = {
       id: 'string',
@@ -95,19 +123,36 @@ export class MessagesService {
     );
   }
 
+
+  /**
+  * Opens a thread
+  * @param {string} messageId - Message ID
+  * @param {string} threadId - Thread ID
+  */
   openThread(messageId: string, threadId: string) {
     this.threadService.currentMessageId = messageId;
     this.threadService.loadThreadById(threadId);
   }
 
+
+  /**
+   * Formats timestamp as time (HH:mm)
+   * @param {Timestamp} timestamp - Firebase timestamp
+   * @returns {string} Formatted time string
+   */
   formatTime(timestamp: Timestamp) {
     return formatDate(timestamp.toDate(), 'HH:mm', 'de-DE')
   }
 
 
+  /**
+   * Formats date (Today/Yesterday/Date)
+   * @param {Timestamp} timestamp - Firebase timestamp
+   * @returns {string} Formatted date string
+   */
   formatDate(timestamp: Timestamp): string {
-    if (!timestamp?.toDate) return ''; // Fallback, falls timestamp ungültig ist
-    const date = timestamp.toDate(); // Firebase-Timestamp in JavaScript-Datum umwandeln
+    if (!timestamp?.toDate) return '';
+    const date = timestamp.toDate();
     this.lastDate = date;
     const today = new Date();
     const yesterday = new Date();
@@ -122,6 +167,13 @@ export class MessagesService {
   }
 
 
+
+  /**
+   * Checks if two dates are the same day
+   * @param {Date} d1 - Date 1
+   * @param {Date} d2 - Date 2
+   * @returns {boolean} True if same day
+   */
   isSameDay(d1: Date, d2: Date): boolean {
     return d1.getFullYear() === d2.getFullYear() &&
       d1.getMonth() === d2.getMonth() &&
@@ -129,6 +181,12 @@ export class MessagesService {
   }
 
 
+  /**
+   * Converts a Firestore Timestamp to a JavaScript Date object.
+   *
+   * @param {Timestamp} timestamp - The Firestore Timestamp to convert.
+   * @returns {Date} The equivalent JavaScript Date object.
+   */
   getDateFromTimestamp(timestamp: Timestamp): Date {
     return timestamp.toDate();
   }
