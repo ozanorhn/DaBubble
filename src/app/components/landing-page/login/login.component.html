@@ -68,12 +68,13 @@
         <span class="text-sm text-black">ODER</span>
         <div class="flex-grow h-px bg-lightpurple"></div>
       </div>
+
       <p *ngIf="error" class="text-red-500 text-sm text-center w-full">
         {{ error }}
       </p>
       <button
         (click)="googleLogin()"
-        type="submit"
+        type="button"
         class="flex items-center justify-center w-full px-4 py-2 space-x-2 border rounded-full border-lightpurple hover:bg-primary"
       >
         <img
