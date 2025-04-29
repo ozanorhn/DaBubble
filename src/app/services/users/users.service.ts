@@ -20,7 +20,7 @@ export class UsersService implements OnDestroy {
   tempUser: Partial<User> = {};
 
   constructor() {
-    console.log('UsersService gestartet');
+    // console.log('UsersService gestartet');
 
     // Firestore Snapshot Listener
     this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
@@ -29,7 +29,7 @@ export class UsersService implements OnDestroy {
         data.id = doc.id;
         return data;
       });
-      console.log('Aktuelle Users:', this.users);
+      // console.log('Aktuelle Users:', this.users);
     });
   }
 
@@ -118,7 +118,6 @@ export class UsersService implements OnDestroy {
   }
 
   getTempUser() {
-    console.log('Current User ???', this.tempUser);
     return this.tempUser;
   }
 

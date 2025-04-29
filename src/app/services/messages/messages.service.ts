@@ -1,12 +1,13 @@
 import { Injectable, signal } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
-import { addDoc, collection, Firestore, getDocs, query, Timestamp, where } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, getDocs, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
 import { Message } from '../../classes/message.class';
 import { Channel } from '../../classes/channel.class';
 import { UsersService } from '../users/users.service';
 import { formatDate } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
+import { ThreadsService } from '../threads/threads.service';
 registerLocaleData(localeDe);
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class MessagesService {
   constructor(
     public channelService: ChannelsService,
     public firestore: Firestore,
-    public userService: UsersService
+    public userService: UsersService,
+    public threadService: ThreadsService
   ) {
     this.messageCollection = collection(this.firestore, 'messages');
     this.channelService.currentIndex();
@@ -72,6 +74,31 @@ export class MessagesService {
     }
   }
 
+  async editMessage(id: string) {
+    const updatedMessage = {
+      id: 'string',
+      message: 'string',
+      sender: 'string',
+      timestamp: Timestamp.now(),
+      reactions: [{
+        id: 0,
+        users: ['string']
+      }],
+      threadId: 'string',
+      channelId: 'string',
+      answers: 0,
+      lastAnswer: Timestamp,
+    }
+    await updateDoc(
+      doc(this.messageCollection, id),
+      updatedMessage
+    );
+  }
+
+  openThread(messageId: string, threadId: string) {
+    this.threadService.currentMessageId = messageId;
+    this.threadService.loadThreadById(threadId);
+  }
 
   formatTime(timestamp: Timestamp) {
     return formatDate(timestamp.toDate(), 'HH:mm', 'de-DE')

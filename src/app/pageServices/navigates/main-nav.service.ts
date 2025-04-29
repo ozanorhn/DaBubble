@@ -146,11 +146,4 @@ export class MainNavService {
     }
     this.setHeaderMembers();
   }
-
-  editMessage(id: number, chatType: string) {
-    console.log(chatType, id);
-
-  }
-
- 
 }

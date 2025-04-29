@@ -11,6 +11,8 @@ export class Message {
         }] | [];
         threadId: string;
         channelId: string;
+        answers: number;
+        lastAnswer: Timestamp | null;
     
         constructor(obj?: any) {
             this.id = obj?.id || '';
@@ -20,6 +22,8 @@ export class Message {
             this.reactions =  obj ? obj.reactions : [];
             this.threadId =  obj ? obj.threadId : '';
             this.channelId =  obj ? obj.channelId : [];
+            this.answers = obj ? obj.answers : 0;
+            this.lastAnswer = obj ? obj.lastAnswer : null;
         }
     
         public toJSON() {
@@ -30,7 +34,9 @@ export class Message {
                 timestamp: this.timestamp,
                 reactions: this.reactions,
                 threadId: this.threadId,
-                channelId: this.channelId
+                channelId: this.channelId,
+                answers: this.answers,
+                lastAnswer: this.lastAnswer
             }
         }
 
