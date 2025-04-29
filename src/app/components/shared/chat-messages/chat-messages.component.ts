@@ -7,6 +7,7 @@ import { ChatSeperatorComponent } from '../chat-seperator/chat-seperator.compone
 import { ChatMessageReactionsComponent } from '../chat-message-reactions/chat-message-reactions.component';
 import { ChatMessageAnswerComponent } from '../chat-message-answer/chat-message-answer.component';
 import { UsersService } from '../../../services/users/users.service';
+import { ThreadsService } from '../../../services/threads/threads.service';
 
 @Component({
   standalone: true,
@@ -28,7 +29,8 @@ export class ChatMessagesComponent {
     public mainNavService: MainNavService,
     public authService: AuthService,
     public messageService: MessagesService,
-    public userService: UsersService
+    public userService: UsersService,
+    public threadService: ThreadsService
   ) { }
 
   newDay = true;

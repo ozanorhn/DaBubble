@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MessagesService } from '../../../services/messages/messages.service';
+import { ThreadsService } from '../../../services/threads/threads.service';
+import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -8,8 +10,32 @@ import { MessagesService } from '../../../services/messages/messages.service';
   styleUrl: './chat-input.component.scss'
 })
 export class ChatInputComponent {
-  constructor(public messageService: MessagesService) {
-    
+  @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
+
+  constructor(
+    public messageService: MessagesService,
+    public threadService: ThreadsService,
+    public directMessageService: DirectMessagesService
+  ) { }
+
+  sendMessage() {
+    switch (this.chatType) {
+      case 'channel':
+        this.messageService.sendMessage();
+        break;
+      case 'thread':
+        this.threadService.sendThread();
+        this.messageService.editMessage(this.threadService.currentMessageId);
+        break;
+      case 'dm':
+        this.directMessageService.sendDirectMessage();
+        break;
+      case 'new':
+        console.log('Funktion zum Senden einer neuen Nachricht einfügen :P');
+        break;
+      default:
+        break;
+    }
   }
 
 }

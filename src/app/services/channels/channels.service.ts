@@ -41,7 +41,7 @@ export class ChannelsService implements OnDestroy {
         data.id = doc.id;
         return data;
       })
-      console.log('Aktuelle Channels', this.channels);
+      // console.log('Aktuelle Channels', this.channels);
     })
   }
 

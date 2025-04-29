@@ -13,13 +13,13 @@ import { Message } from '../../../classes/message.class';
 export class ChatMessageAnswerComponent {
   constructor(
     public mainNavService: MainNavService,
-    public threadServic: ThreadsService,
+    public threadService: ThreadsService,
     public messageService: MessagesService
   ) {}
 
  @Input() message: Message = new Message();
 
  getThread() {
-  return this.threadServic.loadThreadById(this.message.threadId);
+  return this.threadService.loadThreadById(this.message.threadId);
  }
 }
