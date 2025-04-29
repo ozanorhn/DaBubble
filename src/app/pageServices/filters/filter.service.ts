@@ -15,7 +15,7 @@ export class FilterService {
   searchValue = signal('');
 
   searchMembers = signal('');
-  
+
   channelArray = this.channels.channels;
   // userArray = this.users.users;
 
@@ -33,9 +33,9 @@ export class FilterService {
     }
   });
 
-  
+
   filterUsers(searchTerm: string) {
-    const userSearch = searchTerm.substring(1);  
+    const userSearch = searchTerm.substring(1);
     return this.users.users.filter(user =>
       user.name.toLowerCase().includes(userSearch)
     )
@@ -57,9 +57,11 @@ export class FilterService {
     const channelResults = this.channels.channels.filter(channel =>
       channel.name.toLowerCase().includes(searchTerm)
     )
-    // console.log('All Filter',[...userResults, ...channelResults]);
     return [...userResults, ...channelResults];
   }
+
+
+
 
 
 
@@ -69,13 +71,15 @@ export class FilterService {
     return this.filterMembers(search)
   })
 
-  filterMembers(searchMembers: string) {    
+
+  filterMembers(searchMembers: string) {
     console.log('Filter Array ', this.users.users.filter(user =>
       user.name.toLowerCase().includes(searchMembers)));
-    
+
+
     return this.users.users.filter(user =>
       user.name.toLowerCase().includes(searchMembers)
     )
   }
-  
+
 }

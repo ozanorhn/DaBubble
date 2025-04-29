@@ -16,7 +16,6 @@ export class User {
         this.online = obj ? obj.online : false;
         this.createdAt = obj ? obj.createdAt : '';
         this.password = obj ? obj.password : ''
-
     }
 
 

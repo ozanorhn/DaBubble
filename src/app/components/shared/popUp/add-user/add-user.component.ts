@@ -11,8 +11,8 @@ import { UserComponent } from '../../user/user.component';
   imports: [
     CommonModule,
     FormsModule,
-    // UserComponent
-  ],
+    UserComponent
+],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.scss'
 })
