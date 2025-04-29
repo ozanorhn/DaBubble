@@ -13,13 +13,14 @@ export class FilterService {
   channels = inject(ChannelsService);
 
   searchValue = signal('');
-  
+
+  searchMembers = signal('');
+
   channelArray = this.channels.channels;
   // userArray = this.users.users;
 
 
   filteredResults = computed(() => {
-    // debugger;
     const searchTerm = this.searchValue().toLowerCase();
     if (searchTerm.startsWith('@')) {
       return this.filterUsers(searchTerm)
@@ -32,14 +33,9 @@ export class FilterService {
     }
   });
 
-  
+
   filterUsers(searchTerm: string) {
     const userSearch = searchTerm.substring(1);
-
-    
-    console.log('Filter Array ', this.users.users.filter(user =>
-      user.name.toLowerCase().includes(userSearch)));
-    
     return this.users.users.filter(user =>
       user.name.toLowerCase().includes(userSearch)
     )
@@ -48,10 +44,6 @@ export class FilterService {
 
   filterChannels(searchTerm: string) {
     const channelSearch = searchTerm.substring(1);
-
-    console.log('Filter Array Channel ', this.channels.channels.filter(user =>
-      user.name.toLowerCase().includes(channelSearch)));
-
     return this.channels.channels.filter(channel =>
       channel.name.toLowerCase().includes(channelSearch)
     )
@@ -59,18 +51,35 @@ export class FilterService {
 
 
   filterAll(searchTerm: string) {
-
     const userResults = this.users.users.filter(user =>
       user.name.toLowerCase().includes(searchTerm)
     )
-
     const channelResults = this.channels.channels.filter(channel =>
       channel.name.toLowerCase().includes(searchTerm)
     )
-
-    console.log('All Filter',[...userResults, ...channelResults]);
-
     return [...userResults, ...channelResults];
   }
-  
+
+
+
+
+
+
+
+  filteredMembers = computed(() => {
+    const search = this.searchMembers().toLowerCase();
+    return this.filterMembers(search)
+  })
+
+
+  filterMembers(searchMembers: string) {
+    console.log('Filter Array ', this.users.users.filter(user =>
+      user.name.toLowerCase().includes(searchMembers)));
+
+
+    return this.users.users.filter(user =>
+      user.name.toLowerCase().includes(searchMembers)
+    )
+  }
+
 }

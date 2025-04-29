@@ -19,7 +19,7 @@ export class ChatHeaderComponent {
     public overlayService: OverlayService) {
 
   }
-  @Input() chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
+  @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
 
 
   getChannelName() {

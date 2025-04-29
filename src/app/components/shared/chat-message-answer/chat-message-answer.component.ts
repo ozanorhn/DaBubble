@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
+import { ThreadsService } from '../../../services/threads/threads.service';
+import { MessagesService } from '../../../services/messages/messages.service';
+import { Message } from '../../../classes/message.class';
 
 @Component({
   selector: 'app-chat-message-answer',
@@ -9,35 +12,14 @@ import { MainNavService } from '../../../pageServices/navigates/main-nav.service
 })
 export class ChatMessageAnswerComponent {
   constructor(
-    public mainNavService: MainNavService
+    public mainNavService: MainNavService,
+    public threadService: ThreadsService,
+    public messageService: MessagesService
   ) {}
 
-  dummyThreatService = {
-    messages: [{
-      id: 'string',
-      message: 'string',
-      sender: 'Florian Rauh',
-      timestamp: 12,
-      createdBy: 'string',
-      reactions: [{
-        id: 0,
-        users: ['Sandra Peters'],
-      }],
-      threadId: 'string',
-      channelId: 'string',
-    }],
-    chatMessage: {
-      id: 'string',
-      message: 'string',
-      sender: 'Florian Rauh',
-      timestamp: 12,
-      createdBy: 'string',
-      reactions: [{
-        id: 0,
-        users: ['Sandra Peters'],
-      }],
-      threadId: 'string',
-      channelId: 'string',
-    }
-  }
+ @Input() message: Message = new Message();
+
+ getThread() {
+  return this.threadService.loadThreadById(this.message.threadId);
+ }
 }
