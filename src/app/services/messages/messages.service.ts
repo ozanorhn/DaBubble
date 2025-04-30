@@ -122,23 +122,9 @@ export class MessagesService implements OnDestroy {
 
   //// Geht noch nicht  
   async editMessage(id: string) {
-    const updatedMessage = {
-      id: 'string',
-      message: 'string',
-      sender: 'string',
-      timestamp: Timestamp.now(),
-      reactions: [{
-        id: 0,
-        users: ['string']
-      }],
-      threadId: 'string',
-      channelId: 'string',
-      answers: 0,
-      lastAnswer: Timestamp,
-    }
     await updateDoc(
       doc(this.messageCollection, id),
-      updatedMessage
+      this.message.toJSON()
     );
   }
 
@@ -159,7 +145,7 @@ export class MessagesService implements OnDestroy {
    * @param {Timestamp} timestamp - Firebase timestamp
    * @returns {string} Formatted time string
    */
-  formatTime(timestamp: Timestamp) {
+  formatTime(timestamp: Timestamp): string {
     return formatDate(timestamp.toDate(), 'HH:mm', 'de-DE')
   }
 
