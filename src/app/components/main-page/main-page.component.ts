@@ -13,13 +13,15 @@ import { ThreadComponent } from './thread/thread.component';
 import { ChannelComponent } from './channel/channel.component';
 import { NewMessageComponent } from './new-message/new-message.component';
 import { DirectMessageComponent } from './direct-message/direct-message.component';
+import { AddUserComponent } from "../shared/popUp/add-user/add-user.component";
+import { ProfileComponent } from "../shared/popUp/profile/profile.component";
+import { LogOutComponent } from "../shared/popUp/log-out/log-out.component";
 
 @Component({
   selector: 'app-main-page',
   imports: [
     HeaderComponent,
     NavigationComponent,
-    AddUser1Component,
     AddChannelComponent,
     CommonModule,
     SearchComponent,
@@ -27,42 +29,45 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
     ThreadComponent,
     ChannelComponent,
     NewMessageComponent,
-    DirectMessageComponent
-  ],
+    DirectMessageComponent,
+    AddUserComponent,
+    ProfileComponent,
+    LogOutComponent
+],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
 export class MainPageComponent {
   showMessagesOnly = false;
 
-  dummyThreatService = {
-    messages: [{
-      id: 'string',
-      message: 'string',
-      sender: 'Florian Rauh',
-      timestamp: 12,
-      createdBy: 'string',
-      reactions: [{
-        id: 0,
-        users: ['Sandra Peters'],
-      }],
-      threadId: 'string',
-      channelId: 'string',
-    }],
-    chatMessage: {
-      id: 'string',
-      message: 'string',
-      sender: 'Florian Rauh',
-      timestamp: 12,
-      createdBy: 'string',
-      reactions: [{
-        id: 0,
-        users: ['Sandra Peters'],
-      }],
-      threadId: 'string',
-      channelId: 'string',
-    }
-  }
+  // dummyThreatService = {
+  //   messages: [{
+  //     id: 'string',
+  //     message: 'string',
+  //     sender: 'Florian Rauh',
+  //     timestamp: 12,
+  //     createdBy: 'string',
+  //     reactions: [{
+  //       id: 0,
+  //       users: ['Sandra Peters'],
+  //     }],
+  //     threadId: 'string',
+  //     channelId: 'string',
+  //   }],
+  //   chatMessage: {
+  //     id: 'string',
+  //     message: 'string',
+  //     sender: 'Florian Rauh',
+  //     timestamp: 12,
+  //     createdBy: 'string',
+  //     reactions: [{
+  //       id: 0,
+  //       users: ['Sandra Peters'],
+  //     }],
+  //     threadId: 'string',
+  //     channelId: 'string',
+  //   }
+  // }
 
   constructor(
     public mainNavService: MainNavService,

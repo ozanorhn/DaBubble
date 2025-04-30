@@ -1,0 +1,10 @@
+@for (reaction of message.reactions; track $index) {
+    <button
+        class="flex items-center border-lightpurple border-[1px] rounded-full gap-[10px] py-[5px] px-[10px]">
+        <img class="size-6" src="assets/icons/edit.svg" alt="Emoji"><span class="text-base">{{
+            reaction.users.length }}</span>
+    </button>
+}
+<button>
+    <img src="assets/icons/add_emoji.svg" alt="Add emoji">
+</button>

@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { ChannelsComponent } from "./channels/channels.component";
 import { DirectMessagesComponent } from './direct-messages/direct-messages.component';
-
 import { CommonModule } from '@angular/common';
 import { UserComponent } from "../shared/user/user.component";
-
 import { User } from '../../classes/user.class';
 import { Channel } from '../../classes/channel.class';
 import { MainNavService } from '../../pageServices/navigates/main-nav.service';
@@ -30,16 +28,16 @@ export class NavigationComponent {
     public mainNavService: MainNavService,
     public filterService: FilterService,
     public directMessageService: DirectMessagesService
-    ) {
+  ) { }
 
-  }
 
   isUser(item: any): item is User {
-    return item instanceof User;
+    return 'name' in item && 'avatar' in item; // Anpassen an Ihre User-Properties
   }
 
   isChannel(item: any): item is Channel {
-    return item instanceof Channel;
+    return 'name' in item && 'id' in item; // Anpassen an Ihre Channel-Properties
   }
+
 
 }

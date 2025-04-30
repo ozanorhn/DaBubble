@@ -12,9 +12,12 @@ export class FilterService {
   users = inject(UsersService);
   channels = inject(ChannelsService);
 
-  searchValue = signal('')
-  channelArray = this.channels.channels
-  userArray = this.users.users
+  searchValue = signal('');
+
+  searchMembers = signal('');
+
+  channelArray = this.channels.channels;
+  // userArray = this.users.users;
 
 
   filteredResults = computed(() => {
@@ -33,27 +36,50 @@ export class FilterService {
 
   filterUsers(searchTerm: string) {
     const userSearch = searchTerm.substring(1);
-    return this.userArray.filter(user =>
+    return this.users.users.filter(user =>
       user.name.toLowerCase().includes(userSearch)
     )
   }
 
+
   filterChannels(searchTerm: string) {
     const channelSearch = searchTerm.substring(1);
-    return this.channelArray.filter(channel =>
+    return this.channels.channels.filter(channel =>
       channel.name.toLowerCase().includes(channelSearch)
     )
   }
 
+
   filterAll(searchTerm: string) {
-    const userResults = this.userArray.filter(user =>
+    const userResults = this.users.users.filter(user =>
       user.name.toLowerCase().includes(searchTerm)
     )
-    const channelResults = this.channelArray.filter(channel =>
+    const channelResults = this.channels.channels.filter(channel =>
       channel.name.toLowerCase().includes(searchTerm)
     )
     return [...userResults, ...channelResults];
   }
 
-  
+
+
+
+
+
+
+  filteredMembers = computed(() => {
+    const search = this.searchMembers().toLowerCase();
+    return this.filterMembers(search)
+  })
+
+
+  filterMembers(searchMembers: string) {
+    console.log('Filter Array ', this.users.users.filter(user =>
+      user.name.toLowerCase().includes(searchMembers)));
+
+
+    return this.users.users.filter(user =>
+      user.name.toLowerCase().includes(searchMembers)
+    )
+  }
+
 }

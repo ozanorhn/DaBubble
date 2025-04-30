@@ -1,7 +1,16 @@
+import { Timestamp } from "@angular/fire/firestore";
 
 export class Thread {
   threadId: string;
-  content: [];
+  content: [{
+    message: string;
+    sender: string;
+    reactions: [{
+      id: number;
+      users: string[];
+    }] | [];
+    timestamp: Timestamp;
+  }];
 
 
   constructor(obj?: any) {

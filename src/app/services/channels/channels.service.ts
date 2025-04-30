@@ -3,26 +3,36 @@ import { Channel } from '../../classes/channel.class';
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
 import { signal } from '@angular/core';
+import { UsersService } from '../users/users.service';
+import { User } from '../../classes/user.class';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ChannelsService implements OnInit, OnDestroy {
-
+export class ChannelsService implements OnDestroy {
 
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
 
-  createChannel = new Channel({ createdBy: 'UserID343783' });
 
-  constructor(public firestore: Firestore) {
+
+  choiceMembers = signal(true);
+  choiceMembersArray: string[] = [];
+
+  createChannel = new Channel({
+    createdBy: 'UserID343783',
+    members: []
+  });
+
+
+  constructor(
+    public firestore: Firestore,
+    public userService: UsersService
+  ) {
     this.channelsCollection = collection(this.firestore, 'channels');
     this.initChannelsListener();
   }
-
-
-  ngOnInit(): void { }
 
   private unsubscribe!: () => void;
 
@@ -33,7 +43,6 @@ export class ChannelsService implements OnInit, OnDestroy {
         data.id = doc.id;
         return data;
       })
-      console.log('Aktuelle Channels', this.channels);
     })
   }
 
@@ -45,8 +54,15 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  async addChannel(channelData: Channel) {
-    console.log('current channel is', channelData);
+  async addChannel() {
+
+    if (this.choiceMembers()) {
+      this.createChannel.members = this.choiceMembersArray
+    } else {
+      this.createChannel.members = this.userService.users.map(user => user.id);
+    }
+    console.log('current channel is', this.createChannel);
+
     try {
       const docRef = await addDoc(this.channelsCollection, this.createChannel.toJSON())
       console.log('Channel added with ID', docRef.id);
@@ -87,7 +103,6 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-
   channels2 = [
     { name: 'Entwicklerteam', users: [{ avatar: 3 }, { avatar: 6 }, { avatar: 5 }, { avatar: 1 }, { avatar: 3 }, { avatar: 2 }, { avatar: 4 }] },
     { name: 'Frontend' },
@@ -98,244 +113,39 @@ export class ChannelsService implements OnInit, OnDestroy {
     { name: 'Support' },
   ]
 
+  getChannelMembers(): User[] {
+    console.log('MEMBERS: ', this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id)));
 
-  // public chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = 'channel';
-  public channelName: string = 'Entwicklerteam';
-  public threadHeadMessage: {
-    user: {
-      avatar: number;
-      name: string;
-    };
-    time: string; //number
-    content: string;
-    emojis: {
-      id: number;
-      users: string[];
-    }[];
-    answers?: {
-      user: {
-        avatar: number;
-        name: string;
-      };
-      time: string; //number
-      content: string;
-      emojis: {
-        id: number;
-        users: string[];
-      }[];
-    }[];
-  }[] = [
-      {
-        user: {
-          avatar: 2,
-          name: 'Frederik Beck'
-        },
-        time: '16:33 Uhr',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-        emojis: [
-          {
-            id: 11,
-            users: ['jfjkzkhdghkhgf']
-          }
-        ],
-        answers: [
-          {
-            user: {
-              avatar: 5,
-              name: 'Noah Braun'
-            },
-            time: '17:45 Uhr',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-            emojis: [
-              {
-                id: 1,
-                users: ['uxfghjulzfülktdd']
-              }
-            ]
-          },
-          {
-            user: {
-              avatar: 5,
-              name: 'Noah Braun'
-            },
-            time: '0:12 Uhr',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-            emojis: [
-              {
-                id: 5,
-                users: ['uxfghjulzfülktdd']
-              }
-            ]
-          }
-        ]
-      }];
-  public messages: {
-    user: {
-      avatar: number;
-      name: string;
-    };
-    time: string; //number
-    content: string;
-    emojis: {
-      id: number;
-      users: string[];
-    }[];
-    answers?: {
-      user: {
-        avatar: number;
-        name: string;
-      };
-      time: string; //number
-      content: string;
-      emojis: {
-        id: number;
-        users: string[];
-      }[];
-    }[];
-  }[] = [
-      {
-        user: {
-          avatar: 2,
-          name: 'Frederik Beck'
-        },
-        time: '16:33 Uhr',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-        emojis: [
-          {
-            id: 11,
-            users: ['jfjkzkhdghkhgf']
-          }
-        ],
-        answers: [
-          {
-            user: {
-              avatar: 5,
-              name: 'Noah Braun'
-            },
-            time: '17:45 Uhr',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-            emojis: [
-              {
-                id: 1,
-                users: ['uxfghjulzfülktdd']
-              }
-            ]
-          },
-          {
-            user: {
-              avatar: 5,
-              name: 'Noah Braun'
-            },
-            time: '0:12 Uhr',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-            emojis: [
-              {
-                id: 5,
-                users: ['uxfghjulzfülktdd']
-              }
-            ]
-          }
-        ]
-      },
-      {
-        user: {
-          avatar: 1,
-          name: 'Sandra Bock'
-        },
-        time: '14:09 Uhr',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-        emojis: [
-          {
-            id: 21,
-            users: ['rsrtsthmjjtrjurs', 'uxfghjulzfülktdd']
-          },
-          {
-            id: 7,
-            users: ['rsrtsthmjjtrjurs']
-          }
-        ],
-        answers: [
-          {
-            user: {
-              avatar: 5,
-              name: 'Noah Braun'
-            },
-            time: '0:12 Uhr',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-            emojis: [
-              {
-                id: 5,
-                users: ['uxfghjulzfülktdd']
-              }
-            ]
-          }
-        ]
-      },
-      {
-        user: {
-          avatar: 2,
-          name: 'Frederik Beck'
-        },
-        time: '16:33 Uhr',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-        emojis: [
-          {
-            id: 11,
-            users: ['jfjkzkhdghkhgf']
-          }
-        ],
-        answers: [
-          {
-            user: {
-              avatar: 5,
-              name: 'Noah Braun'
-            },
-            time: '17:45 Uhr',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-            emojis: [
-              {
-                id: 1,
-                users: ['uxfghjulzfülktdd']
-              }
-            ]
-          }
-        ]
-      },
-      {
-        user: {
-          avatar: 1,
-          name: 'Sandra Bock'
-        },
-        time: '14:09 Uhr',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-        emojis: [
-          {
-            id: 21,
-            users: ['rsrtsthmjjtrjurs', 'uxfghjulzfülktdd']
-          },
-          {
-            id: 7,
-            users: ['rsrtsthmjjtrjurs']
-          }
-        ],
-        answers: [
-          {
-            user: {
-              avatar: 5,
-              name: 'Noah Braun'
-            },
-            time: '0:12 Uhr',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu faucibus lacus iaculis ac.',
-            emojis: [
-              {
-                id: 5,
-                users: ['uxfghjulzfülktdd']
-              }
-            ]
-          }
-        ]
-      }
-    ];
+    return this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id));
+  }
+
+
+  // addChoiceMembers(user: User) {
+  //   if (!this.checkIfUserExists(user)) {
+  //     this.choiceMembersArray.splice(user.id);
+  //   } else {
+  //     this.choiceMembersArray.push(user.id);
+  //   }
+  // }
+
+
+  // checkIfUserExists(user: User) {
+  //   return this.choiceMembersArray.includes(user.id);
+  // }
+
+
+  addChoiceMembers(user: User) {
+    if (this.checkIfUserExists(user)) {
+      this.choiceMembersArray = this.choiceMembersArray.filter(id => id !== user.id);
+    } else {
+      this.choiceMembersArray.push(user.id);
+    }
+  }
+
+
+  checkIfUserExists(user: User): boolean {
+    return this.choiceMembersArray.includes(user.id);
+  }
 
 
 

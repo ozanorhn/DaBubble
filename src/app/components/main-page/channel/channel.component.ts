@@ -12,9 +12,63 @@ import { MessagesService } from '../../../services/messages/messages.service';
 })
 export class ChannelComponent {
 
+  dummyThreatService = {
+    messages: [{
+      id: 'string',
+      message: 'string',
+      sender: 'Florian Rauh',
+      timestamp: '24. April 2025 um 22:44:45 UTC+2',
+      createdBy: 'string',
+      reactions: [{
+        id: 0,
+        users: ['Sandra Peters'],
+      }],
+      threadId: 'string',
+      channelId: 'string',
+    },
+    {
+      id: 'string',
+      message: 'string',
+      sender: 'Florian Rauh',
+      timestamp: '26. April 2025 um 22:44:45 UTC+2',
+      createdBy: 'string',
+      reactions: [{
+        id: 0,
+        users: ['Sandra Peters'],
+      }],
+      threadId: 'string',
+      channelId: 'string',
+    },
+    {
+      id: 'string',
+      message: 'string',
+      sender: 'Florian Rauh',
+      timestamp: '26. April 2025 um 22:44:45 UTC+2',
+      createdBy: 'string',
+      reactions: [{
+        id: 0,
+        users: ['Sandra Peters'],
+      }],
+      threadId: 'string',
+      channelId: 'string',
+    }],
+    chatMessage: {
+      id: 'string',
+      message: 'string',
+      sender: 'Florian Rauh',
+      timestamp: '26. April 2025 um 22:44:45 UTC+2',
+      createdBy: 'string',
+      reactions: [{
+        id: 0,
+        users: ['Sandra Peters'],
+      }],
+      threadId: 'string',
+      channelId: 'string',
+    }
+  };
+
   constructor(
    public messageService: MessagesService
   ) {}
 
-  
 }

@@ -3,4 +3,4 @@
   <app-chat-messages class="flex flex-col w-full" [messages]="messageService.messages()"
     [chatType]="'channel'"></app-chat-messages>
 </div>
-<app-chat-input class=""></app-chat-input>
+<app-chat-input [chatType]="'channel'"></app-chat-input>
