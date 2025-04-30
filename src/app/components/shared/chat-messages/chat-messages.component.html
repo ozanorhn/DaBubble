@@ -27,7 +27,7 @@
                         <span class="text-sm">{{ messageService.formatTime(message.timestamp) }} Uhr</span>
                     </div>
                     <div id="msg-content"
-                        class="bg-primary p-[15px] rounded-[30px] w-min"
+                        class="bg-primary p-[15px] rounded-[30px] w-max"
                         [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser('user.id'), ' rounded-ss-none': !fromCurrentUser('user.id') }">
                         <span>{{ message.message }}</span>
                     </div>
