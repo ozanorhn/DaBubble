@@ -121,20 +121,6 @@ export class ChannelsService implements OnDestroy {
   }
 
 
-  // addChoiceMembers(user: User) {
-  //   if (!this.checkIfUserExists(user)) {
-  //     this.choiceMembersArray.splice(user.id);
-  //   } else {
-  //     this.choiceMembersArray.push(user.id);
-  //   }
-  // }
-
-
-  // checkIfUserExists(user: User) {
-  //   return this.choiceMembersArray.includes(user.id);
-  // }
-
-
   addChoiceMembers(user: User) {
     if (this.checkIfUserExists(user)) {
       this.choiceMembersArray = this.choiceMembersArray.filter(id => id !== user.id);
@@ -147,7 +133,6 @@ export class ChannelsService implements OnDestroy {
   checkIfUserExists(user: User): boolean {
     return this.choiceMembersArray.includes(user.id);
   }
-
 
 
 }
