@@ -2,7 +2,7 @@ import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup,sendPasswordResetEmail,  GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
 
 
 @Injectable({
@@ -261,6 +261,16 @@ getUserById2(id: string) {
 }
 
 
+
+async resetPassword(email: string): Promise<void> {
+  try {
+    await sendPasswordResetEmail(this.auth, email);
+    console.log('Passwort-Zurücksetzen-E-Mail gesendet an:', email);
+  } catch (error) {
+    console.error('Fehler beim Zurücksetzen des Passworts:', error);
+    throw error;
+  }
+}
 // getUserById(id: string) {
 //   this.users.filter((user) => {
 //     if (id == user.id) {
