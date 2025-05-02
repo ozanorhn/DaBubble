@@ -22,17 +22,18 @@ export class LoginComponent {
   password: string = '';
   error: string = '';
 
+  
   constructor(
     private router: Router,
     public landing: LandingPageService,
     public userService: UsersService,
-    public authServive: AuthService
+    public authService: AuthService
   ) { }
 
 
   async login() {
     try {
-      const user = await this.authServive.login(this.email, this.password);
+      const user = await this.authService.login(this.email, this.password);
       const profile = this.userService.getUserByEmail(user.email || '');
       if (profile) {
         this.userService.setTempUser(profile);
@@ -55,16 +56,16 @@ export class LoginComponent {
   }
 
 
-
   async googleLogin() {
     try {
-      await this.authServive.googleLogin();  // Erst auf Erfolg warten
+      await this.authService.googleLogin();  // Erst auf Erfolg warten
       this.router.navigate(['/main']);        // Dann weiterleiten
     } catch (error: any) {
       console.error('Fehler beim Google-Login:', error);
       this.error = error.message || 'Google-Login fehlgeschlagen.';
     }
   }
+
 
   getErrorMessage(code: string): string {
     switch (code) {
@@ -86,8 +87,10 @@ export class LoginComponent {
     this.landing.landing.set('request')
   }
 
+
   goToRegister() {
     this.landing.landing.set('register')
   }
+  
 
 }

@@ -2,6 +2,7 @@ import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
+import { AuthService } from '../auth/auth.service';
 // import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
 
 @Injectable({
@@ -11,6 +12,7 @@ export class UsersService implements OnDestroy {
   // private auth = inject(Auth);
 
   private firestore = inject(Firestore);
+  // private authService = inject(AuthService);
   // private auth = inject(Auth);
 
 
@@ -19,7 +21,18 @@ export class UsersService implements OnDestroy {
   users: User[] = [];
   tempUser: Partial<User> = {};
 
+  GuestUser = {
+    id: 'pEGZHQAC1HQNQQYnKNE1J04pbXM2',
+    name: 'Guest',
+    email: 'gast@test.de',
+    avatar: '/assets/imgs/avatar9.jpg',
+    online: true,
+  }
+  
+
   constructor() {
+
+
     this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
       this.users = snapshot.docs.map((doc) => {
         const data = doc.data() as User;
@@ -27,8 +40,6 @@ export class UsersService implements OnDestroy {
         return data;
       });
     });
-
-    this.checkLoggedInUser();
   }
 
 
@@ -58,6 +69,7 @@ export class UsersService implements OnDestroy {
 
   getTempUser() {
     //console.log('Current User ???', this.tempUser);
+    // this.authService.saveObject('currentUser',this.tempUser )
     return this.tempUser;
   }
 
@@ -83,73 +95,5 @@ export class UsersService implements OnDestroy {
     return this.users.find((user) => id === user.id)?.name;
   }
 
-  
-  GuestUser = {
-    id: 'pEGZHQAC1HQNQQYnKNE1J04pbXM2',
-    name: 'Guest',
-    email: 'gast@test.de',
-    avatar: '/assets/imgs/avatar9.jpg',
-    online: true,
-  }
 
-
-  saveUserLocal() {
-    this.saveObject('currentUser', this.GuestUser);
-  }
-
-
-  checkLoggedInUser() {
-    let obj = this.loadObject('currentUser');
-    if (obj) {
-      this.tempUser = obj;
-    }
-  }
-
-
-  /**
-     * Speichert ein Objekt im localStorage
-     * @param key Schlüssel für den Storage
-     * @param value Das zu speichernde Objekt
-     */
-  saveObject<T>(key: string, value: T): void {
-    try {
-      const serialized = JSON.stringify(value);
-      localStorage.setItem(key, serialized);
-    } catch (error) {
-      console.error('Fehler beim Speichern im localStorage:', error);
-      throw new Error('Speichern fehlgeschlagen');
-    }
-  }
-
-  /**
-   * Lädt ein Objekt aus dem localStorage
-   * @param key Schlüssel für den Storage
-   * @returns Das gespeicherte Objekt oder null wenn nicht vorhanden
-   */
-  loadObject<T>(key: string): T | null {
-    try {
-      const serialized = localStorage.getItem(key);
-      return serialized ? JSON.parse(serialized) as T : null;
-    } catch (error) {
-      console.error('Fehler beim Laden aus localStorage:', error);
-      return null;
-    }
-  }
-
-
-  /**
-   * Löscht einen Eintrag aus dem localStorage
-   * @param key Schlüssel für den Storage
-   */
-  remove(key: string): void {
-    localStorage.removeItem(key);
-  }
-
-
-  /**
-   * Löscht alle Einträge des aktuellen Domains
-   */
-  clear(): void {
-    localStorage.clear();
-  }
 }
