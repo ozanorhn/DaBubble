@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ChatInputComponent {
   @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
+  @ViewChild('messageInput') messageInputRef!: ElementRef;
 
   constructor(
     public messageService: MessagesService,
@@ -37,6 +38,7 @@ export class ChatInputComponent {
       default:
         break;
     }
+    this.messageService.message.message = '';
+    this.messageInputRef.nativeElement.focus();
   }
-
 }

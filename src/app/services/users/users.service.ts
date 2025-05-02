@@ -1,8 +1,9 @@
 import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, onSnapshot } from '@firebase/firestore';
+import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
+
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class UsersService implements OnDestroy {
   }
 
 
-  async addUser() {
+/*   async addUser() {
 
     // const user = new User()
 
@@ -62,9 +63,20 @@ export class UsersService implements OnDestroy {
       console.error('Fehler beim Erstellen des Users:', error);
     }
   }
+ */
+  async addUser() {
+    const user = new User(this.tempUser);
+  
+    try {
+      const docRef = await addDoc(this.usersCollection, user.toJSON());
+      console.log('User erstellt mit ID:', docRef.id);
+    } catch (error) {
+      console.error('Fehler beim Erstellen des Users:', error);
+    }
+  }
 
   // 🔐 Registrierung (Auth + Firestore-Profil)
-  async registerUser() {
+/* 
     // Hole die E-Mail, das Passwort, den Namen und den Avatar aus tempUser.
     // Falls keine Werte vorhanden sind, werden Standardwerte verwendet.
     const email = this.tempUser.email ?? '';
@@ -97,8 +109,40 @@ export class UsersService implements OnDestroy {
       console.error('Fehler bei der Registrierung:', error);
       throw error; // Fehler wird nach oben weitergereicht, damit er z.B. im UI verarbeitet werden kann.
     }
-  }
+  } */
 
+    async registerUser() {
+      // 1. Daten aus tempUser holen
+      const email = this.tempUser.email ?? '';
+      const password = this.tempUser.password ?? '';
+    
+      try {
+        // 2. Firebase Auth: Benutzer registrieren
+        const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+        const firebaseUser = userCredential.user;
+    
+        // 3. Neues User-Objekt erstellen
+        const user = new User(this.tempUser);
+    
+        // 4. Fehlende Felder sicher ergänzen
+        user.email = firebaseUser.email || '';
+        user.avatar = user.avatar || '/assets/imgs/avatar1.svg';
+        user.online = true;
+        user.createdAt = Date.now();
+    
+        // 5. Passwort entfernen vor dem Speichern
+        const { password: _, ...userProfile } = user.toJSON();
+    
+        // 6. Userprofil in Firestore speichern
+        await addDoc(this.usersCollection, userProfile);
+    
+        console.log('Registrierung erfolgreich:', userProfile);
+    
+      } catch (error) {
+        console.error('Fehler bei der Registrierung:', error);
+        throw error;
+      }
+    }
 
   // 🔓 Login mit E-Mail & Passwort
   async login(email: string, password: string): Promise<FirebaseUser> {
@@ -106,7 +150,7 @@ export class UsersService implements OnDestroy {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       console.log('Login erfolgreich:', userCredential.user.email);
       return userCredential.user;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Login fehlgeschlagen:', error);
       throw error;
     }
@@ -118,12 +162,13 @@ export class UsersService implements OnDestroy {
   }
 
   getTempUser() {
+    //console.log('Current User ???', this.tempUser);
     return this.tempUser;
   }
 
 
   // Google-Anmeldung
-  async googleLogin() {
+ /*  async googleLogin() {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.auth, provider);
@@ -147,13 +192,57 @@ export class UsersService implements OnDestroy {
       throw error;
     }
   }
+ */
+
+  async googleLogin() {
+    const provider = new GoogleAuthProvider();
+  
+    try {
+      // Google-Popup für Anmeldung
+      const result = await signInWithPopup(this.auth, provider);
+      const user = result.user;
+        // Überprüfen, ob der Benutzer bereits in Firestore existiert
+      const existingUser = this.users.find((u) => u.email === user.email);
+    
+      if (existingUser) {
+        console.log('Benutzer gefunden:', existingUser.email);
+  
+        const userDocRef = doc(this.usersCollection, existingUser.id);
+        await updateDoc(userDocRef, { online: true });
+        console.log('Google Anmeldung erfolgreich:', user.email);
+
+      } else {
+        // Der Benutzer ist nicht registriert
+        console.error('Der Benutzer ist nicht in der Datenbank registriert!');
+        throw new Error('Der Benutzer ist nicht registriert. Bitte registrieren Sie sich zuerst.');
+      }
+    } catch (error) {
+      console.error('Fehler bei der Google-Anmeldung:', error);
+      throw error;
+    }
+  }
+  
+
+
+
 
   //E-Mail den User aus Firestore zurückgibt
   getUserByEmail(email: string): User | undefined {
     return this.users.find(user => user.email === email);
   }
 
+  async updateUser(userId: string, updatedData: Partial<User>) {
+    const userDocRef = doc(this.firestore, 'users', userId);
+    try {
+      await updateDoc(userDocRef, updatedData);
+      console.log('User erfolgreich aktualisiert:', updatedData);
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Users:', error);
+      throw error;
+    }
+  } 
 
+ 
 
 // getUserById2(id: string) {
 //   const user = this.users.find(u => u.id === id);
