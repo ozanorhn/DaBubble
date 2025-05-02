@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, OnDestroy, signal } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
-import { addDoc, collection, doc, Firestore, getDocs, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, getDocs, onSnapshot, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
 import { Message } from '../../classes/message.class';
 import { Channel } from '../../classes/channel.class';
 import { UsersService } from '../users/users.service';
@@ -19,7 +19,7 @@ registerLocaleData(localeDe);
  * @class MessagesService
  * @Injectable providedIn: 'root'
  */
-export class MessagesService {
+export class MessagesService implements OnDestroy {
 
   message: Message = new Message({
     id: '',
@@ -33,14 +33,13 @@ export class MessagesService {
     lastAnswer: null
   });
 
-
   messageCollection;
   Message: [] = [];
   messages = signal<Message[]>([]);
   members: [] = [];
   lastDate: Date = new Date();
   date = new Date();
-  tempChannel = new Channel();
+  unsubscribeFromMessages?: () => void;
 
 
   constructor(
@@ -55,23 +54,22 @@ export class MessagesService {
   }
 
 
-  /**
-   * Fetches messages for a channel
-   * @param {Channel} obj - Channel object
-   * @returns {Promise<Message[]>} Sorted messages
-   */
-  async getMessages(obj: Channel) {
-    this.tempChannel = obj;
-    const q = query(this.messageCollection, where('channelId', '==', obj.id));
-    const querySnapshot = await getDocs(q);
-    const messages = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }) as Message);
-    this.messages.set(this.sortMessages(messages))
-    console.log('Message Array', this.messages());
-    return this.sortMessages(messages);
-  }
+  // /**
+  //  * Fetches messages for a channel
+  //  * @param {Channel} obj - Channel object
+  //  * @returns {Promise<Message[]>} Sorted messages
+  //  */
+  // async getMessages(obj: Channel) {
+  //   const q = query(this.messageCollection, where('channelId', '==', obj.id));
+  //   const querySnapshot = await getDocs(q);
+  //   const messages = querySnapshot.docs.map(doc => ({
+  //     id: doc.id,
+  //     ...doc.data()
+  //   }) as Message);
+  //   this.messages.set(this.sortMessages(messages))
+  //   console.log('Message Array', this.messages());
+  //   return this.sortMessages(messages);
+  // }
 
 
   /**
@@ -81,6 +79,28 @@ export class MessagesService {
   */
   sortMessages(messages: Message[]): Message[] {
     return messages.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
+  }
+
+
+  getMessages(obj: Channel) {
+    if (this.unsubscribeFromMessages) {
+      this.unsubscribeFromMessages();
+    }
+  
+    const q = query(this.messageCollection, where('channelId', '==', obj.id));
+  
+    this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
+      const messages = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }) as Message);
+      
+      const sorted = this.sortMessages(messages);
+      this.messages.set(sorted);
+      console.log('Live-updated messages:', sorted);
+    }, (error) => {
+      console.error('Error listening to messages:', error);
+    });
   }
 
 
@@ -94,7 +114,6 @@ export class MessagesService {
     console.log('To JSON OBjsect Test', this.message);
     try {
       const docRef = await addDoc(this.messageCollection, this.message.toJSON())
-      this.getMessages(this.tempChannel);
     } catch (error) {
       console.error('Error adding message', error);
     }
@@ -103,23 +122,9 @@ export class MessagesService {
 
   //// Geht noch nicht  
   async editMessage(id: string) {
-    const updatedMessage = {
-      id: 'string',
-      message: 'string',
-      sender: 'string',
-      timestamp: Timestamp.now(),
-      reactions: [{
-        id: 0,
-        users: ['string']
-      }],
-      threadId: 'string',
-      channelId: 'string',
-      answers: 0,
-      lastAnswer: Timestamp,
-    }
     await updateDoc(
       doc(this.messageCollection, id),
-      updatedMessage
+      this.message.toJSON()
     );
   }
 
@@ -140,7 +145,7 @@ export class MessagesService {
    * @param {Timestamp} timestamp - Firebase timestamp
    * @returns {string} Formatted time string
    */
-  formatTime(timestamp: Timestamp) {
+  formatTime(timestamp: Timestamp): string {
     return formatDate(timestamp.toDate(), 'HH:mm', 'de-DE')
   }
 
@@ -192,4 +197,9 @@ export class MessagesService {
   }
 
 
+  ngOnDestroy(): void {
+    if (this.unsubscribeFromMessages) {
+      this.unsubscribeFromMessages();
+    }
+  }
 }

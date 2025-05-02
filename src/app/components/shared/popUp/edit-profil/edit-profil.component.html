@@ -20,9 +20,14 @@
   </div>
   <div class="flex items-start gap-5">
     <div
-      class="w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px]">
-      <input type="text" placeholder="Max Mustermann"
-        class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none" />
+      class="w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px]"
+    >
+      <input
+        type="text"
+        placeholder="Max Mustermann"
+        class="w-full h-full bg-transparent border-none text-gray-800 placeholder-gray-400 focus:outline-none"
+        [(ngModel)]="name"
+      />
     </div>
   </div>
 
@@ -30,7 +35,10 @@
     <button class="w-[141px] h-[49px] rounded-[50px] border-2 border-purple2 text-purple1">
       Abbrechen
     </button>
-    <button class="w-[141px] h-[49px] rounded-[50px] border-2 border-purple2 bg-purple1 text-white">
+    <button
+      (click)="saveProfile()"
+      class="w-[141px] h-[49px] rounded-[50px] border-2 border-purple2 bg-purple1 text-white"
+    >
       Speichern
     </button>
   </div>

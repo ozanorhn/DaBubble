@@ -43,12 +43,22 @@
         <span class="text-sm text-black">ODER</span>
         <div class="flex-grow h-px bg-lightpurple"></div>
       </div>
-      <p *ngIf="error" class="w-full text-sm text-center text-red-500">
+
+      <p *ngIf="error" class="text-red-500 text-sm text-center w-full">
         {{ error }}
       </p>
-      <button (click)="googleLogin()" type="submit"
-        class="flex items-center justify-center w-full px-4 py-2 space-x-2 border rounded-full border-lightpurple hover:bg-primary">
-        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Icon" class="w-5 h-5" />
+      
+      <button
+        (click)="googleLogin()"
+        type="button"
+        class="flex items-center justify-center w-full px-4 py-2 space-x-2 border rounded-full border-lightpurple hover:bg-primary"
+      >
+        
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          alt="Google Icon"
+          class="w-5 h-5"
+        />
         <span>Anmelden mit Google</span>
       </button>
 
