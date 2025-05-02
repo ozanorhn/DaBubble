@@ -2,8 +2,7 @@ import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
-
+// import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class UsersService implements OnDestroy {
   // private auth = inject(Auth);
 
   private firestore = inject(Firestore);
-  private auth = inject(Auth);
+  // private auth = inject(Auth);
 
 
   usersCollection = collection(this.firestore, 'users');
@@ -51,52 +50,6 @@ export class UsersService implements OnDestroy {
   }
 
 
-  async registerUser() {
-    // 1. Daten aus tempUser holen
-    const email = this.tempUser.email ?? '';
-    const password = this.tempUser.password ?? '';
-    try {
-      // 2. Firebase Auth: Benutzer registrieren
-      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-      const firebaseUser = userCredential.user;
-
-      // 3. Neues User-Objekt erstellen
-      const user = new User(this.tempUser);
-
-      // 4. Fehlende Felder sicher ergänzen
-      user.email = firebaseUser.email || '';
-      user.avatar = user.avatar || '/assets/imgs/avatar1.svg';
-      user.online = true;
-      user.createdAt = Date.now();
-
-      // 5. Passwort entfernen vor dem Speichern
-      const { password: _, ...userProfile } = user.toJSON();
-
-      // 6. Userprofil in Firestore speichern
-      await addDoc(this.usersCollection, userProfile);
-
-      console.log('Registrierung erfolgreich:', userProfile);
-
-    } catch (error) {
-      console.error('Fehler bei der Registrierung:', error);
-      throw error;
-    }
-  }
-
-
-  // 🔓 Login mit E-Mail & Passwort
-  async login(email: string, password: string): Promise<FirebaseUser> {
-    try {
-      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-      console.log('Login erfolgreich:', userCredential.user.email);
-      return userCredential.user;
-    } catch (error: unknown) {
-      console.error('Login fehlgeschlagen:', error);
-      throw error;
-    }
-  }
-
-
   setTempUser(data: Partial<User>) {
     this.tempUser = { ...this.tempUser, ...data };
     console.log('TempUser gesetzt:', this.tempUser);  // Überprüfe, ob der Avatar korrekt gesetzt wird
@@ -107,34 +60,6 @@ export class UsersService implements OnDestroy {
     //console.log('Current User ???', this.tempUser);
     return this.tempUser;
   }
-
-
-  // async googleLogin() {
-  //   const provider = new GoogleAuthProvider();
-  //   try {
-  //     // Google-Popup für Anmeldung
-  //     const result = await signInWithPopup(this.auth, provider);
-  //     const user = result.user;
-  //     // Überprüfen, ob der Benutzer bereits in Firestore existiert
-  //     const existingUser = this.users.find((u) => u.email === user.email);
-
-  //     if (existingUser) {
-  //       console.log('Benutzer gefunden:', existingUser.email);
-
-  //       const userDocRef = doc(this.usersCollection, existingUser.id);
-  //       await updateDoc(userDocRef, { online: true });
-  //       console.log('Google Anmeldung erfolgreich:', user.email);
-
-  //     } else {
-  //       // Der Benutzer ist nicht registriert
-  //       console.error('Der Benutzer ist nicht in der Datenbank registriert!');
-  //       throw new Error('Der Benutzer ist nicht registriert. Bitte registrieren Sie sich zuerst.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Fehler bei der Google-Anmeldung:', error);
-  //     throw error;
-  //   }
-  // }
 
 
   //E-Mail den User aus Firestore zurückgibt
@@ -153,10 +78,7 @@ export class UsersService implements OnDestroy {
     }
   }
 
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+ 
   getUserById2(id: string) {
     return this.users.find((user) => id === user.id)?.name;
   }

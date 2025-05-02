@@ -32,7 +32,7 @@ export class LoginComponent {
 
   async login() {
     try {
-      const user = await this.userService.login(this.email, this.password);
+      const user = await this.authServive.login(this.email, this.password);
       const profile = this.userService.getUserByEmail(user.email || '');
       if (profile) {
         this.userService.setTempUser(profile);
