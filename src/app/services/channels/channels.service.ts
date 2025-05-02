@@ -16,6 +16,10 @@ export class ChannelsService implements OnDestroy {
   channelsCollection;
 
 
+
+  choiceMembers = signal(true);
+  choiceMembersArray: string[] = [];
+
   createChannel = new Channel({
     createdBy: 'UserID343783',
     members: []
@@ -39,7 +43,6 @@ export class ChannelsService implements OnDestroy {
         data.id = doc.id;
         return data;
       })
-      console.log('Aktuelle Channels', this.channels);
     })
   }
 
@@ -50,9 +53,15 @@ export class ChannelsService implements OnDestroy {
     }
   }
 
-  async addChannel() {
-    this.createChannel.members = this.userService.users.map(user => user.id);
 
+  async addChannel() {
+
+    if (this.choiceMembers()) {
+      this.createChannel.members = this.choiceMembersArray
+      this.choiceMembersArray = [];
+    } else {
+      this.createChannel.members = this.userService.users.map(user => user.id);
+    }
     console.log('current channel is', this.createChannel);
 
     try {
@@ -107,9 +116,25 @@ export class ChannelsService implements OnDestroy {
 
   getChannelMembers(): User[] {
     console.log('MEMBERS: ', this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id)));
-    
+
     return this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id));
   }
+
+
+  addChoiceMembers(user: User) {
+    if (this.checkIfUserExists(user)) {
+      this.choiceMembersArray = this.choiceMembersArray.filter(id => id !== user.id);
+    } else {
+      this.choiceMembersArray.push(user.id);
+    }
+  }
+
+
+  checkIfUserExists(user: User): boolean {
+    return this.choiceMembersArray.includes(user.id);
+  }
+
+
 }
 
 

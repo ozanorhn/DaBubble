@@ -1,7 +1,7 @@
 import { User } from "./user.class";
 
 export class Channel {
-    id?: string;
+    id: string;
     name: string;
     description: string;
     members: string[];

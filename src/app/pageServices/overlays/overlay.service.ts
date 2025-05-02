@@ -8,15 +8,11 @@ import { UsersService } from '../../services/users/users.service';
 })
 export class OverlayService {
 
-
   hideAddChannel = true;
   hideAddUser = true;
   hideEditChannel = true;
   hideProfileOverlay = true;
   hideLogoutOverlay = true;
-
-
-
 
   constructor(
     public channelsService: ChannelsService,
@@ -24,42 +20,15 @@ export class OverlayService {
   ) { }
 
 
-
-
-  //////////////////////////
-  /// Geht in den ChannelService 
-  // newChannel = {
-  //   name: '',
-  //   description: '',
-  //   members: [{
-  //     name: "Nicolas Developer",
-  //     email: "nicolas@test.com",
-  //     createdAt: {
-  //       seconds: 1745499997,
-  //       nanoseconds: 173000000
-  //     },
-  //     avatar: "/assets/imgs/avatar6.svg",
-  //     online: false,
-  //     id: "6xN38YGFasqdAqssgnO9"
-  //   }]
-  // }
-
-  // createChannel() {
-  //   this.channelsService.channels.push(new Channel(this.newChannel));
-  //   this.channelsService.addChannel(new Channel(this.newChannel));
-  //   console.log('My added Channel obj', this.newChannel);
-  // }
-  ///////////////////////////////////////////////////////////
-
-
-
   addCannelOverlay() {
     this.hideAddChannel = !this.hideAddChannel
   }
 
+
   addUserOverlay() {
     this.hideAddUser = !this.hideAddUser;
   }
+
 
   editChannel() {
     this.hideEditChannel = !this.hideEditChannel
@@ -70,11 +39,10 @@ export class OverlayService {
     this.hideProfileOverlay = !this.hideProfileOverlay
   }
 
+
   logoutOvelay(){
     this.hideLogoutOverlay =  !this.hideLogoutOverlay
   }
-
-
 
 
 }

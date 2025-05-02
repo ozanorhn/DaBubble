@@ -20,9 +20,13 @@ export class MainNavService {
 
   constructor(
     public channelsService: ChannelsService,
-    public messageService: MessagesService) { }
+    public messageService: MessagesService
+  ) { }
 
 
+  /**
+  * Toggles navigation visibility
+  */
   toggleNav() {
     if (this.nav) {
       this.closeNav();
@@ -31,6 +35,10 @@ export class MainNavService {
     }
   }
 
+
+  /**
+   * Closes navigation panel
+   */
   closeNav() {
     if (!this.channel && !this.thread || this.mediumScreen && !this.channel) {
       this.channel = true;
@@ -38,6 +46,10 @@ export class MainNavService {
     this.nav = false;
   }
 
+
+  /**
+   * Opens navigation panel
+   */
   openNav() {
     this.nav = true;
     if (this.mediumScreen && this.channel && this.thread) {
@@ -49,20 +61,38 @@ export class MainNavService {
     }
   }
 
-  showNav() {
+
+  /**
+   * Determines if navigation should be visible
+   * @returns {boolean} Visibility state
+   */
+  showNav(): boolean {
     return !this.channel && this.mobile && !this.thread && this.nav || this.mediumScreen && this.nav || this.bigScreen && this.nav;
   }
 
-  showChannel() {
+
+  /**
+  * Determines if channel view should be visible
+  * @returns {boolean} Visibility state
+  */
+  showChannel(): boolean {
     return this.channel && this.mobile && !this.thread && !this.nav || this.mediumScreen && this.channel || this.bigScreen;
   }
 
-  showThread() {
+
+  /**
+  * Determines if thread view should be visible
+  * @returns {boolean} Visibility state
+  */
+  showThread(): boolean {
     return !this.channel && this.mobile && this.thread && !this.nav || this.mediumScreen && this.thread || this.bigScreen && this.thread;
   }
 
 
-  // Runs in a Hostlistener in app.component.ts
+  /**
+   * Updates responsive layout states based on window size
+   * (Called via HostListener in app.component)
+   */
   checkScreenView() {
     if (window.innerWidth >= 1280) {
       this.setScreen('big');
@@ -76,6 +106,11 @@ export class MainNavService {
     }
   }
 
+
+  /**
+    * Sets responsive breakpoint flags
+    * @param {'big'|'medium'|'mobile'} size - Current screen size
+    */
   setScreen(size: 'big' | 'medium' | 'mobile') {
     this.bigScreen = false;
     this.mediumScreen = false;
@@ -85,6 +120,10 @@ export class MainNavService {
     if (size === 'mobile') this.mobile = true;
   }
 
+
+  /**
+   * Adjusts channel members visibility in header
+   */
   setHeaderMembers() {
     if (this.bigScreen) {
       if (window.innerWidth < 1400 && this.thread) {
@@ -98,6 +137,9 @@ export class MainNavService {
   }
 
 
+  /**
+   * Adjusts layout for medium screens (810-1279px)
+   */
   adjustMediumScreen() {
     if (this.thread && this.nav) {
       this.channel = false;
@@ -107,6 +149,9 @@ export class MainNavService {
   }
 
 
+  /**
+   * Adjusts layout for mobile screens (<810px)
+   */
   adjustMobileScreen() {
     if (this.channel && this.thread) {
       this.channel = false;
@@ -119,6 +164,11 @@ export class MainNavService {
     }
   }
 
+
+  /**
+   * Opens channel view
+   * @param {boolean} [dm=false] - Whether to open direct messages
+   */
   openChannel(dm = false) {
     this.newMessage = false;
     this.channel = true;
@@ -134,6 +184,10 @@ export class MainNavService {
     this.setHeaderMembers();
   }
 
+
+  /**
+   * Opens thread view
+   */
   openThread() {
     if (this.mobile) {
       this.channel = false;
@@ -146,11 +200,4 @@ export class MainNavService {
     }
     this.setHeaderMembers();
   }
-
-  editMessage(id: number, chatType: string) {
-    console.log(chatType, id);
-
-  }
-
- 
 }

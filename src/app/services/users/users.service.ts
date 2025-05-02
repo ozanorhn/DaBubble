@@ -4,6 +4,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +21,7 @@ export class UsersService implements OnDestroy {
   tempUser: Partial<User> = {};
 
   constructor() {
-    console.log('UsersService gestartet');
+    // console.log('UsersService gestartet');
 
     // Firestore Snapshot Listener
     this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
@@ -29,7 +30,7 @@ export class UsersService implements OnDestroy {
         data.id = doc.id;
         return data;
       });
-      console.log('Aktuelle Users:', this.users);
+      // console.log('Aktuelle Users:', this.users);
     });
   }
 
@@ -149,7 +150,7 @@ export class UsersService implements OnDestroy {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       console.log('Login erfolgreich:', userCredential.user.email);
       return userCredential.user;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Login fehlgeschlagen:', error);
       throw error;
     }
@@ -230,7 +231,18 @@ export class UsersService implements OnDestroy {
     return this.users.find(user => user.email === email);
   }
 
+  async updateUser(userId: string, updatedData: Partial<User>) {
+    const userDocRef = doc(this.firestore, 'users', userId);
+    try {
+      await updateDoc(userDocRef, updatedData);
+      console.log('User erfolgreich aktualisiert:', updatedData);
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Users:', error);
+      throw error;
+    }
+  } 
 
+ 
 
 // getUserById2(id: string) {
 //   const user = this.users.find(u => u.id === id);

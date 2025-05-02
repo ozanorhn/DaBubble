@@ -14,28 +14,29 @@
                     </app-chat-seperator>
                 }
             }
-            
-            <div id="{{ chatType }}{{ i }}" (click)="mainNavService.editMessage(i, chatType)"
+            <!--  messageService.editMessage(i, chatType); -->
+            <div id="{{ chatType }}{{ i }}" (click)=" mainNavService.openThread(); messageService.openThread(message.id, message.threadId)" 
                 class="flex gap-5 mt-[25px] px-4 py-2 cursor-pointer hover:bg-primary"
                 [ngClass]="{ 'flex-row-reverse': fromCurrentUser('user.id'), '[&>div>#msg-content]:hover:bg-white': !fromCurrentUser('user.id')}">
-                <div class="w-max">
+                <div>
                     <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ 0 }}.svg" alt="Avatar">
                 </div>
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col max-w-full gap-2">
                     <div class="flex items-center gap-5" [ngClass]="{ 'justify-end': fromCurrentUser('user.id')}">
                         <span class="text-lg font-bold">{{ userService.getUserById2(message.sender) }}</span>
                         <span class="text-sm">{{ messageService.formatTime(message.timestamp) }} Uhr</span>
                     </div>
-                    <div id="msg-content"
-                        class="bg-primary p-[15px] rounded-[30px] w-min"
+                    <div class="flex" id="msg-content"
+                        class="bg-primary p-[15px] rounded-[30px] max-w-full"
                         [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser('user.id'), ' rounded-ss-none': !fromCurrentUser('user.id') }">
-                        <span>{{ message.message }}</span>
+                        <span class="max-w-full">{{ message.message }}</span>
                     </div>
-
+                    
                     @if (message.threadId !== '' && chatType !== 'thread') {
                         <app-chat-message-answer
                             class="cursor-pointer flex flex-col xs:flex-row xs:items-center xs:gap-[20px]"
-                            [ngClass]="{'self-end': fromCurrentUser('user.id')}">
+                            [ngClass]="{'self-end': fromCurrentUser('user.id')}"
+                            [message]="message">
                         </app-chat-message-answer>
                     }
 

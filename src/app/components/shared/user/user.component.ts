@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { User } from '../../../classes/user.class';
+import { ChannelsService } from '../../../services/channels/channels.service';
 
 @Component({
   selector: 'app-user',
@@ -12,6 +13,7 @@ import { User } from '../../../classes/user.class';
 })
 export class UserComponent {
 
+  constructor(public channelService: ChannelsService) { }
 
   avatar = [
     { av1: '/assets/imgs/avatar1.svg' },
@@ -20,21 +22,18 @@ export class UserComponent {
     { av4: '/assets/imgs/avatar4.svg' },
     { av5: '/assets/imgs/avatar5.svg' },
     { av6: '/assets/imgs/avatar6.svg' },
- 
+
   ]
 
-
-  @Input() userInfo!: User; 
-  
+  @Input() userInfo!: User;
 
 
-
-//  @Input() userInfo = {
-//     id: '',
-//     name: 'Frederik Beck',
-//     email: 'frederick@mail.com',
-//     avatar: 'av1',
-//     online: false
-//   }
+  //  @Input() userInfo = {
+  //     id: '',
+  //     name: 'Frederik Beck',
+  //     email: 'frederick@mail.com',
+  //     avatar: 'av1',
+  //     online: false
+  //   }
 
 }
