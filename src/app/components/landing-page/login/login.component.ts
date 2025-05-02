@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { provideAuth, getAuth, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { FirebaseError } from '@firebase/util'; 
+import { FirebaseError } from 'firebase/app'; 
 
 @Component({
   selector: 'app-login',
@@ -21,47 +21,61 @@ export class LoginComponent {
   password: string = '';
   error: string = '';
 
- 
   constructor(  private router: Router,  public landing: LandingPageService,  public userService: UsersService) {}
 
+
   async login() {
+      try {
+        const user = await this.userService.login(this.email, this.password);
+        const profile = this.userService.getUserByEmail(user.email || '');
+        if (profile) {
+          this.userService.setTempUser(profile);
+        }
+    
+        this.router.navigate(['/main']); 
+      } catch (error: any) {
+      
+        if (error instanceof FirebaseError) {
+       
+          this.error = this.getErrorMessage(error.code);
+        } else {
+          this.error = 'Unbekannter Fehler beim Login.';
+        }
+    
+        setTimeout(() => {
+          this.error = '';
+        }, 5000);
+      }
+  }
+
+ 
+    
+  async googleLogin() {
     try {
-      const user = await this.userService.login(this.email, this.password);
-      console.log('Login erfolgreich:', user);
-      /* ---------------------------------- */
-    // Avatar aus Firestore holen
-    const profile = this.userService.getUserByEmail(user.email || '');
-    if (profile) {
-    console.log('Eingeloggter User:', profile);
-    // Z. B. im Service speichern für globalen Zugriff
-    this.userService.setTempUser(profile);
-}
-
-      this.router.navigate(['/main']); 
+      await this.userService.googleLogin();  // Erst auf Erfolg warten
+      this.router.navigate(['/main']);        // Dann weiterleiten
     } catch (error: any) {
-      this.error = this.getErrorMessage(error.code ?? '');
+      console.error('Fehler beim Google-Login:', error);
+      this.error = error.message || 'Google-Login fehlgeschlagen.';
     }
   }
-
-  googleLogin() {
-    this.userService.googleLogin();  // Ruft die Methode im UsersService auf
-    this.router.navigate(['/main']);  // Navigiere nach erfolgreichem Login
-  }
-
-
+  
   getErrorMessage(code: string): string {
-    switch (code) {
-      case 'auth/user-not-found':
-        return 'Benutzer nicht gefunden!';
-      case 'auth/wrong-password':
-        return 'Falsches Passwort!';
-      case 'auth/invalid-email':
-        return 'Ungültiges E-Mail-Format!';
-      default:
-        return 'Unbekannter Fehler, bitte versuche es später erneut.';
-    }
+      switch (code) {
+        case 'auth/user-not-found':
+          return 'Benutzer nicht gefunden!';
+        case 'auth/wrong-password':
+          return 'Falsches Passwort!';
+        case 'auth/invalid-email':
+          return 'Ungültiges E-Mail-Format!';
+        case 'auth/invalid-credential':
+          return 'E-Mail oder Passwort ist falsch.'; 
+        default:
+          return 'Unbekannter Fehler, bitte versuche es später erneut.';
+      }
   }
-
+    
+    
   change(){
     this.landing.landing.set('request')
   }
