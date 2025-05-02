@@ -1,14 +1,13 @@
 <app-chat-header [chatType]="'dm'" class="mb-[10px]"></app-chat-header>
 <div class="flex flex-col flex-1 w-full overflow-y-auto">
-    <app-chat-messages class="flex flex-col w-full" [messages]="dummyThreatService.messages"
+    <app-chat-messages class="flex flex-col w-full" [messages]="dmService.directMessage.content"
         [chatType]="'dm'"></app-chat-messages>
         <div class="flex flex-col gap-6 px-4 pt-4 ml-4">
             <div class="flex items-end">
-                <img class="size-[88px] rounded-full" src="assets/imgs/avatar1.svg" alt="Avatar">
-                <p class="text-2xl font-bold">Sofia Müller</p>
+                <img class="size-[88px] rounded-full" src="{{dmService.othertUser.avatar}}" alt="Avatar">
+                <p class="text-2xl font-bold">{{ dmService.othertUser.name }}</p>
             </div>
-            <p class="text-xl text-textgray">Diese Unterhaltung findet nur zwischen <span class="text-purple3">&#64;Sofia
-                    Müller</span> und dir statt.</p>
+            <p class="text-xl text-textgray">Diese Unterhaltung findet nur zwischen <span class="text-purple3">&#64;{{dmService.othertUser.name}}</span> und dir statt.</p>
         </div>
 </div>
 <app-chat-input [chatType]="'dm'"></app-chat-input>

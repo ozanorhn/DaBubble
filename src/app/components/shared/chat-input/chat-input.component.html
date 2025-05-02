@@ -1,7 +1,15 @@
 <section class="h-[145px] p-3 mx-4 flex flex-1 flex-col  bg-white rounded-[20px] border-lightpurple border-[1px]">
-   
-    <textarea [(ngModel)]="messageService.message.message" class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten..." name="" id=""></textarea>
-
+   @switch (chatType) {
+    @case ('dm') {
+        <textarea [(ngModel)]="directMessageService.newMessage.message" class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten..." name="" id=""></textarea>
+    }
+    @case ('channel') {
+        <textarea [(ngModel)]="messageService.message.message" class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten..." name="" id=""></textarea>
+    }
+    @case ('thread') {
+        <textarea [(ngModel)]="threadService.newThread" class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten..." name="" id=""></textarea>
+    }
+   }
     
     <div class="flex items-center justify-between h-10">
         <div class="flex gap-[25px]">
@@ -11,6 +19,5 @@
         <button (click)="sendMessage()">
             <img class="size-5" src="assets/icons/send_message.svg" alt="Send message">
         </button>
-       
     </div>
 </section>

@@ -4,6 +4,7 @@ import { ChannelsService } from '../../../services/channels/channels.service';
 import { CommonModule } from '@angular/common';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 import { OverlayService } from '../../../pageServices/overlays/overlay.service';
+import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 
 @Component({
   selector: 'app-chat-header',
@@ -16,7 +17,9 @@ export class ChatHeaderComponent {
   constructor(
     public channelService: ChannelsService,
     public mainNavService: MainNavService,
-    public overlayService: OverlayService) {
+    public overlayService: OverlayService,
+    public dmService: DirectMessagesService
+  ) {
 
   }
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';

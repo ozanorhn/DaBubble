@@ -1,10 +1,8 @@
 <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
   <div class="absolute hidden md:block top-4 right-4">
     <p class="text-base text-black">Neu bei DABubble?</p>
-    <button
-      (click)="goToRegister()"
-      class="px-6 py-2 text-sm font-semibold transition border rounded-full text-purple1 border-purple1 hover:bg-primary"
-    >
+    <button (click)="goToRegister()"
+      class="px-6 py-2 text-sm font-semibold transition border rounded-full text-purple1 border-purple1 hover:bg-primary">
       Konto erstellen
     </button>
   </div>
@@ -21,46 +19,23 @@
 
     <form class="space-y-4" (ngSubmit)="login()">
       <div class="relative">
-        <img
-          src="assets/imgs/icons/mail.svg"
-          alt="Mail Icon"
-          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2"
-        />
-        <input
-          type="email"
-          name="email"
-          [(ngModel)]="email"
-          required
-          placeholder="beispielname@email.com"
-          autocomplete="disabled"
-          autocapitalize="off"
-          class="w-full py-2 pl-12 pr-4 transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:outline-none focus:border-purple2 focus:ring-2 focus:ring-purple2 placeholder-textgray"
-        />
+        <img src="assets/imgs/icons/mail.svg" alt="Mail Icon"
+          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
+        <input type="email" name="email" [(ngModel)]="email" required placeholder="beispielname@email.com"
+          autocomplete="disabled" autocapitalize="off"
+          class="w-full py-2 pl-12 pr-4 transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:outline-none focus:border-purple2 focus:ring-2 focus:ring-purple2 placeholder-textgray" />
       </div>
 
       <div class="relative">
-        <img
-          src="assets/imgs/icons/lock.svg"
-          alt="Lock Icon"
-          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2"
-        />
-        <input
-          type="password"
-          name="password"
-          [(ngModel)]="password"
-          required
-          placeholder="Passwort"
-          autocomplete="disabled"
-          autocapitalize="off"
-          data-lpignore="true"
-          class="w-full py-2 pl-12 pr-4 transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:outline-none focus:border-purple2 focus:ring-2 focus:ring-purple2 placeholder-textgray"
-        />
+        <img src="assets/imgs/icons/lock.svg" alt="Lock Icon"
+          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
+        <input type="password" name="password" [(ngModel)]="password" required placeholder="Passwort"
+          autocomplete="disabled" autocapitalize="off" data-lpignore="true"
+          class="w-full py-2 pl-12 pr-4 transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:outline-none focus:border-purple2 focus:ring-2 focus:ring-purple2 placeholder-textgray" />
       </div>
 
       <div class="text-right">
-        <span (click)="change()" class="text-sm text-purple2 hover:underline"
-          >Passwort vergessen?</span
-        >
+        <span (click)="change()" class="text-sm text-purple2 hover:underline">Passwort vergessen?</span>
       </div>
 
       <div class="flex items-center justify-center space-x-2">
@@ -68,34 +43,21 @@
         <span class="text-sm text-black">ODER</span>
         <div class="flex-grow h-px bg-lightpurple"></div>
       </div>
-      <p *ngIf="error" class="text-red-500 text-sm text-center w-full">
+      <p *ngIf="error" class="w-full text-sm text-center text-red-500">
         {{ error }}
       </p>
-      <button
-        (click)="googleLogin()"
-        type="submit"
-        class="flex items-center justify-center w-full px-4 py-2 space-x-2 border rounded-full border-lightpurple hover:bg-primary"
-      >
-        <img
-          src="https://www.svgrepo.com/show/475656/google-color.svg"
-          alt="Google Icon"
-          class="w-5 h-5"
-        />
+      <button (click)="googleLogin()" type="submit"
+        class="flex items-center justify-center w-full px-4 py-2 space-x-2 border rounded-full border-lightpurple hover:bg-primary">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Icon" class="w-5 h-5" />
         <span>Anmelden mit Google</span>
       </button>
 
       <div class="flex space-x-2">
-        <button
-          type="submit"
-          class="flex-1 py-2 text-white rounded-full bg-purple1 hover:bg-purple3"
-        >
+        <button type="submit" class="flex-1 py-2 text-white rounded-full bg-purple1 hover:bg-purple3">
           Anmelden
         </button>
-        <button
-          routerLink="main"
-          type="button"
-          class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary"
-        >
+        <button (click)="userService.saveUserLocal()" routerLink="main" type="button"
+          class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary">
           Gäste-Login
         </button>
       </div>
@@ -105,10 +67,8 @@
 
 <div class="pt-4 space-y-4 text-center border-t border-lightpurple md:hidden">
   <p class="text-base text-black">Neu bei DABubble?</p>
-  <button
-    (click)="goToRegister()"
-    class="px-6 py-2 font-semibold transition border rounded-full text-purple1 border-purple1 hover:bg-primary"
-  >
+  <button (click)="goToRegister()"
+    class="px-6 py-2 font-semibold transition border rounded-full text-purple1 border-purple1 hover:bg-primary">
     Konto erstellen
   </button>
 </div>

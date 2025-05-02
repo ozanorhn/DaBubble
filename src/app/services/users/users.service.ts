@@ -31,6 +31,8 @@ export class UsersService implements OnDestroy {
       });
       // console.log('Aktuelle Users:', this.users);
     });
+
+    this.checkLoggedInUser();
   }
 
   ngOnDestroy(): void {
@@ -155,30 +157,96 @@ export class UsersService implements OnDestroy {
 
 
 
-// getUserById2(id: string) {
-//   const user = this.users.find(u => u.id === id);
-//   return user?.name;
-// }
+  // getUserById2(id: string) {
+  //   const user = this.users.find(u => u.id === id);
+  //   return user?.name;
+  // }
 
 
 
-getUserById2(id: string) {
+  getUserById2(id: string) {
 
-  console.log('Filter id bey Name ',this.users.find((user) => id === user.id)?.name );
-  console.log('Users Array ',this.users);
-  
-  
-  return this.users.find((user) => id === user.id)?.name;
-}
+    console.log('Filter id bey Name ', this.users.find((user) => id === user.id)?.name);
+    console.log('Users Array ', this.users);
 
 
-// getUserById(id: string) {
-//   this.users.filter((user) => {
-//     if (id == user.id) {
-//       return user.name
-//     }
-//   });
-// }
+    return this.users.find((user) => id === user.id)?.name;
+  }
+
+
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  GuestUser = {
+    id: 'pEGZHQAC1HQNQQYnKNE1J04pbXM2',
+    name: 'Guest',
+    email: 'gast@test.de',
+    avatar: '/assets/imgs/avatar9.jpg',
+    online: true,
+  }
+
+  saveUserLocal() {
+    this.saveObject('currentUser', this.GuestUser);
+
+  }
+
+  checkLoggedInUser() {
+    let obj = this.loadObject('currentUser');
+    if (obj) {
+      this.tempUser = obj;
+    }
+  }
+
+
+  /**
+     * Speichert ein Objekt im localStorage
+     * @param key Schlüssel für den Storage
+     * @param value Das zu speichernde Objekt
+     */
+  saveObject<T>(key: string, value: T): void {
+    try {
+      const serialized = JSON.stringify(value);
+      localStorage.setItem(key, serialized);
+    } catch (error) {
+      console.error('Fehler beim Speichern im localStorage:', error);
+      throw new Error('Speichern fehlgeschlagen');
+    }
+  }
+
+  /**
+   * Lädt ein Objekt aus dem localStorage
+   * @param key Schlüssel für den Storage
+   * @returns Das gespeicherte Objekt oder null wenn nicht vorhanden
+   */
+  loadObject<T>(key: string): T | null {
+    try {
+      const serialized = localStorage.getItem(key);
+      return serialized ? JSON.parse(serialized) as T : null;
+    } catch (error) {
+      console.error('Fehler beim Laden aus localStorage:', error);
+      return null;
+    }
+  }
+
+
+  /**
+   * Löscht einen Eintrag aus dem localStorage
+   * @param key Schlüssel für den Storage
+   */
+  remove(key: string): void {
+    localStorage.removeItem(key);
+  }
+
+
+  /**
+   * Löscht alle Einträge des aktuellen Domains
+   */
+  clear(): void {
+    localStorage.clear();
+  }
+
 
 
 
