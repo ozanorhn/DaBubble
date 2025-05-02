@@ -13,6 +13,8 @@ export class ThreadsService {
   currentThread: Thread | undefined;
   currentMessageId: string = '';
 
+  newThread = '';
+
   constructor(
     public firestore: Firestore,
   ) {

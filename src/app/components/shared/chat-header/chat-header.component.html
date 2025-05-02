@@ -17,10 +17,10 @@
         @case ('dm') {
             <div class="flex items-center gap-4">
                 <div class="relative">
-                    <img class="size-[50px] rounded-full" src="assets/imgs/avatar1.svg" alt="Avatar">
+                    <img class="size-[50px] rounded-full" src="{{ dmService.othertUser.avatar }}" alt="Avatar">
                     <img class="absolute bottom-0 right-0" src="assets/icons/online.svg" alt="Online">
                 </div>
-                <p class="text-xl font-bold">Sofia Müller</p>
+                <p class="text-xl font-bold">{{ dmService.othertUser.name }}</p>
             </div>
         }
         @case ('new') {
