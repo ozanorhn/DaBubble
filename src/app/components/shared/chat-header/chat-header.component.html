@@ -21,8 +21,7 @@
         (click)="overlayService.profileOverlay(true, dmService.othertUser); ">
         <div class="relative">
             <img class="size-[50px] rounded-full" src="{{ dmService.othertUser.avatar }}" alt="Avatar">
-            <!-- <img class="absolute bottom-0 right-0" src="assets/icons/online.svg" alt="Online"> -->
-            <span class="absolute right-0 bg-online size-4 bottom-1 rounded-[50%] border-white border-2" [ngClass]="{'bg-online' :dmService.othertUser.online, 'bg-offline' : !dmService.othertUser.online}" ></span>
+            <span class="absolute right-0 bg-online size-4 bottom-1 rounded-[50%] border-white border-2" [ngClass]="{'bg-online' :dmService.othertUser.online, 'bg-offline' : !dmService.othertUser.online}" alt="Online"></span>
         </div>
         <p class="text-xl font-bold">{{ dmService.othertUser.name }}</p>
     </div>
