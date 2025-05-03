@@ -10,6 +10,7 @@ import { UsersService } from '../../../services/users/users.service';
 import { OverlayService } from '../../../pageServices/overlays/overlay.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { User } from '../../../classes/user.class';
+import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 
 @Component({
   selector: 'app-header',
@@ -32,7 +33,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     // public ui: OverlayUiService,
     public overlayService: OverlayService,
-    public localStorageS: LocalStorageService
+    public localStorageS: LocalStorageService,
+    public navService: MainNavService
   ) {
      console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
         this.currentUser = this.localStorageS.loadObject('currentUser') as User;
