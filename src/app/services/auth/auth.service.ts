@@ -3,6 +3,7 @@ import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEma
 import { addDoc, collection, doc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
+import { LocalStorageService } from '../localStorage/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,9 @@ export class AuthService {
  
 
   constructor(
-    public userService: UsersService
-  ) {
-    this.checkLoggedInUser();
-  }
+    public userService: UsersService,
+    public localStorageService: LocalStorageService
+  ) { }
 
 
   async googleLogin() {
@@ -85,26 +85,26 @@ export class AuthService {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       console.log('Login erfolgreich:', userCredential.user.email);
-
+      // this.userService.tempUser = userCredential.user
       return userCredential.user;
     } catch (error: unknown) {
       console.error('Login fehlgeschlagen:', error);
       throw error;
     }
-    this.saveUserLocal()
+    // this.saveUserLocal()
   }
 
 
-  saveUserLocal() {
-    this.saveObject('currentUser', this.userService.getTempUser());
-  }
+  // saveUserLocal() {
+  //   this.saveObject('currentUser', this.userService.getTempUser());
+  // }
 
-  /* saveUserLocal(user: User){
-  localStorage.setItem('currentUser, JSON.stringify(user))}; */
+  // /* saveUserLocal(user: User){
+  // localStorage.setItem('currentUser, JSON.stringify(user))}; */
 
 
   checkLoggedInUser() {
-    let obj = this.loadObject('currentUser');
+    let obj = this.localStorageService.loadObject('currentUser');
     if (obj !== null && obj) {
       this.userService.tempUser = obj;
       console.log('Lokal User: ', obj);
@@ -114,59 +114,7 @@ export class AuthService {
   }
 
   
-  /**
-     * Speichert ein Objekt im localStorage
-     * @param key Schlüssel für den Storage
-     * @param value Das zu speichernde Objekt
-     */
-  saveObject<T>(key: string, value: T): void {
-    try {
-      const serialized = JSON.stringify(value);
-      localStorage.setItem(key, serialized);
-    } catch (error) {
-      console.error('Fehler beim Speichern im localStorage:', error);
-      throw new Error('Speichern fehlgeschlagen');
-    }
-  }
 
-  /**
-   * Lädt ein Objekt aus dem localStorage
-   * @param key Schlüssel für den Storage
-   * @returns Das gespeicherte Objekt oder null wenn nicht vorhanden
-   */
-  loadObject<T>(key: string): T | null {
-    try {
-      const serialized = localStorage.getItem(key);
-      return serialized ? JSON.parse(serialized) as T : null;
-    } catch (error) {
-      console.error('Fehler beim Laden aus localStorage:', error);
-      return null;
-    }
-  }
-
-
-  // loadObject<T>(key: string): T | null{
-  //   const currentUser = localStorage.getItem(key);
-  //   if (!currentUser) return null ;
-  //   return  JSON.parse(currentUser) as T
-  // }
-
-
-  /**
-   * Löscht einen Eintrag aus dem localStorage
-   * @param key Schlüssel für den Storage
-   */
-  remove(key: string): void {
-    localStorage.removeItem(key);
-  }
-
-
-  /**
-   * Löscht alle Einträge des aktuellen Domains
-   */
-  clear(): void {
-    localStorage.clear();
-  }
 
   
 }

@@ -3,6 +3,7 @@ import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
 import { AuthService } from '../auth/auth.service';
+import { LocalStorageService } from '../localStorage/local-storage.service';
 // import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
 
 @Injectable({
@@ -17,7 +18,7 @@ export class UsersService implements OnDestroy {
 
 
   usersCollection = collection(this.firestore, 'users');
-  unsubscribe: () => void;
+ 
   users: User[] = [];
   tempUser: Partial<User> = {};
 
@@ -28,11 +29,17 @@ export class UsersService implements OnDestroy {
     avatar: '/assets/imgs/avatar9.jpg',
     online: true,
   }
-  
-
-  constructor() {
 
 
+  constructor(
+    public localStorageService: LocalStorageService
+  ) {
+    this.initUsersListener();
+  }
+
+  private unsubscribe!: () => void;
+
+  private initUsersListener() {
     this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
       this.users = snapshot.docs.map((doc) => {
         const data = doc.data() as User;
@@ -90,7 +97,7 @@ export class UsersService implements OnDestroy {
     }
   }
 
- 
+
   getUserById2(id: string) {
     return this.users.find((user) => id === user.id)?.name;
   }

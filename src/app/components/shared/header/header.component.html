@@ -3,39 +3,6 @@
 
   <app-search class="w-[50%] hidden lg:block self-end"></app-search>
 
-  <img [src]="avatarUrl" alt="DaBubble avatar" class="h-16 mt-4 rounded-full cursor-pointer"
-    (click)="overlayService.logoutOvelay()" />
+  <img src="{{currentUser.avatar}}" (click)="overlayService.logoutOvelay()"
+    class="h-16 mt-4 rounded-full cursor-pointer hover:scale-[1.1] duration-150" alt="DaBubble avatar">
 </div>
-
-<!-- <app-log-out-mobile *ngIf="isMobile" [isVisible]="showOverlay" (close)="closeOverlay()"></app-log-out-mobile>
-<app-profile *ngIf="ui.showProfileOverlay()"></app-profile>
-<app-edit-profil *ngIf="ui.showEditProfileOverlay()"></app-edit-profil> -->
-
-
-
-<!-- Overlay-Popup unten -->
-<!-- <div
-  *ngIf="showOverlay"
-  appClickOutside
-  (appClickOutside)="closeOverlay()"
-  class="fixed bottom-0 left-0 w-full h-[206px] bg-white px-[26px] py-[30px] rounded-t-[30px] flex flex-col items-start gap-[25px] shadow-lg z-50 border-2 border-rgba(255, 255, 255, 1)"
->
-  <div class="flex justify-center w-full mb-[10px]">
-    <div
-      class="w-[62px] h-[6px] rounded-[23px]"
-      style="background: rgba(217, 217, 217, 1)"
-    ></div>
-  </div>
-  <button class="text-base font-medium text-purple4">
-    <div class="flex justify-center" (click)="openProfileOverlay()">
-      <img src="assets/imgs/icons/account_circle.svg" alt="" />
-      <p class="pl-[8px]">Profil</p>
-    </div>
-  </button>
-  <button class="text-base font-medium text-purple4">
-    <div class="flex justify-center" (click)="logout()">
-      <img src="assets/icons/logout.svg" alt="" />
-      <p>Log out</p>
-    </div>
-  </button>
-</div> -->

@@ -8,6 +8,8 @@ import { OverlayUiService } from '../../../services/profil/overlay-ui-service.se
 import { EditProfilComponent } from "../popUp/edit-profil/edit-profil.component";
 import { UsersService } from '../../../services/users/users.service';
 import { OverlayService } from '../../../pageServices/overlays/overlay.service';
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { User } from '../../../classes/user.class';
 
 @Component({
   selector: 'app-header',
@@ -21,44 +23,53 @@ import { OverlayService } from '../../../pageServices/overlays/overlay.service';
   styleUrls: ['./header.component.scss'],  // Korrektes Property: styleUrls
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  showOverlay = false;
-  isMobile = false;
-  avatarUrl: string = '';
+  // showOverlay = false;
+  // isMobile = false;
+  // avatarUrl: string = '';
 
-  constructor(public ui: OverlayUiService, private userService: UsersService, public overlayService: OverlayService) { }
+  currentUser
 
-  toggleOverlay() {
-    this.showOverlay = !this.showOverlay;
-  }
+  constructor(
+    // public ui: OverlayUiService,
+    public overlayService: OverlayService,
+    public localStorageS: LocalStorageService
+  ) {
+     console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
+        this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+   }
 
-  closeOverlay() {
-    this.showOverlay = false;
-  }
+  // toggleOverlay() {
+  //   this.showOverlay = !this.showOverlay;
+  // }
 
-  updateMobileStatus() {
-    this.isMobile = window.innerWidth <= 768;
-  }
+  // closeOverlay() {
+  //   this.showOverlay = false;
+  // }
+
+  // updateMobileStatus() {
+  //   this.isMobile = window.innerWidth <= 768;
+  // }
 
   ngOnInit() {
-    this.updateMobileStatus();
-    window.addEventListener('resize', this.updateMobileStatus.bind(this));
+    // this.updateMobileStatus();
+    // window.addEventListener('resize', this.updateMobileStatus.bind(this));
 
-    const user = this.userService.getTempUser();
-    this.avatarUrl = user.avatar ?? '/assets/imgs/avatar1.svg'; // Avatar setzen
+    // const user = this.userService.getTempUser();
+    // this.avatarUrl = user.avatar ?? '/assets/imgs/avatar1.svg'; // Avatar setzen
   }
 
   ngOnDestroy() {
-    window.removeEventListener('resize', this.updateMobileStatus.bind(this));
+    // window.removeEventListener('resize', this.updateMobileStatus.bind(this));
   }
 
-  openProfileOverlay() {
-    this.ui.openProfile();
-  }
+  // openProfileOverlay() {
+  //   this.ui.openProfile();
+  // }
 
-  logout() {
-    this.showOverlay = false; // Overlay schließen
-    this.ui.closeProfile(); // falls Profile Overlay offen ist
-    this.ui.closeEditProfile(); // falls Edit Overlay offen ist
-    // this.router.navigate(['']); // zur Landing-page weiterleiten
-  }
+  // logout() {
+  //   this.showOverlay = false; // Overlay schließen
+  //   this.ui.closeProfile(); // falls Profile Overlay offen ist
+  //   this.ui.closeEditProfile(); // falls Edit Overlay offen ist
+  //   // this.router.navigate(['']); // zur Landing-page weiterleiten
+  // }
 }

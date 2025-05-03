@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { provideAuth, getAuth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { FirebaseError } from 'firebase/app';
 import { AuthService } from '../../../services/auth/auth.service';
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginComponent {
     private router: Router,
     public landing: LandingPageService,
     public userService: UsersService,
-    public authService: AuthService
+    public authService: AuthService,
+    public localStorageS: LocalStorageService
   ) { }
 
 
@@ -35,9 +37,11 @@ export class LoginComponent {
     try {
       const user = await this.authService.login(this.email, this.password);
       const profile = this.userService.getUserByEmail(user.email || '');
-      if (profile) {
-        this.userService.setTempUser(profile);
-      }
+
+      this.localStorageS.saveObject('currentUser', profile);
+      // if (profile) {
+      //   this.userService.setTempUser(profile);
+      // }
 
       this.router.navigate(['/main']);
     } catch (error: any) {

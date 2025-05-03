@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
+import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 
 @Component({
   selector: 'app-log-out',
@@ -10,7 +11,10 @@ import { OverlayService } from '../../../../pageServices/overlays/overlay.servic
 })
 export class LogOutComponent {
 
-  constructor(public overlayService: OverlayService){
+  constructor(
+    public overlayService: OverlayService,
+    public localStorageS: LocalStorageService
+  ){
 
   }
 
