@@ -1,12 +1,20 @@
 <app-splash-screen *ngIf="showSplash" class="splash-screen"></app-splash-screen>
 
-
+  <img
+    src="assets/imgs/icons/logo.svg"
+    alt="Logo"
+    class="absolute hidden h-16 md:block top-4 left-4"
+  />
+  
   <div
     class="flex flex-col items-center justify-center min-h-screen px-4 transition-opacity duration-700 ease-in-out bg-primary"
     [ngClass]="{ 'opacity-0': !showContent, 'opacity-100': showContent }"
   >
-    <img *ngIf="showContent" src="assets/imgs/icons/logo.svg" alt="Logo" class="h-16 mb-4" />
-
+    <img
+      src="assets/imgs/icons/logo.svg"
+      alt="Logo"
+      class="block h-16 mb-4 md:hidden"
+    />
     <div class="w-full max-w-sm animate-slide-fade-up">
       @if (landingService.landing() == 'login') {
         <app-login></app-login>
@@ -31,3 +39,4 @@
     </div>
 
   </div>
+  

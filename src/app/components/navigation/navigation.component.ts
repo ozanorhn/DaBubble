@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { ChannelsComponent } from "./channels/channels.component";
 import { DirectMessagesComponent } from './direct-messages/direct-messages.component';
-import { ChannelPageNavService } from '../../pageNavServices/channel-page-nav.service';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from "../shared/user/user.component";
-
 import { User } from '../../classes/user.class';
 import { Channel } from '../../classes/channel.class';
+import { MainNavService } from '../../pageServices/navigates/main-nav.service';
+import { FilterService } from '../../pageServices/filters/filter.service';
+import { ThreadsService } from '../../services/threads/threads.service';
+import { DirectMessagesService } from '../../services/directMessages/direct-messages.service';
 
 
 @Component({
@@ -16,21 +18,26 @@ import { Channel } from '../../classes/channel.class';
     DirectMessagesComponent,
     CommonModule,
     UserComponent
-],
+  ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
 })
 export class NavigationComponent {
-  constructor(public mainNavService: ChannelPageNavService){
+  constructor(
+    public threadService: ThreadsService,
+    public mainNavService: MainNavService,
+    public filterService: FilterService,
+    public directMessageService: DirectMessagesService
+  ) { }
 
-  }
 
   isUser(item: any): item is User {
-    return item instanceof User;
+    return 'name' in item && 'avatar' in item; // Anpassen an Ihre User-Properties
   }
-  
+
   isChannel(item: any): item is Channel {
-    return item instanceof Channel;
+    return 'name' in item && 'id' in item; // Anpassen an Ihre Channel-Properties
   }
+
 
 }

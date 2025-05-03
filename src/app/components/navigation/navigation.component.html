@@ -13,12 +13,12 @@
 
     <div>
 
-        @if (mainNavService.searchValue().length >= 1) {
+        @if (filterService.searchValue().length >= 1) {
         <ul class="flex flex-col">
-            @for (item of mainNavService.filteredResults(); track $index) {
+            @for (item of filterService.filteredResults(); track $index) {
 
             @if (isUser(item)) {
-            <app-user (click)="mainNavService.navigate()" [userInfo]="item"></app-user>
+            <app-user [userInfo]="item"></app-user>
             } @else if (isChannel(item)) {
             <li (click)="mainNavService.openChannel()"
                 class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
@@ -30,11 +30,17 @@
         </ul>
         }
 
-        @if(mainNavService.searchValue().length < 1) { <app-channels></app-channels>
+        @if(filterService.searchValue().length < 1) { <app-channels></app-channels>
             <app-direct-messages></app-direct-messages>
             }
 
 
     </div>
+
+    <button class="absolute p-2 text-white border bottom-16 left-4 bg-slate-500"
+        (click)="directMessageService.sendDirectMessage()">Send Test DirectMessages to Firebase</button>
+
+    <button class="absolute p-2 text-white border bottom-2 left-4 bg-slate-500"
+        (click)="threadService.sendThread()">Send Test Thread to Firebase</button>
 
 </section>

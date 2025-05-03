@@ -1,38 +1,31 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { LogOutMobileComponent } from "../popUp/log-out-mobile/log-out-mobile.component";
+import { Component } from '@angular/core';
 import { SearchComponent } from "../search/search.component";
+import { OverlayService } from '../../../pageServices/overlays/overlay.service';
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { User } from '../../../classes/user.class';
+import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, LogOutMobileComponent, SearchComponent],
+  imports: [
+    CommonModule,
+    SearchComponent
+  ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrls: ['./header.component.scss'],  // Korrektes Property: styleUrls
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  showOverlay = false;
-  isMobile = false;
+export class HeaderComponent {
+  currentUser
 
-  toggleOverlay() {
-    this.showOverlay = !this.showOverlay;
+  constructor(
+    public overlayService: OverlayService,
+    public localStorageS: LocalStorageService,
+    public navService: MainNavService
+  ) {
+    console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
-  closeOverlay() {
-    this.showOverlay = false;
-  }
-
-  updateMobileStatus() {
-    this.isMobile = window.innerWidth <= 768;
-  }
-
-  ngOnInit() {
-    this.updateMobileStatus();
-    window.addEventListener('resize', this.updateMobileStatus.bind(this));
-  }
-
-  ngOnDestroy() {
-    window.removeEventListener('resize', this.updateMobileStatus.bind(this));
-  }
 }

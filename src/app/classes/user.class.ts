@@ -1,9 +1,11 @@
 export class User {
-    id?: string;
+    id: string;
     name: string;
     email: string;
-    avatar: string;
+    avatar:  string; 
     online: boolean;
+    createdAt: number;
+    password?: string;
 
 
     constructor(obj?: any) {
@@ -12,7 +14,8 @@ export class User {
         this.email = obj ? obj.email : '';
         this.avatar = obj ? obj.avatar : '';
         this.online = obj ? obj.online : false;
-
+        this.createdAt = obj ? obj.createdAt : '';
+        this.password = obj ? obj.password : ''
     }
 
 
@@ -22,7 +25,9 @@ export class User {
             name: this.name,
             email: this.email,
             avatar: this.avatar,
-            online: this.online
+            online: this.online,
+            createdAt: this.createdAt,
+            password:this.password
         }
     }
 

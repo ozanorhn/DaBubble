@@ -1,0 +1,6 @@
+<app-chat-header [chatType]="'new'" class="mb-[10px]"></app-chat-header>
+<div class="flex flex-1 w-full overflow-y-auto">
+  <app-chat-messages class="flex flex-col w-full" [messages]="dummyThreatService.messages"
+    [chatType]="'new'"></app-chat-messages>
+</div>
+<app-chat-input [chatType]="'new'"></app-chat-input>

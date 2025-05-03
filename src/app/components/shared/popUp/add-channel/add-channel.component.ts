@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ChannelPageNavService } from '../../../../pageNavServices/channel-page-nav.service';
 import { ChannelsService } from '../../../../services/channels/channels.service';
 import { FormsModule } from '@angular/forms';
 import { Channel } from '../../../../classes/channel.class';
+import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 
 
 @Component({
@@ -15,23 +15,24 @@ import { Channel } from '../../../../classes/channel.class';
 })
 export class AddChannelComponent {
 
-  constructor(public channelNavService: ChannelPageNavService, public channelService: ChannelsService) { }
+  constructor(public overlayService: OverlayService, public channelService: ChannelsService) { }
 
   closeOverlay() {
-    this.channelNavService.addUserPopup(); // toggelt das Signal
-  }
-
-
-  newChannel = {
-    name: '',
-    description: '',
+    this.overlayService.addUserOverlay(); // toggelt das Signal
   }
 
 
 
-  createChannel() {
-    this.channelService.channels.push(new Channel(this.newChannel));
+  openAddUser(){
+    this.overlayService.addCannelOverlay()
+    this.overlayService.addUserOverlay()
   }
+
+
+
+  // createChannel() {
+  //   this.channelService.channels.push(new Channel(this.newChannel));
+  // }
 
 
 

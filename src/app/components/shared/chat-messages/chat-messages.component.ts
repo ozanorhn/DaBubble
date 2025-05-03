@@ -1,80 +1,48 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChannelsService } from '../../../services/channels/channels.service';
 import { AuthService } from '../../../services/auth/auth.service';
-import { ChannelPageNavService } from '../../../pageNavServices/channel-page-nav.service';
+import { MessagesService } from '../../../services/messages/messages.service';
+import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
+import { ChatSeperatorComponent } from '../chat-seperator/chat-seperator.component';
+import { ChatMessageReactionsComponent } from '../chat-message-reactions/chat-message-reactions.component';
+import { ChatMessageAnswerComponent } from '../chat-message-answer/chat-message-answer.component';
+import { UsersService } from '../../../services/users/users.service';
+import { ThreadsService } from '../../../services/threads/threads.service';
 
 @Component({
+  standalone: true,
   selector: 'app-chat-messages',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    ChatSeperatorComponent,
+    ChatMessageReactionsComponent,
+    ChatMessageAnswerComponent
+  ],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
 export class ChatMessagesComponent {
- channelService = inject(ChannelsService);
- authService = inject(AuthService);
- channelNavService = inject(ChannelPageNavService);
- newDay = true;
- @Input()chatType: '' | 'channel' | 'thread' | 'dm' | 'search' = '';
- @Input() public messages: {
-  user: {
-    avatar: number;
-    name: string;
-  };
-  time: string; //number
-  content: string;
-  emojis: {
-    id: number;
-    users: string[];
-  }[];
-  answers?: {
-    user: {
-      avatar: number;
-      name: string;
-    };
-    time: string; //number
-    content: string;
-    emojis: {
-      id: number;
-      users: string[];
-    }[];
-  }[];
-}[] = [];
 
-@Input() public threadHeadMessage: {
-  user: {
-    avatar: number;
-    name: string;
-  };
-  time: string; //number
-  content: string;
-  emojis: {
-    id: number;
-    users: string[];
-  }[];
-  answers?: {
-    user: {
-      avatar: number;
-      name: string;
-    };
-    time: string; //number
-    content: string;
-    emojis: {
-      id: number;
-      users: string[];
-    }[];
-  }[];
-} | undefined;
+  lastMessageDate: Date | null = null;
 
-//  openThread() {
-//   this.channelService.chatType = 'thread';
-//  }
+  constructor(
+    public mainNavService: MainNavService,
+    public authService: AuthService,
+    public messageService: MessagesService,
+    public userService: UsersService,
+    public threadService: ThreadsService
+  ) { }
 
- fromCurrentUser(id: string): boolean {
-  if (id === this.authService.currentUser) {
-    return true;
-  } else {
-    return false;
+  newDay = true;
+  @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
+  @Input() threadHeadMessage: any;
+  @Input() messages: any[] | undefined; // oder der passende Typ
+
+  fromCurrentUser(id: string): boolean {
+    if (id === this.authService.currentUser) {
+      return true;
+    } else {
+      return false;
+    }
   }
- }
 }

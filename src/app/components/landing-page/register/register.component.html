@@ -5,7 +5,7 @@
         src="assets/icons/Property 1=Default (1).svg"
         alt="Zurück"
         class="w-6 h-6 cursor-pointer"
-        (click)="goToLogin()"
+        (click)="goBack()"
       />
 
       <h1 class="text-[32px] leading-[38.4px] text-purple1">Konto erstellen</h1>
@@ -27,6 +27,8 @@
           type="text"
           placeholder="Name und Nachname"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
+          [(ngModel)]="name"
+          name="name"
         />
       </div>
 
@@ -40,6 +42,8 @@
           type="email"
           placeholder="beispielname@email.com"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
+          [(ngModel)]="email"
+          name="email"
         />
       </div>
 
@@ -53,16 +57,20 @@
           type="password"
           placeholder="Passwort"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
+          [(ngModel)]="password"
+          name="password"
         />
       </div>
 
       <button
-        type="submit"
+        type="button"
         class="w-full py-2 font-semibold text-center text-white transition duration-200 rounded-full bg-purple1 hover:bg-purple3"
+        (click)="goToAvatar()"
       >
         Weiter
       </button>
     </form>
-  </div>
 
- 
+    <button (click)="userService.addUser()">test add User</button>
+  </div>
+</div>

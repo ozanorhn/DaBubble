@@ -1,82 +1,32 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { ChannelsService } from '../services/channels/channels.service';
-import { UsersService } from '../services/users/users.service';
-
+import { Injectable } from '@angular/core';
+import { ChannelsService } from '../../services/channels/channels.service';
+import { MessagesService } from '../../services/messages/messages.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ChannelPageNavService {
+export class MainNavService {
   mobile = false;
   mediumScreen = false;
   bigScreen = false;
   channel = true;
   thread = false;
   nav = true;
-  directMessage = true;
+  directMessage = false;
+  newMessage = true;
   hideChannelMembers = false;
 
-  hideAddChannelPopUp = signal(true);
-  hideAddUserPopUp = signal(true);
-  hideEditChannelPopUp = signal(true);
 
-  searchValue = signal('')
-
-  users = inject(UsersService);
-  channels = inject(ChannelsService);
-
-  channelArray = this.channels.channels
-  userArray = this.users.users
+  constructor(
+    public channelsService: ChannelsService,
+    public messageService: MessagesService
+  ) { }
 
 
-  filteredResults = computed(() => {
-    const searchTerm = this.searchValue().toLowerCase();
-    if (searchTerm.startsWith('@')) {
-      return this.filterUsers(searchTerm)
-    }
-    else if (searchTerm.startsWith('#')) {
-      return this.filterChannels(searchTerm)
-    }
-    else {
-      return this.filterAll(searchTerm)
-    }
-  });
-
-
-  filterUsers(searchTerm: string) {
-    const userSearch = searchTerm.substring(1);
-    return this.userArray.filter(user =>
-      user.name.toLowerCase().includes(userSearch)
-    )
-  }
-
-  filterChannels(searchTerm: string) {
-    const channelSearch = searchTerm.substring(1);
-    return this.channelArray.filter(channel =>
-      channel.name.toLowerCase().includes(channelSearch)
-    )
-  }
-
-  filterAll(searchTerm: string) {
-    const userResults = this.userArray.filter(user =>
-      user.name.toLowerCase().includes(searchTerm)
-    )
-    const channelResults = this.channelArray.filter(channel =>
-      channel.name.toLowerCase().includes(searchTerm)
-    )
-    return [...userResults, ...channelResults];
-  }
-
-
-
-
-
-  constructor(private router: Router, channelsService: ChannelsService) { }
-
-  navigate() { }
-
+  /**
+  * Toggles navigation visibility
+  */
   toggleNav() {
     if (this.nav) {
       this.closeNav();
@@ -85,6 +35,10 @@ export class ChannelPageNavService {
     }
   }
 
+
+  /**
+   * Closes navigation panel
+   */
   closeNav() {
     if (!this.channel && !this.thread || this.mediumScreen && !this.channel) {
       this.channel = true;
@@ -92,6 +46,10 @@ export class ChannelPageNavService {
     this.nav = false;
   }
 
+
+  /**
+   * Opens navigation panel
+   */
   openNav() {
     this.nav = true;
     if (this.mediumScreen && this.channel && this.thread) {
@@ -103,19 +61,38 @@ export class ChannelPageNavService {
     }
   }
 
-  showNav() {
+
+  /**
+   * Determines if navigation should be visible
+   * @returns {boolean} Visibility state
+   */
+  showNav(): boolean {
     return !this.channel && this.mobile && !this.thread && this.nav || this.mediumScreen && this.nav || this.bigScreen && this.nav;
   }
 
-  showChannel() {
+
+  /**
+  * Determines if channel view should be visible
+  * @returns {boolean} Visibility state
+  */
+  showChannel(): boolean {
     return this.channel && this.mobile && !this.thread && !this.nav || this.mediumScreen && this.channel || this.bigScreen;
   }
 
-  showThread() {
+
+  /**
+  * Determines if thread view should be visible
+  * @returns {boolean} Visibility state
+  */
+  showThread(): boolean {
     return !this.channel && this.mobile && this.thread && !this.nav || this.mediumScreen && this.thread || this.bigScreen && this.thread;
   }
 
-  // Runs in a Hostlistener in app.component.ts
+
+  /**
+   * Updates responsive layout states based on window size
+   * (Called via HostListener in app.component)
+   */
   checkScreenView() {
     if (window.innerWidth >= 1280) {
       this.setScreen('big');
@@ -129,6 +106,11 @@ export class ChannelPageNavService {
     }
   }
 
+
+  /**
+    * Sets responsive breakpoint flags
+    * @param {'big'|'medium'|'mobile'} size - Current screen size
+    */
   setScreen(size: 'big' | 'medium' | 'mobile') {
     this.bigScreen = false;
     this.mediumScreen = false;
@@ -138,6 +120,10 @@ export class ChannelPageNavService {
     if (size === 'mobile') this.mobile = true;
   }
 
+
+  /**
+   * Adjusts channel members visibility in header
+   */
   setHeaderMembers() {
     if (this.bigScreen) {
       if (window.innerWidth < 1400 && this.thread) {
@@ -151,6 +137,9 @@ export class ChannelPageNavService {
   }
 
 
+  /**
+   * Adjusts layout for medium screens (810-1279px)
+   */
   adjustMediumScreen() {
     if (this.thread && this.nav) {
       this.channel = false;
@@ -160,6 +149,9 @@ export class ChannelPageNavService {
   }
 
 
+  /**
+   * Adjusts layout for mobile screens (<810px)
+   */
   adjustMobileScreen() {
     if (this.channel && this.thread) {
       this.channel = false;
@@ -172,7 +164,13 @@ export class ChannelPageNavService {
     }
   }
 
+
+  /**
+   * Opens channel view
+   * @param {boolean} [dm=false] - Whether to open direct messages
+   */
   openChannel(dm = false) {
+    this.newMessage = false;
     this.channel = true;
     this.thread = false;
     if (this.mobile) {
@@ -186,6 +184,10 @@ export class ChannelPageNavService {
     this.setHeaderMembers();
   }
 
+
+  /**
+   * Opens thread view
+   */
   openThread() {
     if (this.mobile) {
       this.channel = false;
@@ -197,22 +199,5 @@ export class ChannelPageNavService {
       this.thread = true;
     }
     this.setHeaderMembers();
-  }
-
-  editMessage(id: number, chatType: string) {
-    console.log(chatType, id);
-    
-  }
-
-  addCannelPopup() {
-    this.hideAddChannelPopUp.update(popup => !popup);
-  }
-
-  addUserPopup() {
-    this.hideAddUserPopUp.update(popup => !popup);
-  }
-
-  editChannelPopup() {
-    this.hideEditChannelPopUp.update(popup => !popup);
   }
 }

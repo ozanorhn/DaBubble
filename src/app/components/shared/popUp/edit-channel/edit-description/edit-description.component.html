@@ -18,11 +18,14 @@
 
 
     @if(edit){
-    <textarea [(ngModel)]="channelService.channels[0].description"
+    <textarea [(ngModel)]="channelService.channels[channelService.currentIndex()].description"
         class="px-5 py-4 h-40 border border-lightpurple rounded-[40px]" name="" id=""></textarea>
     } @else {
     <p>
-        {{channelService.channels[0].description}}
+        @if (channelService.channels.length > 0) {
+            {{channelService.channels[channelService.currentIndex()].description}}
+        }
+        
     </p>
     }
 
@@ -30,7 +33,10 @@
 
     <div class="flex flex-col">
         Erstellt von
-        <span> {{channelService.channels[0].createdBy}}</span>
+        @if (channelService.channels.length > 0) {
+            <span> {{channelService.channels[channelService.currentIndex()].createdBy}}</span>
+        }
+      
     </div>
 
 </div>

@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
-import {  RouterOutlet } from '@angular/router';
-import { ChannelPageNavService } from './pageNavServices/channel-page-nav.service';
+import { RouterOutlet } from '@angular/router';
+import { MainNavService } from './pageServices/navigates/main-nav.service';
 
 
 
@@ -15,12 +15,12 @@ import { ChannelPageNavService } from './pageNavServices/channel-page-nav.servic
 export class AppComponent {
   title = 'dabubble';
 
-  constructor(private channelPageNavService: ChannelPageNavService) {
-    this.channelPageNavService.checkScreenView();
+  constructor(private mainNavService: MainNavService) {
+    this.mainNavService.checkScreenView();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    this.channelPageNavService.checkScreenView();
+    this.mainNavService.checkScreenView();
   }
 }
