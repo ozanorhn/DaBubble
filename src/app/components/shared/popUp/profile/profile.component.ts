@@ -64,9 +64,9 @@ console.log('LocalStorage User 2',  this.currentUser);
 
 
 
-  editProfile() {
-    this.editProfil = !this.editProfil
-  }
+  // editProfile() {
+  //   this.editProfil = !this.editProfil
+  // }
 
 }
 

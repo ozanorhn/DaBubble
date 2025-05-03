@@ -17,7 +17,7 @@
   </div>
 
 
-  @if (editProfil) {
+  @if (overlayService.editProfil) {
   <div class="flex flex-col w-full gap-2">
     <div class="flex items-center gap-5 font-bold">
       <img src="/assets/icons/account_circle.svg" alt="">
@@ -35,11 +35,11 @@
       @if (overlayService.usersProfilView) {} @else {
       <img
         class="max-[500px]:block cursor-pointer hidden hover:scale-[1.2] duration-200 active:scale-[0.9] w-[40px] h-[40px] rounded-[40px] p-[3px]"
-        (click)="editProfile()"
+        (click)="overlayService.editProfileView()"
         src="/assets/icons/edit2.svg" alt="" />
       <span
         class="max-[500px]:hidden cursor-pointer hover:scale-[1.2] duration-200 active:scale-[0.9]  p-[3px] gap-[0px] transition-all text-purple1 ease-out"
-        (click)="editProfile()">Bearbeiten</span>
+        (click)="overlayService.editProfileView()">Bearbeiten</span>
       }
 
     </div>
@@ -76,11 +76,11 @@
 
 
 
-  @if(editProfil){
+  @if(overlayService.editProfil){
   <div class="flex justify-center w-full gap-8">
     <button
       class="flex  px-6 py-3 border border-purple2 text-purple1 rounded-[50px] gap-3 hover:scale-[1.2] duration-200 active:scale-[0.9]"
-      (click)="editProfile()">
+      (click)="overlayService.editProfileView()">
       Abbrechen
     </button>
 

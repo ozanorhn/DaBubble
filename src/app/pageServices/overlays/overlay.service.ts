@@ -14,6 +14,7 @@ export class OverlayService {
 
   hideProfileOverlay = true;
   usersProfilView = false;
+  editProfil = false;
 
   hideLogoutOverlay = true;
 
@@ -39,8 +40,15 @@ export class OverlayService {
 
 
   profileOverlay(UserView: boolean){
+    if(this.hideProfileOverlay){
+      this.editProfil = false;
+    }
     this.hideProfileOverlay = !this.hideProfileOverlay
     this.usersProfilView = UserView;
+  }
+
+  editProfileView() {
+    this.editProfil = !this.editProfil
   }
 
 
