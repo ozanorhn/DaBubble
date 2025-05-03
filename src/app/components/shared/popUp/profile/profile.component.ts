@@ -21,7 +21,7 @@ export class ProfileComponent {
   email: string = '';
 
   editProfil = false;
-  usersProfil = false;
+  // usersProfil = false;
 
   currentUser
 

@@ -11,7 +11,10 @@ export class OverlayService {
   hideAddChannel = true;
   hideAddUser = true;
   hideEditChannel = true;
+
   hideProfileOverlay = true;
+  usersProfilView = false;
+
   hideLogoutOverlay = true;
 
   constructor(
@@ -35,8 +38,9 @@ export class OverlayService {
   }
 
 
-  profileOverlay(){
+  profileOverlay(UserView: boolean){
     this.hideProfileOverlay = !this.hideProfileOverlay
+    this.usersProfilView = UserView;
   }
 
 

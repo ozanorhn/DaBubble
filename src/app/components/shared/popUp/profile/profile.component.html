@@ -5,7 +5,7 @@
 
   <div class="flex justify-between w-full">
     <span class="text-2xl font-bold">Profil</span>
-    <img (click)="overlayService.profileOverlay()"
+    <img (click)="overlayService.profileOverlay(true)"
       class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]" src="/assets/icons/close.svg" alt="" />
   </div>
 
@@ -32,7 +32,7 @@
     <div class="flex justify-between">
       <p class="flex text-3xl font-bold w-fit mr-[24px]">Frederik Beck</p>
 
-      @if (usersProfil) {} @else {
+      @if (overlayService.usersProfilView) {} @else {
       <img
         class="max-[500px]:block cursor-pointer hidden hover:scale-[1.2] duration-200 active:scale-[0.9] w-[40px] h-[40px] rounded-[40px] p-[3px]"
         (click)="editProfile()"
@@ -64,7 +64,7 @@
 
 
 
-  @if (usersProfil) {
+  @if (overlayService.usersProfilView) {
   <div class="flex justify-center w-full">
     <button
       class="flex text-white px-6 py-3 bg-purple1 rounded-[50px] gap-3 hover:scale-[1.2] duration-200 active:scale-[0.9]">
