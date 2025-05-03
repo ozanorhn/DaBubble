@@ -11,11 +11,14 @@ import { LocalStorageService } from '../../../../services/localStorage/local-sto
 })
 export class LogOutComponent {
 
+  currentUser
+
   constructor(
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService
-  ){
-
+  ) {
+    console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
 }

@@ -16,12 +16,8 @@ import { User } from '../../../../classes/user.class';
 })
 export class ProfileComponent {
 
-  avatarUrl: string = '';
-  name: string = '';
-  email: string = '';
-
   editProfil = false;
-  // usersProfil = false;
+  usersProfil = false;
 
   currentUser
 
@@ -43,30 +39,11 @@ export class ProfileComponent {
     // this.name = user.name ?? '';
     // this.email = user.email ?? '';
 
-console.log('LocalStorage User 2',  this.currentUser);
+    console.log('LocalStorage User 2', this.currentUser);
 
   }
 
-  // closeProfile() {
-  //   //this.router.navigate(['/channel']); // oder wohin du zurück möchtest
-  //   //this.router.navigate(['..']);
-  //   // this.location.back();
-  // }
 
-  // close() {
-  //   this.ui.closeProfile();
-  // }
-
-  // openEditProfileOverlay() {
-  //   this.ui.closeProfile();
-  //   this.ui.openEditProfile();
-  // }
-
-
-
-  // editProfile() {
-  //   this.editProfil = !this.editProfil
-  // }
 
 }
 
