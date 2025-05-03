@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { ChannelsService } from '../../services/channels/channels.service';
 import { Channel } from '../../classes/channel.class';
 import { UsersService } from '../../services/users/users.service';
+import { User } from '../../classes/user.class';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class OverlayService {
   hideProfileOverlay = true;
   usersProfilView = false;
   editProfil = false;
+  profileObj: User = new User();
 
   hideLogoutOverlay = true;
 
@@ -39,9 +41,10 @@ export class OverlayService {
   }
 
 
-  profileOverlay(UserView: boolean){
+  profileOverlay(UserView: boolean, currentProfile: {}){
     if(this.hideProfileOverlay){
       this.editProfil = false;
+      this.profileObj = currentProfile as User
     }
     this.hideProfileOverlay = !this.hideProfileOverlay
     this.usersProfilView = UserView;

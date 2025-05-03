@@ -1,73 +1,73 @@
-<section class="flex items-center justify-between box-border bg-white py-[13px] px-4 header rounded-ss-[30px] rounded-se-[30px]">
+<section
+    class="flex items-center justify-between box-border bg-white py-[13px] px-4 header rounded-ss-[30px] rounded-se-[30px]">
     @switch (chatType) {
-        @case ('channel') {
-            <div class="flex items-center gap-[14px] py-[3px] px-[10px] w-max rounded-full cursor-pointer text-xl font-bold hover:bg-primary" (click)="overlayService.editChannel()">
-                <img class="size-[22px]" src="assets/icons/hashtag.svg" alt="hashtag">
-                @if (channelService.channels[this.channelService.currentIndex()]) {
-                    <span>{{ channelService.channels[this.channelService.currentIndex()].name }}</span>
-                }
-                <img class="ml-[14px]" src="assets/icons/arrow_down.svg" alt="">
-            </div>
+    @case ('channel') {
+    <div class="flex items-center gap-[14px] py-[3px] px-[10px] w-max rounded-full cursor-pointer text-xl font-bold hover:bg-primary"
+        (click)="overlayService.editChannel()">
+        <img class="size-[22px]" src="assets/icons/hashtag.svg" alt="hashtag">
+        @if (channelService.channels[this.channelService.currentIndex()]) {
+        <span>{{ channelService.channels[this.channelService.currentIndex()].name }}</span>
         }
-        @case ('thread') {
-            <div class="flex items-center gap-[14px] w-max rounded-full text-xl font-bold">
-                <span>Thread </span><span class="text-purple2 text-[14px]"># {{ channelService }}</span>
-            </div>
-        }
-        @case ('dm') {
-            <div class="flex items-center gap-4 px-4 py-2 rounded-[30px] cursor-pointer hover:bg-primary" (click)="overlayService.profileOverlay(true); ">
-                <div class="relative">
-                    <img class="size-[50px] rounded-full" src="{{ dmService.othertUser.avatar }}" alt="Avatar">
-                    <img class="absolute bottom-0 right-0" src="assets/icons/online.svg" alt="Online">
-                </div>
-                <p class="text-xl font-bold">{{ dmService.othertUser.name }}</p>
-            </div>
-        }
-        @case ('new') {
-            <div class="flex flex-col gap-5 items-start w-full pt-5 pb-[7px] px-4 justify-center">
-                <p class="text-xl font-bold">Neue Nachricht</p>
-                <input class="border w-full border-lightpurple rounded-[30px] py-[13px] px-5 placeholder:text-textgray text-lg"
-                type="text"
-                name=""
-                id=""
-                [placeholder]="'An: #channel, oder @jemand'">
-            </div>
-        }
-        @default {
-            <div class="flex flex-col gap-5 items-start w-full pt-5 pb-[7px] px-4 justify-center">
-                <p class="text-xl font-bold">Neue Nachricht</p>
-                <input class="border w-full border-lightpurple rounded-[30px] py-[13px] px-5 placeholder:text-textgray text-lg"
-                type="text"
-                name=""
-                id=""
-                [placeholder]="'An: #channel, oder @jemand'">
-            </div>
-        }
+        <img class="ml-[14px]" src="assets/icons/arrow_down.svg" alt="">
+    </div>
+    }
+    @case ('thread') {
+    <div class="flex items-center gap-[14px] w-max rounded-full text-xl font-bold">
+        <span>Thread </span><span class="text-purple2 text-[14px]"># {{ channelService }}</span>
+    </div>
+    }
+    @case ('dm') {
+    <div class="flex items-center gap-4 px-4 py-2 rounded-[30px] cursor-pointer hover:bg-primary"
+        (click)="overlayService.profileOverlay(true, dmService.othertUser); ">
+        <div class="relative">
+            <img class="size-[50px] rounded-full" src="{{ dmService.othertUser.avatar }}" alt="Avatar">
+            <img class="absolute bottom-0 right-0" src="assets/icons/online.svg" alt="Online">
+        </div>
+        <p class="text-xl font-bold">{{ dmService.othertUser.name }}</p>
+    </div>
+    }
+    @case ('new') {
+    <div class="flex flex-col gap-5 items-start w-full pt-5 pb-[7px] px-4 justify-center">
+        <p class="text-xl font-bold">Neue Nachricht</p>
+        <input class="border w-full border-lightpurple rounded-[30px] py-[13px] px-5 placeholder:text-textgray text-lg"
+            type="text" name="" id="" [placeholder]="'An: #channel, oder @jemand'">
+    </div>
+    }
+    @default {
+    <div class="flex flex-col gap-5 items-start w-full pt-5 pb-[7px] px-4 justify-center">
+        <p class="text-xl font-bold">Neue Nachricht</p>
+        <input class="border w-full border-lightpurple rounded-[30px] py-[13px] px-5 placeholder:text-textgray text-lg"
+            type="text" name="" id="" [placeholder]="'An: #channel, oder @jemand'">
+    </div>
+    }
     }
 
     <div class="flex items-center gap-[10px]">
         @switch (chatType) {
-            @case ('channel') {
-                <div class="flex items-center px-[10px] py-[3px] rounded-full cursor-pointer hover:bg-primary max-[1024px]:hidden" [ngClass]="{'hidden': mainNavService.hideChannelMembers}">
-                    @for (user of channelService.getChannelMembers(); track user; let i = $index) {
-                        @if (i < 4) {
-                            <img class="size-9 mr-[-10px] border-2 border-white rounded-full" src="{{ user.avatar }}" alt="Member">
-                        } @else if (i === 4) {
-                            <img class="border-2 border-white rounded-full cursor-pointer size-9" src="assets/imgs/avatar3.svg" alt="Member">
-                            <span class="ml-[10px]">{{ channelService.channels2[0].users?.length}}</span>
-                        }
-                    }
-                </div>
-                <button class="flex items-center justify-center rounded-full size-[34px] bg-primary">
-                    <img src="assets/icons/add_user.svg" alt="Add user">
-                </button>
-            }
-            @case ('thread') {
-                <button (click)="mainNavService.openChannel()" class="flex items-center justify-center rounded-full size-[34px] hover:bg-primary">
-                    <img src="assets/icons/close.svg" alt="Add user">
-                </button>
-            }
-            @default {}
+        @case ('channel') {
+        <div class="flex items-center px-[10px] py-[3px] rounded-full cursor-pointer hover:bg-primary max-[1024px]:hidden"
+            [ngClass]="{'hidden': mainNavService.hideChannelMembers}">
+            @for (user of channelService.getChannelMembers(); track user; let i = $index) {
+            @if (i < 4) { <img class="size-9 mr-[-10px] border-2 border-white rounded-full" src="{{ user.avatar }}"
+                alt="Member">
+                } @else if (i === 4) {
+                <img class="border-2 border-white rounded-full cursor-pointer size-9" src="assets/imgs/avatar3.svg"
+                    alt="Member">
+                <span class="ml-[10px]">{{ channelService.channels2[0].users?.length}}</span>
+                }
+                }
+        </div>
+        <button class="flex items-center justify-center rounded-full size-[34px] bg-primary">
+            <img src="assets/icons/add_user.svg" alt="Add user">
+        </button>
+        }
+        @case ('thread') {
+        <button (click)="mainNavService.openChannel()"
+            class="flex items-center justify-center rounded-full size-[34px] hover:bg-primary">
+            <img src="assets/icons/close.svg" alt="Add user">
+        </button>
+        }
+        @default {}
         }
     </div>
 </section>
