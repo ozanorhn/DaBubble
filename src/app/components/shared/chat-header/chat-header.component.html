@@ -15,7 +15,7 @@
             </div>
         }
         @case ('dm') {
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 px-4 py-2 rounded-[30px] cursor-pointer hover:bg-primary" (click)="overlayService.profileOverlay(true); ">
                 <div class="relative">
                     <img class="size-[50px] rounded-full" src="{{ dmService.othertUser.avatar }}" alt="Avatar">
                     <img class="absolute bottom-0 right-0" src="assets/icons/online.svg" alt="Online">

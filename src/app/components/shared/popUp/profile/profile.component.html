@@ -1,22 +1,18 @@
 <section
   class="flex flex-col min-w-80 w-full h-fit mt-[80px] rounded-[30px] gap-9 p-10 text-xl shadow-2xl border-2 border-rgba(255, 255, 255, 1) max-w-lg bg-white">
 
-
-
   <div class="flex justify-between w-full">
     <span class="text-2xl font-bold">Profil</span>
-    <img (click)="overlayService.profileOverlay()"
+    <img (click)="overlayService.profileOverlay(true)"
       class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]" src="/assets/icons/close.svg" alt="" />
   </div>
 
-
-
   <div class="flex justify-center w-full">
-    <img class="size-52 rounded-[50%]" [src]="avatarUrl" alt="Profilbild" />
+    <img class="size-52 rounded-[50%]" src="{{currentUser.avatar}}" alt="">
   </div>
 
 
-  @if (editProfil) {
+  @if (overlayService.editProfil) {
   <div class="flex flex-col w-full gap-2">
     <div class="flex items-center gap-5 font-bold">
       <img src="/assets/icons/account_circle.svg" alt="">
@@ -31,14 +27,13 @@
     <div class="flex justify-between">
       <p class="flex text-3xl font-bold w-fit mr-[24px]">Frederik Beck</p>
 
-      @if (usersProfil) {} @else {
+      @if (overlayService.usersProfilView) {} @else {
       <img
         class="max-[500px]:block cursor-pointer hidden hover:scale-[1.2] duration-200 active:scale-[0.9] w-[40px] h-[40px] rounded-[40px] p-[3px]"
-        (click)="editProfile()"
-        src="/assets/icons/edit2.svg" alt="" />
+        (click)="overlayService.editProfileView()" src="/assets/icons/edit2.svg" alt="" />
       <span
         class="max-[500px]:hidden cursor-pointer hover:scale-[1.2] duration-200 active:scale-[0.9]  p-[3px] gap-[0px] transition-all text-purple1 ease-out"
-        (click)="editProfile()">Bearbeiten</span>
+        (click)="overlayService.editProfileView()">Bearbeiten</span>
       }
 
     </div>
@@ -61,9 +56,7 @@
 
   }
 
-
-
-  @if (usersProfil) {
+  @if (overlayService.usersProfilView) {
   <div class="flex justify-center w-full">
     <button
       class="flex text-white px-6 py-3 bg-purple1 rounded-[50px] gap-3 hover:scale-[1.2] duration-200 active:scale-[0.9]">
@@ -73,13 +66,11 @@
   </div>
   }
 
-
-
-  @if(editProfil){
+  @if(overlayService.editProfil){
   <div class="flex justify-center w-full gap-8">
     <button
       class="flex  px-6 py-3 border border-purple2 text-purple1 rounded-[50px] gap-3 hover:scale-[1.2] duration-200 active:scale-[0.9]"
-      (click)="editProfile()">
+      (click)="overlayService.editProfileView()">
       Abbrechen
     </button>
 
@@ -89,8 +80,5 @@
     </button>
   </div>
   }
-
-
-
 
 </section>
