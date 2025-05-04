@@ -8,7 +8,7 @@
         <textarea #messageInput [(ngModel)]="messageService.message.message" class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten..." name="" id=""></textarea>
     }
     @case ('thread') {
-        <textarea #messageInput [(ngModel)]="threadService.newThread" class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten..." name="" id=""></textarea>
+        <textarea #messageInput [(ngModel)]="threadService.threadMessage.message" class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten..." name="" id=""></textarea>
     }
    }
 

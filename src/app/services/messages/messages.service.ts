@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, signal } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
-import { addDoc, collection, doc, Firestore, getDocs, onSnapshot, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, getDocs, onSnapshot, query, Timestamp, Unsubscribe, updateDoc, where } from '@angular/fire/firestore';
 import { Message } from '../../classes/message.class';
 import { Channel } from '../../classes/channel.class';
 import { UsersService } from '../users/users.service';
@@ -8,6 +8,7 @@ import { formatDate } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { ThreadsService } from '../threads/threads.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 registerLocaleData(localeDe);
 @Injectable({
   providedIn: 'root'
@@ -82,7 +83,30 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  getMessages(obj: Channel) {
+  // getMessages(obj: Channel) {
+  //   if (this.unsubscribeFromMessages) {
+  //     this.unsubscribeFromMessages();
+  //   }
+  
+  //   const q = query(this.messageCollection, where('channelId', '==', obj.id));
+  
+  //   this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
+  //     const messages = querySnapshot.docs.map(doc => ({
+  //       id: doc.id,
+  //       ...doc.data()
+  //     }) as Message);
+  //      console.log('snapShot messages',messages);
+       
+  //     const sorted = this.sortMessages(messages);
+  //     this.messages.set(sorted);
+  //     console.log('Live-updated messages:', sorted);
+  //   }, (error) => {
+  //     console.error('Error listening to messages:', error);
+  //   });
+  // }
+
+
+    getMessages(obj: Channel) {
     if (this.unsubscribeFromMessages) {
       this.unsubscribeFromMessages();
     }
@@ -90,11 +114,17 @@ export class MessagesService implements OnDestroy {
     const q = query(this.messageCollection, where('channelId', '==', obj.id));
   
     this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
-      const messages = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }) as Message);
-      
+      console.log('QuerySnapshot:', querySnapshot.docs); // Rohdaten
+      const messages = querySnapshot.docs.map(doc => {
+        // const data = { id: doc.id, ...doc.data() };
+        const data = doc.data();
+        data['id'] = doc.id;
+        console.log('DocId', doc.id);
+        
+        console.log('Mapped message:', data); // Einzelnes Dokument
+        return data as Message;
+      });
+      console.log('snapShot messages',messages);
       const sorted = this.sortMessages(messages);
       this.messages.set(sorted);
       console.log('Live-updated messages:', sorted);
@@ -102,6 +132,8 @@ export class MessagesService implements OnDestroy {
       console.error('Error listening to messages:', error);
     });
   }
+
+  
 
 
   /**
@@ -129,15 +161,55 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  /**
-  * Opens a thread
-  * @param {string} messageId - Message ID
-  * @param {string} threadId - Thread ID
-  */
-  openThread(messageId: string, threadId: string) {
-    this.threadService.currentMessageId = messageId;
-    this.threadService.loadThreadById(threadId);
+  // /**
+  // * Opens a thread
+  // * @param {string} messageId - Message ID
+  // * @param {string} threadId - Thread ID
+  // */
+  // openThread(messageId: string, threadId: string) {
+  //   this.threadService.currentMessageId = messageId;
+  //   this.threadService.loadThreadById(threadId);
+  // }
+
+
+
+  async onMessageClick(message: Message) {
+    console.log('Message:  ', message);
+    
+    this.threadService.currentMessage = message;
+    if (!message.threadId) {
+      // Erstelle neuen Thread falls nicht existiert
+      const threadId = await this.threadService.createThreadForMessage(message.id);
+      console.log('onMessageClick Message id to Thread createThreadForMessage',message.id);
+      
+      // message.threadId = threadId;
+    }
+    
+    // Lade den Thread
+    // this.currentThread = await this.threadService.getThread(message.threadId);
   }
+
+  // private messageUnsubscribes = new Map<string, Unsubscribe>();
+
+  // watchMessage(messageId: string): BehaviorSubject<Message | null> {
+  //   const subject = new BehaviorSubject<Message | null>(null);
+  //   const docRef = doc(this.messageCollection, messageId);
+    
+  //   this.messageUnsubscribes.set(messageId, 
+  //     onSnapshot(docRef, (snapshot) => {
+  //       subject.next(snapshot.exists() ? snapshot.data() as Message : null);
+  //     })
+  //   );
+    
+  //   return subject;
+  // }
+
+  // async updateMessageThreadId(messageId: string, threadId: string): Promise<void> {
+  //   const messageRef = doc(this.messageCollection, messageId);
+  //   await updateDoc(messageRef, { threadId });
+  // }
+
+
 
 
   /**

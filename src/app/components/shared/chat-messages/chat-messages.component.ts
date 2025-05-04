@@ -8,6 +8,9 @@ import { ChatMessageReactionsComponent } from '../chat-message-reactions/chat-me
 import { ChatMessageAnswerComponent } from '../chat-message-answer/chat-message-answer.component';
 import { UsersService } from '../../../services/users/users.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
+import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
+import { Message } from '../../../classes/message.class';
+import { DM } from '../../../interfaces/dm';
 
 @Component({
   standalone: true,
@@ -30,7 +33,8 @@ export class ChatMessagesComponent {
     public authService: AuthService,
     public messageService: MessagesService,
     public userService: UsersService,
-    public threadService: ThreadsService
+    public threadService: ThreadsService,
+    public dmService: DirectMessagesService
   ) { }
 
   newDay = true;
@@ -43,6 +47,14 @@ export class ChatMessagesComponent {
       return true;
     } else {
       return false;
+    }
+  }
+
+  openThread(message: Message | DM, index: number) {
+    if (this.chatType === 'channel' && message instanceof Message) {
+      this.messageService.onMessageClick(message);
+    } else if (this.chatType === 'dm') {
+      this.dmService.openDmThread(index, message);
     }
   }
 }

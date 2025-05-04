@@ -169,7 +169,7 @@ export class MainNavService {
    * Opens channel view
    * @param {boolean} [dm=false] - Whether to open direct messages
    */
-  openChannel(dm = false) {
+  openChannel(dm: boolean = false) {
     this.newMessage = false;
     this.channel = true;
     this.thread = false;
@@ -198,6 +198,6 @@ export class MainNavService {
     } else if (this.bigScreen) {
       this.thread = true;
     }
-    this.setHeaderMembers();
+    // this.setHeaderMembers();
   }
 }
