@@ -83,7 +83,30 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  getMessages(obj: Channel) {
+  // getMessages(obj: Channel) {
+  //   if (this.unsubscribeFromMessages) {
+  //     this.unsubscribeFromMessages();
+  //   }
+  
+  //   const q = query(this.messageCollection, where('channelId', '==', obj.id));
+  
+  //   this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
+  //     const messages = querySnapshot.docs.map(doc => ({
+  //       id: doc.id,
+  //       ...doc.data()
+  //     }) as Message);
+  //      console.log('snapShot messages',messages);
+       
+  //     const sorted = this.sortMessages(messages);
+  //     this.messages.set(sorted);
+  //     console.log('Live-updated messages:', sorted);
+  //   }, (error) => {
+  //     console.error('Error listening to messages:', error);
+  //   });
+  // }
+
+
+    getMessages(obj: Channel) {
     if (this.unsubscribeFromMessages) {
       this.unsubscribeFromMessages();
     }
@@ -91,11 +114,17 @@ export class MessagesService implements OnDestroy {
     const q = query(this.messageCollection, where('channelId', '==', obj.id));
   
     this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
-      const messages = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }) as Message);
-      
+      console.log('QuerySnapshot:', querySnapshot.docs); // Rohdaten
+      const messages = querySnapshot.docs.map(doc => {
+        // const data = { id: doc.id, ...doc.data() };
+        const data = doc.data();
+        data['id'] = doc.id;
+        console.log('DocId', doc.id);
+        
+        console.log('Mapped message:', data); // Einzelnes Dokument
+        return data as Message;
+      });
+      console.log('snapShot messages',messages);
       const sorted = this.sortMessages(messages);
       this.messages.set(sorted);
       console.log('Live-updated messages:', sorted);
@@ -103,6 +132,8 @@ export class MessagesService implements OnDestroy {
       console.error('Error listening to messages:', error);
     });
   }
+
+  
 
 
   /**
@@ -143,7 +174,9 @@ export class MessagesService implements OnDestroy {
 
 
   async onMessageClick(message: Message) {
-    this.threadService.currentMessage= message;
+    console.log('Message:  ', message);
+    
+    this.threadService.currentMessage = message;
     if (!message.threadId) {
       // Erstelle neuen Thread falls nicht existiert
       const threadId = await this.threadService.createThreadForMessage(message.id);

@@ -44,6 +44,9 @@ export class ThreadsService {
 
 
   async createThreadForMessage(MessageId: string) {
+    console.log('Message ID',MessageId );
+    console.log('Message ID', this.currentMessage.id)
+    
 
     const thread = new Thread({ messageId: MessageId })
 
@@ -51,6 +54,7 @@ export class ThreadsService {
     try {
       const docRef = await addDoc(this.threadCollection, thread.toJSON());
       console.log('Thread added with ID', docRef.id);
+           // Message.THredID = docRef.id
     } catch (error) {
       console.error('Error adding thread', error);
     }

@@ -5,6 +5,16 @@ import { UsersService } from '../users/users.service';
 import { DirectMessage } from '../../classes/directMessage.class';
 import { User } from '../../classes/user.class';
 import { LocalStorageService } from '../localStorage/local-storage.service';
+import { ThreadsService } from '../threads/threads.service';
+
+
+export interface DM {
+  threadId: string;
+  message: string;
+  sender: string;
+  timestamp: Timestamp;
+  reactions: any[]; 
+}
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +33,7 @@ export class DirectMessagesService implements OnDestroy {
   })
 
   newMessage = {
+    threadId: '',
     message: '',
     sender: '',
     timestamp: Timestamp.now(),
@@ -35,7 +46,8 @@ export class DirectMessagesService implements OnDestroy {
   constructor(
     public firestore: Firestore,
     public usersService: UsersService,
-    public localStorageS: LocalStorageService
+    public localStorageS: LocalStorageService,
+    public threadService: ThreadsService
   ) {
     this.directMessageCollection = collection(this.firestore, 'directMessages');
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
@@ -170,4 +182,14 @@ export class DirectMessagesService implements OnDestroy {
     this.cleanupSnapshot();
   }
 
+
+  async openDmThread(index: number, message: DM) {
+    if (!message.threadId) {
+      // Erstelle neuen Thread falls nicht existiert
+      const threadId = await this.threadService.createThreadForMessage(message.id);
+      console.log('onMessageClick Message id to Thread createThreadForMessage',message.id);
+      
+      // message.threadId = threadId;
+    }
+  }
 }
