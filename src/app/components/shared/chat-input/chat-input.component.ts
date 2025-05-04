@@ -26,7 +26,7 @@ export class ChatInputComponent {
         this.messageService.sendMessage();
         break;
       case 'thread':
-        this.threadService.sendThread();
+        this.threadService.createThreadForMessage(this.messageService.message.id);
         this.messageService.editMessage(this.threadService.currentMessageId);
         break;
       case 'dm':

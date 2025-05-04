@@ -26,7 +26,7 @@ export class ProfileComponent {
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService
   ) {
-    console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
+    // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
@@ -39,7 +39,7 @@ export class ProfileComponent {
     // this.name = user.name ?? '';
     // this.email = user.email ?? '';
 
-    console.log('LocalStorage User 2', this.currentUser);
+    // console.log('LocalStorage User 2', this.currentUser);
 
   }
 

@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, signal } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
-import { addDoc, collection, doc, Firestore, getDocs, onSnapshot, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, getDocs, onSnapshot, query, Timestamp, Unsubscribe, updateDoc, where } from '@angular/fire/firestore';
 import { Message } from '../../classes/message.class';
 import { Channel } from '../../classes/channel.class';
 import { UsersService } from '../users/users.service';
@@ -8,6 +8,7 @@ import { formatDate } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { ThreadsService } from '../threads/threads.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 registerLocaleData(localeDe);
 @Injectable({
   providedIn: 'root'
@@ -129,15 +130,53 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  /**
-  * Opens a thread
-  * @param {string} messageId - Message ID
-  * @param {string} threadId - Thread ID
-  */
-  openThread(messageId: string, threadId: string) {
-    this.threadService.currentMessageId = messageId;
-    this.threadService.loadThreadById(threadId);
+  // /**
+  // * Opens a thread
+  // * @param {string} messageId - Message ID
+  // * @param {string} threadId - Thread ID
+  // */
+  // openThread(messageId: string, threadId: string) {
+  //   this.threadService.currentMessageId = messageId;
+  //   this.threadService.loadThreadById(threadId);
+  // }
+
+
+
+  async onMessageClick(message: Message) {
+    this.threadService.currentMessage= message;
+    if (!message.threadId) {
+      // Erstelle neuen Thread falls nicht existiert
+      const threadId = await this.threadService.createThreadForMessage(message.id);
+      console.log('onMessageClick Message id to Thread createThreadForMessage',message.id);
+      
+      // message.threadId = threadId;
+    }
+    
+    // Lade den Thread
+    // this.currentThread = await this.threadService.getThread(message.threadId);
   }
+
+  // private messageUnsubscribes = new Map<string, Unsubscribe>();
+
+  // watchMessage(messageId: string): BehaviorSubject<Message | null> {
+  //   const subject = new BehaviorSubject<Message | null>(null);
+  //   const docRef = doc(this.messageCollection, messageId);
+    
+  //   this.messageUnsubscribes.set(messageId, 
+  //     onSnapshot(docRef, (snapshot) => {
+  //       subject.next(snapshot.exists() ? snapshot.data() as Message : null);
+  //     })
+  //   );
+    
+  //   return subject;
+  // }
+
+  // async updateMessageThreadId(messageId: string, threadId: string): Promise<void> {
+  //   const messageRef = doc(this.messageCollection, messageId);
+  //   await updateDoc(messageRef, { threadId });
+  // }
+
+
 
 
   /**
