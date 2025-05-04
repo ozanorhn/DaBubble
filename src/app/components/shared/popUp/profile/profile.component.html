@@ -3,12 +3,12 @@
 
   <div class="flex justify-between w-full">
     <span class="text-2xl font-bold">Profil</span>
-    <img (click)="overlayService.profileOverlay(true)"
+    <img (click)="overlayService.profileOverlay(true, currentUser)"
       class="cursor-pointer hover:scale-[1.3] duration-200 active:scale-[0.9]" src="/assets/icons/close.svg" alt="" />
   </div>
 
   <div class="flex justify-center w-full">
-    <img class="size-52 rounded-[50%]" src="{{currentUser.avatar}}" alt="">
+    <img class="size-52 rounded-[50%]" src="{{overlayService.profileObj.avatar}}" alt="">
   </div>
 
 
@@ -22,10 +22,11 @@
     <input class="w-full px-5 py-4 border border-lightpurple rounded-[30px]" type="text" placeholder="Frederik Beck">
   </div>
   } @else {
+
   <div class="flex flex-col h-20 gap-4">
 
     <div class="flex justify-between">
-      <p class="flex text-3xl font-bold w-fit mr-[24px]">Frederik Beck</p>
+      <p class="flex text-3xl font-bold w-fit mr-[24px]">{{overlayService.profileObj.name}}</p>
 
       @if (overlayService.usersProfilView) {} @else {
       <img
@@ -35,12 +36,20 @@
         class="max-[500px]:hidden cursor-pointer hover:scale-[1.2] duration-200 active:scale-[0.9]  p-[3px] gap-[0px] transition-all text-purple1 ease-out"
         (click)="overlayService.editProfileView()">Bearbeiten</span>
       }
-
     </div>
 
+
     <div class="flex items-center gap-4">
-      <div class="rounded-[50%] bg-online size-4"></div>
+      <div class="rounded-[50%] size-4"
+        [ngClass]="{'bg-online' :overlayService.profileObj.online, 'bg-offline' : !overlayService.profileObj.online}">
+      </div>
+      <!-- <span class="right-0 bg-online size-4 bottom-1 rounded-[50%] border-white "  ></span> -->
+      @if(overlayService.profileObj.online){
       Aktiv
+      } @else {
+      Abwesend
+      }
+
     </div>
 
   </div>
@@ -50,7 +59,7 @@
 
     <div class="flex flex-col">
       <span class="font-bold">E-Mail-Adresse</span>
-      <a class="cursor-pointer text-linkblue hover:scale-[1.1] duration-200">test&#64;mail.de</a>
+      <a class="cursor-pointer text-linkblue hover:scale-[1.1] duration-200"  [href]="'mailto:' + overlayService.profileObj.email" >{{overlayService.profileObj.email}}</a>
     </div>
   </div>
 
