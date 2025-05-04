@@ -186,8 +186,8 @@ export class DirectMessagesService implements OnDestroy {
   async openDmThread(index: number, message: DM) {
     if (!message.threadId) {
       // Erstelle neuen Thread falls nicht existiert
-      const threadId = await this.threadService.createThreadForMessage(message.id);
-      console.log('onMessageClick Message id to Thread createThreadForMessage',message.id);
+      const threadId = await this.threadService.createThreadForMessage(message, index);
+      console.log('onMessageClick Message id to Thread createThreadForMessage',message);
       
       // message.threadId = threadId;
     }
