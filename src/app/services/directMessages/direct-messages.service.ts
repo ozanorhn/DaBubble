@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { addDoc, collection, doc, DocumentData, DocumentReference, getDoc, setDoc, Timestamp } from '@angular/fire/firestore';
+import { Injectable, OnDestroy } from '@angular/core';
+import { addDoc, collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, setDoc, Timestamp, Unsubscribe } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { DirectMessage } from '../../classes/directMessage.class';
@@ -9,10 +9,10 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DirectMessagesService {
+export class DirectMessagesService implements OnDestroy {
   othertUser: User = new User();
   docRef: DocumentReference<DocumentData, DocumentData> | undefined;
-
+  private unsubscribeSnapshot: Unsubscribe | null = null;
   directMessage: DirectMessage = new DirectMessage({
     id: '',
     participants: {
@@ -42,15 +42,40 @@ export class DirectMessagesService {
   }
 
 
-  // Generiert eine konsistente ID für die DM basierend auf den User-IDs
+  /**
+   * Generates a consistent DM ID based on sorted user IDs
+   * @param {string} user1Id - First user ID
+   * @param {string} user2Id - Second user ID
+   * @returns {string} Formatted DM ID (dm_[id1]_[id2])
+   */
   private getDirectMessageId(user1Id: string, user2Id: string): string {
     const sortedIds = [user1Id, user2Id].sort();
     return `dm_${sortedIds[0]}_${sortedIds[1]}`;
   }
 
-  // Öffnet/erstellt eine DM zwischen dem aktuellen User und einem anderen User
-  async openDMs(otherUser: User) { // : Promise<DirectMessage>
-    // const currentUserId = this.usersService.tempUser.id;
+
+  /**
+   * Opens or creates a DM conversation with another user
+   * @param {User} otherUser - The user to start conversation with
+   */
+  async openDMs(otherUser: User) {
+    this.cleanupSnapshot();
+    this.clearDm();
+    this.othertUser = otherUser;
+    await this.checkExistingIds();
+    if (!this.docRef) {
+      let tempId = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
+      this.docRef = doc(this.directMessageCollection, tempId);
+    }
+    this.setupRealtimeListener();
+  }
+
+
+  /**
+  * Clears current DM conversation data
+  */
+  clearDm() {
+    this.docRef = undefined;
     this.directMessage = new DirectMessage({
       id: '',
       participants: {
@@ -59,60 +84,90 @@ export class DirectMessagesService {
       },
       content: []
     })
-    this.othertUser = otherUser;
-
-    // if (!this.othertUser.id || !this.usersService.tempUser.id) {
-    //   throw new Error('User IDs are required');
-    // }
-
-    let tempId1 = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
-    let tempId2 = this.getDirectMessageId(this.currentUser.id, this.othertUser.id);
-    const dmDocRef = doc(this.directMessageCollection, tempId1);
-    const dmDocRef2 = doc(this.directMessageCollection, tempId2);
-
-
-    // // Prüfen, ob die DM bereits existiert
-    const dmSnapshot = await getDoc(dmDocRef);
-
-    if (dmSnapshot.exists()) {
-      // DM existiert - Daten zurückgeben
-      this.directMessage = new DirectMessage({
-        id: tempId1,
-        ...dmSnapshot.data()
-      });
-      this.docRef = dmDocRef;
-
-    } else if (dmSnapshot.exists()) {
-      // DM existiert - Daten zurückgeben
-      this.directMessage = new DirectMessage({
-        id: tempId2,
-        ...dmSnapshot.data()
-      });
-      this.docRef = dmDocRef2;
-    }
-    console.log('DM:', this.directMessage);
-
   }
 
 
+  /**
+   * Cleans up Firestore snapshot listener
+   */
+  private cleanupSnapshot(): void {
+    if (this.unsubscribeSnapshot) {
+      this.unsubscribeSnapshot();
+      this.unsubscribeSnapshot = null;
+    }
+  }
+
+
+  /**
+  * Sets up realtime listener for DM conversation updates
+  */
+  private setupRealtimeListener(): void {
+    if (!this.docRef) return;
+
+    this.unsubscribeSnapshot = onSnapshot(this.docRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        this.directMessage = new DirectMessage({
+          id: docSnapshot.id,
+          ...data
+        });
+        console.log('Echtzeit-Update:', this.directMessage);
+      }
+    }, (error) => {
+      console.error('Fehler bei Echtzeit-Updates:', error);
+    });
+  }
+
+
+  /**
+   * Checks for existing DM conversations between current and other user
+   */
+  async checkExistingIds() {
+    const dmIdUser1First = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
+    const dmIdUser2First = this.getDirectMessageId(this.currentUser.id, this.othertUser.id);
+    const dmDocRefUser1First = doc(this.directMessageCollection, dmIdUser1First);
+    const dmDocRefUser2First = doc(this.directMessageCollection, dmIdUser2First);
+    const user1FirstDoc = await getDoc(dmDocRefUser1First);
+    const user2FirstDoc = await getDoc(dmDocRefUser2First);
+    if (user1FirstDoc.exists()) {
+      this.directMessage = new DirectMessage({
+        id: dmIdUser1First,
+        ...user1FirstDoc.data()
+      });
+      this.docRef = dmDocRefUser1First;
+    } else if (user2FirstDoc.exists()) {
+      this.directMessage = new DirectMessage({
+        id: dmIdUser2First,
+        ...user2FirstDoc.data()
+      });
+      this.docRef = dmDocRefUser2First;
+    }
+  }
+
+
+  /**
+   * Sends a new message in the current DM conversation
+   * @throws {Error} If no active conversation exists
+   */
   async sendDirectMessage(): Promise<void> {
-    // console.log('DM TempUser: ', this.usersService.tempUser.id);
-
-    const dmId = this.getDirectMessageId(this.currentUser.id, this.othertUser.id);
-    const dmDocRef = doc(this.directMessageCollection, dmId);
-
     this.newMessage.timestamp = Timestamp.now();
     this.newMessage.sender = this.currentUser.id;
-    console.log('NewMessage: ', this.newMessage);
-    // Nochmaö checken, ob Id vorhanden ist.
-    
-    // Firestore-Operation: Array um neuen Eintrag erweitern
-    await setDoc(
-      dmDocRef,
-      { content: [...this.directMessage.content, this.newMessage] },
-      { merge: true } // Bestehende Daten nicht überschreiben
-    );
-    this.newMessage.message = '';
+    if (this.docRef) {
+      await setDoc(
+        this.docRef,
+        { content: [...this.directMessage.content, this.newMessage] },
+        { merge: true } // Bestehende Daten nicht überschreiben
+      );
+      this.newMessage.message = '';
+    }
+  }
+
+
+  /**
+  * Angular lifecycle hook - cleans up resources
+  */
+  ngOnDestroy(): void {
+    this.cleanupSnapshot();
   }
 
 }
