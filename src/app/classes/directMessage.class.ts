@@ -1,12 +1,21 @@
+import { Timestamp } from "@angular/fire/firestore";
 
 
 export class DirectMessage {
     id?: string;
-    participants: [{
+    participants: {
         user1: string;
         user2: string;
+    };
+    content: [{
+        message: string;
+        sender: string,
+        timestamp: Timestamp;
+        reactions: [{
+            id: number;
+            users: string[];
+        }] | [];
     }];
-    content: [];
 
 
 

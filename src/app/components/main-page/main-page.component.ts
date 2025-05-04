@@ -16,6 +16,8 @@ import { DirectMessageComponent } from './direct-message/direct-message.componen
 import { AddUserComponent } from "../shared/popUp/add-user/add-user.component";
 import { ProfileComponent } from "../shared/popUp/profile/profile.component";
 import { LogOutComponent } from "../shared/popUp/log-out/log-out.component";
+import { LocalStorageService } from '../../services/localStorage/local-storage.service';
+import { User } from '../../classes/user.class';
 
 @Component({
   selector: 'app-main-page',
@@ -33,12 +35,14 @@ import { LogOutComponent } from "../shared/popUp/log-out/log-out.component";
     AddUserComponent,
     ProfileComponent,
     LogOutComponent
-],
+  ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
 export class MainPageComponent {
   showMessagesOnly = false;
+
+
 
   // dummyThreatService = {
   //   messages: [{
@@ -69,11 +73,17 @@ export class MainPageComponent {
   //   }
   // }
 
+  currentUser
+
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
-    public overlayService: OverlayService
-  ) { }
+    public overlayService: OverlayService,
+    public localStorageS: LocalStorageService
+  ) {
+    console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+  }
 
 
   toggleMessagesView() {

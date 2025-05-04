@@ -2,13 +2,13 @@
 
   
   <div class="flex flex-col h-full">
-    <div (click)="overlayService.profileOverlay()"
+    <div (click)="overlayService.profileOverlay(false, currentUser)"
       class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.05] active:scale-[0.9]">
       <img src="/assets/icons/account_circle.svg" alt="" />
       <span>Profile</span>
     </div>
 
-    <div routerLink=""
+    <div (click)="localStorageS.clear()" routerLink=""
       class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.05] active:scale-[0.9]">
       <img src="/assets/icons/logout.svg" alt="" />
       <span>Log out</span>
