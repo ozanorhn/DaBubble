@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { User } from '../../../classes/user.class';
 import { ChannelsService } from '../../../services/channels/channels.service';
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 
 @Component({
   selector: 'app-user',
@@ -13,7 +14,15 @@ import { ChannelsService } from '../../../services/channels/channels.service';
 })
 export class UserComponent {
 
-  constructor(public channelService: ChannelsService) { }
+  currentUser
+
+  constructor(
+    public channelService: ChannelsService,
+    public localStorageS: LocalStorageService
+  ) {
+    console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+   }
 
   avatar = [
     { av1: '/assets/imgs/avatar1.svg' },
@@ -28,12 +37,6 @@ export class UserComponent {
   @Input() userInfo!: User;
 
 
-  //  @Input() userInfo = {
-  //     id: '',
-  //     name: 'Frederik Beck',
-  //     email: 'frederick@mail.com',
-  //     avatar: 'av1',
-  //     online: false
-  //   }
+
 
 }
