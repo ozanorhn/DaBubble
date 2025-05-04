@@ -1,10 +1,12 @@
-import { inject, Injectable } from '@angular/core';
+import { forwardRef, Inject, inject, Injectable, Injector } from '@angular/core';
 import { addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Thread } from '../../classes/thread.class';
 import { update } from '@angular/fire/database';
 import { MessagesService } from '../messages/messages.service';
 import { Message } from '../../classes/message.class';
+import { DM } from '../../interfaces/dm';
+import { DirectMessagesService } from '../directMessages/direct-messages.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,8 @@ export class ThreadsService {
   currentThread: Thread | undefined = new Thread();
   currentMessageId: string = '';
   currentMessage = new Message();
+
+  newThreadId = '';
   
   threadMessage = {
     message: '',
@@ -22,9 +26,8 @@ export class ThreadsService {
     timestamp: Timestamp.now()
   }
 
-
   constructor(
-    public firestore: Firestore,
+    public firestore: Firestore
   ) {
     this.threadCollection = collection(this.firestore, 'threads');
   }
@@ -42,14 +45,11 @@ export class ThreadsService {
   }
 
 
-
   async createThreadForMessage(MessageId: string) {
     console.log('Message ID',MessageId );
     console.log('Message ID', this.currentMessage.id)
     
-
     const thread = new Thread({ messageId: MessageId })
-
     console.log('current thread is', thread);
     try {
       const docRef = await addDoc(this.threadCollection, thread.toJSON());
@@ -58,8 +58,25 @@ export class ThreadsService {
     } catch (error) {
       console.error('Error adding thread', error);
     }
+  }
 
 
+  async createThreadForDM(message: DM) {
+    console.log('Message ID',message );
+    // console.log('Message ID', this.currentMessage.id)
+    
+    const thread = new Thread()
+    console.log('current thread is', thread);
+    try {
+      const docRef = await addDoc(this.threadCollection, thread.toJSON());
+      console.log('Thread added with ID', docRef.id);
+          this.newThreadId = docRef.id
+          //  this.dmService.newMessage.threadId = docRef.id
+          //  console.log('dm new Message', this.dmService.newMessage.threadId);
+           
+    } catch (error) {
+      console.error('Error adding thread', error);
+    }
   }
 
 
@@ -68,7 +85,6 @@ export class ThreadsService {
     const snapshot = await getDoc(docRef);
     return snapshot.exists() ? new Thread(snapshot.data() as any) : undefined;
   }
-
 
 
   // watchThread(threadId: string): void {
@@ -92,12 +108,15 @@ export class ThreadsService {
   //   });
   // }
 
-  // async addThreadMessage(threadId: string, message: ThreadMessage): Promise<void> {
+  // async addThreadMessage(threadId: string, message: DM): Promise<void> {
   //   const threadRef = doc(this.threadCollection, threadId);
   //   await updateDoc(threadRef, {
   //     content: arrayUnion(message)
   //   });
   // }
 
-
+  // await updateDoc(
+  //       doc(this.channelsCollection, channel.id),
+  //       channelData
+  //     );
 }

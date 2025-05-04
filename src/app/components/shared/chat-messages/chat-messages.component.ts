@@ -10,6 +10,7 @@ import { UsersService } from '../../../services/users/users.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 import { Message } from '../../../classes/message.class';
+import { DM } from '../../../interfaces/dm';
 
 @Component({
   standalone: true,
@@ -49,7 +50,7 @@ export class ChatMessagesComponent {
     }
   }
 
-  openThread(message: Message | {}, index: number) {
+  openThread(message: Message | DM, index: number) {
     if (this.chatType === 'channel' && message instanceof Message) {
       this.messageService.onMessageClick(message);
     } else if (this.chatType === 'dm') {

@@ -9,6 +9,7 @@ export class DirectMessage {
         user2: string;
     };
     content: [{
+        threadId: string;
         message: string;
         sender: string,
         timestamp: Timestamp;
