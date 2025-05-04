@@ -1,7 +1,7 @@
 import { Timestamp } from "@angular/fire/firestore";
 
 export class Message {
-        id?: string;
+        id: string;
         message: string;
         sender: string;
         timestamp: Timestamp;

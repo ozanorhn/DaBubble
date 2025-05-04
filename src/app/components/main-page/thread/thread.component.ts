@@ -23,6 +23,8 @@ export class ThreadComponent {
     return dummy;
   }
 
+  
+
   dummmyAuthService = {
     users: [{ id: 0, name: 'Peter Beck' }]
   }

@@ -81,7 +81,7 @@ export class MainPageComponent {
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService
   ) {
-    console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
+    // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
