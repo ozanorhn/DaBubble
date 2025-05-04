@@ -210,14 +210,11 @@ export class DirectMessagesService implements OnDestroy {
   async openDmThread(index: number, message: DM) {
     this.currentDMIndex = index;
     const currentMessage = this.directMessage.content[this.currentDMIndex];
-    
     if (!currentMessage.threadId) {
       // Erstelle neuen Thread falls nicht existiert
       await this.threadService.createThreadForDM(message);
-      
       // Update both local and Firestore data
       currentMessage.threadId = this.threadService.newThreadId;
-      
       try {
         await updateDoc(
           doc(this.directMessageCollection, this.directMessage.id),
