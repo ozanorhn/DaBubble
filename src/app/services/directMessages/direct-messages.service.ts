@@ -200,7 +200,7 @@ export class DirectMessagesService implements OnDestroy {
   //           doc(this.directMessageCollection, this.directMessage.id),
   //           this.directMessage.content[this.currentDMIndex].message
   //         );
-      
+
   //     console.log('New Message with ThreadID', message);
 
   //     // message.threadId = threadId;
@@ -224,6 +224,7 @@ export class DirectMessagesService implements OnDestroy {
             content: this.directMessage.content // Update entire content array
           }
         );
+        // this.threadDMsService.setupRealtimeListener(currentMessage.threadId)
         console.log('Message updated with ThreadID', currentMessage);
       } catch (error) {
         console.error('Error updating message with ThreadID:', error);
@@ -231,7 +232,14 @@ export class DirectMessagesService implements OnDestroy {
         // currentMessage.threadId = undefined;
         throw error;
       }
+    } else {
+      console.log('message ThreadId: ', message.threadId);
+      // this.threadDMsService.setupRealtimeListener(message.threadId);
+
     }
+
+
+
   }
 
 

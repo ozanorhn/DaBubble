@@ -36,6 +36,9 @@ export class ThreadsService {
     console.log('Current Thread', this.currentThread);
     console.log('Thread Collection', this.threadCollection);
     console.log('ThreadMessage', this.threadMessage);
+    console.log('New THread ID', this.newThreadId);
+    
+
     this.threadMessage.timestamp = Timestamp.now();
     await updateDoc(
       doc(this.threadCollection, this.newThreadId),

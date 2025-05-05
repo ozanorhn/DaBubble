@@ -184,11 +184,12 @@ export class MessagesService implements OnDestroy {
     if (!message.threadId) {
       // Erstelle neuen Thread falls nicht existiert
       if (this.threadService.chatType === 'channel') {
-        const threadId = await this.threadMessagesService.createThreadForMessage(message.id);
+        await this.threadMessagesService.createThreadForMessage(message.id);
         console.log('onMessageClick Message id to Thread createThreadForMessage', message.id);
-      } else if (this.threadService.chatType === 'dm') {
-        const threadId = await this.threadDMsService.createThreadForDM(message);
       }
+      //  else if (this.threadService.chatType === 'dm') {
+      //   await this.threadDMsService.loadThreadByIdDM(message.threadId);
+      // }
       
 
       // message.threadId = threadId;
