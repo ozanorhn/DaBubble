@@ -6,6 +6,7 @@ import { ThreadsService } from '../../../services/threads/threads.service';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { Message } from '../../../classes/message.class';
 import { CommonModule } from '@angular/common';
+import { ThreadMessagesService } from '../../../services/threadMessages/thread-messages.service';
 
 @Component({
   selector: 'app-thread',
@@ -15,10 +16,12 @@ import { CommonModule } from '@angular/common';
 })
 export class ThreadComponent {
   constructor(
-    public threadService: ThreadsService
+    public threadService: ThreadsService,
+    public threadMessagesService: ThreadMessagesService
+
   ) { }
 
-  fromCurrentUser(dummy: any) {
+  fromCurrentUser(dummy: any) { // in den UserService auslagern
     dummy = false;
     return dummy;
   }

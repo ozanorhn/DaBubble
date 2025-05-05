@@ -11,6 +11,7 @@ import { ThreadsService } from '../threads/threads.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { ThreadDMsService } from '../threadDMs/thread-dms.service';
 import { ThreadMessagesService } from '../threadMessages/thread-messages.service';
+import { DM } from '../../interfaces/dm';
 registerLocaleData(localeDe);
 @Injectable({
   providedIn: 'root'
@@ -82,7 +83,7 @@ export class MessagesService implements OnDestroy {
   * @param {Message[]} messages - Messages to sort
   * @returns {Message[]} Sorted messages
   */
-  sortMessages(messages: Message[]): Message[] {
+  sortMessages(messages: Message[] | DM[]): Message[] | DM[] {
     return messages.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
   }
 
@@ -118,26 +119,17 @@ export class MessagesService implements OnDestroy {
     const q = query(this.messageCollection, where('channelId', '==', obj.id));
 
     this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
-      console.log('QuerySnapshot:', querySnapshot.docs); // Rohdaten
       const messages = querySnapshot.docs.map(doc => {
-        // const data = { id: doc.id, ...doc.data() };
         const data = doc.data();
         data['id'] = doc.id;
-        console.log('DocId', doc.id);
-
-        console.log('Mapped message:', data); // Einzelnes Dokument
-        return data as Message;
+        return new Message(data); 
       });
-      console.log('snapShot messages', messages);
       const sorted = this.sortMessages(messages);
-      this.messages.set(sorted);
-      console.log('Live-updated messages:', sorted);
+      this.messages.set(sorted as Message[]);
     }, (error) => {
       console.error('Error listening to messages:', error);
     });
   }
-
-
 
 
   /**
@@ -147,7 +139,7 @@ export class MessagesService implements OnDestroy {
   async sendMessage() {
     this.message.timestamp = Timestamp.now(),
       this.message.channelId = this.channelService.channels[this.channelService.currentIndex()].id;
-    console.log('To JSON OBjsect Test', this.message);
+    // console.log('To JSON OBjsect Test', this.message);
     try {
       const docRef = await addDoc(this.messageCollection, this.message.toJSON())
     } catch (error) {
@@ -157,11 +149,15 @@ export class MessagesService implements OnDestroy {
 
 
   //// Geht noch nicht  
-  async editMessage(id: string) {
+  async editMessage(message: Message = this.message as Message) {
+    console.log('Message.toJSON', message);
+    // console.log('Message.toJSON', message.toJSON());
     await updateDoc(
-      doc(this.messageCollection, id),
-      this.message.toJSON()
+      doc(this.messageCollection, message.id),
+      message.toJSON()
     );
+    console.log('Message editiert:', message);
+    
   }
 
 
@@ -177,23 +173,20 @@ export class MessagesService implements OnDestroy {
 
 
 
-  async onMessageClick(message: Message) {
+  async openChannelThread(message: Message) {
     console.log('Message:  ', message);
-
-    this.threadService.currentMessage = message;
+    this.message = message;
+    // this.threadMessagesService.currentMessage = message;
     if (!message.threadId) {
-      // Erstelle neuen Thread falls nicht existiert
-      if (this.threadService.chatType === 'channel') {
-        await this.threadMessagesService.createThreadForMessage(message.id);
-        console.log('onMessageClick Message id to Thread createThreadForMessage', message.id);
-      }
-      //  else if (this.threadService.chatType === 'dm') {
-      //   await this.threadDMsService.loadThreadByIdDM(message.threadId);
-      // }
+      console.log('Erstelle Thread');
       
-
-      // message.threadId = threadId;
-    }
+      this.message.threadId = await this.threadMessagesService.createThreadForMessage();
+      if (message.threadId !== '') {
+        console.log('Update Message');
+        
+        this.editMessage();
+      }
+    } 
 
     // Lade den Thread
     // this.currentThread = await this.threadService.getThread(message.threadId);

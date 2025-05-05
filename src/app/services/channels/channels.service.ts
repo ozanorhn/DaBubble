@@ -57,11 +57,11 @@ export class ChannelsService implements OnDestroy {
     } else {
       this.createChannel.members = this.userService.users.map(user => user.id);
     }
-    console.log('current channel is', this.createChannel);
+    // console.log('current channel is', this.createChannel);
 
     try {
       const docRef = await addDoc(this.channelsCollection, this.createChannel.toJSON())
-      console.log('Channel added with ID', docRef.id);
+      // console.log('Channel added with ID', docRef.id);
     } catch (error) {
       console.error('Error adding channel', error);
     }
@@ -93,7 +93,7 @@ export class ChannelsService implements OnDestroy {
 
   openChannel(obj: Channel, i: number) {
     if (obj) {
-      console.log(obj);
+      // console.log(obj);
       this.currentIndex.set(i);
     }
   }

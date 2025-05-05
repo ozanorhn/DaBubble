@@ -9,8 +9,8 @@
             </div>
             <div class="flex flex-col gap-2">
                 <div class="flex items-center gap-5"  [ngClass]="{ 'justify-end': fromCurrentUser('user.id')}">
-                    <span class="text-lg font-bold">{{ threadService.currentMessage.sender }}</span>
-                    <span class="text-sm">{{ threadService.currentMessage.timestamp }}</span>
+                    <span class="text-lg font-bold">{{ threadMessagesService.currentMessage.sender }}</span>
+                    <span class="text-sm">{{ threadMessagesService.currentMessage.timestamp }}</span>
                 </div>
                 <div class=" p-[15px] rounded-[30px] w-min" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser('user.id'), 'bg-primary rounded-ss-none': !fromCurrentUser('user.id') }">
                     <span>{{ threadService.currentThread?.content }}</span>

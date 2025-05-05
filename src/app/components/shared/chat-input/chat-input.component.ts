@@ -3,6 +3,7 @@ import { MessagesService } from '../../../services/messages/messages.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 import { FormsModule } from '@angular/forms';
+import { ThreadMessagesService } from '../../../services/threadMessages/thread-messages.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -17,7 +18,8 @@ export class ChatInputComponent {
   constructor(
     public messageService: MessagesService,
     public threadService: ThreadsService,
-    public directMessageService: DirectMessagesService
+    public directMessageService: DirectMessagesService,
+    public threadMessagesService: ThreadMessagesService
   ) { }
 
   sendMessage() {
@@ -27,7 +29,7 @@ export class ChatInputComponent {
         break;
       case 'thread':
         this.threadService.updateThread(); //this.messageService.message.id
-        this.messageService.editMessage(this.threadService.currentMessageId);
+        this.messageService.editMessage();
         break;
       case 'dm':
         this.directMessageService.sendDirectMessage();

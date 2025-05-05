@@ -50,12 +50,14 @@ export class ChatMessagesComponent {
     }
   }
 
+
+  //Tested
   openThread(message: Message | DM, index: number) {
-    if (this.chatType === 'channel' && message instanceof Message) {
-      this.threadService.chatType = 'channel';
-      this.messageService.onMessageClick(message);
+    if (this.chatType === 'channel') {
+    this.threadService.chatType = 'channel';
+      this.messageService.openChannelThread(message as Message);
     } else if (this.chatType === 'dm') {
-      this.threadService.chatType = 'dm';
+    this.threadService.chatType = 'dm';
       this.dmService.openDmThread(index, message);
     }
   }
