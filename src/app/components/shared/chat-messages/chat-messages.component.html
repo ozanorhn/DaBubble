@@ -36,7 +36,8 @@
                         <app-chat-message-answer
                             class="cursor-pointer flex flex-col xs:flex-row xs:items-center xs:gap-[20px]"
                             [ngClass]="{'self-end': fromCurrentUser('user.id')}"
-                            [message]="message">
+                            [message]="message"
+                            [chatType]="chatType">
                         </app-chat-message-answer>
                     }
 

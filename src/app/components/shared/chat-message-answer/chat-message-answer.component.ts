@@ -3,6 +3,8 @@ import { MainNavService } from '../../../pageServices/navigates/main-nav.service
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { Message } from '../../../classes/message.class';
+import { ThreadDMsService } from '../../../services/threadDMs/thread-dms.service';
+import { ThreadMessagesService } from '../../../services/threadMessages/thread-messages.service';
 
 @Component({
   selector: 'app-chat-message-answer',
@@ -14,12 +16,19 @@ export class ChatMessageAnswerComponent {
   constructor(
     public mainNavService: MainNavService,
     public threadService: ThreadsService,
+    public threadDmsService: ThreadDMsService,
+    public threadMessagesService: ThreadMessagesService,
     public messageService: MessagesService
   ) {}
 
  @Input() message: Message = new Message();
+ @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
 
- getThread() {
-  return this.threadService.loadThreadById(this.message.threadId);
+ getThread(id: string) {
+  if (this.chatType === 'channel') {
+    return this.threadMessagesService.loadThreadById(this.message.threadId);
+  } else {
+    return this.threadDmsService.loadThreadByIdDM(id);
+  }
  }
 }

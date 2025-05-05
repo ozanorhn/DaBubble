@@ -7,6 +7,7 @@ import { User } from '../../classes/user.class';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import { ThreadsService } from '../threads/threads.service';
 import { DM } from '../../interfaces/dm';
+import { ThreadDMsService } from '../threadDMs/thread-dms.service';
 
 
 // export interface DM {
@@ -50,7 +51,8 @@ export class DirectMessagesService implements OnDestroy {
     public firestore: Firestore,
     public usersService: UsersService,
     public localStorageS: LocalStorageService,
-    public threadService: ThreadsService
+    public threadService: ThreadsService,
+    public threadDMsService: ThreadDMsService
   ) {
     this.directMessageCollection = collection(this.firestore, 'directMessages');
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
@@ -212,7 +214,7 @@ export class DirectMessagesService implements OnDestroy {
     const currentMessage = this.directMessage.content[this.currentDMIndex];
     if (!currentMessage.threadId) {
       // Erstelle neuen Thread falls nicht existiert
-      await this.threadService.createThreadForDM(message);
+      await this.threadDMsService.createThreadForDM(message);
       // Update both local and Firestore data
       currentMessage.threadId = this.threadService.newThreadId;
       try {
