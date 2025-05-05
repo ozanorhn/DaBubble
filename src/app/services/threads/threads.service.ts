@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { collection, doc, getDoc, Timestamp, updateDoc } from '@angular/fire/firestore';
+import { collection, doc, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Thread } from '../../classes/thread.class';
 
@@ -9,7 +9,7 @@ import { Thread } from '../../classes/thread.class';
 export class ThreadsService {
   threadCollection;
   currentThread: Thread = new Thread();
-
+  unsubscribeFromThreads?: () => void;
   // unsubscribeSnapshot
   // newThreadId = '';
 
@@ -57,10 +57,10 @@ export class ThreadsService {
 
 
   async loadThreadById(threadId: string): Promise<any> {
-    const threadDocRef = doc(this.threadCollection, threadId);
-    const threadSnap = await getDoc(threadDocRef);
-    // console.log('WWWWWWWWWWWWWW      ', threadSnap.data() ? threadSnap.data() as Thread : undefined);
-    this.currentThread = threadSnap.data() ? threadSnap.data() as Thread : new Thread();
+    // const threadDocRef = doc(this.threadCollection, threadId);
+    // const threadSnap = await getDoc(threadDocRef);
+    // // console.log('WWWWWWWWWWWWWW      ', threadSnap.data() ? threadSnap.data() as Thread : undefined);
+    // this.currentThread = threadSnap.data() ? threadSnap.data() as Thread : new Thread();
     // this.unsubscribeSnapshot = onSnapshot(this.docRef, (docSnapshot) => {
     //       if (docSnapshot.exists()) {
     //         const data = docSnapshot.data();
@@ -73,5 +73,22 @@ export class ThreadsService {
     //     }, (error) => {
     //       console.error('Fehler bei Echtzeit-Updates:', error);
     //     });
+
+    const threadRef = doc(this.firestore, 'threads', threadId);
+
+    this.unsubscribeFromThreads = onSnapshot(threadRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        data['id'] = docSnapshot.id;
+  
+        const thread = new Thread (data); // wenn du eine Thread-Klasse hast
+        this.currentThread = thread
+      } else {
+        console.warn('Thread not found');
+      }
+    }, (error) => {
+      console.error('Error listening to thread:', error);
+    });
+      
   }
 }

@@ -3,6 +3,7 @@ import { Thread } from '../../classes/thread.class';
 import { addDoc, collection, doc, Firestore, getDoc, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { ThreadsService } from '../threads/threads.service';
 import { Message } from '../../classes/message.class';
+import { MessagesService } from '../messages/messages.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,17 +15,18 @@ export class ThreadMessagesService {
 
   constructor(
     public firestore: Firestore,
-    public threadServive: ThreadsService
+    public threadServive: ThreadsService,
+    // public massegesServive: MessagesService
   ) {
-    this.threadServive.threadCollection = collection(this.firestore, 'threads');
+    // this.threadServive.threadCollection = collection(this.firestore, 'threads');
   }
 
 
   async createThreadForMessage() {
     console.log('Message ID', this.currentMessage.id)
-    this.threadServive.currentThread.messageId = this.currentMessage.id;
+    this.threadServive.currentThread.messageId = this.currentMessageId;
     console.log('current thread is', this.threadServive.currentThread.messageId);
-    const thread = new Thread({ messageId: this.currentMessage.id })
+    // const thread = new Thread({ messageId: this.currentMessage.id })
     try {
       const docRef = await addDoc(this.threadServive.threadCollection, this.threadServive.currentThread.toJSON());
       console.log('Thread added with ID', docRef.id);

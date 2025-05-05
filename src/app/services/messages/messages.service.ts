@@ -148,7 +148,7 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  //// Geht noch nicht  
+  // tested 
   async editMessage(message: Message = this.message as Message) {
     console.log('Message.toJSON', message);
     // console.log('Message.toJSON', message.toJSON());
@@ -176,6 +176,7 @@ export class MessagesService implements OnDestroy {
   async openChannelThread(message: Message) {
     console.log('Message:  ', message);
     this.message = message;
+    this.threadMessagesService.currentMessageId = message.id;
     // this.threadMessagesService.currentMessage = message;
     if (!message.threadId) {
       console.log('Erstelle Thread');
@@ -187,6 +188,7 @@ export class MessagesService implements OnDestroy {
         this.editMessage();
       }
     } 
+    this.threadService.loadThreadById(message.threadId)
 
     // Lade den Thread
     // this.currentThread = await this.threadService.getThread(message.threadId);
