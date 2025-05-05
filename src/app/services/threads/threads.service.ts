@@ -1,5 +1,5 @@
 import { forwardRef, Inject, inject, Injectable, Injector } from '@angular/core';
-import { addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
+import { addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, Timestamp, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Thread } from '../../classes/thread.class';
 import { update } from '@angular/fire/database';
@@ -16,9 +16,9 @@ export class ThreadsService {
   currentThread: Thread | undefined = new Thread();
   currentMessageId: string = '';
   currentMessage = new Message();
-
+  // unsubscribeSnapshot
   newThreadId = '';
-  
+
   threadMessage = {
     message: '',
     sender: '',
@@ -32,48 +32,153 @@ export class ThreadsService {
     this.threadCollection = collection(this.firestore, 'threads');
   }
 
-  async loadThreadById(threadId: string): Promise<any> {
-    if (threadId === '') {
-      // erstelle neuen thread in der Firebase
-      this.createThreadForMessage(this.currentMessageId);
-    } else {
-      const threadDocRef = doc(this.threadCollection, threadId);
-      const threadSnap = await getDoc(threadDocRef);
-      console.log('WWWWWWWWWWWWWW      ', threadSnap.data() ? threadSnap.data() as Thread : undefined);
-      this.currentThread = threadSnap.data() ? threadSnap.data() as Thread : undefined;
+  // async loadThreadById(threadId: string): Promise<any> {
+  //   if (threadId === '') {
+  //     // erstelle neuen thread in der Firebase
+  //     this.createThreadForMessage(this.currentMessageId);
+  //   } else {
+  //     const threadDocRef = doc(this.threadCollection, threadId);
+  //     const threadSnap = await getDoc(threadDocRef);
+  //     console.log('WWWWWWWWWWWWWW      ', threadSnap.data() ? threadSnap.data() as Thread : undefined);
+  //     this.currentThread = threadSnap.data() ? threadSnap.data() as Thread : undefined;
+
+
+
+  //     // this.unsubscribeSnapshot = onSnapshot(this.docRef, (docSnapshot) => {
+  //     //       if (docSnapshot.exists()) {
+  //     //         const data = docSnapshot.data();
+  //     //         this.directMessage = new DirectMessage({
+  //     //           id: docSnapshot.id,
+  //     //           ...data
+  //     //         });
+  //     //         console.log('Echtzeit-Update:', this.directMessage);
+  //     //       }
+  //     //     }, (error) => {
+  //     //       console.error('Fehler bei Echtzeit-Updates:', error);
+  //     //     });
+  //   }
+  // }
+
+
+
+
+  // async loadThreadById(threadId: string): Promise<Thread | undefined> {
+  //   if (threadId === '') {
+  //     // erstelle neuen thread in der Firebase
+  //     await this.createThreadForMessage(this.currentMessageId);
+  //     return undefined;
+  //   } else {
+  //     const threadDocRef = doc(this.threadCollection, threadId);
+  //     const threadSnap = await getDoc(threadDocRef);
+      
+  //     if (threadSnap.exists()) {
+  //       // Hole die Daten und füge die ID hinzu
+  //       const threadData = threadSnap.data() as Thread;
+  //       this.currentThread = {
+  //         ...threadData,
+  //         threadId: threadSnap.id  // Füge die Dokument-ID hinzu
+  //       } as Thread;
+        
+  //       console.log('Aktueller Thread:', this.currentThread);
+  //       return this.currentThread;
+  //     } else {
+  //       this.currentThread = undefined;
+  //       return undefined;
+  //     }
+  //   }
+  // }
+
+  private threadUnsubscribe: Unsubscribe | null = null;
+
+  async loadThreadById(threadId: string): Promise<Thread | undefined> {
+    // Zuerst bestehende Subscription beenden
+    if (this.threadUnsubscribe) {
+      this.threadUnsubscribe();
+      this.threadUnsubscribe = null;
     }
+  
+    if (threadId === '') {
+      // Neuen Thread erstellen
+      await this.createThreadForMessage(this.currentMessageId);
+      return undefined;
+    }
+  
+    return new Promise((resolve) => {
+      const threadDocRef = doc(this.threadCollection, threadId);
+      
+      this.threadUnsubscribe = onSnapshot(threadDocRef, (threadSnap) => {
+        if (threadSnap.exists()) {
+          this.currentThread = {
+            ...threadSnap.data() as Thread,
+            threadId: threadSnap.id  // Dokument-ID hinzufügen
+          } as Thread;
+          console.log('Aktueller Thread (Live Update):', this.currentThread);
+          resolve(this.currentThread);
+        } else {
+          this.currentThread = undefined;
+          resolve(undefined);
+        }
+      }, (error) => {
+        console.error("Fehler beim Abonnieren des Threads:", error);
+        });
+    });
   }
 
 
+
   async createThreadForMessage(MessageId: string) {
-    console.log('Message ID',MessageId );
+    console.log('Message ID', MessageId);
     console.log('Message ID', this.currentMessage.id)
-    
+
     const thread = new Thread({ messageId: MessageId })
     console.log('current thread is', thread);
     try {
       const docRef = await addDoc(this.threadCollection, thread.toJSON());
       console.log('Thread added with ID', docRef.id);
-           // Message.THredID = docRef.id
+      // Message.THredID = docRef.id
     } catch (error) {
       console.error('Error adding thread', error);
     }
   }
 
+  async updateThread() {
+    console.log('Current Thread', this.currentThread);
+    console.log('Thread Collection', this.threadCollection);
+    console.log('ThreadMessage', this.threadMessage);
+
+
+    this.threadMessage.timestamp = Timestamp.now();
+    await updateDoc(
+      doc(this.threadCollection, this.newThreadId),
+      {
+        content: this.threadMessage // Update entire content array
+      }
+    );
+    console.log('Updated Threadmessage', this.threadMessage);
+
+  }
+
+  // await updateDoc(
+  //   doc(this.directMessageCollection, this.directMessage.id),
+  //   {
+  //     content: this.directMessage.content // Update entire content array
+  //   }
+  // );
+
 
   async createThreadForDM(message: DM) {
-    console.log('Message ID',message );
+    console.log('Message ID', message);
     // console.log('Message ID', this.currentMessage.id)
-    
+
     const thread = new Thread()
     console.log('current thread is', thread);
     try {
       const docRef = await addDoc(this.threadCollection, thread.toJSON());
       console.log('Thread added with ID', docRef.id);
-          this.newThreadId = docRef.id
-          //  this.dmService.newMessage.threadId = docRef.id
-          //  console.log('dm new Message', this.dmService.newMessage.threadId);
-           
+      this.newThreadId = docRef.id
+      //  this.dmService.newMessage.threadId = docRef.id
+      //  console.log('dm new Message', this.dmService.newMessage.threadId);
+
     } catch (error) {
       console.error('Error adding thread', error);
     }
@@ -89,9 +194,9 @@ export class ThreadsService {
 
   // watchThread(threadId: string): void {
   //   this.unsubscribeThread(); // Vorherigen Listener entfernen
-    
+
   //   const threadRef = doc(this.threadCollection, threadId);
-    
+
   //   this.threadUnsubscribe = onSnapshot(threadRef, (snapshot) => {
   //     if (snapshot.exists()) {
   //       const threadData = snapshot.data();

@@ -207,7 +207,7 @@ export class DirectMessagesService implements OnDestroy {
 
 
 
-  async openDmThread(index: number, message: DM) {
+  async openDmThread(index: number, message: DM) { // message nötig?
     this.currentDMIndex = index;
     const currentMessage = this.directMessage.content[this.currentDMIndex];
     if (!currentMessage.threadId) {
