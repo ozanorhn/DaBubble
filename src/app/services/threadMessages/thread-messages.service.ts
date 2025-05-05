@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Thread } from '../../classes/thread.class';
-import { Message } from '../../classes/message.class';
 import { addDoc, collection, doc, Firestore, getDoc, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { ThreadsService } from '../threads/threads.service';
 
@@ -8,19 +7,6 @@ import { ThreadsService } from '../threads/threads.service';
   providedIn: 'root'
 })
 export class ThreadMessagesService {
-  // threadCollection;
-  // currentThread: Thread | undefined = new Thread();
-  // currentMessageId: string = '';
-  // currentMessage = new Message();
-  // // unsubscribeSnapshot
-  // newThreadId = '';
-
-  // threadMessage = {
-  //   message: '',
-  //   sender: '',
-  //   reactions: [],
-  //   timestamp: Timestamp.now()
-  // }
 
   constructor(
     public firestore: Firestore,
@@ -38,9 +24,6 @@ export class ThreadMessagesService {
       const threadSnap = await getDoc(threadDocRef);
       console.log('WWWWWWWWWWWWWW      ', threadSnap.data() ? threadSnap.data() as Thread : undefined);
       this.threadServive.currentThread = threadSnap.data() ? threadSnap.data() as Thread : undefined;
-
-
-
       // this.unsubscribeSnapshot = onSnapshot(this.docRef, (docSnapshot) => {
       //       if (docSnapshot.exists()) {
       //         const data = docSnapshot.data();
@@ -55,6 +38,7 @@ export class ThreadMessagesService {
       //     });
     }
   }
+
 
   async createThreadForMessage(MessageId: string) {
     console.log('Message ID', MessageId);
@@ -71,12 +55,11 @@ export class ThreadMessagesService {
     }
   }
 
+
   async updateThread() {
     console.log('Current Thread', this.threadServive.currentThread);
     console.log('Thread Collection', this.threadServive.threadCollection);
     console.log('ThreadMessage', this.threadServive.threadMessage);
-
-
     this.threadServive.threadMessage.timestamp = Timestamp.now();
     await updateDoc(
       doc(this.threadServive.threadCollection, this.threadServive.newThreadId),

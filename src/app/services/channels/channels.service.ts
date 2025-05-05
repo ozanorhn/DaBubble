@@ -14,16 +14,13 @@ export class ChannelsService implements OnDestroy {
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
-
-
-
   choiceMembers = signal(true);
   choiceMembersArray: string[] = [];
-
   createChannel = new Channel({
     createdBy: 'UserID343783',
     members: []
   });
+  private unsubscribe!: () => void;
 
 
   constructor(
@@ -34,7 +31,6 @@ export class ChannelsService implements OnDestroy {
     this.initChannelsListener();
   }
 
-  private unsubscribe!: () => void;
 
   private initChannelsListener() {
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
@@ -55,7 +51,6 @@ export class ChannelsService implements OnDestroy {
 
 
   async addChannel() {
-
     if (this.choiceMembers()) {
       this.createChannel.members = this.choiceMembersArray
       this.choiceMembersArray = [];
@@ -102,21 +97,9 @@ export class ChannelsService implements OnDestroy {
       this.currentIndex.set(i);
     }
   }
-
-
-  channels2 = [
-    { name: 'Entwicklerteam', users: [{ avatar: 3 }, { avatar: 6 }, { avatar: 5 }, { avatar: 1 }, { avatar: 3 }, { avatar: 2 }, { avatar: 4 }] },
-    { name: 'Frontend' },
-    { name: 'Backend' },
-    { name: 'DevOps' },
-    { name: 'Design-Team' },
-    { name: 'Office-team' },
-    { name: 'Support' },
-  ]
+  
 
   getChannelMembers(): User[] {
-    console.log('MEMBERS: ', this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id)));
-
     return this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id));
   }
 
@@ -133,11 +116,4 @@ export class ChannelsService implements OnDestroy {
   checkIfUserExists(user: User): boolean {
     return this.choiceMembersArray.includes(user.id);
   }
-
-
 }
-
-
-
-
-

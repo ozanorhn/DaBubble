@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, doc, Firestore, getDoc, Timestamp } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, getDoc } from '@angular/fire/firestore';
 import { Thread } from '../../classes/thread.class';
-import { Message } from '../../classes/message.class';
 import { DM } from '../../interfaces/dm';
 import { ThreadsService } from '../threads/threads.service';
 
@@ -9,20 +8,6 @@ import { ThreadsService } from '../threads/threads.service';
   providedIn: 'root'
 })
 export class ThreadDMsService {
-  // threadCollection;
-
-  // currentThread: Thread | undefined = new Thread();
-  // currentMessageId: string = '';
-  // currentMessage = new Message();
-  // // unsubscribeSnapshot
-  // newThreadId = '';
-
-  // threadMessage = {
-  //   message: '',
-  //   sender: '',
-  //   reactions: [],
-  //   timestamp: Timestamp.now()
-  // }
 
   constructor(
     public firestore: Firestore,
