@@ -38,6 +38,7 @@ export class MessagesService implements OnDestroy {
     lastAnswer: null
   });
 
+  messageInput = '';
   messageCollection;
   Message: [] = [];
   messages = signal<Message[]>([]);
@@ -80,7 +81,7 @@ export class MessagesService implements OnDestroy {
       const messages = querySnapshot.docs.map(doc => {
         const data = doc.data();
         data['id'] = doc.id;
-        return new Message(data); 
+        return new Message(data);
       });
       const sorted = this.sortMessages(messages);
       this.messages.set(sorted as Message[]);
@@ -95,11 +96,13 @@ export class MessagesService implements OnDestroy {
    * @async
    */
   async sendMessage() {
-    this.message.timestamp = Timestamp.now(),
-      this.message.channelId = this.channelService.channels[this.channelService.currentIndex()].id;
+    this.message.timestamp = Timestamp.now();
+    this.message.message = this.messageInput;
+    this.message.channelId = this.channelService.channels[this.channelService.currentIndex()].id;
     // console.log('To JSON OBjsect Test', this.message);
     try {
       const docRef = await addDoc(this.messageCollection, this.message.toJSON())
+      this.messageInput = '';
     } catch (error) {
       console.error('Error adding message', error);
     }
@@ -115,23 +118,41 @@ export class MessagesService implements OnDestroy {
       message.toJSON()
     );
     console.log('Message editiert:', message);
-    
-  }
-  
 
-// tested
+  }
+
+
   async openChannelThread(message: Message) {
-    this.message = message;
-    this.threadService.currentThread.set( new Thread());
-    this.threadMessagesService.currentMessage = message;
-    this.threadMessagesService.currentMessageId = message.id;
-    if (!message.threadId) {
-      this.message.threadId = await this.threadMessagesService.createThreadForMessage();
-      if (message.threadId !== '') {
-        this.editMessage();
+    const selectedMessage = new Message({ ...message });
+  
+    this.threadMessagesService.currentMessage = selectedMessage;
+    this.threadMessagesService.currentMessageId = selectedMessage.id;
+  
+    // Reset Thread-View
+    this.threadService.currentThread.set(new Thread());
+  
+    // Wenn keine Thread-ID vorhanden → erstelle neuen Thread
+    if (!selectedMessage.threadId) {
+      const threadId = await this.threadMessagesService.createThreadForMessage(selectedMessage.id);
+  
+      if (threadId) {
+        // Setze die neue Thread-ID in beiden Objekten
+        selectedMessage.threadId = threadId;
+        message.threadId = threadId;
+  
+        // Speichere die geänderte Message in Firestore
+        await this.editMessage(message); // hier explizit übergeben!
+  
+        // Lade den neu erstellten Thread
+        await this.threadService.loadThreadById(threadId);
+      } else {
+        console.warn('Thread konnte nicht erstellt werden.');
+        return;
       }
-    } 
-    this.threadService.loadThreadById(message.threadId);
+    } else {
+      // Thread-ID existiert → Thread direkt laden
+      await this.threadService.loadThreadById(selectedMessage.threadId);
+    }
   }
 
 

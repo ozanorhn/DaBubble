@@ -22,19 +22,32 @@ export class ThreadMessagesService {
   }
 
 
-  async createThreadForMessage() {
-    console.log('Message ID', this.currentMessage.id)
-    this.threadService.currentThread().messageId = this.currentMessageId;
-    console.log('current thread is', this.threadService.currentThread().messageId);
-    // const thread = new Thread({ messageId: this.currentMessage.id })
+  // async createThreadForMessage() {
+  //   console.log('Message ID', this.currentMessage.id)
+  //   this.threadService.currentThread().messageId = this.currentMessageId;
+  //   console.log('current thread is', this.threadService.currentThread().messageId);
+  //   // const thread = new Thread({ messageId: this.currentMessage.id })
+  //   try {
+  //     const docRef = await addDoc(this.threadService.threadCollection, this.threadService.currentThread().toJSON());
+  //     console.log('Thread added with ID', docRef.id);
+  //     return docRef.id
+  //     // Message.THredID = docRef.id
+  //   } catch (error) {
+  //     console.error('Error adding thread', error);
+  //     return ''
+  //   }
+  // }
+
+  async createThreadForMessage(messageId: string): Promise<string> {
+    const newThread = new Thread({ messageId });
+  
     try {
-      const docRef = await addDoc(this.threadService.threadCollection, this.threadService.currentThread().toJSON());
+      const docRef = await addDoc(this.threadService.threadCollection, newThread.toJSON());
       console.log('Thread added with ID', docRef.id);
-      return docRef.id
-      // Message.THredID = docRef.id
+      return docRef.id;
     } catch (error) {
       console.error('Error adding thread', error);
-      return ''
+      return '';
     }
   }
 

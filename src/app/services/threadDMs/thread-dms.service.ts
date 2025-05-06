@@ -53,12 +53,12 @@ export class ThreadDMsService {
       const docRef = await addDoc(this.threadService.threadCollection, thread.toJSON());
       console.log('Thread added with ID', docRef.id);
       if (this.threadService.currentThread) {
-        this.threadService.currentThread.threadId = docRef.id
+        this.threadService.currentThread().threadId = docRef.id
       }
 
       await updateDoc(
         doc(this.threadService.threadCollection, docRef.id),
-        { threadId: this.threadService.currentThread?.threadId }
+        { threadId: this.threadService.currentThread()?.threadId }
       );
 
     } catch (error) {
