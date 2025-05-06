@@ -28,14 +28,14 @@ export class ThreadsService implements OnDestroy {
     this.threadCollection = collection(this.firestore, 'threads');
   }
 
-// next
+
   async updateThread() {
     console.log('UPDATE THREAD: ', this.threadMessage);
     console.log('THREAD ID: ', this.currentThread().threadId);
-    // console.log('UPDATE THREAD: ', this.);
-    if (this.usersService.tempUser.id) {
-      this.threadMessage.sender = this.usersService.tempUser.id;
-    }
+    this.threadMessage.sender = this.usersService.currentUser.id;
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', this.threadMessage.sender);
+    console.log(this.currentThread());
+    
     this.threadMessage.timestamp = Timestamp.now();
     const updatedContent = [...this.currentThread().content, this.threadMessage];
     await updateDoc(

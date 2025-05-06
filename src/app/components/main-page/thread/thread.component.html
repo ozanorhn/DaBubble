@@ -5,15 +5,15 @@
 
         <div class="flex gap-5 mt-[25px] px-4" [ngClass]="{ 'flex-row-reverse': fromCurrentUser('user.id')}">
             <div class="w-max">
-                <img class="min-w-[50px] size-[50px] rounded-full" src="assets/imgs/avatar{{ 0 }}.svg" alt="Avatar">
+                <img class="min-w-[50px] size-[50px] rounded-full" src="{{ userService.getUserById2(threadMessagesService.currentMessage.sender)?.avatar }}" alt="Avatar">
             </div>
             <div class="flex flex-col gap-2">
                 <div class="flex items-center gap-5"  [ngClass]="{ 'justify-end': fromCurrentUser('user.id')}">
-                    <span class="text-lg font-bold">{{ threadMessagesService.currentMessage.sender }}</span>
-                    <span class="text-sm">{{ threadMessagesService.currentMessage.timestamp }}</span>
+                    <span class="text-lg font-bold">{{ userService.getUserById2(threadMessagesService.currentMessage.sender)?.name }}</span>
+                    <span class="text-sm">{{ messagesService.formatTime(threadMessagesService.currentMessage.timestamp) }}</span>
                 </div>
                 <div class=" p-[15px] rounded-[30px] w-min" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser('user.id'), 'bg-primary rounded-ss-none': !fromCurrentUser('user.id') }">
-                    <span>{{ threadService.currentThread().content }}</span>
+                    <span>{{ threadMessagesService.currentMessage.message }}</span>
                 </div>
             </div>
         </div>

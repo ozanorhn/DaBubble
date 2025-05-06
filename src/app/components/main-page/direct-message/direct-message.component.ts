@@ -15,58 +15,5 @@ export class DirectMessageComponent {
   constructor(
     public dmService: DirectMessagesService
   ) { }
-  // dummyThreatService = {
-  //   messages: [{
-  //     id: 'string',
-  //     message: 'string',
-  //     sender: 'Florian Rauh',
-  //     timestamp: 12,
-  //     createdBy: 'string',
-  //     reactions: [{
-  //       id: 0,
-  //       users: ['Sandra Peters'],
-  //     }],
-  //     threadId: 'string',
-  //     channelId: 'string',
-  //   },
-  //   {
-  //     id: 'string',
-  //     message: 'string',
-  //     sender: 'Florian Rauh',
-  //     timestamp: 12,
-  //     createdBy: 'string',
-  //     reactions: [{
-  //       id: 0,
-  //       users: ['Sandra Peters'],
-  //     }],
-  //     threadId: 'string',
-  //     channelId: 'string',
-  //   },
-  //   {
-  //     id: 'string',
-  //     message: 'string',
-  //     sender: 'Florian Rauh',
-  //     timestamp: 12,
-  //     createdBy: 'string',
-  //     reactions: [{
-  //       id: 0,
-  //       users: ['Sandra Peters'],
-  //     }],
-  //     threadId: 'string',
-  //     channelId: 'string',
-  //   }],
-  //   chatMessage: {
-  //     id: 'string',
-  //     message: 'string',
-  //     sender: 'Florian Rauh',
-  //     timestamp: 12,
-  //     createdBy: 'string',
-  //     reactions: [{
-  //       id: 0,
-  //       users: ['Sandra Peters'],
-  //     }],
-  //     threadId: 'string',
-  //     channelId: 'string',
-  //   }
-  // };
+  
 }

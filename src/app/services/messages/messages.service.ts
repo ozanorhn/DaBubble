@@ -96,6 +96,11 @@ export class MessagesService implements OnDestroy {
    * @async
    */
   async sendMessage() {
+    console.log(this.userService.currentUser.id);
+    
+    if (this.userService.currentUser.id) {
+      this.message.sender = this.userService.currentUser.id
+    }
     this.message.timestamp = Timestamp.now();
     this.message.message = this.messageInput;
     this.message.channelId = this.channelService.channels[this.channelService.currentIndex()].id;
@@ -109,8 +114,7 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  // tested 
-  async editMessage(message: Message = this.message as Message) {
+  async editMessage(message: Message = this.message) {
     console.log('Message.toJSON', message);
     // console.log('Message.toJSON', message.toJSON());
     await updateDoc(
@@ -118,13 +122,12 @@ export class MessagesService implements OnDestroy {
       message.toJSON()
     );
     console.log('Message editiert:', message);
-
   }
 
 
   async openChannelThread(message: Message) {
     const selectedMessage = new Message({ ...message });
-  
+    this.message = message;
     this.threadMessagesService.currentMessage = selectedMessage;
     this.threadMessagesService.currentMessageId = selectedMessage.id;
   
@@ -155,6 +158,14 @@ export class MessagesService implements OnDestroy {
     }
   }
 
+  async updateThread() {
+    const threadData = await this.threadMessagesService.updateThread();
+    this.message.answers = threadData.answers;
+    this.message.lastAnswer = threadData.lastAnswer;
+    console.log('UPDATE MESSAGE', this.message);
+    this.editMessage(this.message);
+  }
+
 
   /**
    * Formats timestamp as time (HH:mm)
@@ -162,7 +173,7 @@ export class MessagesService implements OnDestroy {
    * @returns {string} Formatted time string
    */
   formatTime(timestamp: Timestamp): string {
-    return formatDate(timestamp.toDate(), 'HH:mm', 'de-DE')
+    return formatDate(timestamp.toDate(), "HH:mm 'Uhr'", 'de-DE')
   }
 
 

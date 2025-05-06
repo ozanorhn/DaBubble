@@ -146,18 +146,45 @@ export class DirectMessagesService implements OnDestroy {
     const dmDocRefUser2First = doc(this.directMessageCollection, dmIdUser2First);
     const user1FirstDoc = await getDoc(dmDocRefUser1First);
     const user2FirstDoc = await getDoc(dmDocRefUser2First);
+    // if (user1FirstDoc.exists()) {
+    //   this.directMessage = new DirectMessage({
+    //     id: dmIdUser1First,
+    //     ...user1FirstDoc.data()
+    //   });
+    //   this.docRef = dmDocRefUser1First;
+    // } else if (user2FirstDoc.exists()) {
+    //   this.directMessage = new DirectMessage({
+    //     id: dmIdUser2First,
+    //     ...user2FirstDoc.data()
+    //   });
+    //   this.docRef = dmDocRefUser2First;
+    // }
+
     if (user1FirstDoc.exists()) {
       this.directMessage = new DirectMessage({
-        id: dmIdUser1First,
+        id: dmIdUser1First, // <-- wichtig!
         ...user1FirstDoc.data()
       });
       this.docRef = dmDocRefUser1First;
     } else if (user2FirstDoc.exists()) {
       this.directMessage = new DirectMessage({
-        id: dmIdUser2First,
+        id: dmIdUser2First, // <-- wichtig!
         ...user2FirstDoc.data()
       });
       this.docRef = dmDocRefUser2First;
+    } else {
+      // Kein Dokument existiert → erzeuge docRef
+      const tempId = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
+      this.directMessage.id = tempId;
+      this.docRef = doc(this.directMessageCollection, tempId);
+      await setDoc(this.docRef, {
+        threadId: tempId,
+        participants: {
+          user1: this.currentUser.id,
+          user2: this.othertUser.id
+        },
+        content: []
+      });
     }
   }
 
@@ -188,61 +215,38 @@ export class DirectMessagesService implements OnDestroy {
   }
 
 
-  // async openDmThread(index: number, message: DM) {
-  //   this.currentDMIndex = index
-  //   if (!this.directMessage.content[this.currentDMIndex].threadId) {
-  //     // Erstelle neuen Thread falls nicht existiert
-  //     await this.threadService.createThreadForDM(message);
-  //     // this.directMessage.content.push(message)
-  //     message.threadId = this.threadService.currentThread?.threadId
-
-  //     await updateDoc(
-  //           doc(this.directMessageCollection, this.directMessage.id),
-  //           this.directMessage.content[this.currentDMIndex].message
-  //         );
-
-  //     console.log('New Message with ThreadID', message);
-
-  //     // message.threadId = threadId;
-  //   }
-  // }
-
-
-
-  async openDmThread(index: number, message: DM) { // message nötig?
+  async openDmThread(index: number, message: DM) {
     this.currentDMIndex = index;
     const currentMessage = this.directMessage.content[this.currentDMIndex];
+  
+    // Prüfen, ob die Nachricht bereits eine ThreadID hat
     if (!currentMessage.threadId) {
-      // Erstelle neuen Thread falls nicht existiert
-      await this.threadDMsService.createThreadForDM(message);
-      // Update both local and Firestore data
-      if (this.threadService.currentThread) {
-        currentMessage.threadId = this.threadService.currentThread().threadId;
-      }
-      try {
-        await updateDoc(
-          doc(this.directMessageCollection, this.directMessage.id),
-          {
-            content: this.directMessage.content // Update entire content array
-          }
-        );
-        // this.threadDMsService.setupRealtimeListener(currentMessage.threadId)
-        console.log('Message updated with ThreadID', currentMessage);
-      } catch (error) {
-        console.error('Error updating message with ThreadID:', error);
-        // Revert local change if update fails
-        // currentMessage.threadId = undefined;
-        throw error;
+      // Thread erstellen
+      await this.threadDMsService.createThreadForDM(currentMessage);
+  
+      // Falls erfolgreich, Thread-ID in lokale Kopie schreiben
+      const newThreadId = this.threadService.currentThread?.().threadId;
+      if (newThreadId) {
+        this.directMessage.content[this.currentDMIndex].threadId = newThreadId;
+  
+        // Firestore aktualisieren – aber NUR das aktualisierte content-Array schreiben
+        try {
+          await updateDoc(
+            doc(this.directMessageCollection, this.directMessage.id),
+            { content: this.directMessage.content }
+          );
+          console.log('ThreadID erfolgreich gesetzt:', newThreadId);
+  
+          // Thread laden (Realtime-Setup etc.)
+          await this.threadService.loadThreadById(newThreadId);
+        } catch (error) {
+          console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
+        }
       }
     } else {
-      console.log('message ThreadId: ', message.threadId);
-      // this.threadDMsService.setupRealtimeListener(message.threadId);
-
+      // Falls Thread schon existiert → direkt laden
+      console.log('Thread existiert bereits:', currentMessage.threadId);
+      await this.threadService.loadThreadById(currentMessage.threadId);
     }
-
-
-
   }
-
-
 }

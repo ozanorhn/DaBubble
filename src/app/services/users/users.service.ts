@@ -21,6 +21,7 @@ export class UsersService implements OnDestroy {
  
   users: User[] = [];
   tempUser: Partial<User> = {};
+  currentUser: User = new User();
 
   GuestUser = {
     id: 'pEGZHQAC1HQNQQYnKNE1J04pbXM2',
@@ -70,6 +71,7 @@ export class UsersService implements OnDestroy {
 
   setTempUser(data: Partial<User>) {
     this.tempUser = { ...this.tempUser, ...data };
+    this.currentUser = { ...this.tempUser, ...data } as User;
     console.log('TempUser gesetzt:', this.tempUser);  // Überprüfe, ob der Avatar korrekt gesetzt wird
   }
 
@@ -98,8 +100,12 @@ export class UsersService implements OnDestroy {
   }
 
 
-  getUserById2(id: string) {
-    return this.users.find((user) => id === user.id)?.name;
+  getUserById2(id: string): User | undefined {
+    // console.log(id);
+    
+    // console.log(this.users.find((user) => id === user.id));
+    
+    return this.users.find((user) => id === user.id);
   }
 
 

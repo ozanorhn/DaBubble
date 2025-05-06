@@ -28,7 +28,7 @@ export class ChatInputComponent {
         this.messageService.sendMessage();
         break;
       case 'thread':
-        this.threadMessagesService.updateThread(); //this.messageService.message.id
+        this.messageService.updateThread(); //this.messageService.message.id
         // this.messageService.editMessage();
         break;
       case 'dm':
@@ -40,7 +40,7 @@ export class ChatInputComponent {
       default:
         break;
     }
-    this.messageService.message.message = '';
+    // this.messageService.message.message = '';
     this.messageInputRef.nativeElement.focus();
   }
 }
