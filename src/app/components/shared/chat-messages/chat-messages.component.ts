@@ -40,7 +40,7 @@ export class ChatMessagesComponent {
   newDay = true;
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
   @Input() threadHeadMessage: any;
-  @Input() messages: any[] | undefined; // oder der passende Typ
+  @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
 
   fromCurrentUser(id: string): boolean {
     if (id === this.authService.currentUser) {

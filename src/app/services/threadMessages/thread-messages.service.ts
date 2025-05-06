@@ -15,20 +15,20 @@ export class ThreadMessagesService {
 
   constructor(
     public firestore: Firestore,
-    public threadServive: ThreadsService,
+    public threadService: ThreadsService,
     // public massegesServive: MessagesService
   ) {
-    // this.threadServive.threadCollection = collection(this.firestore, 'threads');
+    // this.threadService.threadCollection = collection(this.firestore, 'threads');
   }
 
 
   async createThreadForMessage() {
     console.log('Message ID', this.currentMessage.id)
-    this.threadServive.currentThread.messageId = this.currentMessageId;
-    console.log('current thread is', this.threadServive.currentThread.messageId);
+    this.threadService.currentThread.messageId = this.currentMessageId;
+    console.log('current thread is', this.threadService.currentThread.messageId);
     // const thread = new Thread({ messageId: this.currentMessage.id })
     try {
-      const docRef = await addDoc(this.threadServive.threadCollection, this.threadServive.currentThread.toJSON());
+      const docRef = await addDoc(this.threadService.threadCollection, this.threadService.currentThread.toJSON());
       console.log('Thread added with ID', docRef.id);
       return docRef.id
       // Message.THredID = docRef.id
@@ -40,17 +40,20 @@ export class ThreadMessagesService {
 
 
   async updateThread() {
-    // console.log('Current Thread', this.threadServive.currentThread);
-    // console.log('Thread Collection', this.threadServive.threadCollection);
-    // console.log('ThreadMessage', this.threadServive.threadMessage);
-    this.threadServive.threadMessage.timestamp = Timestamp.now();
-    await updateDoc(
-      doc(this.threadServive.threadCollection, this.threadServive.currentThread?.threadId),
-      {
-        content: this.threadServive.threadMessage // Update entire content array
-      }
-    );
-    console.log('Updated Threadmessage', this.threadServive.threadMessage);
-
+    // console.log('Current Thread', this.threadService.currentThread);
+    // console.log('Thread Collection', this.threadService.threadCollection);
+    // console.log('ThreadMessage', this.threadService.threadMessage);
+    // this.threadService.threadMessage.timestamp = Timestamp.now();
+    // await updateDoc(
+    //   doc(this.threadService.threadCollection, this.threadService.currentThread?.threadId),
+    //   {
+    //     content: this.threadService.threadMessage // Update entire content array
+    //   }
+    // );
+    // console.log('Updated Threadmessage', this.threadService.threadMessage);
+    console.log(this.currentMessage);
+    this.threadService.currentThread.threadId = this.currentMessage.threadId;
+    
+    await this.threadService.updateThread();
   }
 }

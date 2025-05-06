@@ -121,6 +121,7 @@ export class MessagesService implements OnDestroy {
 // tested
   async openChannelThread(message: Message) {
     this.message = message;
+    this.threadMessagesService.currentMessage = message;
     this.threadMessagesService.currentMessageId = message.id;
     if (!message.threadId) {
       this.message.threadId = await this.threadMessagesService.createThreadForMessage();

@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { collection, doc, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Thread } from '../../classes/thread.class';
+import { UsersService } from '../users/users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,21 +22,30 @@ export class ThreadsService implements OnDestroy {
 
 
   constructor(
-    public firestore: Firestore
+    public firestore: Firestore,
+    public usersService: UsersService
   ) {
     this.threadCollection = collection(this.firestore, 'threads');
   }
 
-
+// next
   async updateThread() {
+    console.log('UPDATE THREAD: ', this.threadMessage);
+    console.log('THREAD ID: ', this.currentThread.threadId);
+    // console.log('UPDATE THREAD: ', this.);
+    if (this.usersService.tempUser.id) {
+      this.threadMessage.sender = this.usersService.tempUser.id;
+    }
     this.threadMessage.timestamp = Timestamp.now();
+    const updatedContent = [...this.currentThread.content, this.threadMessage];
     await updateDoc(
       doc(this.threadCollection, this.currentThread?.threadId),
       {
-        content: this.threadMessage // Update entire content array
+        content: updatedContent // Update entire content array
       }
     );
     console.log('Updated Threadmessage', this.threadMessage);
+    this.threadMessage.message = '';
   }
 
 
@@ -55,7 +65,7 @@ export class ThreadsService implements OnDestroy {
     });
   }
 
-  
+
   ngOnDestroy(): void {
     if (this.unsubscribeFromThreads) {
       this.unsubscribeFromThreads();

@@ -6,6 +6,7 @@ import { Message } from '../../../classes/message.class';
 import { ThreadDMsService } from '../../../services/threadDMs/thread-dms.service';
 import { ThreadMessagesService } from '../../../services/threadMessages/thread-messages.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
+import { DM } from '../../../interfaces/dm';
 
 @Component({
   selector: 'app-chat-message-answer',
