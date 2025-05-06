@@ -13,21 +13,21 @@
                     <span class="text-sm">{{ threadMessagesService.currentMessage.timestamp }}</span>
                 </div>
                 <div class=" p-[15px] rounded-[30px] w-min" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser('user.id'), 'bg-primary rounded-ss-none': !fromCurrentUser('user.id') }">
-                    <span>{{ threadService.currentThread.content }}</span>
+                    <span>{{ threadService.currentThread().content }}</span>
                 </div>
             </div>
         </div>
 
         <div class="flex items-center text-[18px] my-[10px] px-4">
             <div class="py-[5px] px-[15px] whitespace-nowrap">
-                @if (threadService.currentThread && threadService.currentThread.content.length > 0) {
-                    <p>{{ threadService.currentThread.content.length }} Antworten</p>
+                @if (threadService.currentThread() && threadService.currentThread().content.length > 0) {
+                    <p>{{ threadService.currentThread().content.length }} Antworten</p>
                 }
             </div>
             <div class="w-full h-[1px] bg-lightpurple"></div>
         </div>
         
-        <app-chat-messages [messages]="threadService.currentThread.content" [chatType]="'thread'"></app-chat-messages>
+        <app-chat-messages [messages]="threadService.currentThread().content" [chatType]="'thread'"></app-chat-messages>
     
     </div>
     <app-chat-input [chatType]="'thread'"></app-chat-input>

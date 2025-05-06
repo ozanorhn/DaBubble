@@ -217,7 +217,7 @@ export class DirectMessagesService implements OnDestroy {
       await this.threadDMsService.createThreadForDM(message);
       // Update both local and Firestore data
       if (this.threadService.currentThread) {
-        currentMessage.threadId = this.threadService.currentThread.threadId;
+        currentMessage.threadId = this.threadService.currentThread().threadId;
       }
       try {
         await updateDoc(

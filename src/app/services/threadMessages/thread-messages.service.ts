@@ -24,11 +24,11 @@ export class ThreadMessagesService {
 
   async createThreadForMessage() {
     console.log('Message ID', this.currentMessage.id)
-    this.threadService.currentThread.messageId = this.currentMessageId;
-    console.log('current thread is', this.threadService.currentThread.messageId);
+    this.threadService.currentThread().messageId = this.currentMessageId;
+    console.log('current thread is', this.threadService.currentThread().messageId);
     // const thread = new Thread({ messageId: this.currentMessage.id })
     try {
-      const docRef = await addDoc(this.threadService.threadCollection, this.threadService.currentThread.toJSON());
+      const docRef = await addDoc(this.threadService.threadCollection, this.threadService.currentThread().toJSON());
       console.log('Thread added with ID', docRef.id);
       return docRef.id
       // Message.THredID = docRef.id
@@ -52,7 +52,7 @@ export class ThreadMessagesService {
     // );
     // console.log('Updated Threadmessage', this.threadService.threadMessage);
     console.log(this.currentMessage);
-    this.threadService.currentThread.threadId = this.currentMessage.threadId;
+    this.threadService.currentThread().threadId = this.currentMessage.threadId;
     
     await this.threadService.updateThread();
   }

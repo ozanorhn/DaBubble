@@ -12,6 +12,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { ThreadDMsService } from '../threadDMs/thread-dms.service';
 import { ThreadMessagesService } from '../threadMessages/thread-messages.service';
 import { DM } from '../../interfaces/dm';
+import { Thread } from '../../classes/thread.class';
 registerLocaleData(localeDe);
 @Injectable({
   providedIn: 'root'
@@ -121,6 +122,7 @@ export class MessagesService implements OnDestroy {
 // tested
   async openChannelThread(message: Message) {
     this.message = message;
+    this.threadService.currentThread.set( new Thread());
     this.threadMessagesService.currentMessage = message;
     this.threadMessagesService.currentMessageId = message.id;
     if (!message.threadId) {
