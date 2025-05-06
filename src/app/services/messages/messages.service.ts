@@ -60,24 +60,6 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  // /**
-  //  * Fetches messages for a channel
-  //  * @param {Channel} obj - Channel object
-  //  * @returns {Promise<Message[]>} Sorted messages
-  //  */
-  // async getMessages(obj: Channel) {
-  //   const q = query(this.messageCollection, where('channelId', '==', obj.id));
-  //   const querySnapshot = await getDocs(q);
-  //   const messages = querySnapshot.docs.map(doc => ({
-  //     id: doc.id,
-  //     ...doc.data()
-  //   }) as Message);
-  //   this.messages.set(this.sortMessages(messages))
-  //   console.log('Message Array', this.messages());
-  //   return this.sortMessages(messages);
-  // }
-
-
   /**
   * Sorts messages by timestamp (ascending)
   * @param {Message[]} messages - Messages to sort
@@ -88,36 +70,11 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  // getMessages(obj: Channel) {
-  //   if (this.unsubscribeFromMessages) {
-  //     this.unsubscribeFromMessages();
-  //   }
-
-  //   const q = query(this.messageCollection, where('channelId', '==', obj.id));
-
-  //   this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
-  //     const messages = querySnapshot.docs.map(doc => ({
-  //       id: doc.id,
-  //       ...doc.data()
-  //     }) as Message);
-  //      console.log('snapShot messages',messages);
-
-  //     const sorted = this.sortMessages(messages);
-  //     this.messages.set(sorted);
-  //     console.log('Live-updated messages:', sorted);
-  //   }, (error) => {
-  //     console.error('Error listening to messages:', error);
-  //   });
-  // }
-
-
   getMessages(obj: Channel) {
     if (this.unsubscribeFromMessages) {
       this.unsubscribeFromMessages();
     }
-
     const q = query(this.messageCollection, where('channelId', '==', obj.id));
-
     this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
       const messages = querySnapshot.docs.map(doc => {
         const data = doc.data();
@@ -159,62 +116,20 @@ export class MessagesService implements OnDestroy {
     console.log('Message editiert:', message);
     
   }
+  
 
-
-  // /**
-  // * Opens a thread
-  // * @param {string} messageId - Message ID
-  // * @param {string} threadId - Thread ID
-  // */
-  // openThread(messageId: string, threadId: string) {
-  //   this.threadService.currentMessageId = messageId;
-  //   this.threadService.loadThreadById(threadId);
-  // }
-
-
-
+// tested
   async openChannelThread(message: Message) {
-    console.log('Message:  ', message);
     this.message = message;
     this.threadMessagesService.currentMessageId = message.id;
-    // this.threadMessagesService.currentMessage = message;
     if (!message.threadId) {
-      console.log('Erstelle Thread');
-      
       this.message.threadId = await this.threadMessagesService.createThreadForMessage();
       if (message.threadId !== '') {
-        console.log('Update Message');
-        
         this.editMessage();
       }
     } 
-    this.threadService.loadThreadById(message.threadId)
-
-    // Lade den Thread
-    // this.currentThread = await this.threadService.getThread(message.threadId);
+    this.threadService.loadThreadById(message.threadId);
   }
-
-  // private messageUnsubscribes = new Map<string, Unsubscribe>();
-
-  // watchMessage(messageId: string): BehaviorSubject<Message | null> {
-  //   const subject = new BehaviorSubject<Message | null>(null);
-  //   const docRef = doc(this.messageCollection, messageId);
-
-  //   this.messageUnsubscribes.set(messageId, 
-  //     onSnapshot(docRef, (snapshot) => {
-  //       subject.next(snapshot.exists() ? snapshot.data() as Message : null);
-  //     })
-  //   );
-
-  //   return subject;
-  // }
-
-  // async updateMessageThreadId(messageId: string, threadId: string): Promise<void> {
-  //   const messageRef = doc(this.messageCollection, messageId);
-  //   await updateDoc(messageRef, { threadId });
-  // }
-
-
 
 
   /**
@@ -247,7 +162,6 @@ export class MessagesService implements OnDestroy {
       return formatDate(date, 'EEEE, dd.MM.yyyy', 'de-DE');
     }
   }
-
 
 
   /**

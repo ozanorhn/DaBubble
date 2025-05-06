@@ -29,7 +29,7 @@ export class ChatInputComponent {
         break;
       case 'thread':
         this.threadService.updateThread(); //this.messageService.message.id
-        this.messageService.editMessage();
+        // this.messageService.editMessage();
         break;
       case 'dm':
         this.directMessageService.sendDirectMessage();
