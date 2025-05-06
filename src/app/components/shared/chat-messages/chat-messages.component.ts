@@ -43,7 +43,9 @@ export class ChatMessagesComponent {
   @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
 
   fromCurrentUser(id: string): boolean {
-    if (id === this.authService.currentUser) {
+    if (id === this.userService.currentUser.id) {
+      console.log(true);
+      
       return true;
     } else {
       return false;

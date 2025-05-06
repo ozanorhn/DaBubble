@@ -13,7 +13,7 @@
     }
     @case ('thread') {
     <div class="flex items-center gap-[14px] w-max rounded-full text-xl font-bold">
-        <span>Thread </span><span class="text-purple2 text-[14px]"># {{ channelService }}</span>
+        <span>Thread </span><span class="text-purple2 text-[14px]"># {{ channelService.channels[channelService.currentIndex()].name }}</span>
     </div>
     }
     @case ('dm') {
