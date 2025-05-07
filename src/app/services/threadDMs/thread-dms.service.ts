@@ -39,4 +39,13 @@ export class ThreadDMsService {
       return null;
     }
   }
+
+
+  async updateThread() {
+    await this.threadService.updateThread();
+    return {
+      answers: this.threadService.currentThread().content.length,
+      lastAnswer: this.threadService.currentThread().content[this.threadService.currentThread().content.length - 1].timestamp,
+    }
+  }
 }

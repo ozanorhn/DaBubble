@@ -13,6 +13,8 @@ export class DirectMessage {
         message: string;
         sender: string,
         timestamp: Timestamp;
+        answers: number;
+        lastAnswer: Timestamp;
         reactions: [{
             id: number;
             users: string[];

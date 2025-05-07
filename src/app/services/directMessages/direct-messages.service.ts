@@ -146,19 +146,6 @@ export class DirectMessagesService implements OnDestroy {
     const dmDocRefUser2First = doc(this.directMessageCollection, dmIdUser2First);
     const user1FirstDoc = await getDoc(dmDocRefUser1First);
     const user2FirstDoc = await getDoc(dmDocRefUser2First);
-    // if (user1FirstDoc.exists()) {
-    //   this.directMessage = new DirectMessage({
-    //     id: dmIdUser1First,
-    //     ...user1FirstDoc.data()
-    //   });
-    //   this.docRef = dmDocRefUser1First;
-    // } else if (user2FirstDoc.exists()) {
-    //   this.directMessage = new DirectMessage({
-    //     id: dmIdUser2First,
-    //     ...user2FirstDoc.data()
-    //   });
-    //   this.docRef = dmDocRefUser2First;
-    // }
 
     if (user1FirstDoc.exists()) {
       this.directMessage = new DirectMessage({
@@ -228,20 +215,20 @@ export class DirectMessagesService implements OnDestroy {
       const newThreadId = this.threadService.currentThread?.().threadId;
       if (newThreadId) {
         this.directMessage.content[this.currentDMIndex].threadId = newThreadId;
-
+        this.updateDM(newThreadId)
         // Firestore aktualisieren – aber NUR das aktualisierte content-Array schreiben
-        try {
-          await updateDoc(
-            doc(this.directMessageCollection, this.directMessage.id),
-            { content: this.directMessage.content }
-          );
-          console.log('ThreadID erfolgreich gesetzt:', newThreadId);
+        // try {
+        //   await updateDoc(
+        //     doc(this.directMessageCollection, this.directMessage.id),
+        //     { content: this.directMessage.content }
+        //   );
+        //   console.log('ThreadID erfolgreich gesetzt:', newThreadId);
 
-          // Thread laden (Realtime-Setup etc.)
-          await this.threadService.loadThreadById(newThreadId);
-        } catch (error) {
-          console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
-        }
+        //   // Thread laden (Realtime-Setup etc.)
+        //   await this.threadService.loadThreadById(newThreadId);
+        // } catch (error) {
+        //   console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
+        // }
       }
     } else {
       // Falls Thread schon existiert → direkt laden
@@ -250,8 +237,26 @@ export class DirectMessagesService implements OnDestroy {
     }
   }
 
-  updateThread() {
+  async updateDM(threadId: any) {
+    try {
+      await updateDoc(
+        doc(this.directMessageCollection, this.directMessage.id),
+        { content: this.directMessage.content }
+      );
+      // console.log('ThreadID erfolgreich gesetzt:', threadId);
+
+      // Thread laden (Realtime-Setup etc.)
+      await this.threadService.loadThreadById(threadId);
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
+    }
+  }
+
+  async updateThread() {
     console.log(this.threadService.threadMessage);
-    this.threadService.updateThread();
+    const threadData = await this.threadDMsService.updateThread();
+    this.directMessage.content[this.currentDMIndex].answers = threadData.answers;
+    this.directMessage.content[this.currentDMIndex].lastAnswer = threadData.lastAnswer;
+    this.updateDM(this.threadDMsService.threadService.currentThread().threadId)
   }
 }
