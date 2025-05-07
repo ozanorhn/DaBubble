@@ -10,6 +10,7 @@ import { AuthService } from '../../../services/auth/auth.service';
   templateUrl: './avatar.component.html',
   styleUrl: './avatar.component.scss',
 })
+
 export class AvatarComponent {
   public currentAvatar: number = 0;
   public showMessage: boolean = false;
