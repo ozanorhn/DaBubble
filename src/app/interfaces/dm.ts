@@ -6,4 +6,5 @@ export interface DM {
     sender: string;
     timestamp: Timestamp;
     reactions: any[];
+    // index: number;
 }

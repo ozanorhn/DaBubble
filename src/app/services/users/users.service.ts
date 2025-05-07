@@ -109,4 +109,11 @@ export class UsersService implements OnDestroy {
   }
 
 
+  fromCurrentUser(id: string): boolean {
+     if (id === this.currentUser.id) {
+       return true;
+     } else {
+       return false;
+     }
+   }
 }

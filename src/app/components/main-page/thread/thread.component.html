@@ -3,17 +3,17 @@
     
     <div class="flex flex-col flex-1 w-full overflow-y-auto">
 
-        <div class="flex gap-5 mt-[25px] px-4" [ngClass]="{ 'flex-row-reverse': fromCurrentUser('user.id')}">
+        <div class="flex gap-5 mt-[25px] px-4" [ngClass]="{ 'flex-row-reverse': userService.fromCurrentUser(getUserFromService().sender)}">
             <div class="w-max">
-                <img class="min-w-[50px] size-[50px] rounded-full" src="{{ userService.getUserById2(threadMessagesService.currentMessage.sender)?.avatar }}" alt="Avatar">
+                <img class="min-w-[50px] size-[50px] rounded-full" src="{{ userService.getUserById2(getUserFromService().sender)?.avatar }}" alt="Avatar">
             </div>
             <div class="flex flex-col gap-2">
-                <div class="flex items-center gap-5"  [ngClass]="{ 'justify-end': fromCurrentUser('user.id')}">
-                    <span class="text-lg font-bold">{{ userService.getUserById2(threadMessagesService.currentMessage.sender)?.name }}</span>
-                    <span class="text-sm">{{ messagesService.formatTime(threadMessagesService.currentMessage.timestamp) }}</span>
+                <div class="flex items-center gap-5"  [ngClass]="{ 'justify-end': userService.fromCurrentUser(getUserFromService().sender)}">
+                    <span class="text-lg font-bold">{{ userService.getUserById2(getUserFromService().sender)?.name }}</span>
+                    <span class="text-sm">{{ messagesService.formatTime(getUserFromService().timestamp) }}</span>
                 </div>
-                <div class=" p-[15px] rounded-[30px] w-min" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': fromCurrentUser('user.id'), 'bg-primary rounded-ss-none': !fromCurrentUser('user.id') }">
-                    <span>{{ threadMessagesService.currentMessage.message }}</span>
+                <div class=" p-[15px] rounded-[30px] w-min" [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]': userService.fromCurrentUser(getUserFromService().sender), 'bg-primary rounded-ss-none': !userService.fromCurrentUser(getUserFromService().sender) }">
+                    <span>{{ getUserFromService().message }}</span>
                 </div>
             </div>
         </div>

@@ -54,9 +54,11 @@ export class ThreadsService implements OnDestroy {
     this.unsubscribeFromThreads = onSnapshot(threadRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
-        data['id'] = docSnapshot.id;
+        data['threadId'] = docSnapshot.id;
         const thread = new Thread (data);
         this.currentThread.set(thread);
+        console.log(this.currentThread());
+        
       } else {
         console.warn('Thread not found');
       }

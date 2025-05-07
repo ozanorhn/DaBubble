@@ -178,7 +178,7 @@ export class DirectMessagesService implements OnDestroy {
       this.directMessage.id = tempId;
       this.docRef = doc(this.directMessageCollection, tempId);
       await setDoc(this.docRef, {
-        threadId: tempId,
+        id: tempId,
         participants: {
           user1: this.currentUser.id,
           user2: this.othertUser.id
@@ -218,17 +218,17 @@ export class DirectMessagesService implements OnDestroy {
   async openDmThread(index: number, message: DM) {
     this.currentDMIndex = index;
     const currentMessage = this.directMessage.content[this.currentDMIndex];
-  
+
     // Prüfen, ob die Nachricht bereits eine ThreadID hat
     if (!currentMessage.threadId) {
       // Thread erstellen
       await this.threadDMsService.createThreadForDM(currentMessage);
-  
+
       // Falls erfolgreich, Thread-ID in lokale Kopie schreiben
       const newThreadId = this.threadService.currentThread?.().threadId;
       if (newThreadId) {
         this.directMessage.content[this.currentDMIndex].threadId = newThreadId;
-  
+
         // Firestore aktualisieren – aber NUR das aktualisierte content-Array schreiben
         try {
           await updateDoc(
@@ -236,7 +236,7 @@ export class DirectMessagesService implements OnDestroy {
             { content: this.directMessage.content }
           );
           console.log('ThreadID erfolgreich gesetzt:', newThreadId);
-  
+
           // Thread laden (Realtime-Setup etc.)
           await this.threadService.loadThreadById(newThreadId);
         } catch (error) {
@@ -248,5 +248,10 @@ export class DirectMessagesService implements OnDestroy {
       console.log('Thread existiert bereits:', currentMessage.threadId);
       await this.threadService.loadThreadById(currentMessage.threadId);
     }
+  }
+
+  updateThread() {
+    console.log(this.threadService.threadMessage);
+    this.threadService.updateThread();
   }
 }

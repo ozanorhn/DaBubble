@@ -28,7 +28,12 @@ export class ChatInputComponent {
         this.messageService.sendMessage();
         break;
       case 'thread':
-        this.messageService.updateThread(); //this.messageService.message.id
+        if (this.threadService.chatType === 'channel') {
+          this.messageService.updateThread();
+        } else {
+          this.directMessageService.updateThread();
+        }
+         //this.messageService.message.id
         // this.messageService.editMessage();
         break;
       case 'dm':

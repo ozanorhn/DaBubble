@@ -21,7 +21,7 @@ export class ThreadDMsService {
     try {
       const threadData = new Thread({
         createdAt: Timestamp.now(),
-        participants: [message.sender], // ggf. beide UserIDs ergänzen
+        participants: [message.sender] // ggf. beide UserIDs ergänzen
       });
 
       const threadsCollection = collection(this.firestore, 'threads');
@@ -39,5 +39,4 @@ export class ThreadDMsService {
       return null;
     }
   }
-
 }

@@ -42,18 +42,7 @@ export class ChatMessagesComponent {
   @Input() threadHeadMessage: any;
   @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
 
-  fromCurrentUser(id: string): boolean {
-    if (id === this.userService.currentUser.id) {
-      console.log(true);
-      
-      return true;
-    } else {
-      return false;
-    }
-  }
 
-
-  //Tested
   openThread(message: Message | DM, index: number) {
     if (this.chatType === 'channel') {
     this.threadService.chatType = 'channel';
