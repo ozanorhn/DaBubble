@@ -19,6 +19,11 @@ export class ThreadDMsService {
   }
 
 
+  /**
+   * Creates a new thread in Firestore for a direct message (DM).
+   * @param {DM} message - The DM message used to initialize the thread.
+   * @returns {Promise<string | null>} The ID of the newly created thread, or null if creation fails.
+   */
   async createThreadForDM(message: DM): Promise<string | null> {
     try {
       const threadData = new Thread({ createdAt: Timestamp.now(), participants: [message.sender] });
@@ -34,7 +39,10 @@ export class ThreadDMsService {
     }
   }
 
-
+  /**
+   * Updates the current thread with new content.
+   * @returns {Promise<{ answers: number, lastAnswer: any }>} An object containing the number of replies and the timestamp of the last reply.
+   */
   async updateThread() {
     await this.threadService.updateThread();
     return {

@@ -11,12 +11,18 @@ export class ThreadMessagesService {
   currentMessageId: string = '';
   currentMessage = new Message();
 
+
   constructor(
     public firestore: Firestore,
     public threadService: ThreadsService
   ) { }
 
 
+  /**
+  * Creates a new thread document in Firestore for a given message ID.
+  * @param {string} messageId - The ID of the message to associate with the new thread.
+  * @returns {Promise<string>} The ID of the newly created thread, or an empty string on failure.
+  */
   async createThreadForMessage(messageId: string): Promise<string> {
     const newThread = new Thread({ messageId });
     try {
@@ -30,6 +36,10 @@ export class ThreadMessagesService {
   }
 
 
+  /**
+   * Updates the current thread with the latest information from the current message.
+   * @returns {Promise<{ answers: number, lastAnswer: any }>} An object containing the updated number of answers and the last reply's timestamp.
+   */
   async updateThread() {
     console.log(this.currentMessage);
     this.threadService.currentThread().threadId = this.currentMessage.threadId;

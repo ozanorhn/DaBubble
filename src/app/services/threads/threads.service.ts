@@ -30,6 +30,10 @@ export class ThreadsService implements OnDestroy {
   }
 
 
+  /**
+  * Updates the currently active thread by appending a new message to its content array.
+  * @returns {Promise<void>}
+  */
   async updateThread() {
     this.threadMessage.sender = this.usersService.currentUser.id;
     this.threadMessage.timestamp = Timestamp.now();
@@ -44,13 +48,18 @@ export class ThreadsService implements OnDestroy {
   }
 
 
+  /**
+  * Loads a thread from Firestore by its ID and subscribes to real-time updates.
+  * @param {string} threadId - The ID of the thread to load.
+  * @returns {Promise<void>}
+  */
   async loadThreadById(threadId: string): Promise<any> {
     const threadRef = doc(this.firestore, 'threads', threadId);
     this.unsubscribeFromThreads = onSnapshot(threadRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
         data['threadId'] = docSnapshot.id;
-        const thread = new Thread (data);
+        const thread = new Thread(data);
         this.currentThread.set(thread);
       } else console.warn('Thread not found');
     }, (error) => {
@@ -58,7 +67,10 @@ export class ThreadsService implements OnDestroy {
     });
   }
 
-
+  
+  /**
+   * Lifecycle hook for cleaning up the Firestore thread subscription on service destruction.
+   */
   ngOnDestroy(): void {
     if (this.unsubscribeFromThreads) {
       this.unsubscribeFromThreads();

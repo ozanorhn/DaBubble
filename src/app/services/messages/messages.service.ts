@@ -70,7 +70,10 @@ export class MessagesService implements OnDestroy {
     return messages.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
   }
 
-
+  /**
+   * Subscribes to messages for a specific channel and updates the local message array.
+   * @param {Channel} obj - The channel object to load messages for.
+   */
   getMessages(obj: Channel) {
     if (this.unsubscribeFromMessages) this.unsubscribeFromMessages();
     const q = query(this.messageCollection, where('channelId', '==', obj.id));
@@ -105,7 +108,12 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  async editMessage(message: Message = this.message) {
+  /**
+   * Edits an existing message in Firestore.
+   * @param {Message} [message=this.message] - The message to update.
+   * @returns {Promise<void>} A promise that resolves when the update is complete.
+   */
+  async editMessage(message: Message = this.message): Promise<void> {
     console.log('Message.toJSON', message);
     await updateDoc(
       doc(this.messageCollection, message.id),
@@ -115,6 +123,9 @@ export class MessagesService implements OnDestroy {
   }
 
 
+  /**
+  * Resets temporary values for the current message and thread message.
+  */
   resetTempValues() {
     this.threadService.threadMessage = {
       message: '',
@@ -136,8 +147,13 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  async openChannelThread(message: Message) {
-   this.resetTempValues();
+   /**
+   * Opens a thread for a given message or creates a new one if it doesn't exist.
+   * @param {Message} message - The message for which to open or create a thread.
+   * @returns {Promise<void>}
+   */
+  async openChannelThread(message: Message): Promise<void> {
+    this.resetTempValues();
     const selectedMessage = new Message({ ...message });
     this.message = message;
     this.threadMessagesService.currentMessage = selectedMessage;
@@ -150,8 +166,13 @@ export class MessagesService implements OnDestroy {
     }
   }
 
-
-  async createThread(message: Message, selectedMessage: Message) {
+  /**
+   * Creates a new thread for a message and updates the message with the thread ID.
+   * @param {Message} message - The original message.
+   * @param {Message} selectedMessage - The message used to create the thread.
+   * @returns {Promise<void>}
+   */
+  async createThread(message: Message, selectedMessage: Message): Promise<void> {
     const threadId = await this.threadMessagesService.createThreadForMessage(selectedMessage.id);
     if (threadId) {
       selectedMessage.threadId = threadId;
@@ -164,8 +185,12 @@ export class MessagesService implements OnDestroy {
     }
   }
 
-
-  async updateThread() {
+  
+/**
+   * Updates thread data like answer count and timestamp of the last reply.
+   * @returns {Promise<void>}
+   */
+  async updateThread(): Promise<void> {
     const threadData = await this.threadMessagesService.updateThread();
     this.message.answers = threadData.answers;
     this.message.lastAnswer = threadData.lastAnswer;
@@ -226,6 +251,9 @@ export class MessagesService implements OnDestroy {
   }
 
 
+  /**
+   * Lifecycle hook that performs cleanup when the service is destroyed.
+   */
   ngOnDestroy(): void {
     if (this.unsubscribeFromMessages) {
       this.unsubscribeFromMessages();
