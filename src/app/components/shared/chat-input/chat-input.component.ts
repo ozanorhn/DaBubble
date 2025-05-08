@@ -15,12 +15,14 @@ export class ChatInputComponent {
   @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
   @ViewChild('messageInput') messageInputRef!: ElementRef;
 
+
   constructor(
     public messageService: MessagesService,
     public threadService: ThreadsService,
     public directMessageService: DirectMessagesService,
     public threadMessagesService: ThreadMessagesService
   ) { }
+
 
   sendMessage() {
     switch (this.chatType) {
@@ -33,8 +35,6 @@ export class ChatInputComponent {
         } else {
           this.directMessageService.updateThread();
         }
-         //this.messageService.message.id
-        // this.messageService.editMessage();
         break;
       case 'dm':
         this.directMessageService.sendDirectMessage();
@@ -45,7 +45,6 @@ export class ChatInputComponent {
       default:
         break;
     }
-    // this.messageService.message.message = '';
     this.messageInputRef.nativeElement.focus();
   }
 }

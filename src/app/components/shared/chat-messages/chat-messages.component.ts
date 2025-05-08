@@ -25,8 +25,12 @@ import { DM } from '../../../interfaces/dm';
   styleUrl: './chat-messages.component.scss'
 })
 export class ChatMessagesComponent {
-
   lastMessageDate: Date | null = null;
+  newDay = true;
+  @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
+  @Input() threadHeadMessage: any;
+  @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
+
 
   constructor(
     public mainNavService: MainNavService,
@@ -37,11 +41,6 @@ export class ChatMessagesComponent {
     public dmService: DirectMessagesService
   ) { }
 
-  newDay = true;
-  @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
-  @Input() threadHeadMessage: any;
-  @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
-
 
   openThread(message: Message | DM, index: number) {
     if (this.chatType === 'channel') {
@@ -49,7 +48,7 @@ export class ChatMessagesComponent {
       this.messageService.openChannelThread(message as Message);
     } else if (this.chatType === 'dm') {
     this.threadService.chatType = 'dm';
-      this.dmService.openDmThread(index, message);
+      this.dmService.openDmThread(index);
     }
   }
 }

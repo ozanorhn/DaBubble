@@ -1,22 +1,12 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { addDoc, collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc } from '@angular/fire/firestore';
+import { collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, QueryDocumentSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { DirectMessage } from '../../classes/directMessage.class';
 import { User } from '../../classes/user.class';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import { ThreadsService } from '../threads/threads.service';
-import { DM } from '../../interfaces/dm';
 import { ThreadDMsService } from '../threadDMs/thread-dms.service';
-
-
-// export interface DM {
-//   threadId: string;
-//   message: string;
-//   sender: string;
-//   timestamp: Timestamp;
-//   reactions: any[];
-// }
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +14,12 @@ import { ThreadDMsService } from '../threadDMs/thread-dms.service';
 export class DirectMessagesService implements OnDestroy {
   othertUser: User = new User();
   docRef: DocumentReference<DocumentData, DocumentData> | undefined;
+  currentUser;
+  directMessageCollection;
+  currentDMIndex: number = 0;
+  
   private unsubscribeSnapshot: Unsubscribe | null = null;
+
   directMessage: DirectMessage = new DirectMessage({
     id: '',
     participants: {
@@ -42,10 +37,6 @@ export class DirectMessagesService implements OnDestroy {
     reactions: [],
   };
 
-  currentUser
-  directMessageCollection;
-
-  currentDMIndex: number = 0;
 
   constructor(
     public firestore: Firestore,
@@ -146,22 +137,18 @@ export class DirectMessagesService implements OnDestroy {
     const dmDocRefUser2First = doc(this.directMessageCollection, dmIdUser2First);
     const user1FirstDoc = await getDoc(dmDocRefUser1First);
     const user2FirstDoc = await getDoc(dmDocRefUser2First);
-
     if (user1FirstDoc.exists()) {
-      this.directMessage = new DirectMessage({
-        id: dmIdUser1First, // <-- wichtig!
-        ...user1FirstDoc.data()
-      });
-      this.docRef = dmDocRefUser1First;
+      this.setDocRef(dmIdUser1First, user1FirstDoc, dmDocRefUser1First);
     } else if (user2FirstDoc.exists()) {
-      this.directMessage = new DirectMessage({
-        id: dmIdUser2First, // <-- wichtig!
-        ...user2FirstDoc.data()
-      });
-      this.docRef = dmDocRefUser2First;
+      this.setDocRef(dmIdUser2First, user2FirstDoc, dmDocRefUser2First);
     } else {
-      // Kein Dokument existiert → erzeuge docRef
-      const tempId = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
+      await this.createDocRef();
+    }
+  }
+
+
+  async createDocRef() {
+    const tempId = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
       this.directMessage.id = tempId;
       this.docRef = doc(this.directMessageCollection, tempId);
       await setDoc(this.docRef, {
@@ -172,7 +159,15 @@ export class DirectMessagesService implements OnDestroy {
         },
         content: []
       });
-    }
+  }
+
+
+  setDocRef(id: string, doc:QueryDocumentSnapshot<DocumentData, DocumentData>, ref: DocumentReference<DocumentData, DocumentData>) {
+    this.directMessage = new DirectMessage({
+      id: id,
+      ...doc.data()
+    });
+    this.docRef = ref;
   }
 
 
@@ -187,7 +182,7 @@ export class DirectMessagesService implements OnDestroy {
       await setDoc(
         this.docRef,
         { content: [...this.directMessage.content, this.newMessage] },
-        { merge: true } // Bestehende Daten nicht überschreiben
+        { merge: true }
       );
       this.newMessage.message = '';
     }
@@ -202,40 +197,21 @@ export class DirectMessagesService implements OnDestroy {
   }
 
 
-  async openDmThread(index: number, message: DM) {
+  async openDmThread(index: number) {
     this.currentDMIndex = index;
     const currentMessage = this.directMessage.content[this.currentDMIndex];
-
-    // Prüfen, ob die Nachricht bereits eine ThreadID hat
     if (!currentMessage.threadId) {
-      // Thread erstellen
       await this.threadDMsService.createThreadForDM(currentMessage);
-
-      // Falls erfolgreich, Thread-ID in lokale Kopie schreiben
       const newThreadId = this.threadService.currentThread?.().threadId;
       if (newThreadId) {
         this.directMessage.content[this.currentDMIndex].threadId = newThreadId;
         this.updateDM(newThreadId)
-        // Firestore aktualisieren – aber NUR das aktualisierte content-Array schreiben
-        // try {
-        //   await updateDoc(
-        //     doc(this.directMessageCollection, this.directMessage.id),
-        //     { content: this.directMessage.content }
-        //   );
-        //   console.log('ThreadID erfolgreich gesetzt:', newThreadId);
-
-        //   // Thread laden (Realtime-Setup etc.)
-        //   await this.threadService.loadThreadById(newThreadId);
-        // } catch (error) {
-        //   console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
-        // }
       }
     } else {
-      // Falls Thread schon existiert → direkt laden
-      console.log('Thread existiert bereits:', currentMessage.threadId);
       await this.threadService.loadThreadById(currentMessage.threadId);
     }
   }
+
 
   async updateDM(threadId: any) {
     try {
@@ -243,14 +219,12 @@ export class DirectMessagesService implements OnDestroy {
         doc(this.directMessageCollection, this.directMessage.id),
         { content: this.directMessage.content }
       );
-      // console.log('ThreadID erfolgreich gesetzt:', threadId);
-
-      // Thread laden (Realtime-Setup etc.)
       await this.threadService.loadThreadById(threadId);
     } catch (error) {
       console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
     }
   }
+
 
   async updateThread() {
     console.log(this.threadService.threadMessage);

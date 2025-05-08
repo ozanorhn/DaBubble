@@ -14,6 +14,7 @@ export class Message {
     answers: number;
     lastAnswer: Timestamp | null;
 
+
     constructor(obj?: any) {
         this.id = obj?.id || '';
         this.message = obj ? obj.message : '';
@@ -25,6 +26,7 @@ export class Message {
         this.answers = obj ? obj.answers : 0;
         this.lastAnswer = obj ? obj.lastAnswer : null;
     }
+    
 
     public toJSON() {
         return {

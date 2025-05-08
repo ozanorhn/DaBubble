@@ -8,7 +8,6 @@ import { Message } from '../../classes/message.class';
   providedIn: 'root'
 })
 export class ThreadMessagesService {
-
   currentMessageId: string = '';
   currentMessage = new Message();
 
@@ -20,7 +19,6 @@ export class ThreadMessagesService {
 
   async createThreadForMessage(messageId: string): Promise<string> {
     const newThread = new Thread({ messageId });
-  
     try {
       const docRef = await addDoc(this.threadService.threadCollection, newThread.toJSON());
       console.log('Thread added with ID', docRef.id);
@@ -35,9 +33,7 @@ export class ThreadMessagesService {
   async updateThread() {
     console.log(this.currentMessage);
     this.threadService.currentThread().threadId = this.currentMessage.threadId;
-    
     await this.threadService.updateThread();
-
     return {
       answers: this.threadService.currentThread().content.length,
       lastAnswer: this.threadService.currentThread().content[this.threadService.currentThread().content.length - 1].timestamp,

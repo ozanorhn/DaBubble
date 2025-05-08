@@ -10,17 +10,18 @@ import { User } from '../../classes/user.class';
   providedIn: 'root'
 })
 export class ChannelsService implements OnDestroy {
-
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
   choiceMembers = signal(true);
   choiceMembersArray: string[] = [];
+
+  private unsubscribe!: () => void;
+
   createChannel = new Channel({
     createdBy: 'UserID343783',
     members: []
   });
-  private unsubscribe!: () => void;
 
 
   constructor(
@@ -57,18 +58,15 @@ export class ChannelsService implements OnDestroy {
     } else {
       this.createChannel.members = this.userService.users.map(user => user.id);
     }
-    // console.log('current channel is', this.createChannel);
-
     try {
       const docRef = await addDoc(this.channelsCollection, this.createChannel.toJSON())
-      // console.log('Channel added with ID', docRef.id);
     } catch (error) {
       console.error('Error adding channel', error);
     }
   }
 
 
-  async edit() {
+  async editLocal() {
     const index = this.currentIndex();
     const channel = this.channels[index];
     const channelData = {
@@ -78,12 +76,15 @@ export class ChannelsService implements OnDestroy {
       messagesID: channel.messagesID,
       createdBy: channel.createdBy
     };
+    await this.editOnFirebase(channel, channelData);
+  }
 
+
+  async editOnFirebase(channel: Channel, channelData: any) {
     if (!channel || !channel.id) {
       console.error('Channel nicht gefunden oder hat keine ID');
       return;
     }
-
     await updateDoc(
       doc(this.channelsCollection, channel.id),
       channelData
@@ -93,7 +94,6 @@ export class ChannelsService implements OnDestroy {
 
   openChannel(obj: Channel, i: number) {
     if (obj) {
-      // console.log(obj);
       this.currentIndex.set(i);
     }
   }

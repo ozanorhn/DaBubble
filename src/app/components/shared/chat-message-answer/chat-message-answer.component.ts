@@ -6,7 +6,6 @@ import { Message } from '../../../classes/message.class';
 import { ThreadDMsService } from '../../../services/threadDMs/thread-dms.service';
 import { ThreadMessagesService } from '../../../services/threadMessages/thread-messages.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
-import { DM } from '../../../interfaces/dm';
 
 @Component({
   selector: 'app-chat-message-answer',
@@ -15,23 +14,16 @@ import { DM } from '../../../interfaces/dm';
   styleUrl: './chat-message-answer.component.scss'
 })
 export class ChatMessageAnswerComponent {
-  constructor(
-    public mainNavService: MainNavService,
-    public threadService: ThreadsService,
-    public threadDmsService: ThreadDMsService,
-    public threadMessagesService: ThreadMessagesService,
-    public messageService: MessagesService,
-    public dmService: DirectMessagesService
-  ) {}
-
  @Input() message: Message = new Message();
  @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
 
-//  getThread(id: string) {
-//   if (this.chatType === 'channel') {
-//     return this.threadMessagesService.loadThreadById(this.message.threadId);
-//   } else {
-//     // return this.dmService.openDmThread(this.message);
-//   }
-//  }
+ 
+ constructor(
+  public mainNavService: MainNavService,
+  public threadService: ThreadsService,
+  public threadDmsService: ThreadDMsService,
+  public threadMessagesService: ThreadMessagesService,
+  public messageService: MessagesService,
+  public dmService: DirectMessagesService
+) {}
 }

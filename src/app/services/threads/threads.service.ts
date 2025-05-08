@@ -10,8 +10,9 @@ import { UsersService } from '../users/users.service';
 export class ThreadsService implements OnDestroy {
   threadCollection;
   currentThread = signal<Thread>(new Thread());
-  unsubscribeFromThreads?: () => void;
   chatType: 'channel' | 'dm' | '' = '';
+
+  unsubscribeFromThreads?: () => void;
 
   threadMessage = {
     message: '',
@@ -30,21 +31,15 @@ export class ThreadsService implements OnDestroy {
 
 
   async updateThread() {
-    console.log('UPDATE THREAD: ', this.threadMessage);
-    console.log('THREAD ID: ', this.currentThread().threadId);
     this.threadMessage.sender = this.usersService.currentUser.id;
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', this.threadMessage.sender);
-    console.log(this.currentThread());
-    
     this.threadMessage.timestamp = Timestamp.now();
     const updatedContent = [...this.currentThread().content, this.threadMessage];
     await updateDoc(
       doc(this.threadCollection, this.currentThread()?.threadId),
       {
-        content: updatedContent // Update entire content array
+        content: updatedContent
       }
     );
-    console.log('Updated Threadmessage', this.threadMessage);
     this.threadMessage.message = '';
   }
 
@@ -57,11 +52,7 @@ export class ThreadsService implements OnDestroy {
         data['threadId'] = docSnapshot.id;
         const thread = new Thread (data);
         this.currentThread.set(thread);
-        console.log(this.currentThread());
-        
-      } else {
-        console.warn('Thread not found');
-      }
+      } else console.warn('Thread not found');
     }, (error) => {
       console.error('Error listening to thread:', error);
     });

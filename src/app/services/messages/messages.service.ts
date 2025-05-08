@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, signal } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
-import { addDoc, collection, doc, Firestore, getDocs, onSnapshot, query, Timestamp, Unsubscribe, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, onSnapshot, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
 import { Message } from '../../classes/message.class';
 import { Channel } from '../../classes/channel.class';
 import { UsersService } from '../users/users.service';
@@ -8,16 +8,15 @@ import { formatDate } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { ThreadsService } from '../threads/threads.service';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { ThreadDMsService } from '../threadDMs/thread-dms.service';
 import { ThreadMessagesService } from '../threadMessages/thread-messages.service';
 import { DM } from '../../interfaces/dm';
 import { Thread } from '../../classes/thread.class';
 registerLocaleData(localeDe);
+
 @Injectable({
   providedIn: 'root'
 })
-
 
 /**
  * Service for message operations (Firestore integration)
@@ -25,6 +24,15 @@ registerLocaleData(localeDe);
  * @Injectable providedIn: 'root'
  */
 export class MessagesService implements OnDestroy {
+  messageInput = '';
+  messageCollection;
+  Message: [] = [];
+  messages = signal<Message[]>([]);
+  members: [] = [];
+  lastDate: Date = new Date();
+  date = new Date();
+
+  unsubscribeFromMessages?: () => void;
 
   message: Message = new Message({
     id: '',
@@ -37,15 +45,6 @@ export class MessagesService implements OnDestroy {
     answers: 0,
     lastAnswer: null
   });
-
-  messageInput = '';
-  messageCollection;
-  Message: [] = [];
-  messages = signal<Message[]>([]);
-  members: [] = [];
-  lastDate: Date = new Date();
-  date = new Date();
-  unsubscribeFromMessages?: () => void;
 
 
   constructor(
@@ -73,9 +72,7 @@ export class MessagesService implements OnDestroy {
 
 
   getMessages(obj: Channel) {
-    if (this.unsubscribeFromMessages) {
-      this.unsubscribeFromMessages();
-    }
+    if (this.unsubscribeFromMessages) this.unsubscribeFromMessages();
     const q = query(this.messageCollection, where('channelId', '==', obj.id));
     this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
       const messages = querySnapshot.docs.map(doc => {
@@ -85,9 +82,7 @@ export class MessagesService implements OnDestroy {
       });
       const sorted = this.sortMessages(messages);
       this.messages.set(sorted as Message[]);
-    }, (error) => {
-      console.error('Error listening to messages:', error);
-    });
+    }, (error) => { console.error('Error listening to messages:', error); });
   }
 
 
@@ -96,15 +91,10 @@ export class MessagesService implements OnDestroy {
    * @async
    */
   async sendMessage() {
-    console.log(this.userService.currentUser.id);
-    
-    if (this.userService.currentUser.id) {
-      this.message.sender = this.userService.currentUser.id
-    }
+    if (this.userService.currentUser.id) this.message.sender = this.userService.currentUser.id;
     this.message.timestamp = Timestamp.now();
     this.message.message = this.messageInput;
     this.message.channelId = this.channelService.channels[this.channelService.currentIndex()].id;
-    // console.log('To JSON OBjsect Test', this.message);
     try {
       const docRef = await addDoc(this.messageCollection, this.message.toJSON())
       this.messageInput = '';
@@ -116,7 +106,6 @@ export class MessagesService implements OnDestroy {
 
   async editMessage(message: Message = this.message) {
     console.log('Message.toJSON', message);
-    // console.log('Message.toJSON', message.toJSON());
     await updateDoc(
       doc(this.messageCollection, message.id),
       message.toJSON()
@@ -125,38 +114,55 @@ export class MessagesService implements OnDestroy {
   }
 
 
+  resetTempValues() {
+    this.threadService.threadMessage = {
+      message: '',
+      sender: '',
+      reactions: [],
+      timestamp: Timestamp.now()
+    };
+    this.message = new Message({
+      id: '',
+      message: '',
+      sender: '',
+      timestamp: Timestamp.now(),
+      reactions: [],
+      threadId: '',
+      channelId: '',
+      answers: 0,
+      lastAnswer: null
+    });
+  }
+
+
   async openChannelThread(message: Message) {
+   this.resetTempValues();
     const selectedMessage = new Message({ ...message });
     this.message = message;
     this.threadMessagesService.currentMessage = selectedMessage;
     this.threadMessagesService.currentMessageId = selectedMessage.id;
-  
-    // Reset Thread-View
     this.threadService.currentThread.set(new Thread());
-  
-    // Wenn keine Thread-ID vorhanden → erstelle neuen Thread
     if (!selectedMessage.threadId) {
-      const threadId = await this.threadMessagesService.createThreadForMessage(selectedMessage.id);
-  
-      if (threadId) {
-        // Setze die neue Thread-ID in beiden Objekten
-        selectedMessage.threadId = threadId;
-        message.threadId = threadId;
-  
-        // Speichere die geänderte Message in Firestore
-        await this.editMessage(message); // hier explizit übergeben!
-  
-        // Lade den neu erstellten Thread
-        await this.threadService.loadThreadById(threadId);
-      } else {
-        console.warn('Thread konnte nicht erstellt werden.');
-        return;
-      }
+      this.createThread(message, selectedMessage);
     } else {
-      // Thread-ID existiert → Thread direkt laden
       await this.threadService.loadThreadById(selectedMessage.threadId);
     }
   }
+
+
+  async createThread(message: Message, selectedMessage: Message) {
+    const threadId = await this.threadMessagesService.createThreadForMessage(selectedMessage.id);
+    if (threadId) {
+      selectedMessage.threadId = threadId;
+      message.threadId = threadId;
+      await this.editMessage(message);
+      await this.threadService.loadThreadById(threadId);
+    } else {
+      console.warn('Thread konnte nicht erstellt werden.');
+      return;
+    }
+  }
+
 
   async updateThread() {
     const threadData = await this.threadMessagesService.updateThread();
@@ -189,13 +195,9 @@ export class MessagesService implements OnDestroy {
     const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (this.isSameDay(date, today)) {
-      return 'Heute';
-    } else if (this.isSameDay(date, yesterday)) {
-      return 'Gestern';
-    } else {
-      return formatDate(date, 'EEEE, dd.MM.yyyy', 'de-DE');
-    }
+    if (this.isSameDay(date, today)) return 'Heute';
+    else if (this.isSameDay(date, yesterday)) return 'Gestern';
+    else return formatDate(date, 'EEEE, dd.MM.yyyy', 'de-DE');
   }
 
 

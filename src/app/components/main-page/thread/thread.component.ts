@@ -4,12 +4,10 @@ import { ChatMessagesComponent } from '../../shared/chat-messages/chat-messages.
 import { ChatInputComponent } from '../../shared/chat-input/chat-input.component';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { MessagesService } from '../../../services/messages/messages.service';
-import { Message } from '../../../classes/message.class';
 import { CommonModule } from '@angular/common';
 import { ThreadMessagesService } from '../../../services/threadMessages/thread-messages.service';
 import { UsersService } from '../../../services/users/users.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
-import { timestamp } from 'rxjs';
 
 @Component({
   selector: 'app-thread',
@@ -26,11 +24,13 @@ export class ThreadComponent {
     public dmService: DirectMessagesService
   ) { }
 
+
   fromCurrentUser(dummy: any) { // in den UserService auslagern
     dummy = false;
     return dummy;
   }
 
+  
   getUserFromService() {
     if (this.threadService.chatType === 'channel') {
       return {
@@ -46,64 +46,4 @@ export class ThreadComponent {
       };
     }
   }
-
-
-  //   dummmyAuthService = {
-  //     users: [{ id: 0, name: 'Peter Beck' }]
-  //   }
-
-  //   dummyThreatService = {
-  //     messages: [{
-  //       id: 'string',
-  //       message: 'string',
-  //       sender: 'Florian Rauh',
-  //       timestamp: 12,
-  //       createdBy: 'string',
-  //       reactions: [{
-  //         id: 0,
-  //         users: ['Sandra Peters'],
-  //       }],
-  //       threadId: 'string',
-  //       channelId: 'string',
-  //     },
-  //     {
-  //       id: 'string',
-  //       message: 'string',
-  //       sender: 'Florian Rauh',
-  //       timestamp: 12,
-  //       createdBy: 'string',
-  //       reactions: [{
-  //         id: 0,
-  //         users: ['Sandra Peters'],
-  //       }],
-  //       threadId: 'string',
-  //       channelId: 'string',
-  //     },
-  //     {
-  //       id: 'string',
-  //       message: 'string',
-  //       sender: 'Florian Rauh',
-  //       timestamp: 12,
-  //       createdBy: 'string',
-  //       reactions: [{
-  //         id: 0,
-  //         users: ['Sandra Peters'],
-  //       }],
-  //       threadId: 'string',
-  //       channelId: 'string',
-  //     }],
-  //     chatMessage: {
-  //       id: 'string',
-  //       message: 'string',
-  //       sender: 'Florian Rauh',
-  //       timestamp: 12,
-  //       createdBy: 'string',
-  //       reactions: [{
-  //         id: 0,
-  //         users: ['Sandra Peters'],
-  //       }],
-  //       threadId: 'string',
-  //       channelId: 'string',
-  //     }
-  //   };
 }
