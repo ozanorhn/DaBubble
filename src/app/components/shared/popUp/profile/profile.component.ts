@@ -5,11 +5,14 @@ import { UsersService } from '../../../../services/users/users.service';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { User } from '../../../../classes/user.class';
+import { FormsModule } from '@angular/forms';
+import { doc, updateDoc } from '@firebase/firestore';
 @Component({
   selector: 'app-profile',
   imports: [
     RouterModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -18,30 +21,51 @@ export class ProfileComponent {
 
   editProfil = false;
   usersProfil = false;
-
   currentUser
+  changeName = '';
 
   constructor(
     public userService: UsersService,
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService
   ) {
-    // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    const storedUser = this.localStorageS.loadObject('currentUser');
+    this.currentUser = new User(storedUser);
+    this.changeName = this.currentUser.name;
   }
 
 
+  // async editProfile() {
+  //   let profileData = this.currentUser.toJSON()
+  //   profileData.name = this.changeName;
+  //   console.log(profileData);
+  //   await updateDoc(
+  //     doc(this.userService.usersCollection, this.currentUser.id),
+  //     profileData
+  //   );
+  // }
 
+  async editProfile() {
+    if (!this.currentUser?.id) {
+      console.error('No user ID available');
+      return;
+    }
+    const profileData = this.currentUser.toJSON();
+    profileData.name = this.changeName;
+    profileData.password = ''
+    console.log(profileData);
 
-  ngOnInit() {
-    // const user = this.userService.getTempUser();
-    // this.avatarUrl = user.avatar ?? '/assets/imgs/avatar1.svg';
-    // this.name = user.name ?? '';
-    // this.email = user.email ?? '';
-
-    // console.log('LocalStorage User 2', this.currentUser);
-
+    try {
+      await updateDoc(
+        doc(this.userService.usersCollection, this.currentUser.id),
+        profileData
+      );
+      this.localStorageS.saveObject('currentUser', this.currentUser);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
   }
+
 
 
 
