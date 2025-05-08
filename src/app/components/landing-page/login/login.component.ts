@@ -9,6 +9,7 @@ import { provideAuth, getAuth, signInWithEmailAndPassword } from '@angular/fire/
 import { FirebaseError } from 'firebase/app';
 import { AuthService } from '../../../services/auth/auth.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { User } from '../../../classes/user.class';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,7 @@ export class LoginComponent {
   password: string = '';
   error: string = '';
 
-  
+
   constructor(
     private router: Router,
     public landing: LandingPageService,
@@ -36,6 +37,11 @@ export class LoginComponent {
   async login() {
     try {
       const user = await this.authService.login(this.email, this.password);
+      if (user.email !== null) {
+        this.userService.currentUser = this.userService.getUserByEmail(user.email) as User;
+      }
+
+      // this.userService.setTempUser(user as Partial<User>)
       const profile = this.userService.getUserByEmail(user.email || '');
 
       this.localStorageS.saveObject('currentUser', profile);
@@ -95,6 +101,6 @@ export class LoginComponent {
   goToRegister() {
     this.landing.landing.set('register')
   }
-  
+
 
 }

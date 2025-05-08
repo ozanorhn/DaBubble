@@ -1,21 +1,12 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { addDoc, collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc } from '@angular/fire/firestore';
+import { collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, QueryDocumentSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { DirectMessage } from '../../classes/directMessage.class';
 import { User } from '../../classes/user.class';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import { ThreadsService } from '../threads/threads.service';
-import { DM } from '../../interfaces/dm';
-
-
-// export interface DM {
-//   threadId: string;
-//   message: string;
-//   sender: string;
-//   timestamp: Timestamp;
-//   reactions: any[];
-// }
+import { ThreadDMsService } from '../threadDMs/thread-dms.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +14,12 @@ import { DM } from '../../interfaces/dm';
 export class DirectMessagesService implements OnDestroy {
   othertUser: User = new User();
   docRef: DocumentReference<DocumentData, DocumentData> | undefined;
+  currentUser;
+  directMessageCollection;
+  currentDMIndex: number = 0;
+
   private unsubscribeSnapshot: Unsubscribe | null = null;
+
   directMessage: DirectMessage = new DirectMessage({
     id: '',
     participants: {
@@ -41,16 +37,13 @@ export class DirectMessagesService implements OnDestroy {
     reactions: [],
   };
 
-  currentUser
-  directMessageCollection;
-
-  currentDMIndex: number = 0;
 
   constructor(
     public firestore: Firestore,
     public usersService: UsersService,
     public localStorageS: LocalStorageService,
-    public threadService: ThreadsService
+    public threadService: ThreadsService,
+    public threadDMsService: ThreadDMsService
   ) {
     this.directMessageCollection = collection(this.firestore, 'directMessages');
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
@@ -145,18 +138,45 @@ export class DirectMessagesService implements OnDestroy {
     const user1FirstDoc = await getDoc(dmDocRefUser1First);
     const user2FirstDoc = await getDoc(dmDocRefUser2First);
     if (user1FirstDoc.exists()) {
-      this.directMessage = new DirectMessage({
-        id: dmIdUser1First,
-        ...user1FirstDoc.data()
-      });
-      this.docRef = dmDocRefUser1First;
+      this.setDocRef(dmIdUser1First, user1FirstDoc, dmDocRefUser1First);
     } else if (user2FirstDoc.exists()) {
-      this.directMessage = new DirectMessage({
-        id: dmIdUser2First,
-        ...user2FirstDoc.data()
-      });
-      this.docRef = dmDocRefUser2First;
+      this.setDocRef(dmIdUser2First, user2FirstDoc, dmDocRefUser2First);
+    } else {
+      await this.createDocRef();
     }
+  }
+
+
+  /**
+   * Creates a new Firestore document for a direct message conversation.
+   */
+  async createDocRef() {
+    const tempId = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
+    this.directMessage.id = tempId;
+    this.docRef = doc(this.directMessageCollection, tempId);
+    await setDoc(this.docRef, {
+      id: tempId,
+      participants: {
+        user1: this.currentUser.id,
+        user2: this.othertUser.id
+      },
+      content: []
+    });
+  }
+
+
+  /**
+ * Sets the document reference and loads its data.
+ * @param {string} id - The DM document ID.
+ * @param {QueryDocumentSnapshot} doc - Firestore document snapshot.
+ * @param {DocumentReference} ref - Firestore document reference.
+ */
+  setDocRef(id: string, doc: QueryDocumentSnapshot<DocumentData, DocumentData>, ref: DocumentReference<DocumentData, DocumentData>) {
+    this.directMessage = new DirectMessage({
+      id: id,
+      ...doc.data()
+    });
+    this.docRef = ref;
   }
 
 
@@ -171,7 +191,7 @@ export class DirectMessagesService implements OnDestroy {
       await setDoc(
         this.docRef,
         { content: [...this.directMessage.content, this.newMessage] },
-        { merge: true } // Bestehende Daten nicht überschreiben
+        { merge: true }
       );
       this.newMessage.message = '';
     }
@@ -186,51 +206,52 @@ export class DirectMessagesService implements OnDestroy {
   }
 
 
-  // async openDmThread(index: number, message: DM) {
-  //   this.currentDMIndex = index
-  //   if (!this.directMessage.content[this.currentDMIndex].threadId) {
-  //     // Erstelle neuen Thread falls nicht existiert
-  //     await this.threadService.createThreadForDM(message);
-  //     // this.directMessage.content.push(message)
-  //     message.threadId = this.threadService.newThreadId
-
-  //     await updateDoc(
-  //           doc(this.directMessageCollection, this.directMessage.id),
-  //           this.directMessage.content[this.currentDMIndex].message
-  //         );
-      
-  //     console.log('New Message with ThreadID', message);
-
-  //     // message.threadId = threadId;
-  //   }
-  // }
-
-
-
-  async openDmThread(index: number, message: DM) {
+  /**
+  * Opens the thread related to a specific direct message.
+  * Creates a new thread if one does not exist.
+  * @param {number} index - Index of the message in the DM content array.
+  */
+  async openDmThread(index: number) {
     this.currentDMIndex = index;
     const currentMessage = this.directMessage.content[this.currentDMIndex];
     if (!currentMessage.threadId) {
-      // Erstelle neuen Thread falls nicht existiert
-      await this.threadService.createThreadForDM(message);
-      // Update both local and Firestore data
-      currentMessage.threadId = this.threadService.newThreadId;
-      try {
-        await updateDoc(
-          doc(this.directMessageCollection, this.directMessage.id),
-          {
-            content: this.directMessage.content // Update entire content array
-          }
-        );
-        console.log('Message updated with ThreadID', currentMessage);
-      } catch (error) {
-        console.error('Error updating message with ThreadID:', error);
-        // Revert local change if update fails
-        // currentMessage.threadId = undefined;
-        throw error;
+      await this.threadDMsService.createThreadForDM(currentMessage);
+      const newThreadId = this.threadService.currentThread?.().threadId;
+      if (newThreadId) {
+        this.directMessage.content[this.currentDMIndex].threadId = newThreadId;
+        this.updateDM(newThreadId)
       }
+    } else {
+      await this.threadService.loadThreadById(currentMessage.threadId);
     }
   }
 
 
+  /**
+   * Updates the DM document in Firestore with the new thread ID.
+   * @param {any} threadId - The ID of the associated thread.
+   */
+  async updateDM(threadId: any) {
+    try {
+      await updateDoc(
+        doc(this.directMessageCollection, this.directMessage.id),
+        { content: this.directMessage.content }
+      );
+      await this.threadService.loadThreadById(threadId);
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
+    }
+  }
+
+
+  /**
+   * Updates the current thread and synchronizes the response data in the DM.
+   */
+  async updateThread() {
+    console.log(this.threadService.threadMessage);
+    const threadData = await this.threadDMsService.updateThread();
+    this.directMessage.content[this.currentDMIndex].answers = threadData.answers;
+    this.directMessage.content[this.currentDMIndex].lastAnswer = threadData.lastAnswer;
+    this.updateDM(this.threadDMsService.threadService.currentThread().threadId)
+  }
 }

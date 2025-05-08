@@ -1,10 +1,12 @@
+import { Timestamp } from "@angular/fire/firestore";
+
 export class User {
     id: string;
     name: string;
     email: string;
     avatar:  string; 
     online: boolean;
-    createdAt: number;
+    createdAt: number | Timestamp;
     password?: string;
 
 

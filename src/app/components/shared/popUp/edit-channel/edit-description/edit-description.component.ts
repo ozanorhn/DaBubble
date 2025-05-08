@@ -18,7 +18,7 @@ export class EditDescriptionComponent {
   editDescription() {
     this.edit = !this.edit
     if (!this.edit) {
-      this.channelService.edit();
+      this.channelService.editLocal();
     }
   }
 

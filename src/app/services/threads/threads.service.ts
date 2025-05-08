@@ -1,24 +1,19 @@
-import { forwardRef, Inject, inject, Injectable, Injector } from '@angular/core';
-import { addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
+import { Injectable, OnDestroy, signal } from '@angular/core';
+import { collection, doc, getDoc, onSnapshot, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Thread } from '../../classes/thread.class';
-import { update } from '@angular/fire/database';
-import { MessagesService } from '../messages/messages.service';
-import { Message } from '../../classes/message.class';
-import { DM } from '../../interfaces/dm';
-import { DirectMessagesService } from '../directMessages/direct-messages.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ThreadsService {
+export class ThreadsService implements OnDestroy {
   threadCollection;
-  currentThread: Thread | undefined = new Thread();
-  currentMessageId: string = '';
-  currentMessage = new Message();
+  currentThread = signal<Thread>(new Thread());
+  chatType: 'channel' | 'dm' | '' = '';
 
-  newThreadId = '';
-  
+  unsubscribeFromThreads?: () => void;
+
   threadMessage = {
     message: '',
     sender: '',
@@ -26,97 +21,59 @@ export class ThreadsService {
     timestamp: Timestamp.now()
   }
 
+
   constructor(
-    public firestore: Firestore
+    public firestore: Firestore,
+    public usersService: UsersService
   ) {
     this.threadCollection = collection(this.firestore, 'threads');
   }
 
+
+  /**
+  * Updates the currently active thread by appending a new message to its content array.
+  * @returns {Promise<void>}
+  */
+  async updateThread() {
+    this.threadMessage.sender = this.usersService.currentUser.id;
+    this.threadMessage.timestamp = Timestamp.now();
+    const updatedContent = [...this.currentThread().content, this.threadMessage];
+    await updateDoc(
+      doc(this.threadCollection, this.currentThread()?.threadId),
+      {
+        content: updatedContent
+      }
+    );
+    this.threadMessage.message = '';
+  }
+
+
+  /**
+  * Loads a thread from Firestore by its ID and subscribes to real-time updates.
+  * @param {string} threadId - The ID of the thread to load.
+  * @returns {Promise<void>}
+  */
   async loadThreadById(threadId: string): Promise<any> {
-    if (threadId === '') {
-      // erstelle neuen thread in der Firebase
-      this.createThreadForMessage(this.currentMessageId);
-    } else {
-      const threadDocRef = doc(this.threadCollection, threadId);
-      const threadSnap = await getDoc(threadDocRef);
-      console.log('WWWWWWWWWWWWWW      ', threadSnap.data() ? threadSnap.data() as Thread : undefined);
-      this.currentThread = threadSnap.data() ? threadSnap.data() as Thread : undefined;
+    const threadRef = doc(this.firestore, 'threads', threadId);
+    this.unsubscribeFromThreads = onSnapshot(threadRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        data['threadId'] = docSnapshot.id;
+        const thread = new Thread(data);
+        this.currentThread.set(thread);
+      } else console.warn('Thread not found');
+    }, (error) => {
+      console.error('Error listening to thread:', error);
+    });
+  }
+
+  
+  /**
+   * Lifecycle hook for cleaning up the Firestore thread subscription on service destruction.
+   */
+  ngOnDestroy(): void {
+    if (this.unsubscribeFromThreads) {
+      this.unsubscribeFromThreads();
     }
   }
-
-
-  async createThreadForMessage(MessageId: string) {
-    console.log('Message ID',MessageId );
-    console.log('Message ID', this.currentMessage.id)
-    
-    const thread = new Thread({ messageId: MessageId })
-    console.log('current thread is', thread);
-    try {
-      const docRef = await addDoc(this.threadCollection, thread.toJSON());
-      console.log('Thread added with ID', docRef.id);
-           // Message.THredID = docRef.id
-    } catch (error) {
-      console.error('Error adding thread', error);
-    }
-  }
-
-
-  async createThreadForDM(message: DM) {
-    console.log('Message ID',message );
-    // console.log('Message ID', this.currentMessage.id)
-    
-    const thread = new Thread()
-    console.log('current thread is', thread);
-    try {
-      const docRef = await addDoc(this.threadCollection, thread.toJSON());
-      console.log('Thread added with ID', docRef.id);
-          this.newThreadId = docRef.id
-          //  this.dmService.newMessage.threadId = docRef.id
-          //  console.log('dm new Message', this.dmService.newMessage.threadId);
-           
-    } catch (error) {
-      console.error('Error adding thread', error);
-    }
-  }
-
-
-  async getThread(threadId: string): Promise<Thread | undefined> {
-    const docRef = doc(this.threadCollection, threadId);
-    const snapshot = await getDoc(docRef);
-    return snapshot.exists() ? new Thread(snapshot.data() as any) : undefined;
-  }
-
-
-  // watchThread(threadId: string): void {
-  //   this.unsubscribeThread(); // Vorherigen Listener entfernen
-    
-  //   const threadRef = doc(this.threadCollection, threadId);
-    
-  //   this.threadUnsubscribe = onSnapshot(threadRef, (snapshot) => {
-  //     if (snapshot.exists()) {
-  //       const threadData = snapshot.data();
-  //       const thread = new Thread({
-  //         ...threadData,
-  //         threadId: snapshot.id
-  //       });
-  //       this.currentThread$.next(thread);
-  //     } else {
-  //       this.currentThread$.next(null);
-  //     }
-  //   }, (error) => {
-  //     console.error('Thread watch error:', error);
-  //   });
-  // }
-
-  // async addThreadMessage(threadId: string, message: DM): Promise<void> {
-  //   const threadRef = doc(this.threadCollection, threadId);
-  //   await updateDoc(threadRef, {
-  //     content: arrayUnion(message)
-  //   });
-  // }
-
-  // await updateDoc(
-  //       doc(this.channelsCollection, channel.id),
-  //       channelData
-  //     );
 }

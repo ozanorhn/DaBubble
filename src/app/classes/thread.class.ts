@@ -19,6 +19,7 @@ export class Thread {
     this.messageId = obj?.messageId || '';
     this.content = obj?.content || [];
   }
+  
 
   public toJSON() {
     return {
@@ -28,7 +29,3 @@ export class Thread {
     }
   }
 }
-
-
-
-

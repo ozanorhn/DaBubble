@@ -3,6 +3,7 @@ import { MessagesService } from '../../../services/messages/messages.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 import { FormsModule } from '@angular/forms';
+import { ThreadMessagesService } from '../../../services/threadMessages/thread-messages.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -14,11 +15,14 @@ export class ChatInputComponent {
   @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
   @ViewChild('messageInput') messageInputRef!: ElementRef;
 
+
   constructor(
     public messageService: MessagesService,
     public threadService: ThreadsService,
-    public directMessageService: DirectMessagesService
+    public directMessageService: DirectMessagesService,
+    public threadMessagesService: ThreadMessagesService
   ) { }
+
 
   sendMessage() {
     switch (this.chatType) {
@@ -26,8 +30,11 @@ export class ChatInputComponent {
         this.messageService.sendMessage();
         break;
       case 'thread':
-        this.threadService.createThreadForMessage(this.messageService.message.id);
-        this.messageService.editMessage(this.threadService.currentMessageId);
+        if (this.threadService.chatType === 'channel') {
+          this.messageService.updateThread();
+        } else {
+          this.directMessageService.updateThread();
+        }
         break;
       case 'dm':
         this.directMessageService.sendDirectMessage();
@@ -38,7 +45,6 @@ export class ChatInputComponent {
       default:
         break;
     }
-    this.messageService.message.message = '';
     this.messageInputRef.nativeElement.focus();
   }
 }
