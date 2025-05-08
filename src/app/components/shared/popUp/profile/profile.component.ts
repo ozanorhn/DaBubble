@@ -35,16 +35,6 @@ export class ProfileComponent {
   }
 
 
-  // async editProfile() {
-  //   let profileData = this.currentUser.toJSON()
-  //   profileData.name = this.changeName;
-  //   console.log(profileData);
-  //   await updateDoc(
-  //     doc(this.userService.usersCollection, this.currentUser.id),
-  //     profileData
-  //   );
-  // }
-
   async editProfile() {
     if (!this.currentUser?.id) {
       console.error('No user ID available');
@@ -65,8 +55,6 @@ export class ProfileComponent {
       console.error('Error updating profile:', error);
     }
   }
-
-
 
 
 }
