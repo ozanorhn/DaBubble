@@ -17,11 +17,12 @@ module.exports = {
         linkblue: "#1381FF",
         hovergray: "#E6E6E6",
         btnBg: "#eff1fe",
+        pwConfirm: "rgba(104, 104, 104, 1)",
       },
       screens: {
         xxs: "320px",
         xs: "400px",
-        "3xl": "1920px"
+        "3xl": "1920px",
       },
       backgroundImage: {
         "icon-arrow-back": "url('/assets/icons/arrow_back.svg')",
@@ -35,41 +36,40 @@ module.exports = {
       },
       keyframes: {
         moveIn: {
-          '0%': {
-            opacity: '0',
-            transform: 'translateX(-100%)',
+          "0%": {
+            opacity: "0",
+            transform: "translateX(-100%)",
           },
-          '100%': {
-            opacity: '1',
-            transform: 'translateX(10%)',
+          "100%": {
+            opacity: "1",
+            transform: "translateX(10%)",
           },
         },
         containerMoveMobile: {
-          '0%': {
-            opacity: '1',
-            transform: 'translate(0, 0)',
+          "0%": {
+            opacity: "1",
+            transform: "translate(0, 0)",
           },
-          '100%': {
-            opacity: '1',
-            transform: 'translate(0, -35vh) scale(0.8)',
+          "100%": {
+            opacity: "1",
+            transform: "translate(0, -35vh) scale(0.8)",
           },
         },
         containerMoveDesktop: {
-          '0%': {
-            opacity: '1',
-            transform: 'translate(0, 0)',
+          "0%": {
+            opacity: "1",
+            transform: "translate(0, 0)",
           },
-         '100%': {
-  opacity: '1',
-  transform: 'translate(-40vw, -43vh) scale(0.8)',
-},
-
+          "100%": {
+            opacity: "1",
+            transform: "translate(-40vw, -43vh) scale(0.8)",
+          },
         },
       },
       animation: {
-        moveIn: 'moveIn 1s ease-in forwards',
-        containerMoveMobile: 'containerMoveMobile 1s ease-in forwards',
-        containerMoveDesktop: 'containerMoveDesktop 1s ease-in forwards',
+        moveIn: "moveIn 1s ease-in forwards",
+        containerMoveMobile: "containerMoveMobile 1s ease-in forwards",
+        containerMoveDesktop: "containerMoveDesktop 1s ease-in forwards",
       },
     },
   },
