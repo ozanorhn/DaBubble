@@ -91,6 +91,7 @@ export class MessagesService implements OnDestroy {
    * @async
    */
   async sendMessage() {
+    this.message = new Message();
     if (this.userService.currentUser.id) this.message.sender = this.userService.currentUser.id;
     this.message.timestamp = Timestamp.now();
     this.message.message = this.messageInput;
