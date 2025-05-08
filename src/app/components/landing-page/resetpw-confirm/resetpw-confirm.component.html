@@ -1,33 +1,172 @@
-<div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
-    <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
-  
-      <h1 class="text-[32px] leading-[38.4px] text-purple1 text-center">
-        Passwort zurücksetzen
-      </h1>
-
-  
-      <div class="space-y-4">
-        <div class="relative">
-          <img src="assets/imgs/icons/lock.svg" alt="Lock Icon"
-            class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
-          <input type="password" placeholder="Neues Passwort"
-            class="w-full py-2 pl-12 pr-4 text-sm text-black transition duration-200 border border-white rounded-full bg-primary focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none placeholder-textgray" />
-        </div>
-  
-        <div class="relative">
-          <img src="assets/imgs/icons/lock.svg" alt="Lock Icon"
-            class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
-          <input type="password" placeholder="Neues Kennwort bestätigen"
-            class="w-full py-2 pl-12 pr-4 text-sm text-black transition duration-200 border border-white rounded-full bg-primary focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none placeholder-textgray"
-             />
-        </div>
-  
-        <button
-          class="w-full py-2 text-center text-white transition bg-gray-700 rounded-full hover:bg-gray-800">
-          Passwort ändern
-        </button>
-      </div>
-  
-    </div>
+<div class="flex items-center justify-center bg-gray-100">
+  <div
+    class="absolute top-4 left-4 w-12 h-12 flex items-center justify-center rounded-full cursor-pointer transition hover:bg-[#f0f0ff] group"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2"
+      stroke="currentColor"
+      class="w-6 h-6 text-gray-500 transition group-hover:text-[#444DF2]"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15.75 19.5L8.25 12l7.5-7.5"
+      />
+    </svg>
   </div>
-  
+  <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
+    <h1 class="text-[32px] leading-[38.4px] text-purple1 text-center">
+      Passwort zurücksetzen
+    </h1>
+
+    <div class="space-y-4">
+      <div class="relative">
+        <img
+          src="assets/imgs/icons/lock.svg"
+          alt="Lock Icon"
+          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2"
+        />
+
+        <input
+          id="newPassword"
+          [type]="showNewPassword ? 'text' : 'password'"
+          [(ngModel)]="newPassword"
+          name="newPassword"
+          placeholder="Neues Passwort"
+          class="w-full py-2 pl-12 pr-4 text-sm text-black transition duration-200 border border-white rounded-full bg-primary focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none placeholder-textgray"
+          required
+        />
+        <span
+          class="absolute right-3 top-2 cursor-pointer"
+          (click)="showNewPassword = !showNewPassword"
+        >
+          <svg
+            *ngIf="!showNewPassword"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            />
+          </svg>
+          <svg
+            *ngIf="showNewPassword"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a10.05 10.05 0 012.072-3.368M6.11 6.11l11.78 11.78M9.878 9.878a3 3 0 104.243 4.243"
+            />
+          </svg>
+        </span>
+      </div>
+
+      <div class="relative">
+        <img
+          src="assets/imgs/icons/lock.svg"
+          alt="Lock Icon"
+          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2"
+        />
+
+        <input
+          id="confirmPassword"
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          placeholder="Neues Passwort bestätigen"
+          class="w-full py-2 pl-12 pr-4 text-sm text-black transition duration-200 border border-white rounded-full bg-primary focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none placeholder-textgray"
+          required
+        />
+        <span
+          class="absolute right-3 top-2 cursor-pointer"
+          (click)="showConfirmPassword = !showConfirmPassword"
+        >
+          <svg
+            *ngIf="!showConfirmPassword"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            />
+          </svg>
+
+          <svg
+            *ngIf="showConfirmPassword"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-gray-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a10.05 10.05 0 012.072-3.368M6.11 6.11l11.78 11.78M9.878 9.878a3 3 0 104.243 4.243"
+            />
+          </svg>
+        </span>
+      </div>
+
+      <button
+        (click)="resetPassword()"
+        [disabled]="
+          !newPassword || !confirmPassword || newPassword !== confirmPassword
+        "
+        class="w-full py-2 text-center text-white transition rounded-full bg-pwConfirm hover:opacity-90"
+        [class.bg-gray-400]="newPassword !== confirmPassword || !newPassword"
+        [class.bg-gray-700]="newPassword === confirmPassword && newPassword"
+        [class.cursor-not-allowed]="
+          newPassword !== confirmPassword || !newPassword
+        "
+        [class.hover\:bg-gray-800]="
+          newPassword === confirmPassword && newPassword
+        "
+      >
+        Passwort ändern
+      </button>
+    </div>
+
+    @if (showMessage) {
+    <div
+      class="fixed w-[166px] h-[70px] bottom-[8px] right-[8px] bg-purple1 text-white text-xl font-bold px-[30px] py-[20px] rounded-tl-[30px] rounded-tr-[30px] rounded-bl-[30px] shadow-lg z-50 transition-opacity duration-500"
+    >
+      Anmelden
+    </div>
+    }
+  </div>
+</div>

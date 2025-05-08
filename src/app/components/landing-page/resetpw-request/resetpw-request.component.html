@@ -1,38 +1,39 @@
 <div class="relative w-full max-w-sm p-6 mx-auto bg-white rounded-3xl">
-
-  <div 
-  class="absolute top-4 left-4 w-12 h-12 flex items-center justify-center rounded-full cursor-pointer transition hover:bg-[#f0f0ff] group"
-  (click)="goToLogin()"
->
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    fill="none" 
-    viewBox="0 0 24 24"
-    stroke-width="2" 
-    stroke="currentColor" 
-    class="w-6 h-6 text-gray-500 transition group-hover:text-[#444DF2]"
+  <div
+    class="absolute top-4 left-4 w-12 h-12 flex items-center justify-center rounded-full cursor-pointer transition hover:bg-[#f0f0ff] group"
+    (click)="goToLogin()"
   >
-    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-  </svg>
-</div>
-
-
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2"
+      stroke="currentColor"
+      class="w-6 h-6 text-gray-500 transition group-hover:text-[#444DF2]"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15.75 19.5L8.25 12l7.5-7.5"
+      />
+    </svg>
+  </div>
 
   <div class="flex flex-col items-center pt-10 space-y-6 text-center">
-    
     <h1 class="text-[28px] leading-tight font-bold text-[#444DF2]">
       Passwort<br />zurücksetzen
     </h1>
 
-    <p class="text-base text-black">
-      Bitte geben Sie Ihre E-Mail-Adresse ein.
-    </p>
+    <p class="text-base text-black">Bitte geben Sie Ihre E-Mail-Adresse ein.</p>
 
-    <div class="w-full flex items-center px-4 py-3 rounded-full bg-[#F0F0FF] space-x-3">
+    <div
+      class="w-full flex items-center px-4 py-3 rounded-full bg-[#F0F0FF] space-x-3"
+    >
       <img src="/assets/icons/mail.svg" alt="Mail Icon" class="w-5 h-5" />
-      <input 
-        type="email" 
+      <input
+        type="email"
         placeholder="beispielname@email.com"
+        [(ngModel)]="email"
         class="w-full text-gray-600 placeholder-gray-500 bg-transparent outline-none"
       />
     </div>
@@ -43,10 +44,20 @@
     </p>
 
     <div class="flex justify-end w-full">
-      <button class="px-6 py-2 text-white bg-gray-700 rounded-full">
+      <button
+        (click)="sendeResetAnfrage()"
+        class="px-6 py-2 text-white bg-gray-700 rounded-full"
+      >
         E-Mail senden
       </button>
     </div>
 
+    @if (showMessage) {
+    <div
+      class="fixed w-[269px] h-[70px] bottom-[8px] right-[8px] bg-purple1 text-white text-xl font-bold px-[30px] py-[20px] rounded-tl-[30px] rounded-tr-[30px] rounded-bl-[30px] shadow-lg z-50 transition-opacity duration-500"
+    >
+      E-Mail gesendet
+    </div>
+    }
   </div>
 </div>

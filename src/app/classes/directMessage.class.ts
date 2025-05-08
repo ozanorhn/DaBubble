@@ -1,13 +1,23 @@
-
+import { Timestamp } from "@angular/fire/firestore";
 
 export class DirectMessage {
     id?: string;
-    participants: [{
+    participants: {
         user1: string;
         user2: string;
+    };
+    content: [{
+        threadId: string;
+        message: string;
+        sender: string,
+        timestamp: Timestamp;
+        answers: number;
+        lastAnswer: Timestamp;
+        reactions: [{
+            id: number;
+            users: string[];
+        }] | [];
     }];
-    content: [];
-
 
 
     constructor(obj?: any) {
@@ -16,6 +26,7 @@ export class DirectMessage {
         this.content = obj ? obj.content : []
     }
 
+
     public toJSON() {
         return {
             id: this.id,
@@ -23,5 +34,4 @@ export class DirectMessage {
             content: this.content
         }
     }
-
 }

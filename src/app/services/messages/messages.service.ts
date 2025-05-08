@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, OnDestroy, signal } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
-import { addDoc, collection, doc, Firestore, getDocs, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, onSnapshot, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
 import { Message } from '../../classes/message.class';
 import { Channel } from '../../classes/channel.class';
 import { UsersService } from '../users/users.service';
@@ -8,18 +8,31 @@ import { formatDate } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { ThreadsService } from '../threads/threads.service';
+import { ThreadDMsService } from '../threadDMs/thread-dms.service';
+import { ThreadMessagesService } from '../threadMessages/thread-messages.service';
+import { DM } from '../../interfaces/dm';
+import { Thread } from '../../classes/thread.class';
 registerLocaleData(localeDe);
+
 @Injectable({
   providedIn: 'root'
 })
-
 
 /**
  * Service for message operations (Firestore integration)
  * @class MessagesService
  * @Injectable providedIn: 'root'
  */
-export class MessagesService {
+export class MessagesService implements OnDestroy {
+  messageInput = '';
+  messageCollection;
+  Message: [] = [];
+  messages = signal<Message[]>([]);
+  members: [] = [];
+  lastDate: Date = new Date();
+  date = new Date();
+
+  unsubscribeFromMessages?: () => void;
 
   message: Message = new Message({
     id: '',
@@ -34,20 +47,13 @@ export class MessagesService {
   });
 
 
-  messageCollection;
-  Message: [] = [];
-  messages = signal<Message[]>([]);
-  members: [] = [];
-  lastDate: Date = new Date();
-  date = new Date();
-  tempChannel = new Channel();
-
-
   constructor(
     public channelService: ChannelsService,
     public firestore: Firestore,
     public userService: UsersService,
-    public threadService: ThreadsService
+    public threadService: ThreadsService,
+    public threadDMsService: ThreadDMsService,
+    public threadMessagesService: ThreadMessagesService
   ) {
     this.messageCollection = collection(this.firestore, 'messages');
     this.channelService.currentIndex();
@@ -56,31 +62,30 @@ export class MessagesService {
 
 
   /**
-   * Fetches messages for a channel
-   * @param {Channel} obj - Channel object
-   * @returns {Promise<Message[]>} Sorted messages
-   */
-  async getMessages(obj: Channel) {
-    this.tempChannel = obj;
-    const q = query(this.messageCollection, where('channelId', '==', obj.id));
-    const querySnapshot = await getDocs(q);
-    const messages = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }) as Message);
-    this.messages.set(this.sortMessages(messages))
-    console.log('Message Array', this.messages());
-    return this.sortMessages(messages);
-  }
-
-
-  /**
   * Sorts messages by timestamp (ascending)
   * @param {Message[]} messages - Messages to sort
   * @returns {Message[]} Sorted messages
   */
-  sortMessages(messages: Message[]): Message[] {
+  sortMessages(messages: Message[] | DM[]): Message[] | DM[] {
     return messages.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
+  }
+
+  /**
+   * Subscribes to messages for a specific channel and updates the local message array.
+   * @param {Channel} obj - The channel object to load messages for.
+   */
+  getMessages(obj: Channel) {
+    if (this.unsubscribeFromMessages) this.unsubscribeFromMessages();
+    const q = query(this.messageCollection, where('channelId', '==', obj.id));
+    this.unsubscribeFromMessages = onSnapshot(q, (querySnapshot) => {
+      const messages = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        data['id'] = doc.id;
+        return new Message(data);
+      });
+      const sorted = this.sortMessages(messages);
+      this.messages.set(sorted as Message[]);
+    }, (error) => { console.error('Error listening to messages:', error); });
   }
 
 
@@ -89,49 +94,108 @@ export class MessagesService {
    * @async
    */
   async sendMessage() {
-    this.message.timestamp = Timestamp.now(),
-      this.message.channelId = this.channelService.channels[this.channelService.currentIndex()].id;
-    console.log('To JSON OBjsect Test', this.message);
+    this.message = new Message();
+    if (this.userService.currentUser.id) this.message.sender = this.userService.currentUser.id;
+    this.message.timestamp = Timestamp.now();
+    this.message.message = this.messageInput;
+    this.message.channelId = this.channelService.channels[this.channelService.currentIndex()].id;
     try {
       const docRef = await addDoc(this.messageCollection, this.message.toJSON())
-      this.getMessages(this.tempChannel);
+      this.messageInput = '';
     } catch (error) {
       console.error('Error adding message', error);
     }
   }
 
 
-  //// Geht noch nicht  
-  async editMessage(id: string) {
-    const updatedMessage = {
-      id: 'string',
-      message: 'string',
-      sender: 'string',
-      timestamp: Timestamp.now(),
-      reactions: [{
-        id: 0,
-        users: ['string']
-      }],
-      threadId: 'string',
-      channelId: 'string',
-      answers: 0,
-      lastAnswer: Timestamp,
-    }
+  /**
+   * Edits an existing message in Firestore.
+   * @param {Message} [message=this.message] - The message to update.
+   * @returns {Promise<void>} A promise that resolves when the update is complete.
+   */
+  async editMessage(message: Message = this.message): Promise<void> {
+    console.log('Message.toJSON', message);
     await updateDoc(
-      doc(this.messageCollection, id),
-      updatedMessage
+      doc(this.messageCollection, message.id),
+      message.toJSON()
     );
+    console.log('Message editiert:', message);
   }
 
 
   /**
-  * Opens a thread
-  * @param {string} messageId - Message ID
-  * @param {string} threadId - Thread ID
+  * Resets temporary values for the current message and thread message.
   */
-  openThread(messageId: string, threadId: string) {
-    this.threadService.currentMessageId = messageId;
-    this.threadService.loadThreadById(threadId);
+  resetTempValues() {
+    this.threadService.threadMessage = {
+      message: '',
+      sender: '',
+      reactions: [],
+      timestamp: Timestamp.now()
+    };
+    this.message = new Message({
+      id: '',
+      message: '',
+      sender: '',
+      timestamp: Timestamp.now(),
+      reactions: [],
+      threadId: '',
+      channelId: '',
+      answers: 0,
+      lastAnswer: null
+    });
+  }
+
+
+   /**
+   * Opens a thread for a given message or creates a new one if it doesn't exist.
+   * @param {Message} message - The message for which to open or create a thread.
+   * @returns {Promise<void>}
+   */
+  async openChannelThread(message: Message): Promise<void> {
+    this.resetTempValues();
+    const selectedMessage = new Message({ ...message });
+    this.message = message;
+    this.threadMessagesService.currentMessage = selectedMessage;
+    this.threadMessagesService.currentMessageId = selectedMessage.id;
+    this.threadService.currentThread.set(new Thread());
+    if (!selectedMessage.threadId) {
+      this.createThread(message, selectedMessage);
+    } else {
+      await this.threadService.loadThreadById(selectedMessage.threadId);
+    }
+  }
+
+  /**
+   * Creates a new thread for a message and updates the message with the thread ID.
+   * @param {Message} message - The original message.
+   * @param {Message} selectedMessage - The message used to create the thread.
+   * @returns {Promise<void>}
+   */
+  async createThread(message: Message, selectedMessage: Message): Promise<void> {
+    const threadId = await this.threadMessagesService.createThreadForMessage(selectedMessage.id);
+    if (threadId) {
+      selectedMessage.threadId = threadId;
+      message.threadId = threadId;
+      await this.editMessage(message);
+      await this.threadService.loadThreadById(threadId);
+    } else {
+      console.warn('Thread konnte nicht erstellt werden.');
+      return;
+    }
+  }
+
+  
+/**
+   * Updates thread data like answer count and timestamp of the last reply.
+   * @returns {Promise<void>}
+   */
+  async updateThread(): Promise<void> {
+    const threadData = await this.threadMessagesService.updateThread();
+    this.message.answers = threadData.answers;
+    this.message.lastAnswer = threadData.lastAnswer;
+    console.log('UPDATE MESSAGE', this.message);
+    this.editMessage(this.message);
   }
 
 
@@ -140,8 +204,8 @@ export class MessagesService {
    * @param {Timestamp} timestamp - Firebase timestamp
    * @returns {string} Formatted time string
    */
-  formatTime(timestamp: Timestamp) {
-    return formatDate(timestamp.toDate(), 'HH:mm', 'de-DE')
+  formatTime(timestamp: Timestamp): string {
+    return formatDate(timestamp.toDate(), "HH:mm 'Uhr'", 'de-DE')
   }
 
 
@@ -157,15 +221,10 @@ export class MessagesService {
     const today = new Date();
     const yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
-    if (this.isSameDay(date, today)) {
-      return 'Heute';
-    } else if (this.isSameDay(date, yesterday)) {
-      return 'Gestern';
-    } else {
-      return formatDate(date, 'EEEE, dd.MM.yyyy', 'de-DE');
-    }
+    if (this.isSameDay(date, today)) return 'Heute';
+    else if (this.isSameDay(date, yesterday)) return 'Gestern';
+    else return formatDate(date, 'EEEE, dd.MM.yyyy', 'de-DE');
   }
-
 
 
   /**
@@ -192,4 +251,12 @@ export class MessagesService {
   }
 
 
+  /**
+   * Lifecycle hook that performs cleanup when the service is destroyed.
+   */
+  ngOnDestroy(): void {
+    if (this.unsubscribeFromMessages) {
+      this.unsubscribeFromMessages();
+    }
+  }
 }

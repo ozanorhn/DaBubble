@@ -8,6 +8,9 @@ import { ChatMessageReactionsComponent } from '../chat-message-reactions/chat-me
 import { ChatMessageAnswerComponent } from '../chat-message-answer/chat-message-answer.component';
 import { UsersService } from '../../../services/users/users.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
+import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
+import { Message } from '../../../classes/message.class';
+import { DM } from '../../../interfaces/dm';
 
 @Component({
   standalone: true,
@@ -22,27 +25,30 @@ import { ThreadsService } from '../../../services/threads/threads.service';
   styleUrl: './chat-messages.component.scss'
 })
 export class ChatMessagesComponent {
-
   lastMessageDate: Date | null = null;
+  newDay = true;
+  @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
+  @Input() threadHeadMessage: any;
+  @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
+
 
   constructor(
     public mainNavService: MainNavService,
     public authService: AuthService,
     public messageService: MessagesService,
     public userService: UsersService,
-    public threadService: ThreadsService
+    public threadService: ThreadsService,
+    public dmService: DirectMessagesService
   ) { }
 
-  newDay = true;
-  @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
-  @Input() threadHeadMessage: any;
-  @Input() messages: any[] | undefined; // oder der passende Typ
 
-  fromCurrentUser(id: string): boolean {
-    if (id === this.authService.currentUser) {
-      return true;
-    } else {
-      return false;
+  openThread(message: Message | DM, index: number) {
+    if (this.chatType === 'channel') {
+    this.threadService.chatType = 'channel';
+      this.messageService.openChannelThread(message as Message);
+    } else if (this.chatType === 'dm') {
+    this.threadService.chatType = 'dm';
+      this.dmService.openDmThread(index);
     }
   }
 }

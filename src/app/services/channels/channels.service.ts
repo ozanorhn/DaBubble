@@ -10,15 +10,13 @@ import { User } from '../../classes/user.class';
   providedIn: 'root'
 })
 export class ChannelsService implements OnDestroy {
-
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
-
-
-
   choiceMembers = signal(true);
   choiceMembersArray: string[] = [];
+
+  private unsubscribe!: () => void;
 
   createChannel = new Channel({
     createdBy: 'UserID343783',
@@ -34,7 +32,6 @@ export class ChannelsService implements OnDestroy {
     this.initChannelsListener();
   }
 
-  private unsubscribe!: () => void;
 
   private initChannelsListener() {
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
@@ -55,24 +52,21 @@ export class ChannelsService implements OnDestroy {
 
 
   async addChannel() {
-
     if (this.choiceMembers()) {
       this.createChannel.members = this.choiceMembersArray
+      this.choiceMembersArray = [];
     } else {
       this.createChannel.members = this.userService.users.map(user => user.id);
     }
-    console.log('current channel is', this.createChannel);
-
     try {
       const docRef = await addDoc(this.channelsCollection, this.createChannel.toJSON())
-      console.log('Channel added with ID', docRef.id);
     } catch (error) {
       console.error('Error adding channel', error);
     }
   }
 
 
-  async edit() {
+  async editLocal() {
     const index = this.currentIndex();
     const channel = this.channels[index];
     const channelData = {
@@ -82,12 +76,15 @@ export class ChannelsService implements OnDestroy {
       messagesID: channel.messagesID,
       createdBy: channel.createdBy
     };
+    await this.editOnFirebase(channel, channelData);
+  }
 
+
+  async editOnFirebase(channel: Channel, channelData: any) {
     if (!channel || !channel.id) {
       console.error('Channel nicht gefunden oder hat keine ID');
       return;
     }
-
     await updateDoc(
       doc(this.channelsCollection, channel.id),
       channelData
@@ -97,41 +94,14 @@ export class ChannelsService implements OnDestroy {
 
   openChannel(obj: Channel, i: number) {
     if (obj) {
-      console.log(obj);
       this.currentIndex.set(i);
     }
   }
-
-
-  channels2 = [
-    { name: 'Entwicklerteam', users: [{ avatar: 3 }, { avatar: 6 }, { avatar: 5 }, { avatar: 1 }, { avatar: 3 }, { avatar: 2 }, { avatar: 4 }] },
-    { name: 'Frontend' },
-    { name: 'Backend' },
-    { name: 'DevOps' },
-    { name: 'Design-Team' },
-    { name: 'Office-team' },
-    { name: 'Support' },
-  ]
+  
 
   getChannelMembers(): User[] {
-    console.log('MEMBERS: ', this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id)));
-
     return this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id));
   }
-
-
-  // addChoiceMembers(user: User) {
-  //   if (!this.checkIfUserExists(user)) {
-  //     this.choiceMembersArray.splice(user.id);
-  //   } else {
-  //     this.choiceMembersArray.push(user.id);
-  //   }
-  // }
-
-
-  // checkIfUserExists(user: User) {
-  //   return this.choiceMembersArray.includes(user.id);
-  // }
 
 
   addChoiceMembers(user: User) {
@@ -146,12 +116,4 @@ export class ChannelsService implements OnDestroy {
   checkIfUserExists(user: User): boolean {
     return this.choiceMembersArray.includes(user.id);
   }
-
-
-
 }
-
-
-
-
-

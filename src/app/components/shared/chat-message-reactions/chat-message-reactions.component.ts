@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Message } from '../../../classes/message.class';
+import { DM } from '../../../interfaces/dm';
 
 @Component({
   selector: 'app-chat-message-reactions',
@@ -8,5 +9,5 @@ import { Message } from '../../../classes/message.class';
   styleUrl: './chat-message-reactions.component.scss'
 })
 export class ChatMessageReactionsComponent {
-  @Input() message: Message = new Message();
+  @Input() message: Message | DM = new Message();
 }

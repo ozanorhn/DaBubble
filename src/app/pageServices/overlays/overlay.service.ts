@@ -2,21 +2,23 @@ import { Injectable, signal } from '@angular/core';
 import { ChannelsService } from '../../services/channels/channels.service';
 import { Channel } from '../../classes/channel.class';
 import { UsersService } from '../../services/users/users.service';
+import { User } from '../../classes/user.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OverlayService {
 
-
   hideAddChannel = true;
   hideAddUser = true;
   hideEditChannel = true;
+
   hideProfileOverlay = true;
+  usersProfilView = false;
+  editProfil = false;
+  profileObj: User = new User();
+
   hideLogoutOverlay = true;
-
-
-
 
   constructor(
     public channelsService: ChannelsService,
@@ -24,57 +26,38 @@ export class OverlayService {
   ) { }
 
 
-
-
-  //////////////////////////
-  /// Geht in den ChannelService 
-  // newChannel = {
-  //   name: '',
-  //   description: '',
-  //   members: [{
-  //     name: "Nicolas Developer",
-  //     email: "nicolas@test.com",
-  //     createdAt: {
-  //       seconds: 1745499997,
-  //       nanoseconds: 173000000
-  //     },
-  //     avatar: "/assets/imgs/avatar6.svg",
-  //     online: false,
-  //     id: "6xN38YGFasqdAqssgnO9"
-  //   }]
-  // }
-
-  // createChannel() {
-  //   this.channelsService.channels.push(new Channel(this.newChannel));
-  //   this.channelsService.addChannel(new Channel(this.newChannel));
-  //   console.log('My added Channel obj', this.newChannel);
-  // }
-  ///////////////////////////////////////////////////////////
-
-
-
   addCannelOverlay() {
     this.hideAddChannel = !this.hideAddChannel
   }
 
+
   addUserOverlay() {
     this.hideAddUser = !this.hideAddUser;
   }
+
 
   editChannel() {
     this.hideEditChannel = !this.hideEditChannel
   }
 
 
-  profileOverlay(){
+  profileOverlay(UserView: boolean, currentProfile: {}){
+    if(this.hideProfileOverlay){
+      this.editProfil = false;
+      this.profileObj = currentProfile as User
+    }
     this.hideProfileOverlay = !this.hideProfileOverlay
+    this.usersProfilView = UserView;
   }
+
+  editProfileView() {
+    this.editProfil = !this.editProfil
+  }
+
 
   logoutOvelay(){
     this.hideLogoutOverlay =  !this.hideLogoutOverlay
   }
-
-
 
 
 }

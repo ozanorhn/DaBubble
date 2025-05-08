@@ -1,17 +1,20 @@
 import { Component, Input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LandingPageService } from '../../../pageServices/navigates/landing-nav.service';
-import { UsersService } from '../../../services/users/users.service'; 
+import { UsersService } from '../../../services/users/users.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { provideAuth, getAuth, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { FirebaseError } from '@firebase/util'; 
+import { FirebaseError } from 'firebase/app';
+import { AuthService } from '../../../services/auth/auth.service';
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { User } from '../../../classes/user.class';
 
 @Component({
   selector: 'app-login',
   imports: [
-    RouterLink, FormsModule, CommonModule, 
+    RouterLink, FormsModule, CommonModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -21,31 +24,56 @@ export class LoginComponent {
   password: string = '';
   error: string = '';
 
- 
-  constructor(  private router: Router,  public landing: LandingPageService,  public userService: UsersService) {}
+
+  constructor(
+    private router: Router,
+    public landing: LandingPageService,
+    public userService: UsersService,
+    public authService: AuthService,
+    public localStorageS: LocalStorageService
+  ) { }
+
 
   async login() {
     try {
-      const user = await this.userService.login(this.email, this.password);
-      console.log('Login erfolgreich:', user);
-      /* ---------------------------------- */
-    // Avatar aus Firestore holen
-    const profile = this.userService.getUserByEmail(user.email || '');
-    if (profile) {
-    console.log('Eingeloggter User:', profile);
-    // Z. B. im Service speichern für globalen Zugriff
-    this.userService.setTempUser(profile);
-}
+      const user = await this.authService.login(this.email, this.password);
+      if (user.email !== null) {
+        this.userService.currentUser = this.userService.getUserByEmail(user.email) as User;
+      }
 
-      this.router.navigate(['/main']); 
+      // this.userService.setTempUser(user as Partial<User>)
+      const profile = this.userService.getUserByEmail(user.email || '');
+
+      this.localStorageS.saveObject('currentUser', profile);
+      // if (profile) {
+      //   this.userService.setTempUser(profile);
+      // }
+
+      this.router.navigate(['/main']);
     } catch (error: any) {
-      this.error = this.getErrorMessage(error.code ?? '');
+
+      if (error instanceof FirebaseError) {
+
+        this.error = this.getErrorMessage(error.code);
+      } else {
+        this.error = 'Unbekannter Fehler beim Login.';
+      }
+
+      setTimeout(() => {
+        this.error = '';
+      }, 5000);
     }
   }
 
-  googleLogin() {
-    this.userService.googleLogin();  // Ruft die Methode im UsersService auf
-    this.router.navigate(['/main']);  // Navigiere nach erfolgreichem Login
+
+  async googleLogin() {
+    try {
+      await this.authService.googleLogin();  // Erst auf Erfolg warten
+      this.router.navigate(['/main']);        // Dann weiterleiten
+    } catch (error: any) {
+      console.error('Fehler beim Google-Login:', error);
+      this.error = error.message || 'Google-Login fehlgeschlagen.';
+    }
   }
 
 
@@ -57,17 +85,22 @@ export class LoginComponent {
         return 'Falsches Passwort!';
       case 'auth/invalid-email':
         return 'Ungültiges E-Mail-Format!';
+      case 'auth/invalid-credential':
+        return 'E-Mail oder Passwort ist falsch.';
       default:
         return 'Unbekannter Fehler, bitte versuche es später erneut.';
     }
   }
 
-  change(){
+
+  change() {
     this.landing.landing.set('request')
   }
-  
-  goToRegister(){
+
+
+  goToRegister() {
     this.landing.landing.set('register')
   }
+
 
 }
