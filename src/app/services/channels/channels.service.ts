@@ -20,6 +20,8 @@ export class ChannelsService implements OnDestroy {
     createdBy: 'UserID343783',
     members: []
   });
+
+
   private unsubscribe!: () => void;
 
 
@@ -97,7 +99,7 @@ export class ChannelsService implements OnDestroy {
       this.currentIndex.set(i);
     }
   }
-  
+
 
   getChannelMembers(): User[] {
     return this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id));
@@ -116,4 +118,6 @@ export class ChannelsService implements OnDestroy {
   checkIfUserExists(user: User): boolean {
     return this.choiceMembersArray.includes(user.id);
   }
+
+  
 }

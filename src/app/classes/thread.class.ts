@@ -3,6 +3,7 @@ import { Timestamp } from "@angular/fire/firestore";
 export class Thread {
   threadId: string;
   messageId: string;
+  threadMessage: string;
   content: [{
     message: string;
     sender: string;
@@ -17,6 +18,7 @@ export class Thread {
   constructor(obj?: any) {
     this.threadId = obj?.threadId || '';
     this.messageId = obj?.messageId || '';
+    this.threadMessage = obj?.threadMessage || '';
     this.content = obj?.content || [];
   }
 
@@ -24,6 +26,7 @@ export class Thread {
     return {
       threadId: this.threadId,
       messageId: this.messageId,
+      threadMessage: this.threadMessage,
       content: this.content
     }
   }

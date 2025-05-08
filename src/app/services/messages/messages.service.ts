@@ -183,43 +183,14 @@ export class MessagesService implements OnDestroy {
     this.threadService.currentMessage = message;
     if (!message.threadId) {
       // Erstelle neuen Thread falls nicht existiert
-      if (this.threadService.chatType === 'channel') {
-        await this.threadMessagesService.createThreadForMessage(message.id);
-        console.log('onMessageClick Message id to Thread createThreadForMessage', message.id);
-      }
-      //  else if (this.threadService.chatType === 'dm') {
-      //   await this.threadDMsService.loadThreadByIdDM(message.threadId);
-      // }
+      await this.threadMessagesService.createThreadForMessage(message.id);
+      console.log('onMessageClick Message id to Thread createThreadForMessage', message.id);
+    } else {
+      console.log('öffne bestehenden thread');
       
-
-      // message.threadId = threadId;
     }
 
-    // Lade den Thread
-    // this.currentThread = await this.threadService.getThread(message.threadId);
-  }
-
-  // private messageUnsubscribes = new Map<string, Unsubscribe>();
-
-  // watchMessage(messageId: string): BehaviorSubject<Message | null> {
-  //   const subject = new BehaviorSubject<Message | null>(null);
-  //   const docRef = doc(this.messageCollection, messageId);
-
-  //   this.messageUnsubscribes.set(messageId, 
-  //     onSnapshot(docRef, (snapshot) => {
-  //       subject.next(snapshot.exists() ? snapshot.data() as Message : null);
-  //     })
-  //   );
-
-  //   return subject;
-  // }
-
-  // async updateMessageThreadId(messageId: string, threadId: string): Promise<void> {
-  //   const messageRef = doc(this.messageCollection, messageId);
-  //   await updateDoc(messageRef, { threadId });
-  // }
-
-
+  } 
 
 
   /**

@@ -8,15 +8,10 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 import { ThreadsService } from '../threads/threads.service';
 import { DM } from '../../interfaces/dm';
 import { ThreadDMsService } from '../threadDMs/thread-dms.service';
+import { Thread } from '../../classes/thread.class';
 
 
-// export interface DM {
-//   threadId: string;
-//   message: string;
-//   sender: string;
-//   timestamp: Timestamp;
-//   reactions: any[];
-// }
+
 
 @Injectable({
   providedIn: 'root'
@@ -209,38 +204,78 @@ export class DirectMessagesService implements OnDestroy {
 
 
 
-  async openDmThread(index: number, message: DM) { // message nötig?
+  // async openDmThread(index: number, message: DM) {
+  //   console.log('openThread Message', message);
+
+  //   this.currentDMIndex = index;
+  //   const currentMessage = this.directMessage.content[this.currentDMIndex];
+  //   if (!currentMessage.threadId) {
+  //     await this.threadDMsService.createThreadForDM(message);
+  //     currentMessage.threadId = this.threadService.newThreadId;
+  //     try {
+  //       await updateDoc(
+  //         doc(this.directMessageCollection, this.directMessage.id),
+  //         {
+  //           [`content.${index}.threadId`]: currentMessage.threadId,
+  //           [`content.${index}.threadMessage`]: currentMessage.message
+  //         } 
+  //       );
+  //       console.log('Message updated with ThreadID', currentMessage);
+  //     } catch (error) {
+  //       console.error('Error updating message with ThreadID:', error);
+  //       throw error;
+  //     }
+  //   } else {
+
+  //   }
+
+
+
+  async openDmThread(index: number, message: DM) {
+    console.log('Opening thread for message:', message);
+
     this.currentDMIndex = index;
     const currentMessage = this.directMessage.content[this.currentDMIndex];
-    if (!currentMessage.threadId) {
-      // Erstelle neuen Thread falls nicht existiert
-      await this.threadDMsService.createThreadForDM(message);
-      // Update both local and Firestore data
-      currentMessage.threadId = this.threadService.newThreadId;
-      try {
-        await updateDoc(
-          doc(this.directMessageCollection, this.directMessage.id),
-          {
-            content: this.directMessage.content // Update entire content array
-          }
-        );
-        // this.threadDMsService.setupRealtimeListener(currentMessage.threadId)
-        console.log('Message updated with ThreadID', currentMessage);
-      } catch (error) {
-        console.error('Error updating message with ThreadID:', error);
-        // Revert local change if update fails
-        // currentMessage.threadId = undefined;
-        throw error;
-      }
+
+    if (!currentMessage.threadId) {  // Wenn noch kein Thread existiert
+      const threadId = await this.createThread(currentMessage);   // 1. Thread erstellen
+      await this.updateMessageWithThreadId(index, threadId);  // 2. Thread-ID in der Nachricht speichern
+      this.openThreadView(threadId, currentMessage); // 3. Thread öffnen (können Sie später implementieren)
     } else {
-      console.log('message ThreadId: ', message.threadId);
-      // this.threadDMsService.setupRealtimeListener(message.threadId);
-
+      this.openThreadView(currentMessage.threadId, currentMessage);  // Thread existiert bereits - einfach öffnen
     }
+  }
 
+  private async createThread(message: any): Promise<string> {
+    const threadData = new Thread({
+      threadMessage: message.message,  // Originalnachricht oben im Thread
+      content: [],                    // Leere Antworten-Liste
+      createdAt: Timestamp.now()
+    }).toJSON();
+    const docRef = await addDoc(collection(this.firestore, 'threads'), threadData);
+    return docRef.id; // Gibt die neue Thread-ID zurück
+  }
 
+  private async updateMessageWithThreadId(index: number, threadId: string) {
+    await updateDoc(
+      doc(this.directMessageCollection, this.directMessage.id),
+      {
+        [`content.${index}.threadId`]: threadId
+      }
+    );
+  }
 
+  private openThreadView(threadId: string, originalMessage: any) {
+    // Hier können Sie die Logik zum Anzeigen des Threads implementieren
+    console.log('Thread sollte jetzt geöffnet werden:', threadId);
+    console.log('Originalnachricht:', originalMessage);
+    // Beispiel: Navigation zum Thread-View oder Öffnen eines Dialogs
+    // this.router.navigate(['/thread', threadId]);
   }
 
 
+
 }
+
+
+

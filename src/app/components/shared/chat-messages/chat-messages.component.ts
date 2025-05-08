@@ -59,4 +59,9 @@ export class ChatMessagesComponent {
       this.dmService.openDmThread(index, message);
     }
   }
+
+
+
+
+  
 }

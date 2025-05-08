@@ -12,7 +12,6 @@ export class ThreadsService {
   currentThread: Thread | undefined = new Thread();
   currentMessageId: string = '';
   currentMessage = new Message();
-  // unsubscribeSnapshot
   newThreadId = '';
 
   chatType: 'channel' | 'dm' | '' = '';
@@ -24,6 +23,7 @@ export class ThreadsService {
     timestamp: Timestamp.now()
   }
 
+  
   constructor(
     public firestore: Firestore
   ) {
@@ -31,14 +31,7 @@ export class ThreadsService {
   }
 
 
-
   async updateThread() {
-    console.log('Current Thread', this.currentThread);
-    console.log('Thread Collection', this.threadCollection);
-    console.log('ThreadMessage', this.threadMessage);
-    console.log('New THread ID', this.newThreadId);
-    
-
     this.threadMessage.timestamp = Timestamp.now();
     await updateDoc(
       doc(this.threadCollection, this.newThreadId),
@@ -51,11 +44,11 @@ export class ThreadsService {
 
 
   
-  async getThread(threadId: string): Promise<Thread | undefined> {
-    const docRef = doc(this.threadCollection, threadId);
-    const snapshot = await getDoc(docRef);
-    return snapshot.exists() ? new Thread(snapshot.data() as any) : undefined;
-  }
+  // async getThread(threadId: string): Promise<Thread | undefined> {
+  //   const docRef = doc(this.threadCollection, threadId);
+  //   const snapshot = await getDoc(docRef);
+  //   return snapshot.exists() ? new Thread(snapshot.data() as any) : undefined;
+  // }
 
 
 

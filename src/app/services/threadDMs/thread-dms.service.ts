@@ -44,7 +44,7 @@ export class ThreadDMsService {
   //   }
   // }
 
-  async createThreadForDM(message: DM) {
+  async createThreadForDM(message: DM) { // Hier wird ein Neuer Thread Erstellt, Mit der 
     console.log('Message ID', message);
     // console.log('Message ID', this.currentMessage.id)
     const thread = new Thread()

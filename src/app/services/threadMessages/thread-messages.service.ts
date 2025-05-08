@@ -2,42 +2,29 @@ import { Injectable } from '@angular/core';
 import { Thread } from '../../classes/thread.class';
 import { addDoc, collection, doc, Firestore, getDoc, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { ThreadsService } from '../threads/threads.service';
+import { User } from '../../classes/user.class';
+import { LocalStorageService } from '../localStorage/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThreadMessagesService {
 
+
+  currentUser
+
   constructor(
     public firestore: Firestore,
-    public threadServive: ThreadsService
+    public threadServive: ThreadsService,
+    public localStorageS: LocalStorageService
   ) {
     this.threadServive.threadCollection = collection(this.firestore, 'threads');
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+
+
   }
 
-  async loadThreadById(threadId: string): Promise<any> {
-    if (threadId === '') {
-      // erstelle neuen thread in der Firebase
-      this.createThreadForMessage(this.threadServive.currentMessageId);
-    } else {
-      const threadDocRef = doc(this.threadServive.threadCollection, threadId);
-      const threadSnap = await getDoc(threadDocRef);
-      console.log('WWWWWWWWWWWWWW      ', threadSnap.data() ? threadSnap.data() as Thread : undefined);
-      this.threadServive.currentThread = threadSnap.data() ? threadSnap.data() as Thread : undefined;
-      // this.unsubscribeSnapshot = onSnapshot(this.docRef, (docSnapshot) => {
-      //       if (docSnapshot.exists()) {
-      //         const data = docSnapshot.data();
-      //         this.directMessage = new DirectMessage({
-      //           id: docSnapshot.id,
-      //           ...data
-      //         });
-      //         console.log('Echtzeit-Update:', this.directMessage);
-      //       }
-      //     }, (error) => {
-      //       console.error('Fehler bei Echtzeit-Updates:', error);
-      //     });
-    }
-  }
+
 
 
   async createThreadForMessage(MessageId: string) {
@@ -50,6 +37,7 @@ export class ThreadMessagesService {
       const docRef = await addDoc(this.threadServive.threadCollection, thread.toJSON());
       console.log('Thread added with ID', docRef.id);
       // Message.THredID = docRef.id
+
     } catch (error) {
       console.error('Error adding thread', error);
     }
