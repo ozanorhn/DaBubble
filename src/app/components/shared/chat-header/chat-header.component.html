@@ -13,7 +13,7 @@
     }
     @case ('thread') {
     <div class="flex items-center gap-[14px] w-max rounded-full text-xl font-bold">
-        <span>Thread </span><span class="text-purple2 text-[14px]"># {{ channelService }}</span>
+        <span>Thread </span><span class="text-purple2 text-[14px]"># {{ channelService.channels[channelService.currentIndex()].name }}</span>
     </div>
     }
     @case ('dm') {
@@ -53,7 +53,7 @@
                 } @else if (i === 4) {
                 <img class="border-2 border-white rounded-full cursor-pointer size-9" src="assets/imgs/avatar3.svg"
                     alt="Member">
-                <span class="ml-[10px]">{{ channelService.channels2[0].users?.length}}</span>
+                <span class="ml-[10px]">{{ channelService.getChannelMembers().length }}</span>
                 }
                 }
         </div>

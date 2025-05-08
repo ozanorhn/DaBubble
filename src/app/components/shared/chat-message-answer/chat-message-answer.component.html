@@ -1,4 +1,4 @@
 @if (message.answers > 0 && message.lastAnswer !== null) {
-    <span (click)="mainNavService.openThread(); threadService.loadThreadById(message.threadId)" class="text-base text-purple3 hover:font-bold">{{ message.answers}} Antworten</span>
-    <span class="text-sm text-textgray">Letzte Antwort {{ messageService.formatTime(message.lastAnswer) }} Uhr</span>
+    <span (click)="mainNavService.openThread()" class="text-base text-purple3 hover:font-bold">{{ message.answers}} Antworten</span>
+    <span class="text-sm text-textgray">Letzte Antwort {{ messageService.formatTime(message.lastAnswer) }}</span>
 }
