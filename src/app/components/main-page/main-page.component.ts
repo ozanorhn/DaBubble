@@ -18,6 +18,7 @@ import { ProfileComponent } from "../shared/popUp/profile/profile.component";
 import { LogOutComponent } from "../shared/popUp/log-out/log-out.component";
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
 import { User } from '../../classes/user.class';
+import { MembersComponent } from "../shared/popUp/members/members.component";
 
 @Component({
   selector: 'app-main-page',
@@ -34,44 +35,14 @@ import { User } from '../../classes/user.class';
     DirectMessageComponent,
     AddUserComponent,
     ProfileComponent,
-    LogOutComponent
+    LogOutComponent,
+    MembersComponent
   ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
 export class MainPageComponent {
   showMessagesOnly = false;
-
-
-
-  // dummyThreatService = {
-  //   messages: [{
-  //     id: 'string',
-  //     message: 'string',
-  //     sender: 'Florian Rauh',
-  //     timestamp: 12,
-  //     createdBy: 'string',
-  //     reactions: [{
-  //       id: 0,
-  //       users: ['Sandra Peters'],
-  //     }],
-  //     threadId: 'string',
-  //     channelId: 'string',
-  //   }],
-  //   chatMessage: {
-  //     id: 'string',
-  //     message: 'string',
-  //     sender: 'Florian Rauh',
-  //     timestamp: 12,
-  //     createdBy: 'string',
-  //     reactions: [{
-  //       id: 0,
-  //       users: ['Sandra Peters'],
-  //     }],
-  //     threadId: 'string',
-  //     channelId: 'string',
-  //   }
-  // }
 
   currentUser
 
@@ -81,7 +52,6 @@ export class MainPageComponent {
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService
   ) {
-    // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 

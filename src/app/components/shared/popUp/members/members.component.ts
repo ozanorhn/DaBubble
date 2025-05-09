@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserComponent } from '../../user/user.component';
 import { UsersService } from '../../../../services/users/users.service';
+import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 
 @Component({
   selector: 'app-members',
@@ -12,6 +13,9 @@ import { UsersService } from '../../../../services/users/users.service';
 })
 export class MembersComponent {
 
-  constructor(public usersService: UsersService){}
+  constructor(
+    public usersService: UsersService,
+    public overlayService: OverlayService
+  ) { }
 
 }
