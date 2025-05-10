@@ -16,7 +16,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'avatar', component: AvatarComponent },
     { path: 'confirm-password', component: LandingPageComponent},
-      
+    { path: '**', redirectTo: '' } 
 ];
           
 

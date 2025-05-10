@@ -45,7 +45,7 @@
     <div class="flex items-center gap-[10px]">
         @switch (chatType) {
         @case ('channel') {
-        <div class="flex items-center px-[10px] py-[3px] rounded-full cursor-pointer hover:bg-primary max-[1024px]:hidden"
+        <div (click)="overlayService.membersOverlay()" class="flex items-center px-[10px] py-[3px] rounded-full cursor-pointer hover:bg-primary max-[1024px]:hidden"
             [ngClass]="{'hidden': mainNavService.hideChannelMembers}">
             @for (user of channelService.getChannelMembers(); track user; let i = $index) {
             @if (i < 4) { <img class="size-9 mr-[-10px] border-2 border-white rounded-full" src="{{ user.avatar }}"
@@ -57,7 +57,7 @@
                 }
                 }
         </div>
-        <button class="flex items-center justify-center rounded-full size-[34px] bg-primary">
+        <button (click)="addMemberOverlay()" class="flex items-center justify-center rounded-full size-[34px] bg-primary">
             <img src="assets/icons/add_user.svg" alt="Add user">
         </button>
         }
