@@ -50,7 +50,9 @@ export class ProfileComponent {
         doc(this.userService.usersCollection, this.currentUser.id),
         profileData
       );
-      this.localStorageS.saveObject('currentUser', this.currentUser);
+      this.localStorageS.saveObject('currentUser', profileData);
+      this.currentUser = new User(profileData);
+      this.overlayService.profileOverlay(true, profileData);
     } catch (error) {
       console.error('Error updating profile:', error);
     }

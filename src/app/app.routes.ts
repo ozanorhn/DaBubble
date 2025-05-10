@@ -5,7 +5,6 @@ import { LegalNoticePageComponent } from './components/legal-notice-page/legal-n
 import { PrivacyPolicyPageComponent } from './components/privacy-policy-page/privacy-policy-page.component';
 import { LoginComponent } from './components/landing-page/login/login.component';
 import { AvatarComponent } from './components/landing-page/avatar/avatar.component';
-import { ResetpwConfirmComponent } from './components/landing-page/resetpw-confirm/resetpw-confirm.component';
 
 
 export const routes: Routes = [
