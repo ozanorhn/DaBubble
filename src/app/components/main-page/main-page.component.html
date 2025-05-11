@@ -51,7 +51,7 @@
 <!--Overlays-->
 
 <div (click)="overlayService.addCannelOverlay()" [ngClass]="{hidden: overlayService.hideAddChannel}"
-  class="absolute flex top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.1)] justify-center lg:items-center">
+  class="absolute flex top-0 bottom-0 left-0 right-0 z-[1] bg-white lg:bg-[rgba(0,0,0,0.4)] justify-center lg:items-center">
   <app-add-channel (click)="$event.stopPropagation()" class="top-[20%]"></app-add-channel>
 </div>
 
@@ -63,8 +63,14 @@
 </div>
 
 
+<div (click)="overlayService.addMembersOverlay()" [ngClass]="{hidden: overlayService.hideAddMembersOverlay}"
+  class="absolute top-0 bottom-0 left-0 z-[1] right-0 flex items-end justify-center lg:items-center lg:bg-[rgba(0,0,0,0.4)]">
+  <app-add-members (click)="$event.stopPropagation()" class="absolute top-[200px] right-[20px]"></app-add-members>
+</div>
+
+
 <div (click)="overlayService.editChannel()" [ngClass]="{hidden: overlayService.hideEditChannel}"
-  class="flex justify-center items-center absolute top-0 bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.4)]">
+  class="flex justify-center items-center absolute top-0 z-[1] bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.4)]">
   <app-edit-channel (click)="$event.stopPropagation()"></app-edit-channel>
 </div>
 
@@ -76,11 +82,12 @@
 
 
 <div (click)="overlayService.logoutOvelay()" [ngClass]="{hidden: overlayService.hideLogoutOverlay}"
-  class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
+  class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
   <app-log-out class="w-full lg:w-fit lg:mt-24 lg:mr-4"></app-log-out>
 </div>
 
+
 <div (click)="overlayService.membersOverlay()" [ngClass]="{hidden: overlayService.hideMembersOverlay}"
-  class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
-  <app-members class="absolute top-[180px] right-3" (click)="$event.stopPropagation()" ></app-members>
+  class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
+  <app-members class="absolute top-[180px] right-3" (click)="$event.stopPropagation()"></app-members>
 </div>

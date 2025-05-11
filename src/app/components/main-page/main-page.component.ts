@@ -19,6 +19,7 @@ import { LogOutComponent } from "../shared/popUp/log-out/log-out.component";
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
 import { User } from '../../classes/user.class';
 import { MembersComponent } from "../shared/popUp/members/members.component";
+import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
 
 @Component({
   selector: 'app-main-page',
@@ -36,8 +37,9 @@ import { MembersComponent } from "../shared/popUp/members/members.component";
     AddUserComponent,
     ProfileComponent,
     LogOutComponent,
-    MembersComponent
-  ],
+    MembersComponent,
+    AddMembersComponent
+],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
