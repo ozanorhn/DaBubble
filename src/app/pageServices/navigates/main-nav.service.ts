@@ -200,4 +200,29 @@ export class MainNavService {
     }
     // this.setHeaderMembers();
   }
+
+
+
+  UserMarked = 99999999;
+  ChannelMarked = 99999999;
+
+  markedUser(i: number) {
+    this.UserMarked = i
+    this.ChannelMarked = 99999999;
+  }
+
+
+  markedChannel(i: number) {
+    this.ChannelMarked = i
+    this.UserMarked = 99999999;
+  }
+
+
+  removeMarker() {
+    this.ChannelMarked = 99999999;
+    this.UserMarked = 99999999;
+  }
+
+
+
 }

@@ -2,7 +2,7 @@
 
 @if (!mainNavService.mobile) {
 <button (click)="mainNavService.toggleNav()"
-  class="w-[60px] h-fit fixed top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50">
+  class="w-[60px] h-fit absolute top-[581px] left-0 rounded-tr-[30px] rounded-br-[30px] pt-[23px] pr-[14px] pb-[23px] pl-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50">
   <span class="mt-2 text-xl">
     @if (mainNavService.nav) {
     <span><img src="assets/imgs/directions.svg" alt="" /></span>
