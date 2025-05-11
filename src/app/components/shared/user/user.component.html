@@ -1,6 +1,6 @@
 <section [ngClass]="{'userChecked': channelService.checkIfUserExists(userInfo)}"
     [ngClass]="{'userChecked': i == mainNavService.UserMarked}"
-    class="flex items-center justify-center gap-4 px-5 py-1  w-fit rounded-[30px] hover:bg-primary cursor-pointer bg-white hover:scale-[1.005] duration-200 active:scale-[0.97] active:bg-purple2">
+    class="flex items-center  gap-4 px-5 py-1 min-w-[200px]  w-fit rounded-[30px] hover:bg-primary cursor-pointer bg-white hover:scale-[1.005] duration-200 active:scale-[0.97] active:bg-purple2">
     <div class="relative">
         <img class="size-14 rounded-[50%]" src="{{userInfo.avatar}}" alt="">
         <span class="absolute right-0 bg-online size-4 bottom-1 rounded-[50%] border-white border-2"
