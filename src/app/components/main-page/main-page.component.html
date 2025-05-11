@@ -63,6 +63,12 @@
 </div>
 
 
+<div (click)="overlayService.addMembersOverlay()" [ngClass]="{hidden: overlayService.hideAddMembersOverlay}"
+  class="absolute top-0 bottom-0 left-0 z-[1] right-0 flex items-end justify-center lg:items-center lg:bg-[rgba(0,0,0,0.4)]">
+  <app-add-members (click)="$event.stopPropagation()" class="absolute top-[200px] right-[20px]"></app-add-members>
+</div>
+
+
 <div (click)="overlayService.editChannel()" [ngClass]="{hidden: overlayService.hideEditChannel}"
   class="flex justify-center items-center absolute top-0 z-[1] bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.4)]">
   <app-edit-channel (click)="$event.stopPropagation()"></app-edit-channel>
@@ -83,5 +89,5 @@
 
 <div (click)="overlayService.membersOverlay()" [ngClass]="{hidden: overlayService.hideMembersOverlay}"
   class="absolute top-0 bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
-  <app-members class="absolute top-[180px] right-3" (click)="$event.stopPropagation()" ></app-members>
+  <app-members class="absolute top-[180px] right-3" (click)="$event.stopPropagation()"></app-members>
 </div>

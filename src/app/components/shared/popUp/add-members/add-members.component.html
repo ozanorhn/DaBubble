@@ -1,1 +1,16 @@
-<p>add-members works!</p>
+<div
+    class=" w-[400px] h-64 rounded-tl-[30px] rounded-bl-[30px] rounded-br-[30px] flex py-7 px-4 flex-col justify-between shadow-2xl bg-white">
+
+    <div class="flex justify-between">
+        <h2>Leute hinzufügen</h2>
+        <img (click)="overlayService.addMembersOverlay()" class="cursor-pointer hover:scale-[1.1] duration-150" src="/assets/icons/close.svg" alt="">
+    </div>
+
+    <input class="border border-lightpurple rounded-[30px] h-14 px-5" type="text" placeholder="Name eingeben">
+
+    <button
+        class="self-end w-40 h-12 text-white bg-gray-500 rounded-3xl hover:scale-[1.1] duration-150 active:scale-[0.9]">
+        Hinzufügen
+    </button>
+
+</div>

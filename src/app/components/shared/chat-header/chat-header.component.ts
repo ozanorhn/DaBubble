@@ -36,14 +36,14 @@ export class ChatHeaderComponent {
   }
 
 
-  openMembersOverlay(){
-    console.log('open Members');
-  }
+  // openMembersOverlay(){
+  //   console.log('open Members');
+  // }
 
-  addMemberOverlay(){
-    console.log('add Members');
+  // addMemberOverlay(){
+  //   console.log('add Members');
     
-  }
+  // }
 
 
 }

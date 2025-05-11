@@ -19,8 +19,8 @@ export class OverlayService {
   profileObj: User = new User();
 
   hideLogoutOverlay = true;
-
   hideMembersOverlay = true;
+  hideAddMembersOverlay = true
 
   constructor(
     public channelsService: ChannelsService,
@@ -63,6 +63,10 @@ export class OverlayService {
 
   membersOverlay() {
     this.hideMembersOverlay = !this.hideMembersOverlay
+  }
+
+  addMembersOverlay(){
+    this.hideAddMembersOverlay = !this.hideAddMembersOverlay
   }
 
 
