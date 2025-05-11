@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, effect, OnInit, signal } from '@angular/core';
 import { UserComponent } from '../../user/user.component';
 import { UsersService } from '../../../../services/users/users.service';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 import { ChannelsService } from '../../../../services/channels/channels.service';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-members',
@@ -12,32 +13,30 @@ import { ChannelsService } from '../../../../services/channels/channels.service'
   templateUrl: './members.component.html',
   styleUrl: './members.component.scss'
 })
-export class MembersComponent implements OnInit{
+export class MembersComponent {
 
-  members: string[] = [];
+
+  members = signal<string[]>([]);
+
+  filteredUsers = computed(() =>
+    this.usersService.users.filter(user =>
+      this.members().includes(user.id)
+    )
+  );
 
   constructor(
     public usersService: UsersService,
     public overlayService: OverlayService,
     public channelService: ChannelsService
   ) {
-
-    console.log('Index from channels', this.channelService.currentIndex());
-    console.log('Array from current Channel', this.channelService.channels[this.channelService.currentIndex()].members);
-    this.members = this.channelService.channels[this.channelService.currentIndex()].members
-
-    console.log(this.filterUsers());
+    this.members.set(this.getCurrentMembers());
+    effect(() => {
+      this.members.set(this.getCurrentMembers());
+    });
   }
 
-  ngOnInit(): void {
-    this.filterUsers()
+  private getCurrentMembers(): string[] {
+    return this.channelService.channels[this.channelService.currentIndex()].members || [];
   }
-
-  filterUsers() {
-    return this.usersService.users.filter(user => 
-      this.members.includes(user.id)
-    );
-  }
-
 
 }

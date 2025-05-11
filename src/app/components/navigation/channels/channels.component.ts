@@ -3,6 +3,7 @@ import { ChannelsService } from '../../../services/channels/channels.service';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 import { OverlayService } from '../../../pageServices/overlays/overlay.service';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -11,7 +12,9 @@ import { OverlayService } from '../../../pageServices/overlays/overlay.service';
 
 @Component({
   selector: 'app-channels',
-  imports: [],
+  imports: [
+    CommonModule
+  ],
   templateUrl: './channels.component.html',
   styleUrl: './channels.component.scss'
 })
