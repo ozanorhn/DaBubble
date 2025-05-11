@@ -13,7 +13,7 @@ import { interval } from 'rxjs';
   templateUrl: './members.component.html',
   styleUrl: './members.component.scss'
 })
-export class MembersComponent implements OnInit {
+export class MembersComponent {
 
 
   members = signal<string[]>([]);
@@ -29,15 +29,7 @@ export class MembersComponent implements OnInit {
     public overlayService: OverlayService,
     public channelService: ChannelsService
   ) {
-    // this.members.set(this.channelService.channels[this.channelService.currentIndex()].members)
-
-    // effect(() => {
-    //   console.log('Members Array:', this.members());
-    // });
-
     this.members.set(this.getCurrentMembers());
-
-    // Reagiere auf Änderungen in Channels oder Index
     effect(() => {
       this.members.set(this.getCurrentMembers());
     });
@@ -46,20 +38,5 @@ export class MembersComponent implements OnInit {
   private getCurrentMembers(): string[] {
     return this.channelService.channels[this.channelService.currentIndex()].members || [];
   }
-
-  ngOnInit(): void {
-
-    setInterval(() => {
-      console.log('filterd Members Array', this.filteredUsers());
-
-    }, 1000)
-
-
-  }
-
-
-
-
-
 
 }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
-import { AddUser1Component } from "../shared/popUp/add-user1/add-user1.component";
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
 import { CommonModule } from '@angular/common';
 import { ChannelsService } from '../../services/channels/channels.service';
