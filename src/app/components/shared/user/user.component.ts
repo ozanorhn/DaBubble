@@ -30,7 +30,6 @@ export class UserComponent implements OnInit {
   timeChecker = Timestamp.now();
 
   ngOnInit(): void {
-
     setTimeout(() => {
       this.checkTimestampOnline();
     }, 1000)
@@ -38,7 +37,7 @@ export class UserComponent implements OnInit {
     setInterval(() => {
       this.timeChecker = Timestamp.now();
       this.checkTimestampOnline();
-    }, 30000)
+    }, 3000)
   }
 
   @Input() userInfo!: User;
@@ -51,17 +50,14 @@ export class UserComponent implements OnInit {
     const now = this.timeChecker.toDate().getTime();
     const lastOnline = this.userInfo.online.toDate().getTime();
     const difference = now - lastOnline;
-    if (difference > 60000) {
-      console.log(this.userInfo.name, 'User ist offline');
+    if (difference > 20000) {
+      // console.log(this.userInfo.name, 'User ist offline');
       this.isOnline = false;
     } else {
       console.log(this.userInfo.name, 'User ist online');
       this.isOnline = true;
     }
   }
-
-
-
 
 
 }

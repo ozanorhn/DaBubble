@@ -69,8 +69,10 @@ export class UsersService implements OnDestroy {
         console.log('Online-Status aktualisiert:', this.storedUser.id);
       } catch (error) {
         console.error('Fehler beim Aktualisieren des Online-Status:', error);
+        console.log('noch fehler bei Guest Login');
+        
       }
-    }, 30000); // alle 30 Sekunden
+    }, 15000); // alle 15 Sekunden
   }
 
 
