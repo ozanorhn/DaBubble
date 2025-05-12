@@ -2,23 +2,17 @@ import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
-import { AuthService } from '../auth/auth.service';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 // import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
-
+import { Timestamp } from '@firebase/firestore';
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService implements OnDestroy {
-  // private auth = inject(Auth);
 
   private firestore = inject(Firestore);
-  // private authService = inject(AuthService);
-  // private auth = inject(Auth);
-
-
   usersCollection = collection(this.firestore, 'users');
- 
+
   users: User[] = [];
   tempUser: Partial<User> = {};
   currentUser: User = new User();
@@ -31,15 +25,57 @@ export class UsersService implements OnDestroy {
     online: true,
   }
 
+  storedUser = new User();
 
   constructor(
-    public localStorageService: LocalStorageService
+    public localStorageS: LocalStorageService
   ) {
+    this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
+
     this.initUsersListener();
+
+    this.updateOnlineStatus();
   }
 
-  private unsubscribe!: () => void;
 
+  // async updateOnlineStatus() {
+
+
+  //   setInterval(() => {
+  //     this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
+  //     console.log('Interval log id', this.storedUser.id);
+
+
+  //     await updateDoc(
+  //       doc(this.usersCollection, this.storedUser.id),
+  //       this.storedUser 
+  //     );
+
+  //   }, 30000)
+
+
+  // }
+
+
+  updateOnlineStatus() {
+    setInterval(async () => {
+      this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
+      if (!this.storedUser.id) return;
+      const userRef = doc(this.usersCollection, this.storedUser.id);
+      try {
+        await updateDoc(userRef, {
+          online: Timestamp.now()
+        });
+        console.log('Online-Status aktualisiert:', this.storedUser.id);
+      } catch (error) {
+        console.error('Fehler beim Aktualisieren des Online-Status:', error);
+      }
+    }, 30000); // alle 30 Sekunden
+  }
+
+
+
+  private unsubscribe!: () => void;
   private initUsersListener() {
     this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
       this.users = snapshot.docs.map((doc) => {
@@ -77,8 +113,6 @@ export class UsersService implements OnDestroy {
 
 
   getTempUser() {
-    //console.log('Current User ???', this.tempUser);
-    // this.authService.saveObject('currentUser',this.tempUser )
     return this.tempUser;
   }
 
@@ -106,10 +140,10 @@ export class UsersService implements OnDestroy {
 
 
   fromCurrentUser(id: string): boolean {
-     if (id === this.currentUser.id) {
-       return true;
-     } else {
-       return false;
-     }
-   }
+    if (id === this.currentUser.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

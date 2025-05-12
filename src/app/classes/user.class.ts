@@ -5,7 +5,7 @@ export class User {
     name: string;
     email: string;
     avatar:  string; 
-    online: boolean;
+    online: Timestamp;
     createdAt: number | Timestamp;
     password?: string;
 
@@ -15,7 +15,7 @@ export class User {
         this.name = obj ? obj.name : '';
         this.email = obj ? obj.email : '';
         this.avatar = obj ? obj.avatar : '';
-        this.online = obj ? obj.online : false;
+        this.online = obj ? obj.online : Timestamp.now();
         this.createdAt = obj ? obj.createdAt : '';
         this.password = obj ? obj.password : ''
     }

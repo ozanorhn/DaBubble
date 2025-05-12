@@ -4,7 +4,7 @@
     <div class="relative">
         <img class="size-14 rounded-[50%]" src="{{userInfo.avatar}}" alt="">
         <span class="absolute right-0 bg-online size-4 bottom-1 rounded-[50%] border-white border-2"
-            [ngClass]="{'bg-online' :userInfo.online, 'bg-offline' : !userInfo.online}"></span>
+            [ngClass]="{'bg-online' :isOnline, 'bg-offline' : !isOnline}"></span>
     </div>
 
     <span>{{userInfo.name}} @if(userInfo.name == currentUser.name){(DU)} </span>
