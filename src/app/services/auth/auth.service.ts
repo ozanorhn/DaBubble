@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User as FirebaseUser } from '@angular/fire/auth';
-import { addDoc, collection, doc, Firestore, updateDoc } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
 import { LocalStorageService } from '../localStorage/local-storage.service';
@@ -62,7 +62,7 @@ export class AuthService {
       // 4. Fehlende Felder sicher ergänzen
       user.email = firebaseUser.email || '';
       user.avatar = user.avatar || '/assets/imgs/avatar1.svg';
-      user.online = true;
+      user.online = Timestamp.now();
       user.createdAt = Date.now();
 
       // 5. Passwort entfernen vor dem Speichern
