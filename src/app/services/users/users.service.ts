@@ -5,6 +5,10 @@ import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firest
 import { LocalStorageService } from '../localStorage/local-storage.service';
 // import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
 import { Timestamp } from '@firebase/firestore';
+import { query, where, getDocs } from 'firebase/firestore';
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -145,5 +149,19 @@ export class UsersService implements OnDestroy {
     } else {
       return false;
     }
+  }
+
+  async getUserByEmailRealtime(email: string): Promise<User | undefined> {
+    const q = query(this.usersCollection, where('email', '==', email));
+    const snapshot = await getDocs(q);
+  
+    if (!snapshot.empty) {
+      const docSnap = snapshot.docs[0];
+      const data = docSnap.data() as User;
+      data.id = docSnap.id;
+      return data;
+    }
+  
+    return undefined;
   }
 }
