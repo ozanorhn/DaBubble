@@ -5,6 +5,7 @@ import { ChannelsService } from '../../../services/channels/channels.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 import { Timestamp } from '@angular/fire/firestore';
+import { UsersService } from '../../../services/users/users.service';
 
 @Component({
   selector: 'app-user',
@@ -21,42 +22,28 @@ export class UserComponent implements OnInit {
   constructor(
     public channelService: ChannelsService,
     public localStorageS: LocalStorageService,
-    public mainNavService: MainNavService
+    public mainNavService: MainNavService,
+    public userService: UsersService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-    // this.checkTimestampOnline();
   }
 
   timeChecker = Timestamp.now();
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.checkTimestampOnline();
-    }, 1000)
-
-    setInterval(() => {
-      this.timeChecker = Timestamp.now();
-      this.checkTimestampOnline();
-    }, 3000)
-  }
 
   @Input() userInfo!: User;
   @Input() i = 0;
 
   isOnline = false;
 
-  checkTimestampOnline() {
-    if (!this.userInfo.online || !this.timeChecker) return;
-    const now = this.timeChecker.toDate().getTime();
-    const lastOnline = this.userInfo.online.toDate().getTime();
-    const difference = now - lastOnline;
-    if (difference > 20000) {
-      // console.log(this.userInfo.name, 'User ist offline');
-      this.isOnline = false;
-    } else {
-      console.log(this.userInfo.name, 'User ist online');
-      this.isOnline = true;
-    }
+
+  ngOnInit(): void {
+    this.updateOnlineStatus();
+    setInterval(() => this.updateOnlineStatus(), 5000); 
+  }
+  
+  updateOnlineStatus() {
+    this.isOnline = this.userService.isUserOnline(this.userInfo.online);
   }
 
 

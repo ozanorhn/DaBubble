@@ -31,34 +31,13 @@ export class UsersService implements OnDestroy {
     public localStorageS: LocalStorageService
   ) {
     this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
-
     this.initUsersListener();
-
     this.updateOnlineStatus();
   }
 
 
-  // async updateOnlineStatus() {
-
-
-  //   setInterval(() => {
-  //     this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
-  //     console.log('Interval log id', this.storedUser.id);
-
-
-  //     await updateDoc(
-  //       doc(this.usersCollection, this.storedUser.id),
-  //       this.storedUser 
-  //     );
-
-  //   }, 30000)
-
-
-  // }
-
-
   updateOnlineStatus() {
-    setInterval(async () => {
+    const update = async () => {
       this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
       if (!this.storedUser.id) return;
       const userRef = doc(this.usersCollection, this.storedUser.id);
@@ -69,12 +48,19 @@ export class UsersService implements OnDestroy {
         console.log('Online-Status aktualisiert:', this.storedUser.id);
       } catch (error) {
         console.error('Fehler beim Aktualisieren des Online-Status:', error);
-        console.log('noch fehler bei Guest Login');
-        
       }
-    }, 15000); // alle 15 Sekunden
+      setTimeout(update, 15000); // Nächste Aktualisierung in 15 Sekunden
+    };
+    update(); // Ersten Aufruf starten
   }
 
+
+  isUserOnline(lastOnline: Timestamp | undefined, thresholdSeconds = 20): boolean {
+    if (!lastOnline) return false;
+    const now = Timestamp.now().toMillis();
+    const lastOnlineMillis = lastOnline.toMillis();
+    return (now - lastOnlineMillis) < thresholdSeconds * 1000;
+  }
 
 
   private unsubscribe!: () => void;
@@ -148,4 +134,6 @@ export class UsersService implements OnDestroy {
       return false;
     }
   }
+
+
 }
