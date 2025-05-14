@@ -17,16 +17,18 @@
 
 
         @for (channel of channelService.channels; track $index; let i = $index) {
-        <li (click)="mainNavService.openChannel(); channelService.openChannel(channel,i); messageService.getMessages(channel); mainNavService.markedChannel($index)"
+        <li [style.animation-delay]="(i * 0.05) + 's'" (click)="mainNavService.openChannel(); channelService.openChannel(channel,i); messageService.getMessages(channel); mainNavService.markedChannel($index)"
             [ngClass]="{'userChecked': $index == mainNavService.ChannelMarked}"
-            class="flex items-center gap-4 min-w-[200px] rounded-[20px] px-10 cursor-pointer w-fit h-9 hover:bg-primary hover:font-bold hover:text-purple3">
+            class="channel-item flex items-center gap-4 min-w-[200px] rounded-[20px] px-10 cursor-pointer w-fit h-9 hover:bg-primary hover:font-bold hover:text-purple3 duration-150">
             <span class="font-bold">#</span> {{channel.name}}
         </li>
 
         }
         <li (click)="overlayService.addCannelOverlay()"
-            class="flex gap-3 py-3 cursor-pointer hover:text-purple3 pl-7 hover:font-bold"><img
-                src="/assets/icons/add_circle.svg" alt=""> Channel hinzufügen</li>
+            class="flex gap-3 py-3 cursor-pointer hover:text-purple3 pl-7 hover:font-bold">
+            <img src="/assets/icons/add_circle.svg" alt="">
+            Channel hinzufügen
+        </li>
     </ul>
 
 </section>

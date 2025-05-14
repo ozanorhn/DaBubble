@@ -6,3 +6,43 @@
     flex-direction: column;
     box-sizing: border-box;
 }
+
+
+
+
+/* Basis-Overlay-Container (Hintergrund) */
+.overlay-backdrop {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    /* Verhindert Klicks, wenn unsichtbar */
+}
+
+.overlay-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+    /* Erlaubt Klicks, wenn sichtbar */
+}
+
+/* Overlay-Inhalt (Modal) */
+.overlay-panel {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+.overlay-backdrop.active .overlay-panel {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Mobile: Slide-Up-Effekt (für Bottom-Menüs) */
+@media (max-width: 1024px) {
+    .overlay-panel.mobile-slide-up {
+        transform: translateY(100%);
+    }
+
+    .overlay-backdrop.active .overlay-panel.mobile-slide-up {
+        transform: translateY(0);
+    }
+}
