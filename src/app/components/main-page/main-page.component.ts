@@ -38,7 +38,7 @@ import { AddMembersComponent } from "../shared/popUp/add-members/add-members.com
     LogOutComponent,
     MembersComponent,
     AddMembersComponent
-],
+  ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
@@ -54,7 +54,14 @@ export class MainPageComponent {
     public localStorageS: LocalStorageService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+
+    // setInterval(() => {
+    //   console.log(mainNavService.showNav());
+    // },1000)
   }
+
+
+
 
 
   toggleMessagesView() {

@@ -27,12 +27,21 @@ export class MainNavService {
   /**
   * Toggles navigation visibility
   */
+  // toggleNav() {
+  //   if (this.nav) {
+  //     this.closeNav();
+  //   } else {
+  //     this.openNav();
+  //   }
+  // }
+
   toggleNav() {
-    if (this.nav) {
-      this.closeNav();
-    } else {
-      this.openNav();
-    }
+    this.nav = !this.nav;
+    // Verzögerung für Animation
+    setTimeout(() => {
+      if (this.nav) this.openNav();
+      else this.closeNav();
+    }, 10);
   }
 
 
