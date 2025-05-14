@@ -39,7 +39,7 @@ export class ChatHeaderComponent implements OnInit {
 
 
   updateOnlineStatus() {
-    const user = this.userService.users.find(u => u.id === this.dmService.othertUser.id);
+    const user = this.userService.users.find(u => u.id === this.dmService.otherUser.id);
     if (!user) {
       this.loadUserDirectly();
       return;
@@ -49,7 +49,13 @@ export class ChatHeaderComponent implements OnInit {
 
 
   private async loadUserDirectly() {
-    const userDoc = doc(this.userService.usersCollection, this.dmService.othertUser.id);
+
+    if (!this.dmService.otherUser?.id) {
+      // console.error("otherUser or ID is missing!");
+      return;
+    }
+
+    const userDoc = doc(this.userService.usersCollection, this.dmService.otherUser.id);
     const snapshot = await getDoc(userDoc);
     if (snapshot.exists()) {
       this.isOnline = this.userService.isUserOnline(snapshot.data()['online']);

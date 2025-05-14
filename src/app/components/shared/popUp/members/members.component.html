@@ -10,7 +10,7 @@
 
     <div class="flex flex-col w-full gap-3 p-3 overflow-auto h-52">
 
-        @for (item of filteredUsers(); track $index) {
+        @for (item of membersArray; track $index) {
         <app-user [userInfo]="item"></app-user>
         }
     </div>

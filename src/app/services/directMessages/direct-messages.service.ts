@@ -12,7 +12,7 @@ import { ThreadDMsService } from '../threadDMs/thread-dms.service';
   providedIn: 'root'
 })
 export class DirectMessagesService implements OnDestroy {
-  othertUser: User = new User();
+  otherUser: User = new User();
   docRef: DocumentReference<DocumentData, DocumentData> | undefined;
   currentUser;
   directMessageCollection;
@@ -69,10 +69,10 @@ export class DirectMessagesService implements OnDestroy {
   async openDMs(otherUser: User) {
     this.cleanupSnapshot();
     this.clearDm();
-    this.othertUser = otherUser;
+    this.otherUser = otherUser;
     await this.checkExistingIds();
     if (!this.docRef) {
-      let tempId = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
+      let tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
       this.docRef = doc(this.directMessageCollection, tempId);
     }
     this.setupRealtimeListener();
@@ -131,8 +131,8 @@ export class DirectMessagesService implements OnDestroy {
    * Checks for existing DM conversations between current and other user
    */
   async checkExistingIds() {
-    const dmIdUser1First = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
-    const dmIdUser2First = this.getDirectMessageId(this.currentUser.id, this.othertUser.id);
+    const dmIdUser1First = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
+    const dmIdUser2First = this.getDirectMessageId(this.currentUser.id, this.otherUser.id);
     const dmDocRefUser1First = doc(this.directMessageCollection, dmIdUser1First);
     const dmDocRefUser2First = doc(this.directMessageCollection, dmIdUser2First);
     const user1FirstDoc = await getDoc(dmDocRefUser1First);
@@ -151,14 +151,14 @@ export class DirectMessagesService implements OnDestroy {
    * Creates a new Firestore document for a direct message conversation.
    */
   async createDocRef() {
-    const tempId = this.getDirectMessageId(this.othertUser.id, this.currentUser.id);
+    const tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
     this.directMessage.id = tempId;
     this.docRef = doc(this.directMessageCollection, tempId);
     await setDoc(this.docRef, {
       id: tempId,
       participants: {
         user1: this.currentUser.id,
-        user2: this.othertUser.id
+        user2: this.otherUser.id
       },
       content: []
     });
