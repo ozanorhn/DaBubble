@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, OnInit } from '@angular/core';
+import { effect, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Channel } from '../../classes/channel.class';
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
@@ -30,6 +30,11 @@ export class ChannelsService implements OnDestroy {
   ) {
     this.channelsCollection = collection(this.firestore, 'channels');
     this.initChannelsListener();
+
+    effect(() => {
+      console.log('Channel index', this.currentIndex());
+      
+    });
   }
 
 
@@ -59,7 +64,7 @@ export class ChannelsService implements OnDestroy {
       this.createChannel.members = this.userService.users.map(user => user.id);
     }
     try {
-      const docRef = await addDoc(this.channelsCollection, this.createChannel.toJSON())
+      await addDoc(this.channelsCollection, this.createChannel.toJSON())
     } catch (error) {
       console.error('Error adding channel', error);
     }
@@ -97,7 +102,7 @@ export class ChannelsService implements OnDestroy {
       this.currentIndex.set(i);
     }
   }
-  
+
 
   getChannelMembers(): User[] {
     return this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id));
