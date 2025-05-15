@@ -30,6 +30,7 @@ export class MembersComponent {
     public overlayService: OverlayService,
     public channelService: ChannelsService
   ) {
+
     effect(() => {
       console.log('Next Channel', this.channelService.currentIndex());
       try {
@@ -40,6 +41,7 @@ export class MembersComponent {
       this.membersArray = this.usersService.users.filter(user =>
         this.members().includes(user.id))
     })
+
   }
 
 
