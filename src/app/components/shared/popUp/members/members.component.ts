@@ -3,7 +3,7 @@ import { UserComponent } from '../../user/user.component';
 import { UsersService } from '../../../../services/users/users.service';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 import { ChannelsService } from '../../../../services/channels/channels.service';
-import { interval } from 'rxjs';
+import { User } from '../../../../classes/user.class';
 
 @Component({
   selector: 'app-members',
@@ -17,6 +17,7 @@ export class MembersComponent {
 
 
   members = signal<string[]>([]);
+  membersArray: User[] = []
 
   filteredUsers = computed(() =>
     this.usersService.users.filter(user =>
@@ -29,14 +30,20 @@ export class MembersComponent {
     public overlayService: OverlayService,
     public channelService: ChannelsService
   ) {
-    // this.members.set(this.getCurrentMembers());
-    // effect(() => {
-    //   this.members.set(this.getCurrentMembers());
-    // });
+
+    effect(() => {
+      console.log('Next Channel', this.channelService.currentIndex());
+      try {
+        this.members.set(this.channelService.channels[this.channelService.currentIndex()].members);
+      } catch (error) {
+        console.log('No Members');
+      }
+      this.membersArray = this.usersService.users.filter(user =>
+        this.members().includes(user.id))
+    })
+
   }
 
-  private getCurrentMembers(): string[] {
-    return this.channelService.channels[this.channelService.currentIndex()].members || [];
-  }
+
 
 }

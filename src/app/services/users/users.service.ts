@@ -35,48 +35,40 @@ export class UsersService implements OnDestroy {
     public localStorageS: LocalStorageService
   ) {
     this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
-
     this.initUsersListener();
-
     this.updateOnlineStatus();
   }
 
 
-  // async updateOnlineStatus() {
-
-
-  //   setInterval(() => {
-  //     this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
-  //     console.log('Interval log id', this.storedUser.id);
-
-
-  //     await updateDoc(
-  //       doc(this.usersCollection, this.storedUser.id),
-  //       this.storedUser 
-  //     );
-
-  //   }, 30000)
-
-
-  // }
-
-
   updateOnlineStatus() {
-    setInterval(async () => {
-      this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
-      if (!this.storedUser.id) return;
-      const userRef = doc(this.usersCollection, this.storedUser.id);
-      try {
-        await updateDoc(userRef, {
-          online: Timestamp.now()
-        });
-        console.log('Online-Status aktualisiert:', this.storedUser.id);
-      } catch (error) {
-        console.error('Fehler beim Aktualisieren des Online-Status:', error);
-      }
-    }, 30000); // alle 30 Sekunden
+    if (this.storedUser.id !== this.GuestUser.id) {
+
+      const update = async () => {
+        this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
+        if (!this.storedUser.id) return;
+        const userRef = doc(this.usersCollection, this.storedUser.id);
+        try {
+          await updateDoc(userRef, {
+            online: Timestamp.now()
+          });
+          console.log('Online-Status aktualisiert:', this.storedUser.id);
+        } catch (error) {
+          console.error('Fehler beim Aktualisieren des Online-Status:', error);
+        }
+        setTimeout(update, 15000); // Nächste Aktualisierung in 15 Sekunden
+      };
+      update(); // Ersten Aufruf starten
+
+    }
   }
 
+
+  isUserOnline(lastOnline: Timestamp | undefined, thresholdSeconds = 20): boolean {
+    if (!lastOnline) return false;
+    const now = Timestamp.now().toMillis();
+    const lastOnlineMillis = lastOnline.toMillis();
+    return (now - lastOnlineMillis) < thresholdSeconds * 1000;
+  }
 
 
   private unsubscribe!: () => void;
@@ -151,17 +143,19 @@ export class UsersService implements OnDestroy {
     }
   }
 
+
   async getUserByEmailRealtime(email: string): Promise<User | undefined> {
     const q = query(this.usersCollection, where('email', '==', email));
     const snapshot = await getDocs(q);
-  
+
     if (!snapshot.empty) {
       const docSnap = snapshot.docs[0];
       const data = docSnap.data() as User;
       data.id = docSnap.id;
       return data;
     }
-  
+
     return undefined;
   }
+
 }
