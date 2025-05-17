@@ -31,6 +31,7 @@ export class MessagesService implements OnDestroy {
   members: [] = [];
   lastDate: Date = new Date();
   date = new Date();
+  edit: boolean = false;
 
   unsubscribeFromMessages?: () => void;
 

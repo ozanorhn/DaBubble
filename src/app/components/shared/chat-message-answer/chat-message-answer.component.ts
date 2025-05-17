@@ -16,6 +16,7 @@ import { DirectMessagesService } from '../../../services/directMessages/direct-m
 export class ChatMessageAnswerComponent {
  @Input() message: Message = new Message();
  @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
+ @Input() i: number = 0;
 
  
  constructor(
@@ -26,4 +27,17 @@ export class ChatMessageAnswerComponent {
   public messageService: MessagesService,
   public dmService: DirectMessagesService
 ) {}
+
+
+openThread() {
+    console.log('i: ', this.i, ' message: ',' chattype: ', this.chatType, this.message);
+    
+    if (this.chatType === 'channel') {
+    this.threadService.chatType = 'channel';
+      this.messageService.openChannelThread(this.message as Message);
+    } else if (this.chatType === 'dm') {
+    this.threadService.chatType = 'dm';
+      this.dmService.openDmThread(this.i);
+    }
+  }
 }

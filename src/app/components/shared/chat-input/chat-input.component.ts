@@ -14,6 +14,7 @@ import { ThreadMessagesService } from '../../../services/threadMessages/thread-m
 export class ChatInputComponent {
   @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
   @ViewChild('messageInput') messageInputRef!: ElementRef;
+  @Input() edit: boolean = false;
 
 
   constructor(
