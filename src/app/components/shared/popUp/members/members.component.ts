@@ -29,10 +29,10 @@ export class MembersComponent {
     public overlayService: OverlayService,
     public channelService: ChannelsService
   ) {
-    this.members.set(this.getCurrentMembers());
-    effect(() => {
-      this.members.set(this.getCurrentMembers());
-    });
+    // this.members.set(this.getCurrentMembers());
+    // effect(() => {
+    //   this.members.set(this.getCurrentMembers());
+    // });
   }
 
   private getCurrentMembers(): string[] {
