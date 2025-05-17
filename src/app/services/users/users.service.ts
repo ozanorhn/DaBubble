@@ -41,21 +41,25 @@ export class UsersService implements OnDestroy {
 
 
   updateOnlineStatus() {
-    const update = async () => {
-      this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
-      if (!this.storedUser.id) return;
-      const userRef = doc(this.usersCollection, this.storedUser.id);
-      try {
-        await updateDoc(userRef, {
-          online: Timestamp.now()
-        });
-        console.log('Online-Status aktualisiert:', this.storedUser.id);
-      } catch (error) {
-        console.error('Fehler beim Aktualisieren des Online-Status:', error);
-      }
-      setTimeout(update, 15000); // Nächste Aktualisierung in 15 Sekunden
-    };
-    update(); // Ersten Aufruf starten
+    if (this.storedUser.id !== this.GuestUser.id) {
+
+      const update = async () => {
+        this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
+        if (!this.storedUser.id) return;
+        const userRef = doc(this.usersCollection, this.storedUser.id);
+        try {
+          await updateDoc(userRef, {
+            online: Timestamp.now()
+          });
+          console.log('Online-Status aktualisiert:', this.storedUser.id);
+        } catch (error) {
+          console.error('Fehler beim Aktualisieren des Online-Status:', error);
+        }
+        setTimeout(update, 15000); // Nächste Aktualisierung in 15 Sekunden
+      };
+      update(); // Ersten Aufruf starten
+
+    }
   }
 
 
@@ -143,14 +147,14 @@ export class UsersService implements OnDestroy {
   async getUserByEmailRealtime(email: string): Promise<User | undefined> {
     const q = query(this.usersCollection, where('email', '==', email));
     const snapshot = await getDocs(q);
-  
+
     if (!snapshot.empty) {
       const docSnap = snapshot.docs[0];
       const data = docSnap.data() as User;
       data.id = docSnap.id;
       return data;
     }
-  
+
     return undefined;
   }
 
