@@ -19,6 +19,7 @@ import { LocalStorageService } from '../../services/localStorage/local-storage.s
 import { User } from '../../classes/user.class';
 import { MembersComponent } from "../shared/popUp/members/members.component";
 import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
+import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
 
 @Component({
   selector: 'app-main-page',
@@ -37,7 +38,8 @@ import { AddMembersComponent } from "../shared/popUp/add-members/add-members.com
     ProfileComponent,
     LogOutComponent,
     MembersComponent,
-    AddMembersComponent
+    AddMembersComponent,
+    LoadingScreenComponent
   ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
@@ -54,10 +56,6 @@ export class MainPageComponent {
     public localStorageS: LocalStorageService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-
-    // setInterval(() => {
-    //   console.log(mainNavService.showNav());
-    // },1000)
   }
 
 

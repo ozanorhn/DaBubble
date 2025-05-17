@@ -16,6 +16,8 @@ export class ChannelsService implements OnDestroy {
   choiceMembers = signal(true);
   choiceMembersArray: string[] = [];
 
+  loading = true;
+
   private unsubscribe!: () => void;
 
   createChannel = new Channel({
@@ -33,7 +35,7 @@ export class ChannelsService implements OnDestroy {
 
     effect(() => {
       console.log('Channel index', this.currentIndex());
-      
+
     });
   }
 
@@ -45,6 +47,7 @@ export class ChannelsService implements OnDestroy {
         data.id = doc.id;
         return data;
       })
+      this.loading = false;
     })
   }
 
