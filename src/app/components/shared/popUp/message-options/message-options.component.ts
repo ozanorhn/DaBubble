@@ -31,23 +31,31 @@ export class MessageOptionsComponent implements OnInit {
     console.log(this.message);
     console.log(this.i);
     console.log(this.chatType);
-    
+
   }
 
   // openThread(message: Message | DM, index: number) {
   openThread() {
-    console.log('i: ', this.i, ' message: ',' chattype: ', this.chatType, this.message);
-    
+    console.log('i: ', this.i, ' message: ', ' chattype: ', this.chatType, this.message);
+
     if (this.chatType === 'channel') {
-    this.threadService.chatType = 'channel';
+      this.threadService.chatType = 'channel';
       this.messageService.openChannelThread(this.message as Message);
     } else if (this.chatType === 'dm') {
-    this.threadService.chatType = 'dm';
+      this.threadService.chatType = 'dm';
       this.dmService.openDmThread(this.i);
     }
   }
 
   editMessage() {
-    
+    if (this.chatType === 'channel') {
+      console.log('########### ', this.chatType, '########### ', this.message.id, '########### ', this.i);
+      let inputId: string = this.message.id + '_' + this.i + '_input';
+      let messageContentId: string = this.message.id + '_' + this.i + '_msg';
+      this.navService.toggleEditInput(inputId, messageContentId);
+    } else if (this.chatType === 'thread') {
+      console.log('OOOOOOOOOO', this.i, 'OOOOOOOOOO', this.threadService.currentThread().threadId);
+      
+    }
   }
 }

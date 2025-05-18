@@ -34,7 +34,7 @@ export class ThreadsService implements OnDestroy {
   * Updates the currently active thread by appending a new message to its content array.
   * @returns {Promise<void>}
   */
-  async updateThread() {
+  async updateThread(): Promise<void> {
     this.threadMessage.sender = this.usersService.currentUser.id;
     this.threadMessage.timestamp = Timestamp.now();
     const updatedContent = [...this.currentThread().content, this.threadMessage];

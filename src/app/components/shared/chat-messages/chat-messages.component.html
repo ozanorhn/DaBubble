@@ -33,9 +33,9 @@
                     <div class="flex msg-content" id="msg-content"
                         class="bg-primary p-[15px] rounded-[30px] max-w-full"
                         [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]':userService.fromCurrentUser(message.sender), ' rounded-ss-none': !userService.fromCurrentUser(message.sender) }">
-                        <span class="max-w-full">{{ message.message }}</span>
+                        <span id="{{ message.id }}_{{ i }}_msg" class="max-w-full">{{ message.message }}</span>
                         @if (true) {
-                            <app-chat-input [message]="message" [edit]="true" [chatType]="chatType"></app-chat-input>
+                            <app-chat-input id="{{ message.id }}_{{ i }}_input" class="text-black d-none" [message]="message" [edit]="true" [chatType]="chatType"></app-chat-input>
                         }
                     </div>
                     
