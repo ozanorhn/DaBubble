@@ -27,7 +27,6 @@ export class AddMembersComponent implements OnInit {
   channelMembers: string[] = [];
   userExist = false;
   dropdownOpen = false;
-
   addMember = new User();
 
   constructor(
@@ -55,7 +54,7 @@ export class AddMembersComponent implements OnInit {
     this.filterdUsers = this.userService.users.filter(user =>
       !this.channelMembers.some(channelUser => channelUser === user.id)
     );
-    this.searchUser()
+    this.searchUser();
   }
 
 
@@ -102,18 +101,11 @@ export class AddMembersComponent implements OnInit {
   }
 
 
-
-
   async addUser() {
-    // this.channelService.channels[this.channelService.currentIndex()].members.push();
-
     console.log('Current Channel', this.channelService.channels[this.channelService.currentIndex()]);
-
     let channelId: string = this.channelService.channels[this.channelService.currentIndex()].id
-
     let channelData = this.channelService.channels[this.channelService.currentIndex()]
     channelData.members.push(this.addMember.id)
-
     await updateDoc(
       doc(this.channelService.channelsCollection, channelId),
       {
@@ -121,11 +113,8 @@ export class AddMembersComponent implements OnInit {
       }
       
     );
-
-    this.overlayService.addMembersOverlay()
+    this.overlayService.addMembersOverlay();
   }
-
-
 
 
 }
