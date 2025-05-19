@@ -50,7 +50,7 @@ export class AddMembersComponent implements OnInit {
 
 
   applyFilters() {
-    this.channelMembers = this.channelService.channels[this.channelService.currentIndex()].members;
+    this.channelMembers = this.channelService.channels[this.channelService.currentIndex()]?.members;
     this.filterdUsers = this.userService.users.filter(user =>
       !this.channelMembers.some(channelUser => channelUser === user.id)
     );
