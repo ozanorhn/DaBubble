@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User as FirebaseUser } from '@angular/fire/auth';
-import { addDoc, collection, doc, Firestore, updateDoc } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
 import { LocalStorageService } from '../localStorage/local-storage.service';
@@ -19,7 +19,7 @@ export class AuthService {
   ) { }
 
 
-  async googleLogin() {
+/*   async googleLogin() {
     const provider = new GoogleAuthProvider();
     try {
       // Google-Popup für Anmeldung
@@ -45,6 +45,42 @@ export class AuthService {
       throw error;
     }
   }
+ */
+
+async googleLogin() {
+      const provider = new GoogleAuthProvider();
+    
+      try {
+        const result = await signInWithPopup(this.auth, provider);
+        const user = result.user;
+    
+        if (!user.email) {
+          throw new Error('Fehlende E-Mail-Adresse vom Google-Konto.');
+        }
+    
+        // Firestore direkt abfragen, um sicherzugehen, dass der Benutzer existiert
+        const existingUser = await this.userService.getUserByEmailRealtime(user.email);
+    
+        if (existingUser) {
+          console.log('Benutzer gefunden:', existingUser.email);
+          const userDocRef = doc(this.userService.usersCollection, existingUser.id);
+          await updateDoc(userDocRef, { online: Timestamp.now() });
+    
+          // Auch in LocalStorage setzen, falls gewünscht
+          this.localStorageService.saveObject('currentUser', existingUser);
+    
+        } else {
+             // Neuer Google-Nutzer wird registriert
+        await this.createNewUserByGoogleLogin(user);
+        }
+    
+      } catch (error) {
+        console.error('Fehler bei der Google-Anmeldung:', error);
+        throw error;
+      }
+    }
+    
+
 
 
   async registerUser() {
@@ -62,8 +98,8 @@ export class AuthService {
       // 4. Fehlende Felder sicher ergänzen
       user.email = firebaseUser.email || '';
       user.avatar = user.avatar || '/assets/imgs/avatar1.svg';
-      user.online = true;
-      user.createdAt = Date.now();
+      user.online = Timestamp.now();
+      user.createdAt =  Timestamp.now(); //Date.now();
 
       // 5. Passwort entfernen vor dem Speichern
       const { password: _, ...userProfile } = user.toJSON();
@@ -113,8 +149,25 @@ export class AuthService {
     
   }
 
-  
+  async createNewUserByGoogleLogin(user: FirebaseUser) {
+    const newUser = new User({
+      name: user.displayName ?? 'Google Nutzer',
+      email: user.email ?? '',
+      avatar: user.photoURL ?? '/assets/imgs/avatar1.svg',
+      online: Timestamp.now(),
+      createdAt: Timestamp.now(),
+    });
 
+    const { password: _, ...userProfile } = newUser.toJSON();
+    await addDoc(this.userService.usersCollection, userProfile);
+
+    console.log(
+      'Google Benutzer erfolgreich registriert und angemeldet:',
+      user.email
+    );
+
+    this.localStorageService.saveObject('currentUser', newUser);
+  }
 
   
 }

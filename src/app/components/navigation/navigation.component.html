@@ -1,17 +1,17 @@
 <section class="flex flex-col h-full max-w-[1024px] rounded-[30px]  bg-white overflow-auto relative">
 
-    <div class="sticky top-0 items-center justify-between hidden w-full p-3 bg-white lg:flex">
+    <div class="sticky z-[1] top-0 items-center justify-between hidden w-full p-3 bg-white lg:flex">
 
         <div class="flex items-center gap-4 text-2xl font-bold">
             <img src="/assets/imgs/workspace-logo.svg" alt="">
             Devspace
         </div>
 
-        <img class="cursor-pointer hover:scale-[1.1] active:scale-[0.9] duration-150 size-8"
+        <img (click)="mainNavService.removeMarker()" class="cursor-pointer hover:scale-[1.1] active:scale-[0.9] duration-150 size-8"
             src="/assets/icons/edit_square.svg" alt="">
     </div>
 
-    <div>
+    <div class="flex flex-col pl-8">
 
         @if (filterService.searchValue().length >= 1) {
         <ul class="flex flex-col">
@@ -33,14 +33,6 @@
         @if(filterService.searchValue().length < 1) { <app-channels></app-channels>
             <app-direct-messages></app-direct-messages>
             }
-
-
     </div>
-
-    <!-- <button class="absolute p-2 text-white border bottom-16 left-4 bg-slate-500"
-        (click)="directMessageService.sendDirectMessage()">Send Test DirectMessages to Firebase</button>
-
-    <button class="absolute p-2 text-white border bottom-2 left-4 bg-slate-500"
-        (click)="threadService.createThreadForMessage()">Send Test Thread to Firebase</button> -->
 
 </section>

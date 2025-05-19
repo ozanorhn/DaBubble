@@ -19,6 +19,8 @@ export class OverlayService {
   profileObj: User = new User();
 
   hideLogoutOverlay = true;
+  hideMembersOverlay = true;
+  hideAddMembersOverlay = true
 
   constructor(
     public channelsService: ChannelsService,
@@ -33,6 +35,7 @@ export class OverlayService {
 
   addUserOverlay() {
     this.hideAddUser = !this.hideAddUser;
+    this.channelsService.choiceMembersArray = [];
   }
 
 
@@ -41,8 +44,8 @@ export class OverlayService {
   }
 
 
-  profileOverlay(UserView: boolean, currentProfile: {}){
-    if(this.hideProfileOverlay){
+  profileOverlay(UserView: boolean, currentProfile: {}) {
+    if (this.hideProfileOverlay) {
       this.editProfil = false;
       this.profileObj = currentProfile as User
     }
@@ -55,8 +58,16 @@ export class OverlayService {
   }
 
 
-  logoutOvelay(){
-    this.hideLogoutOverlay =  !this.hideLogoutOverlay
+  logoutOvelay() {
+    this.hideLogoutOverlay = !this.hideLogoutOverlay
+  }
+
+  membersOverlay() {
+    this.hideMembersOverlay = !this.hideMembersOverlay
+  }
+
+  addMembersOverlay(){
+    this.hideAddMembersOverlay = !this.hideAddMembersOverlay
   }
 
 

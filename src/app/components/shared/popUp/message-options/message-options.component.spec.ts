@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LogOutMobileComponent } from './log-out-mobile.component';
+import { MessageOptionsComponent } from './message-options.component';
 
-describe('LogOutMobileComponent', () => {
-  let component: LogOutMobileComponent;
-  let fixture: ComponentFixture<LogOutMobileComponent>;
+describe('MessageOptionsComponent', () => {
+  let component: MessageOptionsComponent;
+  let fixture: ComponentFixture<MessageOptionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LogOutMobileComponent]
+      imports: [MessageOptionsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LogOutMobileComponent);
+    fixture = TestBed.createComponent(MessageOptionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

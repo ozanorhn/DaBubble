@@ -27,12 +27,21 @@ export class MainNavService {
   /**
   * Toggles navigation visibility
   */
+  // toggleNav() {
+  //   if (this.nav) {
+  //     this.closeNav();
+  //   } else {
+  //     this.openNav();
+  //   }
+  // }
+
   toggleNav() {
-    if (this.nav) {
-      this.closeNav();
-    } else {
-      this.openNav();
-    }
+    this.nav = !this.nav;
+    // Verzögerung für Animation
+    setTimeout(() => {
+      if (this.nav) this.openNav();
+      else this.closeNav();
+    }, 10);
   }
 
 
@@ -200,4 +209,29 @@ export class MainNavService {
     }
     // this.setHeaderMembers();
   }
+
+
+
+  UserMarked = 99999999;
+  ChannelMarked = 99999999;
+
+  markedUser(i: number) {
+    this.UserMarked = i
+    this.ChannelMarked = 99999999;
+  }
+
+
+  markedChannel(i: number) {
+    this.ChannelMarked = i
+    this.UserMarked = 99999999;
+  }
+
+
+  removeMarker() {
+    this.ChannelMarked = 99999999;
+    this.UserMarked = 99999999;
+  }
+
+
+
 }

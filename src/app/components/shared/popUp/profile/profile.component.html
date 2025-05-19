@@ -19,7 +19,8 @@
 
       <p>Vollständiger Name</p>
     </div>
-    <input class="w-full px-5 py-4 border border-lightpurple rounded-[30px]" type="text" placeholder="Frederik Beck">
+    <input [(ngModel)]="changeName" class="w-full px-5 py-4 border border-lightpurple rounded-[30px]" type="text"
+      placeholder="{{overlayService.profileObj.name}}">
   </div>
   } @else {
 
@@ -43,7 +44,6 @@
       <div class="rounded-[50%] size-4"
         [ngClass]="{'bg-online' :overlayService.profileObj.online, 'bg-offline' : !overlayService.profileObj.online}">
       </div>
-      <!-- <span class="right-0 bg-online size-4 bottom-1 rounded-[50%] border-white "  ></span> -->
       @if(overlayService.profileObj.online){
       Aktiv
       } @else {
@@ -59,7 +59,8 @@
 
     <div class="flex flex-col">
       <span class="font-bold">E-Mail-Adresse</span>
-      <a class="cursor-pointer text-linkblue hover:scale-[1.1] duration-200"  [href]="'mailto:' + overlayService.profileObj.email" >{{overlayService.profileObj.email}}</a>
+      <a class="cursor-pointer text-linkblue hover:scale-[1.1] duration-200"
+        [href]="'mailto:' + overlayService.profileObj.email">{{overlayService.profileObj.email}}</a>
     </div>
   </div>
 
@@ -83,7 +84,7 @@
       Abbrechen
     </button>
 
-    <button
+    <button (click)="editProfile()"
       class="flex text-white px-6 py-3 bg-purple1 rounded-[50px] gap-3 hover:scale-[1.2] duration-200 active:scale-[0.9]">
       Speichern
     </button>

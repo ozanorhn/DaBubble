@@ -11,6 +11,8 @@ import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 import { Message } from '../../../classes/message.class';
 import { DM } from '../../../interfaces/dm';
+import { MessageOptionsComponent } from "../popUp/message-options/message-options.component";
+import { ChatInputComponent } from "../chat-input/chat-input.component";
 
 @Component({
   standalone: true,
@@ -19,8 +21,10 @@ import { DM } from '../../../interfaces/dm';
     CommonModule,
     ChatSeperatorComponent,
     ChatMessageReactionsComponent,
-    ChatMessageAnswerComponent
-  ],
+    ChatMessageAnswerComponent,
+    MessageOptionsComponent,
+    ChatInputComponent
+],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
@@ -42,13 +46,13 @@ export class ChatMessagesComponent {
   ) { }
 
 
-  openThread(message: Message | DM, index: number) {
-    if (this.chatType === 'channel') {
-    this.threadService.chatType = 'channel';
-      this.messageService.openChannelThread(message as Message);
-    } else if (this.chatType === 'dm') {
-    this.threadService.chatType = 'dm';
-      this.dmService.openDmThread(index);
-    }
-  }
+  // openThread(message: Message | DM, index: number) {
+  //   if (this.chatType === 'channel') {
+  //   this.threadService.chatType = 'channel';
+  //     this.messageService.openChannelThread(message as Message);
+  //   } else if (this.chatType === 'dm') {
+  //   this.threadService.chatType = 'dm';
+  //     this.dmService.openDmThread(index);
+  //   }
+  // }
 }

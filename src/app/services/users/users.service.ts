@@ -2,23 +2,21 @@ import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
-import { AuthService } from '../auth/auth.service';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 // import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
+import { Timestamp } from '@firebase/firestore';
+import { query, where, getDocs } from 'firebase/firestore';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService implements OnDestroy {
-  // private auth = inject(Auth);
 
   private firestore = inject(Firestore);
-  // private authService = inject(AuthService);
-  // private auth = inject(Auth);
-
-
   usersCollection = collection(this.firestore, 'users');
- 
+
   users: User[] = [];
   tempUser: Partial<User> = {};
   currentUser: User = new User();
@@ -31,15 +29,49 @@ export class UsersService implements OnDestroy {
     online: true,
   }
 
+  storedUser = new User();
 
   constructor(
-    public localStorageService: LocalStorageService
+    public localStorageS: LocalStorageService
   ) {
+    this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
     this.initUsersListener();
+    this.updateOnlineStatus();
   }
 
-  private unsubscribe!: () => void;
 
+  updateOnlineStatus() {
+    if (this.storedUser.id !== this.GuestUser.id) {
+
+      const update = async () => {
+        this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
+        if (!this.storedUser.id) return;
+        const userRef = doc(this.usersCollection, this.storedUser.id);
+        try {
+          await updateDoc(userRef, {
+            online: Timestamp.now()
+          });
+          console.log('Online-Status aktualisiert:', this.storedUser.id);
+        } catch (error) {
+          console.error('Fehler beim Aktualisieren des Online-Status:', error);
+        }
+        setTimeout(update, 15000); // Nächste Aktualisierung in 15 Sekunden
+      };
+      update(); // Ersten Aufruf starten
+
+    }
+  }
+
+
+  isUserOnline(lastOnline: Timestamp | undefined, thresholdSeconds = 20): boolean {
+    if (!lastOnline) return false;
+    const now = Timestamp.now().toMillis();
+    const lastOnlineMillis = lastOnline.toMillis();
+    return (now - lastOnlineMillis) < thresholdSeconds * 1000;
+  }
+
+
+  private unsubscribe!: () => void;
   private initUsersListener() {
     this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
       this.users = snapshot.docs.map((doc) => {
@@ -77,8 +109,6 @@ export class UsersService implements OnDestroy {
 
 
   getTempUser() {
-    //console.log('Current User ???', this.tempUser);
-    // this.authService.saveObject('currentUser',this.tempUser )
     return this.tempUser;
   }
 
@@ -106,10 +136,26 @@ export class UsersService implements OnDestroy {
 
 
   fromCurrentUser(id: string): boolean {
-     if (id === this.currentUser.id) {
-       return true;
-     } else {
-       return false;
-     }
-   }
+    if (id === this.currentUser.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  async getUserByEmailRealtime(email: string): Promise<User | undefined> {
+    const q = query(this.usersCollection, where('email', '==', email));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      const docSnap = snapshot.docs[0];
+      const data = docSnap.data() as User;
+      data.id = docSnap.id;
+      return data;
+    }
+
+    return undefined;
+  }
+
 }

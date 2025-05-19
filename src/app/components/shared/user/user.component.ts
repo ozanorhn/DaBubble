@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User } from '../../../classes/user.class';
 import { ChannelsService } from '../../../services/channels/channels.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
+import { Timestamp } from '@angular/fire/firestore';
+import { UsersService } from '../../../services/users/users.service';
 
 @Component({
   selector: 'app-user',
@@ -12,31 +15,36 @@ import { LocalStorageService } from '../../../services/localStorage/local-storag
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
-export class UserComponent {
+export class UserComponent implements OnInit {
 
   currentUser
 
   constructor(
     public channelService: ChannelsService,
-    public localStorageS: LocalStorageService
+    public localStorageS: LocalStorageService,
+    public mainNavService: MainNavService,
+    public userService: UsersService
   ) {
-    // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-   }
+  }
 
-  avatar = [
-    { av1: '/assets/imgs/avatar1.svg' },
-    { av2: '/assets/imgs/avatar2.svg' },
-    { av3: '/assets/imgs/avatar3.svg' },
-    { av4: '/assets/imgs/avatar4.svg' },
-    { av5: '/assets/imgs/avatar5.svg' },
-    { av6: '/assets/imgs/avatar6.svg' },
+  timeChecker = Timestamp.now();
 
-  ]
 
   @Input() userInfo!: User;
+  @Input() i = 0;
+
+  isOnline = false;
 
 
+  ngOnInit(): void {
+    this.updateOnlineStatus();
+    setInterval(() => this.updateOnlineStatus(), 5000); 
+  }
+  
+  updateOnlineStatus() {
+    this.isOnline = this.userService.isUserOnline(this.userInfo.online);
+  }
 
 
 }
