@@ -59,7 +59,13 @@ export class ChatInputComponent implements OnInit {
         }
         break;
       case 'dm':
-        this.directMessageService.sendDirectMessage();
+        if (this.edit) {
+          this.directMessageService.directMessage.content[this.index].message = this.editText;
+          this.directMessageService.updateDM('');
+          this.saveClicked.emit();
+        } else {
+          this.directMessageService.sendDirectMessage();
+        }
         break;
       case 'new':
         console.log('Funktion zum Senden einer neuen Nachricht einfügen :P');
