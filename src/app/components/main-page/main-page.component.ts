@@ -46,23 +46,40 @@ import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.
 })
 export class MainPageComponent {
   showMessagesOnly = false;
-
   currentUser
-
+  showAltLogo = false;
+  isMobile = false;
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
     public overlayService: OverlayService,
-    public localStorageS: LocalStorageService
+    public localStorageS: LocalStorageService,
+    public navService: MainNavService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    this.updateIsMobile(); 
   }
-
+  ngOnInit() {
+    window.addEventListener('resize', () => {
+      this.updateIsMobile();
+    });
+  }
 
 
 
 
   toggleMessagesView() {
     this.showMessagesOnly = !this.showMessagesOnly;
+  }
+  switchContent() {
+    if (!this.isMobile) return;
+    this.showAltLogo = !this.showAltLogo;
+    this.navService.toggleNav()
+  }
+  updateIsMobile() {
+    this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
+    if (!this.isMobile) {
+      this.showAltLogo = false;
+    }
   }
 }

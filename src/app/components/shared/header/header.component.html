@@ -1,16 +1,42 @@
-<div class="w-full h-[80px] bg-primary flex justify-between items-center pr-[16px] pl-[16px]">
-  <img src="assets/imgs/logo.svg" alt="DaBubble Logo" class="hidden h-16 mt-4 sm:block" />
-
-
-  <div class="flex items-center gap-2 cursor-pointer sm:hidden" (click)="navService.toggleNav()" >
-    <img src="/assets/icons/keyboard_arrow_down.svg" alt="">
-    <img src="/assets/imgs/workspace-logo.svg" alt="">
-    <p class="text-xl font-bold">DevSpace</p>
+<!--  -->
+<div
+  class="w-full h-[80px] bg-primary flex justify-between items-center pr-[16px] pl-[16px]"
+>
+  <div (click)="switchLogo()">
+    <!-- Logo für größere Screens -->
+    @if (!isMobile) {
+    <img
+      id="logo"
+      src="assets/imgs/logo.svg"
+      alt="DaBubble Logo"
+      class="h-16 mt-4 sm:block hidden"
+    />
+    }
+    <!-- Logo für kleine Screens -->
+    @if (isMobile) {
+    <div class="flex items-center gap-2 cursor-pointer sm:hidden">
+      <img src="/assets/icons/keyboard_arrow_down.svg" alt="" />
+      <img
+        [src]="
+          showAltLogo
+            ? 'assets/imgs/logo.svg'
+            : '/assets/imgs/workspace-logo.svg'
+        "
+        alt=""
+      />
+      @if (!showAltLogo) {
+      <p class="text-xl font-bold">DevSpace</p>
+      }
+    </div>
+    }
   </div>
-  
 
   <app-search class="w-[50%] hidden lg:block self-end"></app-search>
 
-  <img src="{{currentUser.avatar}}" (click)="overlayService.logoutOvelay()"
-    class="h-16 mt-4 rounded-full cursor-pointer hover:scale-[1.1] duration-150" alt="DaBubble avatar">
+  <img
+    src="{{ currentUser.avatar }}"
+    (click)="overlayService.logoutOvelay()"
+    class="h-16 mt-4 rounded-full cursor-pointer hover:scale-[1.1] duration-150"
+    alt="DaBubble avatar"
+  />
 </div>
