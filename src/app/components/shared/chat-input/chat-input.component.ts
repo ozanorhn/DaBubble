@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
@@ -13,7 +13,7 @@ import { DM } from '../../../interfaces/dm';
   templateUrl: './chat-input.component.html',
   styleUrl: './chat-input.component.scss'
 })
-export class ChatInputComponent {
+export class ChatInputComponent implements OnInit {
   @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
   @ViewChild('messageInput') messageInputRef!: ElementRef;
   @Input() edit: boolean = false;
@@ -27,6 +27,11 @@ export class ChatInputComponent {
     public directMessageService: DirectMessagesService,
     public threadMessagesService: ThreadMessagesService
   ) { }
+
+
+  ngOnInit(): void {
+    this.editText = this.message.message;
+  }
 
 
   sendMessage() {
