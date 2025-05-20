@@ -1,7 +1,6 @@
 <section class="h-[145px] p-3 mx-4 flex flex-1 flex-col  bg-white rounded-[20px] border-lightpurple border-[1px]">
-    {{ chatType }}
     @if (edit) {
-        <textarea #messageInput [(ngModel)]="editText" class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten..." name="" id=""></textarea>
+        <textarea #messageEditInput [(ngModel)]="editText" class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten..." name="" id=""></textarea>
     } @else {
         @switch (chatType) {
          @case ('dm') {
