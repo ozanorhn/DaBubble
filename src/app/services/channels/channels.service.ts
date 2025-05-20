@@ -48,6 +48,7 @@ export class ChannelsService implements OnDestroy {
         return data;
       })
       this.loading = false;
+      console.log('Channels updated:', this.channels); // 👈 Fügen Sie diesen Log hinzu
     })
   }
 
