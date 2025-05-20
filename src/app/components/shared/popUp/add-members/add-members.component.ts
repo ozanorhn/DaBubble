@@ -113,7 +113,7 @@ export class AddMembersComponent implements OnInit {
       }
     );
     // this.channelService.channels = [...this.channelService.channels];
-    this.overlayService.addMembersOverlay();
+    this.overlayService.addMembersOverlay();    
   }
 
 

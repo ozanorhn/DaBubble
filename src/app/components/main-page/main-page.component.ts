@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -49,6 +49,7 @@ export class MainPageComponent {
   currentUser
   showAltLogo = false;
   isMobile = false;
+  // @ViewChild(AddMembersComponent) addMembersComponent!: QueryList<AddMembersComponent>;
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
