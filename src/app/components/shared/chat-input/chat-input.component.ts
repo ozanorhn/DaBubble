@@ -14,10 +14,11 @@ import { DM } from '../../../interfaces/dm';
   styleUrl: './chat-input.component.scss'
 })
 export class ChatInputComponent implements OnInit {
-  @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
   @ViewChild('messageInput') messageInputRef!: ElementRef;
+  @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
   @Input() edit: boolean = false;
   @Input() message: Message | DM = new Message();
+  @Input() index: number = 0;
   @Output() saveClicked = new EventEmitter<void>();
 
   editText: string = '';
@@ -47,7 +48,11 @@ export class ChatInputComponent implements OnInit {
         }
         break;
       case 'thread':
-        if (this.threadService.chatType === 'channel') {
+        if (this.edit) {
+          this.threadService.currentThread().content[this.index].message = this.editText
+          this.threadService.updateThread(true);
+          this.saveClicked.emit();
+        } else if (this.threadService.chatType === 'channel') {
           this.messageService.updateThread();
         } else {
           this.directMessageService.updateThread();
