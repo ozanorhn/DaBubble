@@ -10,7 +10,6 @@ import { UsersService } from '../../../services/users/users.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 import { Message } from '../../../classes/message.class';
-import { DM } from '../../../interfaces/dm';
 import { MessageOptionsComponent } from "../popUp/message-options/message-options.component";
 import { ChatInputComponent } from "../chat-input/chat-input.component";
 
@@ -24,7 +23,7 @@ import { ChatInputComponent } from "../chat-input/chat-input.component";
     ChatMessageAnswerComponent,
     MessageOptionsComponent,
     ChatInputComponent
-],
+  ],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
@@ -34,8 +33,7 @@ export class ChatMessagesComponent {
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
   @Input() threadHeadMessage: any;
   @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
-
-
+  editIndex: number | null = null;
   constructor(
     public mainNavService: MainNavService,
     public authService: AuthService,
@@ -46,6 +44,11 @@ export class ChatMessagesComponent {
   ) { }
 
 
+  toggleEditInput(index: number): void {
+    this.editIndex = this.editIndex === index ? null : index;
+  }
+
+  
   // openThread(message: Message | DM, index: number) {
   //   if (this.chatType === 'channel') {
   //   this.threadService.chatType = 'channel';

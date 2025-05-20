@@ -1,10 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MainNavService } from '../../../../pageServices/navigates/main-nav.service';
 import { ThreadsService } from '../../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../../services/directMessages/direct-messages.service';
 import { Message } from '../../../../classes/message.class';
 import { MessagesService } from '../../../../services/messages/messages.service';
-import { DM } from '../../../../interfaces/dm';
 
 @Component({
   standalone: true,
@@ -18,6 +17,7 @@ export class MessageOptionsComponent implements OnInit {
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
   @Input() message: Message = new Message();
   @Input() i: number = 0;
+  @Output() editClicked = new EventEmitter<void>();
 
 
   constructor(
@@ -27,11 +27,16 @@ export class MessageOptionsComponent implements OnInit {
     public messageService: MessagesService
   ) { }
 
+
   ngOnInit(): void {
     console.log(this.message);
     console.log(this.i);
     console.log(this.chatType);
+  }
 
+
+  onEditClick() {
+    this.editClicked.emit();
   }
 
   // openThread(message: Message | DM, index: number) {
@@ -55,7 +60,7 @@ export class MessageOptionsComponent implements OnInit {
       this.navService.toggleEditInput(inputId, messageContentId);
     } else if (this.chatType === 'thread') {
       console.log('OOOOOOOOOO', this.i, 'OOOOOOOOOO', this.threadService.currentThread().threadId);
-      
+
     }
   }
 }
