@@ -41,7 +41,8 @@
                                 class="text-black"
                                 [message]="message"
                                 [edit]="true"
-                                [chatType]="chatType">
+                                [chatType]="chatType"
+                                (saveClicked)="toggleEditInput(i)">
                             </app-chat-input>
                         }
                     </div>

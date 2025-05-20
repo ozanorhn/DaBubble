@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
@@ -18,6 +18,7 @@ export class ChatInputComponent implements OnInit {
   @ViewChild('messageInput') messageInputRef!: ElementRef;
   @Input() edit: boolean = false;
   @Input() message: Message | DM = new Message();
+  @Output() saveClicked = new EventEmitter<void>();
 
   editText: string = '';
 
@@ -40,6 +41,7 @@ export class ChatInputComponent implements OnInit {
         if (this.edit) {
           this.message.message = this.editText;
           this.messageService.editMessage(this.message as Message);
+          this.saveClicked.emit();
         } else {
           this.messageService.sendMessage();
         }
