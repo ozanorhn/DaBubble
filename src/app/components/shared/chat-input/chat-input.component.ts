@@ -74,13 +74,15 @@ export class ChatInputComponent implements OnInit {
       default:
         break;
     }
-    this.messageInputRef.nativeElement.focus();
+    if (!this.edit) {
+      this.messageInputRef.nativeElement.focus();
+    }
   }
 
 
   focusEditInput() {
-  if (this.edit && this.messageEditInputRef) {
-    this.messageEditInputRef.nativeElement.focus();
+    if (this.edit && this.messageEditInputRef) {
+      this.messageEditInputRef.nativeElement.focus();
+    }
   }
-}
 }
