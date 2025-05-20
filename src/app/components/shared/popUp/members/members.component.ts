@@ -17,7 +17,9 @@ export class MembersComponent {
 
 
   members = signal<string[]>([]);
-  membersArray: User[] = []
+  // membersArray: User[] = []
+
+  membersArray = signal<User[]>([]);
 
   filteredUsers = computed(() =>
     this.usersService.users.filter(user =>
@@ -38,11 +40,12 @@ export class MembersComponent {
       } catch (error) {
         console.log('No Members');
       }
-      this.membersArray = this.usersService.users.filter(user =>
-        this.members().includes(user.id))
+      this.membersArray.set(this.usersService.users.filter(user =>
+        this.members().includes(user.id)))
     })
-
   }
+
+
 
 
 
