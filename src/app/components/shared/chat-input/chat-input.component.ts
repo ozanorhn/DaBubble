@@ -15,6 +15,7 @@ import { DM } from '../../../interfaces/dm';
 })
 export class ChatInputComponent implements OnInit {
   @ViewChild('messageInput') messageInputRef!: ElementRef;
+  @ViewChild('messageEditInput') messageEditInputRef!: ElementRef;
   @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
   @Input() edit: boolean = false;
   @Input() message: Message | DM = new Message();
@@ -75,4 +76,11 @@ export class ChatInputComponent implements OnInit {
     }
     this.messageInputRef.nativeElement.focus();
   }
+
+
+  focusEditInput() {
+  if (this.edit && this.messageEditInputRef) {
+    this.messageEditInputRef.nativeElement.focus();
+  }
+}
 }

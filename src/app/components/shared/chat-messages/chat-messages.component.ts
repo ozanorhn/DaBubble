@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
 import { MessagesService } from '../../../services/messages/messages.service';
@@ -33,7 +33,10 @@ export class ChatMessagesComponent {
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
   @Input() threadHeadMessage: any;
   @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
+  @ViewChildren(ChatInputComponent) chatInputComponents!: QueryList<ChatInputComponent>;
   editIndex: number | null = null;
+
+
   constructor(
     public mainNavService: MainNavService,
     public authService: AuthService,
@@ -45,17 +48,15 @@ export class ChatMessagesComponent {
 
 
   toggleEditInput(index: number): void {
-    this.editIndex = this.editIndex === index ? null : index;
+    if (this.editIndex === index) {
+      this.editIndex = null;
+    } else {
+      this.editIndex = index;
+      let id = setTimeout(() => {
+        const chatInput = this.chatInputComponents.toArray()[0];
+        chatInput?.focusEditInput();
+        clearTimeout(id);
+      }, 100);
+    }
   }
-
-  
-  // openThread(message: Message | DM, index: number) {
-  //   if (this.chatType === 'channel') {
-  //   this.threadService.chatType = 'channel';
-  //     this.messageService.openChannelThread(message as Message);
-  //   } else if (this.chatType === 'dm') {
-  //   this.threadService.chatType = 'dm';
-  //     this.dmService.openDmThread(index);
-  //   }
-  // }
 }
