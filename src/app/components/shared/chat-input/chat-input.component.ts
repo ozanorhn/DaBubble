@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
@@ -13,11 +13,14 @@ import { DM } from '../../../interfaces/dm';
   templateUrl: './chat-input.component.html',
   styleUrl: './chat-input.component.scss'
 })
-export class ChatInputComponent {
-  @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
+export class ChatInputComponent implements OnInit {
   @ViewChild('messageInput') messageInputRef!: ElementRef;
+  @ViewChild('messageEditInput') messageEditInputRef!: ElementRef;
+  @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
   @Input() edit: boolean = false;
   @Input() message: Message | DM = new Message();
+  @Input() index: number = 0;
+  @Output() saveClicked = new EventEmitter<void>();
 
   editText: string = '';
 
@@ -29,25 +32,41 @@ export class ChatInputComponent {
   ) { }
 
 
+  ngOnInit(): void {
+    this.editText = this.message.message;
+  }
+
+
   sendMessage() {
     switch (this.chatType) {
       case 'channel':
         if (this.edit) {
           this.message.message = this.editText;
           this.messageService.editMessage(this.message as Message);
+          this.saveClicked.emit();
         } else {
           this.messageService.sendMessage();
         }
         break;
       case 'thread':
-        if (this.threadService.chatType === 'channel') {
+        if (this.edit) {
+          this.threadService.currentThread().content[this.index].message = this.editText
+          this.threadService.updateThread(true);
+          this.saveClicked.emit();
+        } else if (this.threadService.chatType === 'channel') {
           this.messageService.updateThread();
         } else {
           this.directMessageService.updateThread();
         }
         break;
       case 'dm':
-        this.directMessageService.sendDirectMessage();
+        if (this.edit) {
+          this.directMessageService.directMessage.content[this.index].message = this.editText;
+          this.directMessageService.updateDM('');
+          this.saveClicked.emit();
+        } else {
+          this.directMessageService.sendDirectMessage();
+        }
         break;
       case 'new':
         console.log('Funktion zum Senden einer neuen Nachricht einfügen :P');
@@ -57,4 +76,11 @@ export class ChatInputComponent {
     }
     this.messageInputRef.nativeElement.focus();
   }
+
+
+  focusEditInput() {
+  if (this.edit && this.messageEditInputRef) {
+    this.messageEditInputRef.nativeElement.focus();
+  }
+}
 }

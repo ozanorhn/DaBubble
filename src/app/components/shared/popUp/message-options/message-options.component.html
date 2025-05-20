@@ -6,7 +6,7 @@
     @if (messageFromCurrentUser) {
         <div class="relative">
             <button class="flex items-center justify-center transition-all rounded-full size-10 hover:bg-primary [&~p]:hover:opacity-100"
-                    (click)="editMessage()">
+                    (click)="onEditClick()">
                     <img class="size-5" src="assets/icons/more_vert.svg" alt=""></button>
             <p class="py-[10px] px-[20px] drop-shadow-[0px_6px_14px_rgba(0,0,0,0.2)] absolute left-[75%] top-[50%] opacity-0 transition-all w-max bg-white rounded-[30px] rounded-ss-none">Nachricht bearbeiten</p>
         </div>

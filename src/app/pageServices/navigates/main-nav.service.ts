@@ -233,5 +233,8 @@ export class MainNavService {
   }
 
 
-
+  toggleEditInput(inputId: string, messageContentId: string) {
+    document.getElementById(inputId)?.classList.toggle('d-none');
+    document.getElementById(messageContentId)?.classList.toggle('d-none');
+  }
 }

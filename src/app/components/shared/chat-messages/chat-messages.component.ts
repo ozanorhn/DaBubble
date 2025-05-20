@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
 import { MessagesService } from '../../../services/messages/messages.service';
@@ -10,7 +10,6 @@ import { UsersService } from '../../../services/users/users.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 import { Message } from '../../../classes/message.class';
-import { DM } from '../../../interfaces/dm';
 import { MessageOptionsComponent } from "../popUp/message-options/message-options.component";
 import { ChatInputComponent } from "../chat-input/chat-input.component";
 
@@ -24,7 +23,7 @@ import { ChatInputComponent } from "../chat-input/chat-input.component";
     ChatMessageAnswerComponent,
     MessageOptionsComponent,
     ChatInputComponent
-],
+  ],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
@@ -34,6 +33,8 @@ export class ChatMessagesComponent {
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
   @Input() threadHeadMessage: any;
   @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
+  @ViewChildren(ChatInputComponent) chatInputComponents!: QueryList<ChatInputComponent>;
+  editIndex: number | null = null;
 
 
   constructor(
@@ -46,13 +47,16 @@ export class ChatMessagesComponent {
   ) { }
 
 
-  // openThread(message: Message | DM, index: number) {
-  //   if (this.chatType === 'channel') {
-  //   this.threadService.chatType = 'channel';
-  //     this.messageService.openChannelThread(message as Message);
-  //   } else if (this.chatType === 'dm') {
-  //   this.threadService.chatType = 'dm';
-  //     this.dmService.openDmThread(index);
-  //   }
-  // }
+  toggleEditInput(index: number): void {
+    if (this.editIndex === index) {
+      this.editIndex = null;
+    } else {
+      this.editIndex = index;
+      let id = setTimeout(() => {
+        const chatInput = this.chatInputComponents.toArray()[0];
+        chatInput?.focusEditInput();
+        clearTimeout(id);
+      }, 100);
+    }
+  }
 }
