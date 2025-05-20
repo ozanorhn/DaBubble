@@ -21,6 +21,14 @@ export class MembersComponent {
 
   membersArray = signal<User[]>([]);
 
+  // membersArray = computed(() => {
+  //   const currentChannel = this.channelService.channels[this.channelService.currentIndex()];
+  //   if (!currentChannel) return [];
+  //   return this.usersService.users.filter(user => 
+  //     currentChannel.members.includes(user.id)
+  //   );
+  // });
+
   filteredUsers = computed(() =>
     this.usersService.users.filter(user =>
       this.members().includes(user.id)

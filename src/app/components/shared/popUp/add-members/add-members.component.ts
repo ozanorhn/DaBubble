@@ -111,8 +111,8 @@ export class AddMembersComponent implements OnInit {
       {
         members: channelData.members  // Nur die Mitglieder aktualisieren
       }
-      
     );
+    // this.channelService.channels = [...this.channelService.channels];
     this.overlayService.addMembersOverlay();
   }
 
