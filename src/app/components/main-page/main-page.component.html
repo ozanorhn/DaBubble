@@ -21,12 +21,12 @@
 }
 
 <section class="flex h-[calc(100vh-80px)] gap-3 p-3 bg-primary">
+
+
   <div [class.active]="mainNavService.showNav()"
     class="nav-container flex flex-col w-full h-[calc(100% - 3rem)] lg:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white">
     <app-search class="lg:hidden"></app-search>
     <app-navigation class="w-full h-full"></app-navigation>
-
-    <!--  -->
 
     <div (click)="switchContent()"
       class="w-[60px] h-[60px] absolute bottom-10 right-4 rounded-[100px] bg-purple1 z-[999] items-center justify-center cursor-pointer md:hidden">
