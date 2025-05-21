@@ -26,12 +26,18 @@ export class ChannelsService implements OnDestroy {
   });
 
 
+
+  /**
+   * Creates an instance of ChannelsService
+   * @param {Firestore} firestore - Angular Firestore service
+   * @param {UsersService} userService - Service for user-related operations
+   */
   constructor(
     public firestore: Firestore,
     public userService: UsersService
   ) {
     this.channelsCollection = collection(this.firestore, 'channels');
-    this.initChannelsListener();
+    this.setupChannelsListener();
 
     effect(() => {
       console.log('Channel index', this.currentIndex());
@@ -40,7 +46,11 @@ export class ChannelsService implements OnDestroy {
   }
 
 
-  private initChannelsListener() {
+  /**
+   * Initializes the Firestore listener for channels collection
+   * Updates local channels array when changes occur
+   */
+  private setupChannelsListener() {
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
       this.channels = snapshot.docs.map((doc) => {
         const data = doc.data() as Channel;
@@ -53,6 +63,9 @@ export class ChannelsService implements OnDestroy {
   }
 
 
+  /**
+   * Angular lifecycle hook - cleans up resources
+   */
   ngOnDestroy(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
@@ -60,6 +73,10 @@ export class ChannelsService implements OnDestroy {
   }
 
 
+  /**
+  * Adds a new channel to Firestore
+  * Uses either selected members or all users as channel members
+  */
   async addChannel() {
     if (this.choiceMembers()) {
       this.createChannel.members = this.choiceMembersArray
@@ -75,7 +92,10 @@ export class ChannelsService implements OnDestroy {
   }
 
 
-  async editLocal() {
+  /**
+   * Prepares channel data for editing and updates Firestore
+   */
+  async prepareChannelForEdit() {
     const index = this.currentIndex();
     const channel = this.channels[index];
     const channelData = {
@@ -85,11 +105,16 @@ export class ChannelsService implements OnDestroy {
       messagesID: channel.messagesID,
       createdBy: channel.createdBy
     };
-    await this.editOnFirebase(channel, channelData);
+    await this.updateChannelInFirestore(channel, channelData);
   }
 
 
-  async editOnFirebase(channel: Channel, channelData: any) {
+  /**
+   * Updates a channel document in Firestore
+   * @param {Channel} channel - The channel to update
+   * @param {any} channelData - The new channel data
+   */
+  async updateChannelInFirestore(channel: Channel, channelData: any) {
     if (!channel || !channel.id) {
       console.error('Channel nicht gefunden oder hat keine ID');
       return;
@@ -101,6 +126,11 @@ export class ChannelsService implements OnDestroy {
   }
 
 
+  /**
+  * Sets the current channel
+  * @param {Channel} obj - The channel to open
+  * @param {number} i - The index of the channel
+  */
   openChannel(obj: Channel, i: number) {
     if (obj) {
       this.currentIndex.set(i);
@@ -108,13 +138,21 @@ export class ChannelsService implements OnDestroy {
   }
 
 
+  /**
+   * Gets the members of the current channel
+   * @returns {User[]} Array of User objects who are members of the current channel
+   */
   getChannelMembers(): User[] {
     return this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id));
   }
 
 
-  addChoiceMembers(user: User) {
-    if (this.checkIfUserExists(user)) {
+  /**
+  * Toggles a user's selection for channel membership
+  * @param {User} user - The user to add/remove from selection
+  */
+  toggleUserSelection(user: User) {
+    if (this.isUserSelected(user)) {
       this.choiceMembersArray = this.choiceMembersArray.filter(id => id !== user.id);
     } else {
       this.choiceMembersArray.push(user.id);
@@ -122,7 +160,13 @@ export class ChannelsService implements OnDestroy {
   }
 
 
-  checkIfUserExists(user: User): boolean {
+
+  /**
+   * Checks if a user is already selected for channel membership
+   * @param {User} user - The user to check
+   * @returns {boolean} True if user is already selected, false otherwise
+   */
+  isUserSelected(user: User): boolean {
     return this.choiceMembersArray.includes(user.id);
   }
 }

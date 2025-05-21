@@ -1,4 +1,4 @@
-<section [ngClass]="{'userChecked': channelService.checkIfUserExists(userInfo)}"
+<section [ngClass]="{'userChecked': channelService.isUserSelected(userInfo)}"
     [ngClass]="{'userChecked': i == mainNavService.UserMarked}"
     class="flex items-center  gap-4 px-5 py-1 min-w-[200px]  w-fit rounded-[30px] hover:bg-primary cursor-pointer bg-white hover:scale-[1.005] duration-150 active:scale-[0.97] active:bg-purple2">
     <div class="relative">

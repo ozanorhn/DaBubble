@@ -7,7 +7,7 @@
             src="/assets/icons/close.svg" alt="">
     </div>
 
-    <input [(ngModel)]="userSearch" (input)="onSearchInput()" [ngClass]="{'text-purple1 bg-primary': userExist}"
+    <input [(ngModel)]="userSearchInput" (input)="onSearchInput()" [ngClass]="{'text-purple1 bg-primary': userExist}"
         class="border border-lightpurple rounded-[30px] h-14 px-5" type="text" placeholder="Name eingeben">
 
 
@@ -15,6 +15,8 @@
         class="self-end w-40 h-12 text-white bg-gray-500 rounded-3xl hover:scale-[1.1] duration-150 active:scale-[0.9]">
         Hinzufügen
     </button>
+
+
 
 
     @if (dropdownOpen) {
@@ -27,5 +29,7 @@
         </ul>
     </div>
     }
+
+
 
 </div>
