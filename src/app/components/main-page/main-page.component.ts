@@ -49,7 +49,7 @@ export class MainPageComponent {
   currentUser
   showAltLogo = false;
   isMobile = false;
-  // @ViewChild(AddMembersComponent) addMembersComponent!: QueryList<AddMembersComponent>;
+
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
@@ -58,8 +58,10 @@ export class MainPageComponent {
     public navService: MainNavService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-    this.updateIsMobile(); 
+    this.updateIsMobile();
   }
+
+
   ngOnInit() {
     window.addEventListener('resize', () => {
       this.updateIsMobile();
@@ -67,20 +69,24 @@ export class MainPageComponent {
   }
 
 
-
-
   toggleMessagesView() {
     this.showMessagesOnly = !this.showMessagesOnly;
   }
+
+
   switchContent() {
     if (!this.isMobile) return;
     this.showAltLogo = !this.showAltLogo;
     this.navService.toggleNav()
   }
+
+
   updateIsMobile() {
     this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
     if (!this.isMobile) {
       this.showAltLogo = false;
     }
   }
+
+  
 }

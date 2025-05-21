@@ -15,13 +15,7 @@ import { User } from '../../../../classes/user.class';
 })
 export class MembersComponent {
 
-
   members = signal<string[]>([]);
-  // membersArray: User[] = []
-
-  // membersArray = signal<User[]>([]);
-
-
 
   filteredUsers = computed(() =>
     this.usersService.users.filter(user =>
@@ -33,19 +27,7 @@ export class MembersComponent {
     public usersService: UsersService,
     public overlayService: OverlayService,
     public channelService: ChannelsService
-  ) {
-
-    // effect(() => {
-    //   console.log('Next Channel', this.channelService.currentIndex());
-    //   try {
-    //     this.members.set(this.channelService.channels[this.channelService.currentIndex()].members);
-    //   } catch (error) {
-    //     console.log('No Members');
-    //   }
-    //   this.membersArray.set(this.usersService.users.filter(user =>
-    //     this.members().includes(user.id)))
-    // })
-  }
+  ) { }
 
 
   getUser(user: User | undefined): User {

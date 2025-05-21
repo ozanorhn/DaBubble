@@ -5,6 +5,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { signal } from '@angular/core';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
+import { LocalStorageService } from '../localStorage/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +21,12 @@ export class ChannelsService implements OnDestroy {
 
   private unsubscribe!: () => void;
 
+  currentUser;
+
   createChannel = new Channel({
-    createdBy: 'UserID343783',
+    createdBy: '',
     members: []
   });
-
 
 
   /**
@@ -34,15 +36,13 @@ export class ChannelsService implements OnDestroy {
    */
   constructor(
     public firestore: Firestore,
-    public userService: UsersService
+    public userService: UsersService,
+    public localStorageS: LocalStorageService
   ) {
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    this.createChannel.createdBy = this.currentUser.id
     this.channelsCollection = collection(this.firestore, 'channels');
     this.setupChannelsListener();
-
-    effect(() => {
-      console.log('Channel index', this.currentIndex());
-
-    });
   }
 
 
