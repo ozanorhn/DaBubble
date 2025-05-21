@@ -40,25 +40,15 @@ export class LoginComponent {
       if (user.email !== null) {
         this.userService.currentUser = this.userService.getUserByEmail(user.email) as User;
       }
-
-      // this.userService.setTempUser(user as Partial<User>)
       const profile = this.userService.getUserByEmail(user.email || '');
-
       this.localStorageS.saveObject('currentUser', profile);
-      // if (profile) {
-      //   this.userService.setTempUser(profile);
-      // }
-
       this.router.navigate(['/main']);
     } catch (error: any) {
-
       if (error instanceof FirebaseError) {
-
         this.error = this.getErrorMessage(error.code);
       } else {
         this.error = 'Unbekannter Fehler beim Login.';
       }
-
       setTimeout(() => {
         this.error = '';
       }, 5000);
