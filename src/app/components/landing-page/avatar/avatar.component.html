@@ -1,48 +1,52 @@
-<main
-  class="relative max-w-[606px] flex flex-col items-center py-[26px] px-[21px] rounded-[30px]"
->
+<main class="flex items-center justify-center md:w-[606px] md:h-[669px]">
   <div
-    (click)="goBack()"
-    class="cursor-pointer bg-icon-arrow-back absolute top-[16px] left-[8px] w-10 h-10 rounded-[50%] transition-all hover:bg-primary hover:bg-icon-arrow-back-hover min-[360px]:top-[20px] min-[360px]:left-[22px] min-[470px]:top-[45px] min-[470px]:left-[32px]"
-  ></div>
-  <div
-    class="flex flex-col items-center gap-6 mb-2 text-center min-[470px]:gap-14"
+    class="relative flex flex-col items-center py-[16px] px-[6px] rounded-[30px] bg-white"
   >
-    <h1 class="text-[32px] font-bold min-[470px]:text-[46px]">
-      Wähle deinen<br />Avatar
-    </h1>
-    <img
-      class="w-[120px] h-[120px] object-cover object-center border-4 border-transparent rounded-[50%] cursor-pointer transition-all hover:border-hovergray active:border-primary min-[400px]:w-[168px] min-[400px]:h-[168px]"
-      [src]="'assets/imgs/avatar' + currentAvatar + '.svg'"
-      alt="no Avatar"
-    />
-    <h2 class="text-[32px] font-bold">Frederik Beck</h2>
-  </div>
-  <div class="flex flex-col gap-4">
-    <p class="text-xl">Wähle deinen Avatar...</p>
-    <div class="flex gap-[2px] min-[370px]:gap-1 min-[500px]:gap-2">
-      @for (avatar of [1,2,3,4,5,6]; track $index) {
-      <img
-        (click)="changeAvatar(avatar)"
-        class="object-cover object-center size-11 border-4 border-transparent rounded-[50%] cursor-pointer hover:border-hovergray active:border-primary min-[360px]:w-12 min-[360px]:h-12 min-[400px]:w-14 min-[400px]:h-14 min-[450px]:w-16 min-[450px]:h-16"
-        [src]="'assets/imgs/avatar' + avatar + '.svg'"
-        alt="Avatar {{ avatar }}"
-      />
-      }
-    </div>
-    <button
-      (click)="goForward()"
-      class="self-end px-6 py-3 mt-2 text-lg font-bold text-white transition-all bg-purple1 rounded-3xl hover:bg-purple2 active:bg-purple1"
+    <div
+      (click)="goBack()"
+      class="cursor-pointer bg-icon-arrow-back absolute top-[16px] left-[8px] w-10 h-10 rounded-[50%] transition-all hover:bg-primary hover:bg-icon-arrow-back-hover"
+    ></div>
+    <div
+      class="flex flex-col items-center gap-6 mb-2 text-center min-[470px]:gap-14"
     >
-      Weiter
-    </button>
-  </div>
+      <h1 class="text-[28px] font-bold md:text-[46px] text-purple1">
+        Wähle deinen<br />Avatar
+      </h1>
+      <img
+        class="w-[120px] h-[120px] object-cover object-center border-4 border-transparent rounded-[50%] cursor-pointer transition-all hover:border-hovergray active:border-primary min-[400px]:w-[168px] min-[400px]:h-[168px]"
+        [src]="'assets/imgs/avatar' + currentAvatar + '.svg'"
+        alt="no Avatar"
+      />
+      <h2 class="text-[28px] font-bold md:text-[46px]">{{ userName }}</h2>
+    </div>
+    <div class="flex flex-col gap-2">
+      <p class="text-xl">Wähle deinen Avatar...</p>
+      <div
+        class="flex flex-wrap justify-center gap-[2px] min-[370px]:gap-1 min-[767px]:gap-2"
+      >
+        @for (avatar of [1,2,3,4,5,6]; track $index) {
+        <img
+          (click)="changeAvatar(avatar)"
+          class="object-cover object-center size-11 border-4 border-transparent rounded-[50%] cursor-pointer hover:border-hovergray active:border-primary min-[360px]:w-12 min-[360px]:h-12 min-[450px]:w-14 min-[450px]:h-14 min-[767px]:w-16 min-[767px]:h-16"
+          [src]="'assets/imgs/avatar' + avatar + '.svg'"
+          alt="Avatar {{ avatar }}"
+        />
+        }
+      </div>
+      <button
+        (click)="goForward()"
+        class="self-end px-6 py-3 mt-2 text-lg font-bold text-white transition-all bg-purple1 rounded-3xl hover:bg-purple2 active:bg-purple1"
+      >
+        Weiter
+      </button>
+    </div>
 
-  @if (showMessage) {
-  <div
-    class="fixed w-[323px] h-[70px] bottom-[8px] right-[8px] bg-purple1 text-white text-xl font-bold px-[30px] py-[20px] rounded-tl-[30px] rounded-tr-[30px] rounded-bl-[30px] shadow-lg z-50 transition-opacity duration-500"
-  >
-    Konto erfolgreich erstellt
+    @if (showMessage) {
+    <div
+      class="fixed w-[323px] h-[70px] bottom-[8px] right-[8px] bg-purple1 text-white text-xl font-bold px-[30px] py-[20px] rounded-tl-[30px] rounded-tr-[30px] rounded-bl-[30px] shadow-lg z-50 transition-opacity duration-500"
+    >
+      Konto erfolgreich erstellt
+    </div>
+    }
   </div>
-  }
 </main>
