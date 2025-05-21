@@ -22,7 +22,7 @@ export class EditNameComponent {
   editName() {
     this.edit = !this.edit
     if (!this.edit) {
-      this.channelService.editLocal();
+      this.channelService.prepareChannelForEdit();
     }
     
   }
