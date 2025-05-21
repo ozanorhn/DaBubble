@@ -57,9 +57,17 @@
     }
   </div>
 
-  @if (mainNavService.showThread()) {
+  <!-- @if (mainNavService.showThread()) {
   <app-thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
-  }
+  } -->
+
+
+
+    <div [class.active]="mainNavService.showThread()"
+    class="thread-container w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6">
+    <app-thread></app-thread>
+  </div>
+
 </section>
 
 <!-- <section class="flex h-[calc(100vh-80px)] gap-3 p-3 bg-primary relative">
