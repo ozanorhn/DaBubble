@@ -3,6 +3,8 @@ import { ChannelsService } from '../../../../services/channels/channels.service'
 import { FormsModule } from '@angular/forms';
 import { Channel } from '../../../../classes/channel.class';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
+import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
+import { User } from '../../../../classes/user.class';
 
 
 @Component({
@@ -15,15 +17,27 @@ import { OverlayService } from '../../../../pageServices/overlays/overlay.servic
 })
 export class AddChannelComponent {
 
-  constructor(public overlayService: OverlayService, public channelService: ChannelsService) { }
+  currentUser;
+
+  constructor(
+    public overlayService: OverlayService,
+    public channelService: ChannelsService,
+    public localStorageS: LocalStorageService
+  ) {
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+  }
+
 
   closeOverlay() {
-    this.overlayService.addUserOverlay();
+    this.overlayService.addCannelOverlay();
+    this.channelService.createChannel = new Channel({ createdBy: this.currentUser.id });
   }
+
 
   openAddUser() {
     this.overlayService.addCannelOverlay()
     this.overlayService.addUserOverlay()
   }
+
 
 }

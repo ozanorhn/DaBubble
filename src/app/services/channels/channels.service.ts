@@ -10,23 +10,16 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ChannelsService implements OnDestroy {
+export class ChannelsService implements OnInit, OnDestroy {
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
   choiceMembers = signal(true);
-  choiceMembersArray: string[] = [];
-
+  // choiceMembersArray: string[] = [];
   loading = true;
-
   private unsubscribe!: () => void;
-
   currentUser;
-
-  createChannel = new Channel({
-    createdBy: '',
-    members: []
-  });
+  createChannel = new Channel();
 
 
   /**
@@ -40,9 +33,18 @@ export class ChannelsService implements OnDestroy {
     public localStorageS: LocalStorageService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-    this.createChannel.createdBy = this.currentUser.id
     this.channelsCollection = collection(this.firestore, 'channels');
     this.setupChannelsListener();
+  }
+
+
+  ngOnInit(): void {
+    this.createChannel = new Channel(
+      {
+        createdBy: this.currentUser.id,
+        members: [this.currentUser.id] /// Eigener Member noch hinzufügen, soll standart ????
+      }
+    )
   }
 
 
@@ -79,8 +81,7 @@ export class ChannelsService implements OnDestroy {
   */
   async addChannel() {
     if (this.choiceMembers()) {
-      this.createChannel.members = this.choiceMembersArray
-      this.choiceMembersArray = [];
+      this.createChannel.members
     } else {
       this.createChannel.members = this.userService.users.map(user => user.id);
     }
@@ -153,9 +154,9 @@ export class ChannelsService implements OnDestroy {
   */
   toggleUserSelection(user: User) {
     if (this.isUserSelected(user)) {
-      this.choiceMembersArray = this.choiceMembersArray.filter(id => id !== user.id);
+      this.createChannel.members = this.createChannel.members.filter(id => id !== user.id);
     } else {
-      this.choiceMembersArray.push(user.id);
+      this.createChannel.members.push(user.id);
     }
   }
 
@@ -167,6 +168,6 @@ export class ChannelsService implements OnDestroy {
    * @returns {boolean} True if user is already selected, false otherwise
    */
   isUserSelected(user: User): boolean {
-    return this.choiceMembersArray.includes(user.id);
+    return this.createChannel.members.includes(user.id);
   }
 }
