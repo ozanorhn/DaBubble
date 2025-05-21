@@ -1,1 +1,10 @@
-<p>emoji-picker works!</p>
+<header class="flex justify-evenly">
+    <button><img class="size-8" src="assets/emojis/2B50.svg" alt="Favorites"></button>
+    <button><img class="size-8" src="assets/emojis/1F60A.svg" alt="Favorites"></button>
+    <button><img class="size-8" src="assets/emojis/2B50.svg" alt="Favorites"></button>
+</header>
+<section class="flex flex-wrap gap-1">
+    @for (emoji of emojis; track $index) {
+        <img class="size-8" src="assets/emojis/{{emoji}}.svg" alt="">
+    }
+</section>

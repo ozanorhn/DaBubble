@@ -6,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { ThreadMessagesService } from '../../../services/threadMessages/thread-messages.service';
 import { Message } from '../../../classes/message.class';
 import { DM } from '../../../interfaces/dm';
+import { EmojiPickerComponent } from "../popUp/emoji-picker/emoji-picker.component";
 
 @Component({
   selector: 'app-chat-input',
-  imports: [FormsModule],
+  imports: [FormsModule, EmojiPickerComponent],
   templateUrl: './chat-input.component.html',
   styleUrl: './chat-input.component.scss'
 })
