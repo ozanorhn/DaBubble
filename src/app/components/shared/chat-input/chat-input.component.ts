@@ -23,6 +23,7 @@ export class ChatInputComponent implements OnInit {
   @Input() index: number = 0;
   @Output() saveClicked = new EventEmitter<void>();
 
+  showEmojiPiucker = false;
   editText: string = '';
 
   constructor(
@@ -31,6 +32,11 @@ export class ChatInputComponent implements OnInit {
     public directMessageService: DirectMessagesService,
     public threadMessagesService: ThreadMessagesService
   ) { }
+
+
+  toggleEmojiPicker() {
+    this.showEmojiPiucker = this.showEmojiPiucker === true ? false : true;
+  }
 
 
   ngOnInit(): void {
@@ -55,6 +61,7 @@ export class ChatInputComponent implements OnInit {
           break;
       }
     }
+    this.toggleEmojiPicker();
   }
 
 
