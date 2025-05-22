@@ -13,6 +13,8 @@ import { Message } from '../../../classes/message.class';
 import { MessageOptionsComponent } from "../popUp/message-options/message-options.component";
 import { ChatInputComponent } from "../chat-input/chat-input.component";
 import { EmojiPickerComponent } from "../popUp/emoji-picker/emoji-picker.component";
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { User } from '../../../classes/user.class';
 
 @Component({
   standalone: true,
@@ -25,42 +27,50 @@ import { EmojiPickerComponent } from "../popUp/emoji-picker/emoji-picker.compone
     MessageOptionsComponent,
     ChatInputComponent,
     EmojiPickerComponent
-],
+  ],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
 export class ChatMessagesComponent {
+  currentUser: User | null = null;
   lastMessageDate: Date | null = null;
   newDay = true;
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
   @Input() threadHeadMessage: any;
-  @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
+  @Input() messages: Message[] | any[] | undefined;
   @ViewChildren(ChatInputComponent) chatInputComponents!: QueryList<ChatInputComponent>;
   @ViewChildren(EmojiPickerComponent) emojiPickerComponents!: QueryList<EmojiPickerComponent>;
   editIndex: number | null = null;
   emojiIndex: number | null = null;
   showEmojiPicker = false;
 
-
+  ngOnInit(): void {
+    this.currentUser = this.localStorageService.loadObject<User>('currentUser');
+  
+    if (this.currentUser) {
+      this.userService.currentUser = this.currentUser; 
+    }
+  }
+  
   constructor(
     public mainNavService: MainNavService,
     public authService: AuthService,
     public messageService: MessagesService,
     public userService: UsersService,
     public threadService: ThreadsService,
-    public dmService: DirectMessagesService
-  ) { }
-
-
-  toggleEmojiPicker() {
-    this.showEmojiPicker = this.showEmojiPicker === true ? false : true;
+    public dmService: DirectMessagesService,
+    public localStorageService: LocalStorageService
+  ) {
+    this.currentUser = this.localStorageService.loadObject<User>('currentUser');
   }
 
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
 
   addEmoji(emoji: string) {
     console.log(emoji);
   }
-
 
   toggleEditInput(index: number): void {
     if (this.editIndex === index) {
@@ -75,8 +85,7 @@ export class ChatMessagesComponent {
     }
   }
 
-
-   toggleEmojiPickerReactions(index: number): void {
+  toggleEmojiPickerReactions(index: number): void {
     if (this.emojiIndex === index) {
       this.emojiIndex = null;
     } else {
