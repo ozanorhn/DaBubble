@@ -66,6 +66,8 @@ export class ChatMessagesComponent {
 
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
+    console.log('tooglePicker');
+    
   }
 
   addEmoji(emoji: string) {
@@ -90,10 +92,6 @@ export class ChatMessagesComponent {
       this.emojiIndex = null;
     } else {
       this.emojiIndex = index;
-      let id = setTimeout(() => {
-        const chatInput = this.emojiPickerComponents.toArray()[0];
-        clearTimeout(id);
-      }, 100);
     }
   }
 }

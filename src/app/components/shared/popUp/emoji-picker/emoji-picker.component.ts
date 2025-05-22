@@ -32,7 +32,7 @@ export class EmojiPickerComponent {
   addEmojiToFav(emoji: string) {
     if (!this.emojis.fav.includes(emoji)) {
       this.emojis.fav.unshift(emoji);
-      if (this.emojis.fav.length > 20) {
+      if (this.emojis.fav.length > 21) {
         this.emojis.fav.pop();
       }
       this.saveFavs();
