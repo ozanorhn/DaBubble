@@ -82,7 +82,19 @@ export class UsersService implements OnDestroy {
     });
   }
 
-
+  async waitUntilUsersLoaded(): Promise<void> {
+    return new Promise((resolve) => {
+      const check = () => {
+        if (this.users.length > 0) {
+          resolve();
+        } else {
+          setTimeout(check, 100); // prüfe erneut in 100ms
+        }
+      };
+      check();
+    });
+  }
+  
   ngOnDestroy(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
