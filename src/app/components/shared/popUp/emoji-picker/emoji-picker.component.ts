@@ -30,16 +30,17 @@ export class EmojiPickerComponent {
 
 
   addEmojiToFav(emoji: string) {
-    this.emojis.fav.unshift(emoji);
-    if (this.emojis.fav.length > 20) {
-      this.emojis.fav.pop();
+    if (!this.emojis.fav.includes(emoji)) {
+      this.emojis.fav.unshift(emoji);
+      if (this.emojis.fav.length > 20) {
+        this.emojis.fav.pop();
+      }
+      this.saveFavs();
     }
-    this.saveFavs();
   }
 
 
   saveFavs() {
-    console.log(this.emojis.fav);
     localStorage.setItem('emojiFav', JSON.stringify(this.emojis.fav))
   }
 

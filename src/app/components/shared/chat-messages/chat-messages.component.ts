@@ -12,6 +12,7 @@ import { DirectMessagesService } from '../../../services/directMessages/direct-m
 import { Message } from '../../../classes/message.class';
 import { MessageOptionsComponent } from "../popUp/message-options/message-options.component";
 import { ChatInputComponent } from "../chat-input/chat-input.component";
+import { EmojiPickerComponent } from "../popUp/emoji-picker/emoji-picker.component";
 
 @Component({
   standalone: true,
@@ -22,8 +23,9 @@ import { ChatInputComponent } from "../chat-input/chat-input.component";
     ChatMessageReactionsComponent,
     ChatMessageAnswerComponent,
     MessageOptionsComponent,
-    ChatInputComponent
-  ],
+    ChatInputComponent,
+    EmojiPickerComponent
+],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
@@ -35,6 +37,7 @@ export class ChatMessagesComponent {
   @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
   @ViewChildren(ChatInputComponent) chatInputComponents!: QueryList<ChatInputComponent>;
   editIndex: number | null = null;
+  showEmojiPicker = false;
 
 
   constructor(
@@ -45,6 +48,16 @@ export class ChatMessagesComponent {
     public threadService: ThreadsService,
     public dmService: DirectMessagesService
   ) { }
+
+
+  toggleEmojiPicker() {
+    this.showEmojiPicker = this.showEmojiPicker === true ? false : true;
+  }
+
+
+  addEmoji(emoji: string) {
+    console.log(emoji);
+  }
 
 
   toggleEditInput(index: number): void {
