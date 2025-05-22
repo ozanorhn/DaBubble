@@ -15,7 +15,6 @@ export class ChannelsService implements OnDestroy {
   currentIndex = signal<number>(0);
   channelsCollection;
   choiceMembers = signal(true);
-  // choiceMembersArray: string[] = [];
   loading = true;
   private unsubscribe!: () => void;
   currentUser;
@@ -45,6 +44,13 @@ export class ChannelsService implements OnDestroy {
       members: [this.currentUser.id] // Immer den aktuellen User als Mitglied hinzufügen
     });
   }
+
+
+  getUserChannels(userId: string): Channel[] {
+  return this.channels.filter(channel => 
+    channel.members.includes(userId)
+  );
+}
 
 
   /**
