@@ -74,25 +74,25 @@ export class ChatInputComponent implements OnInit {
   }
 
 
-
-    if (this.edit) {
-      this.editText = (this.editText || '') + emoji;
-      setTimeout(() => this.focusEditInput(), 0);
-    } else {
-      switch (this.chatType) {
-        case 'dm':
-          this.directMessageService.newMessage.message += emoji;
-          break;
-        case 'channel':
-          this.messageService.messageInput += emoji;
-          break;
-        case 'thread':
-          this.threadService.threadMessage.message += emoji;
-          break;
-      }
-      setTimeout(() => this.messageInputRef?.nativeElement?.focus(), 0);
-    }
-  }
+  // addEmoji(emoji:string){
+  //   if (this.edit) {
+  //     this.editText = (this.editText || '') + emoji;
+  //     setTimeout(() => this.focusEditInput(), 0);
+  //   } else {
+  //     switch (this.chatType) {
+  //       case 'dm':
+  //         this.directMessageService.newMessage.message += emoji;
+  //         break;
+  //       case 'channel':
+  //         this.messageService.messageInput += emoji;
+  //         break;
+  //       case 'thread':
+  //         this.threadService.threadMessage.message += emoji;
+  //         break;
+  //     }
+  //     setTimeout(() => this.messageInputRef?.nativeElement?.focus(), 0);
+  //   }
+  // }
 
   sendMessage(): void {
     switch (this.chatType) {

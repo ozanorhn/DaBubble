@@ -1,48 +1,32 @@
-
-<section class="relative h-[145px] p-3 mx-4 flex flex-1 flex-col bg-white rounded-[20px] border-lightpurple border-[1px]">
+<section
+    class="relative h-[145px] p-3 mx-4 flex flex-1 flex-col bg-white rounded-[20px] border-lightpurple border-[1px]">
 
     @if (edit) {
-      <textarea
-        #messageEditInput
-        [(ngModel)]="editText"
-        class="flex-1 resize-none focus-visible:outline-none"
-        type="text"
+    <textarea #messageEditInput [(ngModel)]="editText" class="flex-1 resize-none focus-visible:outline-none" type="text"
         placeholder="Antworten...">
       </textarea>
     } @else {
-      @switch (chatType) {
-        @case ('dm') {
-          <textarea
-            #messageInput
-            [(ngModel)]="directMessageService.newMessage.message"
-            class="flex-1 resize-none focus-visible:outline-none"
-            type="text"
-            placeholder="Antworten...">
+    @switch (chatType) {
+    @case ('dm') {
+    <textarea #messageInput [(ngModel)]="directMessageService.newMessage.message"
+        class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
           </textarea>
-        }
-        @case ('channel') {
-          <textarea
-            #messageInput
-            [(ngModel)]="messageService.messageInput"
-            class="flex-1 resize-none focus-visible:outline-none"
-            type="text"
-            placeholder="Antworten...">
+    }
+    @case ('channel') {
+    <textarea #messageInput [(ngModel)]="messageService.messageInput"
+        class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
           </textarea>
-        }
-        @case ('thread') {
-          <textarea
-            #messageInput
-            [(ngModel)]="threadService.threadMessage.message"
-            class="flex-1 resize-none focus-visible:outline-none"
-            type="text"
-            placeholder="Antworten...">
+    }
+    @case ('thread') {
+    <textarea #messageInput [(ngModel)]="threadService.threadMessage.message"
+        class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
           </textarea>
-        }
-      }
+    }
+    }
     }
 
     @if (showEmojiPiucker) {
-        <app-emoji-picker class="absolute top-0 translate-y-[-102%]" (emojiPicked)="addEmoji($event)"></app-emoji-picker>
+    <app-emoji-picker class="absolute top-0 translate-y-[-102%]" (emojiPicked)="addEmoji($event)"></app-emoji-picker>
     }
 
     <div class="flex items-center justify-between h-10">
@@ -52,12 +36,6 @@
         </div>
         <button (click)="sendMessage()">
             <img class="size-5" src="assets/icons/send_message.svg" alt="Send message">
-
         </button>
-      </div>
-      <button (click)="sendMessage()">
-        <img class="size-5" src="assets/icons/send_message.svg" alt="Send message">
-      </button>
     </div>
-  </section>
-  
+</section>
