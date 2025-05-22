@@ -5,6 +5,7 @@ import { ChannelsService } from '../../../../services/channels/channels.service'
 import { FormsModule } from '@angular/forms';
 import { FilterService } from '../../../../pageServices/filters/filter.service';
 import { UserComponent } from '../../user/user.component';
+import { Channel } from '../../../../classes/channel.class';
 
 @Component({
   selector: 'app-add-user',
@@ -51,6 +52,7 @@ export class AddUserComponent {
   addChannel(){
     this.channelService.addChannel();
     this.overlayService.addUserOverlay();
+    this.channelService.createChannel = new Channel({ createdBy: this.channelService.currentUser.id })
   }
 
 }
