@@ -6,6 +6,6 @@
 </header>
 <section class="flex flex-wrap gap-1">
     @for (emoji of currentEmojicategory; track emoji; let i = $index) {
-        <span (click)="pickEmoji(emoji.value)" class="p-1 rounded-full cursor-pointer size-8">{{ emoji.value }}</span>
+        <span (click)="pickEmoji(emoji)" class="p-1 rounded-full cursor-pointer size-8">{{ emoji }}</span>
     }
 </section>
