@@ -15,7 +15,7 @@
         }
     }
 
-    <app-emoji-picker></app-emoji-picker>
+    <app-emoji-picker (emojiPicked)="addEmoji($event)"></app-emoji-picker>
 
     <div class="flex items-center justify-between h-10">
         <div class="flex gap-[25px]">

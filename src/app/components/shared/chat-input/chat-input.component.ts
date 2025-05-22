@@ -37,6 +37,26 @@ export class ChatInputComponent implements OnInit {
     this.editText = this.message.message;
   }
 
+  addEmoji(emoji: string) {
+    if (this.edit) {
+      this.editText += emoji;
+    } else {
+      switch (this.chatType) {
+        case 'channel':
+          this.messageService.messageInput += emoji;
+          break;
+        case 'thread':
+          this.threadService.threadMessage.message += emoji;
+          break;
+        case 'dm':
+          this.directMessageService.newMessage.message += emoji;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
 
   sendMessage() {
     switch (this.chatType) {

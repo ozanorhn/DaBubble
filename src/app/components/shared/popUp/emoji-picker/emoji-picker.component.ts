@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-emoji-picker',
@@ -9,10 +9,17 @@ import { Component } from '@angular/core';
 })
 export class EmojiPickerComponent {
   emojiCategory: 'fav' | 'faces' | 'signs' | 'hands' = 'faces';
+  @Output() emojiPicked = new EventEmitter<string>();
+
 
   changeEmojiCat(n: 'fav' | 'faces' | 'signs' | 'hands') {
     this.emojiCategory = n;
     this.currentEmojicategory = this.emojis[`${n}`];
+  }
+
+  
+  pickEmoji(emoji: string) {
+    this.emojiPicked.emit(emoji);
   }
 
 
@@ -190,7 +197,7 @@ export class EmojiPickerComponent {
         id: 'sign_20'
       }
     ],
- hands: [
+    hands: [
       {
         value: '👍',
         id: 'sign_0'
