@@ -36,7 +36,9 @@ export class ChatMessagesComponent {
   @Input() threadHeadMessage: any;
   @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
   @ViewChildren(ChatInputComponent) chatInputComponents!: QueryList<ChatInputComponent>;
+  @ViewChildren(EmojiPickerComponent) emojiPickerComponents!: QueryList<EmojiPickerComponent>;
   editIndex: number | null = null;
+  emojiIndex: number | null = null;
   showEmojiPicker = false;
 
 
@@ -68,6 +70,19 @@ export class ChatMessagesComponent {
       let id = setTimeout(() => {
         const chatInput = this.chatInputComponents.toArray()[0];
         chatInput?.focusEditInput();
+        clearTimeout(id);
+      }, 100);
+    }
+  }
+
+
+   toggleEmojiPickerReactions(index: number): void {
+    if (this.emojiIndex === index) {
+      this.emojiIndex = null;
+    } else {
+      this.emojiIndex = index;
+      let id = setTimeout(() => {
+        const chatInput = this.emojiPickerComponents.toArray()[0];
         clearTimeout(id);
       }, 100);
     }
