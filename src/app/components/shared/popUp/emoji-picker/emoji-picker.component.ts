@@ -1,85 +1,283 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-emoji-picker',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './emoji-picker.component.html',
   styleUrl: './emoji-picker.component.scss'
 })
 export class EmojiPickerComponent {
-  emojis = [
-    '1F9D0',
-    '1F60A',
-    '1F60B',
-    '1F60C',
-    '1F60E',
-    '1F60F',
-    '1F61B',
-    '1F61C',
-    '1F61D',
-    '1F61E',
-    '1F61F',
-    '1F62A',
-    '1F62B',
-    '1F62C',
-    '1F62D',
-    '1F62E',
-    '1F62F',
-    '1F64A',
-    '1F92A',
-    '1F92B',
-    '1F92D',
-    '1F92E',
-    '1F92F',
-    '1F97A',
-    '1F601',
-    '1F602',
-    '1F603',
-    '1F604',
-    '1F605',
-    '1F606',
-    '1F607',
-    '1F609',
-    '1F610',
-    '1F611',
-    '1F612',
-    '1F613',
-    '1F614',
-    '1F615',
-    '1F616',
-    '1F620',
-    '1F621',
-    '1F622',
-    '1F623',
-    '1F624',
-    '1F625',
-    '1F626',
-    '1F627',
-    '1F628',
-    '1F629',
-    '2B50',
-    ''
+  emojiCategory: 'fav' | 'faces' | 'signs' | 'hands' = 'faces';
+
+  changeEmojiCat(n: 'fav' | 'faces' | 'signs' | 'hands') {
+    this.emojiCategory = n;
+    this.currentEmojicategory = this.emojis[`${n}`];
+  }
 
 
+  emojis = {
+    fav: [],
+    faces: [
+      {
+        value: '😀',
+        id: 'face_0'
+      },
+      {
+        value: '😃',
+        id: 'face_1'
+      },
+      {
+        value: '😄',
+        id: 'face_2'
+      },
+      {
+        value: '😁',
+        id: 'face_3'
+      },
+      {
+        value: '😆',
+        id: 'face_4'
+      },
+      {
+        value: '😅',
+        id: 'face_5'
+      },
+      {
+        value: '🤣',
+        id: 'face_6'
+      },
+      {
+        value: '😂',
+        id: 'face_7'
+      },
+      {
+        value: '🙂',
+        id: 'face_8'
+      },
+      {
+        value: '😉',
+        id: 'face_9'
+      },
+      {
+        value: '😊',
+        id: 'face_10'
+      },
+      {
+        value: '😇',
+        id: 'face_11'
+      },
+      {
+        value: '😇',
+        id: 'face_12'
+      },
+      {
+        value: '😋',
+        id: 'face_13'
+      },
+      {
+        value: '🤪',
+        id: 'face_14'
+      },
+      {
+        value: '🤗',
+        id: 'face_15'
+      },
+      {
+        value: '🤫',
+        id: 'face_16'
+      },
+      {
+        value: '🤔',
+        id: 'face_17'
+      },
+      {
+        value: '🫡',
+        id: 'face_18'
+      },
+      {
+        value: '😎',
+        id: 'face_19'
+      },
+      {
+        value: '🤓',
+        id: 'face_20'
+      }
+    ],
+    signs: [
+      {
+        value: '✅',
+        id: 'sign_0'
+      },
+      {
+        value: '☎️',
+        id: 'sign_1'
+      },
+      {
+        value: '🔋',
+        id: 'sign_2'
+      },
+      {
+        value: '🪫',
+        id: 'sign_3'
+      },
+      {
+        value: '📁',
+        id: 'sign_4'
+      },
+      {
+        value: '📋',
+        id: 'sign_5'
+      },
+      {
+        value: '📨',
+        id: 'sign_6'
+      },
+      {
+        value: '🔍',
+        id: 'sign_7'
+      },
+      {
+        value: '💡',
+        id: 'sign_8'
+      },
+      {
+        value: '🔒',
+        id: 'sign_9'
+      },
+      {
+        value: '🔓',
+        id: 'sign_10'
+      },
+      {
+        value: '🚀',
+        id: 'sign_11'
+      },
+      {
+        value: '🌋',
+        id: 'sign_12'
+      },
+      {
+        value: '❗',
+        id: 'sign_13'
+      },
+      {
+        value: '❓',
+        id: 'sign_14'
+      },
+      {
+        value: '🆗',
+        id: 'sign_15'
+      },
+      {
+        value: '❌',
+        id: 'sign_16'
+      },
+      {
+        value: '💯',
+        id: 'sign_17'
+      },
+      {
+        value: '💭',
+        id: 'sign_18'
+      },
+      {
+        value: '💤',
+        id: 'sign_19'
+      },
+      {
+        value: '💥',
+        id: 'sign_20'
+      }
+    ],
+ hands: [
+      {
+        value: '👍',
+        id: 'sign_0'
+      },
+      {
+        value: '👋',
+        id: 'sign_1'
+      },
+      {
+        value: '👆',
+        id: 'sign_2'
+      },
+      {
+        value: '🫷',
+        id: 'sign_3'
+      },
+      {
+        value: '🙏',
+        id: 'sign_4'
+      },
+      {
+        value: '💪',
+        id: 'sign_5'
+      },
+      {
+        value: '👈',
+        id: 'sign_6'
+      },
+      {
+        value: '👉',
+        id: 'sign_7'
+      },
+      {
+        value: '✌️',
+        id: 'sign_8'
+      },
+      {
+        value: '👐',
+        id: 'sign_9'
+      },
+      {
+        value: '🫶',
+        id: 'sign_10'
+      },
+      {
+        value: '👏',
+        id: 'sign_11'
+      },
+      {
+        value: '🙌',
+        id: 'sign_12'
+      },
+      {
+        value: '🤝',
+        id: 'sign_13'
+      },
+      {
+        value: '👇',
+        id: 'sign_14'
+      },
+      {
+        value: '🤌',
+        id: 'sign_15'
+      },
+      {
+        value: '🤏',
+        id: 'sign_16'
+      },
+      {
+        value: '🤞',
+        id: 'sign_17'
+      },
+      {
+        value: '🫵',
+        id: 'sign_18'
+      },
+      {
+        value: '👊',
+        id: 'sign_19'
+      },
+      {
+        value: '✍️',
+        id: 'sign_20'
+      }
+    ]
+  }
 
+  currentEmojicategory = this.emojis.faces;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  ]
 }
