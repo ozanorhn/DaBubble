@@ -7,10 +7,12 @@ import { OverlayService } from '../../../pageServices/overlays/overlay.service';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 import { doc, getDoc, Timestamp } from '@angular/fire/firestore';
 import { UsersService } from '../../../services/users/users.service';
+import { FormsModule } from '@angular/forms';
+import { FilterService } from '../../../pageServices/filters/filter.service';
 
 @Component({
   selector: 'app-chat-header',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './chat-header.component.html',
   styleUrl: './chat-header.component.scss'
 })
@@ -21,7 +23,8 @@ export class ChatHeaderComponent implements OnInit {
     public mainNavService: MainNavService,
     public overlayService: OverlayService,
     public dmService: DirectMessagesService,
-    public userService: UsersService
+    public userService: UsersService,
+    public filterService: FilterService
   ) { }
 
 
@@ -35,6 +38,9 @@ export class ChatHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.updateOnlineStatus();
     setInterval(() => this.updateOnlineStatus(), 1000);
+
+     // Setze den Zustand je nach chatType
+  //this.filterService.isChatInputActive.set(this.chatType === 'new');
   }
 
 
@@ -61,6 +67,5 @@ export class ChatHeaderComponent implements OnInit {
       this.isOnline = this.userService.isUserOnline(snapshot.data()['online']);
     }
   }
-
 
 }

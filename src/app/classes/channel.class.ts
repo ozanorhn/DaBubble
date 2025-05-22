@@ -1,4 +1,4 @@
-import { User } from "./user.class";
+
 
 export class Channel {
     id: string;
@@ -8,7 +8,7 @@ export class Channel {
     messagesID: string;
     createdBy: string
 
-    constructor(obj?: any) {
+    constructor(obj?: any,) {
         this.id = obj?.id || '';
         this.name = obj?.name || '';
         this.description = obj?.description || '';

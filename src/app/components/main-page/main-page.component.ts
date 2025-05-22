@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -20,6 +20,7 @@ import { User } from '../../classes/user.class';
 import { MembersComponent } from "../shared/popUp/members/members.component";
 import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
 import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
+
 
 @Component({
   selector: 'app-main-page',
@@ -49,6 +50,7 @@ export class MainPageComponent {
   currentUser
   showAltLogo = false;
   isMobile = false;
+
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
@@ -57,8 +59,10 @@ export class MainPageComponent {
     public navService: MainNavService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-    this.updateIsMobile(); 
+    this.updateIsMobile();
   }
+
+
   ngOnInit() {
     window.addEventListener('resize', () => {
       this.updateIsMobile();
@@ -66,20 +70,24 @@ export class MainPageComponent {
   }
 
 
-
-
   toggleMessagesView() {
     this.showMessagesOnly = !this.showMessagesOnly;
   }
+
+
   switchContent() {
     if (!this.isMobile) return;
     this.showAltLogo = !this.showAltLogo;
     this.navService.toggleNav()
   }
+
+
   updateIsMobile() {
     this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
     if (!this.isMobile) {
       this.showAltLogo = false;
     }
   }
+
+  
 }
