@@ -31,7 +31,9 @@ export class LandingPageComponent {
 
   constructor(
     public landingService: LandingPageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public landing: LandingPageService,
+
   ) { }
 
   ngOnInit() {
@@ -56,5 +58,7 @@ export class LandingPageComponent {
   }
 
 
-  
+  goToRegister() {
+    this.landing.landing.set('register')
+  }
 }

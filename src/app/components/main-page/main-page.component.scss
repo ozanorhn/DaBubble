@@ -137,11 +137,13 @@
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
   transform: scale(0.80);
+  display: none;
 }
 
 .channel-container.active {
   opacity: 1;
   transform: scale(1);
+  display: flex;
 }
 
 /* Thread (Slide von rechts) */
