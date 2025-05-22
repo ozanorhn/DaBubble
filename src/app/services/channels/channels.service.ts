@@ -75,25 +75,21 @@ export class ChannelsService implements OnDestroy {
 
 
   async addChannel() {
-  // Sicherstellen, dass der aktuelle User immer Mitglied ist
-  if (!this.createChannel.members.includes(this.currentUser.id)) {
-    this.createChannel.members.push(this.currentUser.id);
+    if (!this.createChannel.members.includes(this.currentUser.id)) {
+      this.createChannel.members.push(this.currentUser.id);
+    }
+    if (!this.choiceMembers()) {
+      this.createChannel.members = [...new Set([
+        ...this.userService.users.map(user => user.id),
+        this.currentUser.id
+      ])];
+    }
+    try {
+      await addDoc(this.channelsCollection, this.createChannel.toJSON());
+    } catch (error) {
+      console.error('Error adding channel', error);
+    }
   }
-
-  if (!this.choiceMembers()) {
-    // Alle User + aktuellen User (falls noch nicht enthalten)
-    this.createChannel.members = [...new Set([
-      ...this.userService.users.map(user => user.id),
-      this.currentUser.id
-    ])];
-  }
-
-  try {
-    await addDoc(this.channelsCollection, this.createChannel.toJSON());
-  } catch (error) {
-    console.error('Error adding channel', error);
-  }
-}
 
 
   /**
