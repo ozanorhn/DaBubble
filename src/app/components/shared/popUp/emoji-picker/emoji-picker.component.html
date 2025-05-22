@@ -1,0 +1,11 @@
+<header class="flex pb-1 shadow-sm justify-evenly">
+    <button (click)="changeEmojiCat('fav')" class="p-1 transition-all rounded-full active:shadow-inner" [ngClass]="{'shadow-inner hover:shadow-inner': emojiCategory === 'fav', 'shadow-md hover:shadow-lg': emojiCategory !== 'fav'}">⭐</button>
+    <button (click)="changeEmojiCat('faces')" class="p-1 transition-all rounded-full active:shadow-inner" [ngClass]="{'shadow-inner hover:shadow-inner': emojiCategory === 'faces', 'shadow-md hover:shadow-lg': emojiCategory !== 'faces'}">😊</button>
+    <button (click)="changeEmojiCat('hands')" class="p-1 transition-all rounded-full active:shadow-inner" [ngClass]="{'shadow-inner hover:shadow-inner': emojiCategory === 'hands', 'shadow-md hover:shadow-lg': emojiCategory !== 'hands'}">👍</button>
+    <button (click)="changeEmojiCat('signs')" class="p-1 transition-all rounded-full active:shadow-inner" [ngClass]="{'shadow-inner hover:shadow-inner': emojiCategory === 'signs', 'shadow-md hover:shadow-lg': emojiCategory !== 'signs'}">🚀</button>
+</header>
+<section class="flex flex-wrap gap-1">
+    @for (emoji of currentEmojicategory; track emoji; let i = $index) {
+        <span (click)="pickEmoji(emoji)" class="p-1 rounded-full cursor-pointer size-8">{{ emoji }}</span>
+    }
+</section>

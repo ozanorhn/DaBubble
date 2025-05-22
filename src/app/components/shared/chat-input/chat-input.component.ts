@@ -15,14 +15,13 @@ import { FormsModule } from '@angular/forms';
 import { ThreadMessagesService } from '../../../services/threadMessages/thread-messages.service';
 import { Message } from '../../../classes/message.class';
 import { DM } from '../../../interfaces/dm';
+import { EmojiPickerComponent } from "../popUp/emoji-picker/emoji-picker.component";
 
 @Component({
   selector: 'app-chat-input',
-  standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, EmojiPickerComponent],
   templateUrl: './chat-input.component.html',
-  styleUrls: ['./chat-input.component.scss'],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA] 
+  styleUrls: ['./chat-input.component.scss']
 })
 export class ChatInputComponent implements OnInit {
   @ViewChild('messageInput') messageInputRef!: ElementRef;
@@ -33,6 +32,7 @@ export class ChatInputComponent implements OnInit {
   @Input() index: number = 0;
   @Output() saveClicked = new EventEmitter<void>();
 
+  showEmojiPiucker = false;
   editText: string = '';
   showEmojiPicker = false;
 
@@ -43,16 +43,37 @@ export class ChatInputComponent implements OnInit {
     public threadMessagesService: ThreadMessagesService
   ) {}
 
+  toggleEmojiPicker() {
+    this.showEmojiPiucker = this.showEmojiPiucker === true ? false : true;
+  }
+
+
   ngOnInit(): void {
     this.editText = this.message.message;
   }
 
-  toggleEmojiPicker(): void {
-    this.showEmojiPicker = !this.showEmojiPicker;
+  addEmoji(emoji: string) {
+    if (this.edit) {
+      this.editText += emoji;
+    } else {
+      switch (this.chatType) {
+        case 'channel':
+          this.messageService.messageInput += emoji;
+          break;
+        case 'thread':
+          this.threadService.threadMessage.message += emoji;
+          break;
+        case 'dm':
+          this.directMessageService.newMessage.message += emoji;
+          break;
+        default:
+          break;
+      }
+    }
+    this.toggleEmojiPicker();
   }
 
-  addEmoji(event: any): void {
-    const emoji = event.detail.unicode;
+
 
     if (this.edit) {
       this.editText = (this.editText || '') + emoji;

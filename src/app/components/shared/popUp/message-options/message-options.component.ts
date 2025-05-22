@@ -18,7 +18,7 @@ export class MessageOptionsComponent implements OnInit {
   @Input() message: Message = new Message();
   @Input() i: number = 0;
   @Output() editClicked = new EventEmitter<void>();
-
+  @Output() emojiPickerReactions = new EventEmitter<void>();
 
   constructor(
     public navService: MainNavService,
@@ -26,6 +26,11 @@ export class MessageOptionsComponent implements OnInit {
     public dmService: DirectMessagesService,
     public messageService: MessagesService
   ) { }
+
+
+  toggleEmojiReactionPicker() {
+    this.emojiPickerReactions.emit()
+  }
 
 
   ngOnInit(): void {
