@@ -84,7 +84,7 @@ export class ChannelsService implements OnDestroy {
     if (!this.createChannel.members.includes(this.currentUser.id)) {
       this.createChannel.members.push(this.currentUser.id);
     }
-    if (!this.choiceMembers()) {
+    if (this.choiceMembers()) {
       this.createChannel.members = [...new Set([
         ...this.userService.users.map(user => user.id),
         this.currentUser.id
