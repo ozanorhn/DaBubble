@@ -12,6 +12,7 @@ import { DirectMessagesService } from '../../../services/directMessages/direct-m
 import { Message } from '../../../classes/message.class';
 import { MessageOptionsComponent } from "../popUp/message-options/message-options.component";
 import { ChatInputComponent } from "../chat-input/chat-input.component";
+import { EmojiPickerComponent } from "../popUp/emoji-picker/emoji-picker.component";
 
 @Component({
   standalone: true,
@@ -22,8 +23,9 @@ import { ChatInputComponent } from "../chat-input/chat-input.component";
     ChatMessageReactionsComponent,
     ChatMessageAnswerComponent,
     MessageOptionsComponent,
-    ChatInputComponent
-  ],
+    ChatInputComponent,
+    EmojiPickerComponent
+],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
@@ -34,7 +36,10 @@ export class ChatMessagesComponent {
   @Input() threadHeadMessage: any;
   @Input() messages: Message[] | any[] | undefined; // oder der passende Typ
   @ViewChildren(ChatInputComponent) chatInputComponents!: QueryList<ChatInputComponent>;
+  @ViewChildren(EmojiPickerComponent) emojiPickerComponents!: QueryList<EmojiPickerComponent>;
   editIndex: number | null = null;
+  emojiIndex: number | null = null;
+  showEmojiPicker = false;
 
 
   constructor(
@@ -47,6 +52,16 @@ export class ChatMessagesComponent {
   ) { }
 
 
+  toggleEmojiPicker() {
+    this.showEmojiPicker = this.showEmojiPicker === true ? false : true;
+  }
+
+
+  addEmoji(emoji: string) {
+    console.log(emoji);
+  }
+
+
   toggleEditInput(index: number): void {
     if (this.editIndex === index) {
       this.editIndex = null;
@@ -55,6 +70,19 @@ export class ChatMessagesComponent {
       let id = setTimeout(() => {
         const chatInput = this.chatInputComponents.toArray()[0];
         chatInput?.focusEditInput();
+        clearTimeout(id);
+      }, 100);
+    }
+  }
+
+
+   toggleEmojiPickerReactions(index: number): void {
+    if (this.emojiIndex === index) {
+      this.emojiIndex = null;
+    } else {
+      this.emojiIndex = index;
+      let id = setTimeout(() => {
+        const chatInput = this.emojiPickerComponents.toArray()[0];
         clearTimeout(id);
       }, 100);
     }

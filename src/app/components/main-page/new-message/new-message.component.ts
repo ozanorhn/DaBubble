@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ChatHeaderComponent } from "../../shared/chat-header/chat-header.component";
 import { ChatMessagesComponent } from "../../shared/chat-messages/chat-messages.component";
 import { ChatInputComponent } from "../../shared/chat-input/chat-input.component";
 
 @Component({
   selector: 'app-new-message',
-  imports: [ChatHeaderComponent, ChatMessagesComponent, ChatInputComponent],
+  standalone: true,
+  imports: [
+    ChatHeaderComponent,
+    ChatMessagesComponent,
+    ChatInputComponent
+  ],
   templateUrl: './new-message.component.html',
-  styleUrl: './new-message.component.scss'
+  styleUrls: ['./new-message.component.scss'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA] // ← notwendig für emoji-picker
 })
 export class NewMessageComponent {
   dummyThreatService = {

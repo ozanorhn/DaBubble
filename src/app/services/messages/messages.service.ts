@@ -148,11 +148,11 @@ export class MessagesService implements OnDestroy {
   }
 
 
-   /**
-   * Opens a thread for a given message or creates a new one if it doesn't exist.
-   * @param {Message} message - The message for which to open or create a thread.
-   * @returns {Promise<void>}
-   */
+  /**
+  * Opens a thread for a given message or creates a new one if it doesn't exist.
+  * @param {Message} message - The message for which to open or create a thread.
+  * @returns {Promise<void>}
+  */
   async openChannelThread(message: Message): Promise<void> {
     this.resetTempValues();
     const selectedMessage = new Message({ ...message });
@@ -186,11 +186,11 @@ export class MessagesService implements OnDestroy {
     }
   }
 
-  
-/**
-   * Updates thread data like answer count and timestamp of the last reply.
-   * @returns {Promise<void>}
-   */
+
+  /**
+     * Updates thread data like answer count and timestamp of the last reply.
+     * @returns {Promise<void>}
+     */
   async updateThread(): Promise<void> {
     const threadData = await this.threadMessagesService.updateThread();
     this.message.answers = threadData.answers;

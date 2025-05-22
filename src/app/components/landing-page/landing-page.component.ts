@@ -29,28 +29,36 @@ export class LandingPageComponent {
   showContent = false;
   showSplash = true;
 
-  constructor(public landingService: LandingPageService, private route: ActivatedRoute) {}
+  constructor(
+    public landingService: LandingPageService,
+    private route: ActivatedRoute,
+    public landing: LandingPageService,
+
+  ) { }
 
   ngOnInit() {
-    
-      this.route.url.subscribe(urlSegments => {
-        const fullPath = urlSegments.map(seg => seg.path).join('/');
-        if (fullPath === 'confirm-password') {
-          this.landingService.landing.set('confirm');
-        } else if (fullPath === 'login') {
-          this.landingService.landing.set('login');
-        } else if (fullPath === 'register') {
-          this.landingService.landing.set('register');
-        }
-    
-      });
-
+    this.route.url.subscribe(urlSegments => {
+      const fullPath = urlSegments.map(seg => seg.path).join('/');
+      if (fullPath === 'confirm-password') {
+        this.landingService.landing.set('confirm');
+      } else if (fullPath === 'login') {
+        this.landingService.landing.set('login');
+      } else if (fullPath === 'register') {
+        this.landingService.landing.set('register');
+      }
+    });
 
     setTimeout(() => {
       this.showContent = true;
       setTimeout(() => {
         this.showSplash = false;
-      }, 700); 
-    }, 950); 
+      }, 700);
+    }, 950);
+
+  }
+
+
+  goToRegister() {
+    this.landing.landing.set('register')
   }
 }

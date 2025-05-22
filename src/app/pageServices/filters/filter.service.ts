@@ -9,6 +9,8 @@ export class FilterService {
 
   constructor() { }
 
+  isChatInputActive = signal(false);//
+
   users = inject(UsersService);
   channels = inject(ChannelsService);
 
@@ -81,5 +83,6 @@ export class FilterService {
       user.name.toLowerCase().includes(searchMembers)
     )
   }
+  
 
 }
