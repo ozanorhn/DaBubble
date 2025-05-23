@@ -10,7 +10,7 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ChannelsService implements OnInit, OnDestroy {
+export class ChannelsService implements OnDestroy {
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
@@ -35,16 +35,15 @@ export class ChannelsService implements OnInit, OnDestroy {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.channelsCollection = collection(this.firestore, 'channels');
     this.setupChannelsListener();
+    this.resetCreateChannel(); // Initialisierung hier
   }
 
 
-  ngOnInit(): void {
-    this.createChannel = new Channel(
-      {
-        createdBy: this.currentUser.id,
-        members: [this.currentUser.id] /// Eigener Member noch hinzufügen, soll standart ????
-      }
-    )
+  resetCreateChannel() {
+    this.createChannel = new Channel({
+      createdBy: this.currentUser.id,
+      members: [this.currentUser.id] // Immer den aktuellen User als Mitglied hinzufügen
+    });
   }
 
 
@@ -98,7 +97,29 @@ export class ChannelsService implements OnInit, OnDestroy {
       console.error('Fehler beim Erstellen des Channels:', error);
       return 'Erstellen fehlgeschlagen. Bitte erneut versuchen.';
     }
+
+  /*
+  async addChannel() {
+  // Sicherstellen, dass der aktuelle User immer Mitglied ist
+  if (!this.createChannel.members.includes(this.currentUser.id)) {
+    this.createChannel.members.push(this.currentUser.id);
   }
+
+  if (!this.choiceMembers()) {
+    // Alle User + aktuellen User (falls noch nicht enthalten)
+    this.createChannel.members = [...new Set([
+      ...this.userService.users.map(user => user.id),
+      this.currentUser.id
+    ])];
+  }
+  
+  try {
+    await addDoc(this.channelsCollection, this.createChannel.toJSON());
+  } catch (error) {
+    console.error('Error adding channel', error);*/
+
+  }
+}
 
   private async isChannelNameTaken(name: string): Promise<boolean> {
     const q = query(this.channelsCollection, where('name', '==', name));
