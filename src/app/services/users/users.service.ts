@@ -3,10 +3,8 @@ import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
 import { LocalStorageService } from '../localStorage/local-storage.service';
-// import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, User as FirebaseUser } from '@angular/fire/auth';
 import { Timestamp } from '@firebase/firestore';
 import { query, where, getDocs } from 'firebase/firestore';
-
 
 
 @Injectable({
@@ -16,7 +14,6 @@ export class UsersService implements OnDestroy {
 
   private firestore = inject(Firestore);
   usersCollection = collection(this.firestore, 'users');
-
   users: User[] = [];
   tempUser: Partial<User> = {};
   currentUser: User = new User();
@@ -42,7 +39,6 @@ export class UsersService implements OnDestroy {
 
   updateOnlineStatus() {
     if (this.storedUser.id !== this.GuestUser.id) {
-
       const update = async () => {
         this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
         if (!this.storedUser.id) return;
@@ -58,7 +54,6 @@ export class UsersService implements OnDestroy {
         setTimeout(update, 15000); // Nächste Aktualisierung in 15 Sekunden
       };
       update(); // Ersten Aufruf starten
-
     }
   }
 
@@ -94,7 +89,7 @@ export class UsersService implements OnDestroy {
       check();
     });
   }
-  
+
   ngOnDestroy(): void {
     if (this.unsubscribe) {
       this.unsubscribe();
@@ -130,6 +125,7 @@ export class UsersService implements OnDestroy {
     return this.users.find(user => user.email === email);
   }
 
+
   async updateUser(userId: string, updatedData: Partial<User>) {
     const userDocRef = doc(this.firestore, 'users', userId);
     try {
@@ -159,15 +155,14 @@ export class UsersService implements OnDestroy {
   async getUserByEmailRealtime(email: string): Promise<User | undefined> {
     const q = query(this.usersCollection, where('email', '==', email));
     const snapshot = await getDocs(q);
-
     if (!snapshot.empty) {
       const docSnap = snapshot.docs[0];
       const data = docSnap.data() as User;
       data.id = docSnap.id;
       return data;
     }
-
     return undefined;
   }
+
 
 }
