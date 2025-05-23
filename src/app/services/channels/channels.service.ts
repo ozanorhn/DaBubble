@@ -50,10 +50,14 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  getUserChannels(userId: string): Channel[] {
-    return this.channels.filter(channel =>
-      channel.members.includes(userId)
-    );
+  // getUserChannels(userId: string): Channel[] {
+  //   return this.channels.filter(channel =>
+  //     channel.members.includes(userId)
+  //   );
+  // }
+
+  isCurrentUserMember(channel: Channel): boolean {
+    return channel.members.includes(this.currentUser.id);
   }
 
 
@@ -169,7 +173,6 @@ export class ChannelsService implements OnInit, OnDestroy {
       this.createChannel.members.push(user.id);
     }
   }
-
 
 
   /**
