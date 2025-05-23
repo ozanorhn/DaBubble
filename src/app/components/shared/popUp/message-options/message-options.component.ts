@@ -29,6 +29,8 @@ export class MessageOptionsComponent implements OnInit {
 
 
   toggleEmojiReactionPicker() {
+    console.log('Picker');
+    
     this.emojiPickerReactions.emit()
   }
 
@@ -41,6 +43,7 @@ export class MessageOptionsComponent implements OnInit {
 
 
   onEditClick() {
+    console.log('Edit');
     this.editClicked.emit();
   }
 

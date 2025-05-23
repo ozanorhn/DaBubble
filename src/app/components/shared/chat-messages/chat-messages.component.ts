@@ -43,15 +43,9 @@ export class ChatMessagesComponent {
   editIndex: number | null = null;
   emojiIndex: number | null = null;
   showEmojiPicker = false;
+  // currentEmoji = '';
 
-  ngOnInit(): void {
-    this.currentUser = this.localStorageService.loadObject<User>('currentUser');
-  
-    if (this.currentUser) {
-      this.userService.currentUser = this.currentUser; 
-    }
-  }
-  
+
   constructor(
     public mainNavService: MainNavService,
     public authService: AuthService,
@@ -64,13 +58,67 @@ export class ChatMessagesComponent {
     this.currentUser = this.localStorageService.loadObject<User>('currentUser');
   }
 
+
+  ngOnInit(): void {
+    this.currentUser = this.localStorageService.loadObject<User>('currentUser');
+    if (this.currentUser) {
+      this.userService.currentUser = this.currentUser;
+    }
+  }
+
+
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  addEmoji(emoji: string) {
+
+  addEmoji(emoji: string, message: Message, i: number) {
+    // this.currentEmoji = emoji;
+    switch (this.chatType) {
+      case 'channel':
+        const reactions = this.messageService.messages()[i].reactions;
+        const reaction = reactions.find(r => r.emoji === emoji);
+        this.manageReaction(reaction, emoji, i);
+
+        this.messageService.editMessage(message);
+        break;
+      case 'dm':
+
+        break;
+      case 'thread':
+
+        break;
+
+      default:
+        break;
+    }
     console.log(emoji);
+    console.log(message);
+    this.emojiIndex = null;
   }
+
+
+  manageReaction(reaction: any, emoji: string, i: number) {
+    const currentUserId = this.userService.currentUser.id;
+    if (!reaction) {
+      this.messageService.messages()[i].reactions.push({
+        emoji,
+        users: [currentUserId]
+      });
+    } else {
+      const userIndex = reaction.users.indexOf(currentUserId);
+      const reactionsIndex = this.messageService.messages()[i].reactions.indexOf(reaction);
+      if (userIndex === -1) {
+        this.messageService.messages()[i].reactions[reactionsIndex].users.push(currentUserId);
+      } else {
+        this.messageService.messages()[i].reactions[reactionsIndex].users.splice(userIndex, 1);
+        if (reaction.users.length === 0) {
+          this.messageService.messages()[i].reactions.splice(reactionsIndex, 1);
+        }
+      }
+    }
+  }
+
 
   toggleEditInput(index: number): void {
     if (this.editIndex === index) {
@@ -90,10 +138,6 @@ export class ChatMessagesComponent {
       this.emojiIndex = null;
     } else {
       this.emojiIndex = index;
-      let id = setTimeout(() => {
-        const chatInput = this.emojiPickerComponents.toArray()[0];
-        clearTimeout(id);
-      }, 100);
     }
   }
 }

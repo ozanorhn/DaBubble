@@ -14,9 +14,9 @@ export class DirectMessage {
         answers: number;
         lastAnswer: Timestamp;
         reactions: [{
-            id: number;
+            emoji: string;
             users: string[];
-        }] | [];
+        }];
     }];
 
 
