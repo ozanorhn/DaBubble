@@ -52,22 +52,9 @@
     </div> -->
   </div>
 
-  <!-- @if (mainNavService.showChannel()) {
-  @if (mainNavService.newMessage) {
-  <app-new-message
-    class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-new-message>
-  } @else if (mainNavService.directMessage) {
-  <app-direct-message
-    class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-direct-message>
-  } @else {
-  <app-channel class="flex flex-col w-full max-h-[calc(100% - 3rem)] my-6 pb-4 bg-white rounded-[30px]"></app-channel>
-  }
-  } -->
 
-  <div
-    [class.active]="mainNavService.showChannel()"
-    class="flex-1 my-6 channel-container"
-  >
+
+  <div [class.active]="mainNavService.showChannel()" class="flex-1 my-6 channel-container">
     @if (mainNavService.newMessage) {
     <app-new-message
       class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"
@@ -90,32 +77,6 @@
   }
 </section>
 
-<!-- <section class="flex h-[calc(100vh-80px)] gap-3 p-3 bg-primary relative">
-
-  <div [class.active]="mainNavService.showNav()"
-    class="nav-container flex flex-col w-full h-[calc(100% - 3rem)] lg:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white">
-    <app-search class="lg:hidden"></app-search>
-    <app-navigation class="w-full h-full"></app-navigation>
-  </div>
-
- 
-  <div [class.active]="mainNavService.showChannel()"
-    class="flex-1 my-6 channel-container">
-    @if (mainNavService.newMessage) {
-      <app-new-message class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"></app-new-message>
-    } @else if (mainNavService.directMessage) {
-      <app-direct-message class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"></app-direct-message>
-    } @else {
-      <app-channel class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"></app-channel>
-    }
-  </div>
-
-
-  <div [class.active]="mainNavService.showThread()"
-    class="thread-container w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6">
-    <app-thread></app-thread>
-  </div>
-</section> -->
 
 <!--Overlays-->
 
@@ -196,6 +157,12 @@
     (click)="$event.stopPropagation()"
   ></app-members>
 </div>
+
+<div (click)="overlayService.confirmLeaveChannel()" [class.active]="!overlayService.hideConfirmLeaveChannel"
+  class="absolute top-0 overlay-backdrop bottom-0 left-0 right-0 flex z-[1] justify-center items-center bg-[rgba(0,0,0,0.4)]">
+  <app-confirm-leave-channel (click)="$event.stopPropagation()" class="absolute"></app-confirm-leave-channel>
+</div>
+
 
 @if (channelService.loading) {
 <app-loading-screen></app-loading-screen>

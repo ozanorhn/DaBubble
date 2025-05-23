@@ -34,7 +34,7 @@ export class AddUserComponent {
 
   choiceInput = false
 
-  choice() {
+  selectAllMembers() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
     const choiseUser = document.getElementById('choice') as HTMLInputElement | null;
     if (allPicker && choiseUser) {
@@ -46,7 +46,7 @@ export class AddUserComponent {
   }
 
 
-  checkAll() {
+  switchToManualMemberSelection() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
     const choiseUser = document.getElementById('choice') as HTMLInputElement | null;
     if (allPicker && choiseUser) {
@@ -58,7 +58,7 @@ export class AddUserComponent {
   }
 
 
-  addChannel() {
+  createChannelAndClose() {
     this.channelService.addChannel();
     this.overlayService.addUserOverlay();
     this.channelService.resetCreateChannel();
