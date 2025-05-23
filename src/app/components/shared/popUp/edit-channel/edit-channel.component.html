@@ -15,7 +15,7 @@
         <app-members class="lg:hidden"></app-members>
 
         <div class="flex justify-end w-full">
-            <button class="px-6 py-3 bg-purple1 rounded-[25px] text-white font-bold text-lg hover:scale-[1.1] duration-150 active:scale-[0.9]">
+            <button (click)="overlayService.confirmLeaveChannel()" class="px-6 py-3 bg-purple1 rounded-[25px] text-white font-bold text-lg hover:scale-[1.1] duration-150 active:scale-[0.9]">
                 Channel verlassen
             </button>
         </div>

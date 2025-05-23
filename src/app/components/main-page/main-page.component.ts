@@ -20,6 +20,7 @@ import { User } from '../../classes/user.class';
 import { MembersComponent } from "../shared/popUp/members/members.component";
 import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
 import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
+import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-channel/confirm-leave-channel.component";
 
 
 @Component({
@@ -40,8 +41,9 @@ import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.
     LogOutComponent,
     MembersComponent,
     AddMembersComponent,
-    LoadingScreenComponent
-  ],
+    LoadingScreenComponent,
+    ConfirmLeaveChannelComponent
+],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
