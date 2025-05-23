@@ -6,9 +6,9 @@ export class Message {
     sender: string;
     timestamp: Timestamp;
     reactions: [{
-        id: number;
+        emoji: string;
         users: string[];
-    }] | [];
+    }];
     threadId: string;
     channelId: string;
     answers: number;

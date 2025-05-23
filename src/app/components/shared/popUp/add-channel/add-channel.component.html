@@ -3,7 +3,7 @@
   <div class="flex justify-between">
     <h2 class="text-2xl font-bold">Channel erstellen</h2>
 
-    <img (click)="closeOverlay()" class="hover:scale-[1.1] duration-150 active:scale-[0.9] cursor-pointer"
+    <img (click)="closeChannelCreationDialog()" class="hover:scale-[1.1] duration-150 active:scale-[0.9] cursor-pointer"
       src="/assets/icons/close.svg" alt="" />
   </div>
 
@@ -24,7 +24,7 @@
       class="px-5 py-4 border border-black h-32 rounded-[40px]" placeholder="Dein Text hier" name="" id=""></textarea>
   </div>
 
-  <button (click)="openAddUser()"
+  <button (click)="navigateToMemberSelection()"
     class="w-32 h-12 bg-purple1 rounded-[25px] text-white hover:scale-[1.1] duration-150 active:scale-[0.9] self-end">
     Erstellen
   </button>

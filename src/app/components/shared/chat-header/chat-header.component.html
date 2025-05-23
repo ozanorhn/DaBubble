@@ -78,8 +78,8 @@
       class="flex items-center px-[10px] py-[3px] rounded-full cursor-pointer hover:bg-primary max-[1024px]:hidden"
       [ngClass]="{ hidden: mainNavService.hideChannelMembers }"
     >
-      @for (user of channelService.getChannelMembers(); track user; let i =
-      $index) { @if (i < 4) {
+      @for (user of channelService.getChannelMembers(); track i; let i = $index) { 
+        @if (i < 4) {
       <img
         class="size-9 mr-[-10px] border-2 border-white rounded-full"
         src="{{ user.avatar }}"

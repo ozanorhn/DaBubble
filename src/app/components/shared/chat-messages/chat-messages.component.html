@@ -16,13 +16,13 @@
                              '[&>div>.msg-content]:hover:bg-white [&>#msg-options]:hover:right-[45px]': !userService.fromCurrentUser(message.sender)
                             }">
 
-                @if (editIndex === i) {
-                    <app-emoji-picker class="absolute top-0" (emojiPicked)="addEmoji($event)"></app-emoji-picker>
+                @if (emojiIndex === i) {
+                    <app-emoji-picker class="absolute top-[27px] left-[45px] z-10" (emojiPicked)="addEmoji($event, message, i)"></app-emoji-picker>
                 }
 
                 <app-message-options
                     (editClicked)="toggleEditInput(i)"
-                    (emojiPickerReactions)="toggleEmojiPicker()"
+                    (emojiPickerReactions)="toggleEmojiPickerReactions(i)"
                     [chatType]="chatType"
                     [message]="message"
                     [i]="i"

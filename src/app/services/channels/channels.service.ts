@@ -15,7 +15,6 @@ export class ChannelsService implements OnInit, OnDestroy {
   currentIndex = signal<number>(0);
   channelsCollection;
   choiceMembers = signal(true);
-  // choiceMembersArray: string[] = [];
   loading = true;
   private unsubscribe!: () => void;
   currentUser;
@@ -39,12 +38,22 @@ export class ChannelsService implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.createChannel = new Channel(
-      {
-        createdBy: this.currentUser.id,
-        members: [this.currentUser.id] /// Eigener Member noch hinzufügen, soll standart ????
-      }
-    )
+    this.resetCreateChannel(); // Initialisierung hier
+  }
+
+
+  resetCreateChannel() {
+    this.createChannel = new Channel({
+      createdBy: this.currentUser.id,
+      members: [this.currentUser.id] // Immer den aktuellen User als Mitglied hinzufügen
+    });
+  }
+
+
+  getUserChannels(userId: string): Channel[] {
+    return this.channels.filter(channel =>
+      channel.members.includes(userId)
+    );
   }
 
 
@@ -53,6 +62,7 @@ export class ChannelsService implements OnInit, OnDestroy {
    * Updates local channels array when changes occur
    */
   private setupChannelsListener() {
+
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
       this.channels = snapshot.docs.map((doc) => {
         const data = doc.data() as Channel;
@@ -75,18 +85,18 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  /**
-  * Adds a new channel to Firestore
-  * Uses either selected members or all users as channel members
-  */
   async addChannel() {
+    if (!this.createChannel.members.includes(this.currentUser.id)) {
+      this.createChannel.members.push(this.currentUser.id);
+    }
     if (this.choiceMembers()) {
-      this.createChannel.members
-    } else {
-      this.createChannel.members = this.userService.users.map(user => user.id);
+      this.createChannel.members = [...new Set([
+        ...this.userService.users.map(user => user.id),
+        this.currentUser.id
+      ])];
     }
     try {
-      await addDoc(this.channelsCollection, this.createChannel.toJSON())
+      await addDoc(this.channelsCollection, this.createChannel.toJSON());
     } catch (error) {
       console.error('Error adding channel', error);
     }
