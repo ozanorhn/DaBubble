@@ -20,7 +20,8 @@ export class OverlayService {
 
   hideLogoutOverlay = true;
   hideMembersOverlay = true;
-  hideAddMembersOverlay = true
+  hideAddMembersOverlay = true;
+  hideConfirmLeaveChannel = true;
 
   constructor(
     public channelsService: ChannelsService,
@@ -35,7 +36,7 @@ export class OverlayService {
 
   addUserOverlay() {
     this.hideAddUser = !this.hideAddUser;
-    this.channelsService.choiceMembersArray = [];
+    this.channelsService.createChannel.members = [];
   }
 
 
@@ -53,6 +54,7 @@ export class OverlayService {
     this.usersProfilView = UserView;
   }
 
+
   editProfileView() {
     this.editProfil = !this.editProfil
   }
@@ -62,12 +64,18 @@ export class OverlayService {
     this.hideLogoutOverlay = !this.hideLogoutOverlay
   }
 
+
   membersOverlay() {
     this.hideMembersOverlay = !this.hideMembersOverlay
   }
 
-  addMembersOverlay(){
+
+  addMembersOverlay() {
     this.hideAddMembersOverlay = !this.hideAddMembersOverlay
+  }
+
+  confirmLeaveChannel() {
+    this.hideConfirmLeaveChannel = !this.hideConfirmLeaveChannel
   }
 
 

@@ -1,0 +1,10 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    width: 260px;
+    padding: 4px;
+    gap: 8px;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}

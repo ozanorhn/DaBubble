@@ -1,13 +1,15 @@
 <div
     class=" w-[400px] h-64 relative rounded-tl-[30px] rounded-bl-[30px] rounded-br-[30px] flex py-7 px-4 flex-col justify-between shadow-2xl bg-white">
 
-    <div class="flex justify-between">
+    <div class="flex justify-between text-2xl font-bold">
         <h2>Leute hinzufügen</h2>
         <img (click)="overlayService.addMembersOverlay()" class="cursor-pointer hover:scale-[1.1] duration-150"
             src="/assets/icons/close.svg" alt="">
     </div>
 
-    <input [(ngModel)]="userSearch" (input)="onSearchInput()" [ngClass]="{'text-purple1 bg-primary': userExist}"
+    <span class="text-lg text-purple1"># {{this.channelService.channels[this.channelService.currentIndex()].name}}</span>
+
+    <input [(ngModel)]="userSearchInput" (input)="onSearchInput()" [ngClass]="{'text-purple1 bg-primary': userExist}"
         class="border border-lightpurple rounded-[30px] h-14 px-5" type="text" placeholder="Name eingeben">
 
 

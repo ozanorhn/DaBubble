@@ -18,7 +18,7 @@ export class MessageOptionsComponent implements OnInit {
   @Input() message: Message = new Message();
   @Input() i: number = 0;
   @Output() editClicked = new EventEmitter<void>();
-
+  @Output() emojiPickerReactions = new EventEmitter<void>();
 
   constructor(
     public navService: MainNavService,
@@ -28,20 +28,28 @@ export class MessageOptionsComponent implements OnInit {
   ) { }
 
 
+  toggleEmojiReactionPicker() {
+    console.log('Picker');
+    
+    this.emojiPickerReactions.emit()
+  }
+
+
   ngOnInit(): void {
-    console.log(this.message);
-    console.log(this.i);
-    console.log(this.chatType);
+    // console.log(this.message);
+    // console.log(this.i);
+    // console.log(this.chatType);
   }
 
 
   onEditClick() {
+    console.log('Edit');
     this.editClicked.emit();
   }
 
   // openThread(message: Message | DM, index: number) {
   openThread() {
-    console.log('i: ', this.i, ' message: ', ' chattype: ', this.chatType, this.message);
+    // console.log('i: ', this.i, ' message: ', ' chattype: ', this.chatType, this.message);
 
     if (this.chatType === 'channel') {
       this.threadService.chatType = 'channel';
@@ -54,12 +62,12 @@ export class MessageOptionsComponent implements OnInit {
 
   editMessage() {
     if (this.chatType === 'channel') {
-      console.log('########### ', this.chatType, '########### ', this.message.id, '########### ', this.i);
+      // console.log('########### ', this.chatType, '########### ', this.message.id, '########### ', this.i);
       let inputId: string = this.message.id + '_' + this.i + '_input';
       let messageContentId: string = this.message.id + '_' + this.i + '_msg';
       this.navService.toggleEditInput(inputId, messageContentId);
     } else if (this.chatType === 'thread') {
-      console.log('OOOOOOOOOO', this.i, 'OOOOOOOOOO', this.threadService.currentThread().threadId);
+      // console.log('OOOOOOOOOO', this.i, 'OOOOOOOOOO', this.threadService.currentThread().threadId);
 
     }
   }

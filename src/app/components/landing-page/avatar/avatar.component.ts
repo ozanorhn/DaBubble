@@ -12,14 +12,16 @@ import { AuthService } from '../../../services/auth/auth.service';
 })
 
 export class AvatarComponent {
-  public currentAvatar: number = 0;
-  public showMessage: boolean = false;
+   currentAvatar: number = 0;
+   showMessage: boolean = false;
+   userName: string = '';
 
   constructor(
     public landing: LandingPageService,
     public userService: UsersService,
     public authService: AuthService
-  ) {}
+  ) {  const tempUser = this.userService.getTempUser();
+    this.userName = tempUser?.name ?? '';}
 
   changeAvatar(i: number) {
     this.currentAvatar = i;

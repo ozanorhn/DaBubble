@@ -9,17 +9,16 @@
     </div>
 
     <div class="flex flex-col gap-3">
-        <span class="flex gap-3" (click)="choice()">
+        <span class="flex gap-3" (click)="selectAllMembers()">
             <input type="radio" id="all" name="memberChoice" class="bg-purple1" checked>
             <label for="all">Alle Mitglieder von OfficeTeam hinzufügen</label>
         </span>
 
-        <span class="flex gap-3" (click)="checkAll()">
+        <span class="flex gap-3" (click)="switchToManualMemberSelection()">
             <input type="radio" id="choice" name="memberChoice" class="bg-purple1">
             <label for="choice">Benutzer manuell auswählen</label>
         </span>
     </div>
-
 
     @if (choiceInput) {
     <div class="border border-black h-14 rounded-[30px] px-5 py-[15px]">
@@ -31,16 +30,12 @@
     <div
         class="absolute bottom-[-145px] border border-black w-60 h-60 bg-white rounded-[30px] overflow-auto py-4 flex flex-col gap-2">
         @for (item of filterService.filteredMembers(); track $index) {
-        <app-user [userInfo]="item" (click)="channelService.addChoiceMembers(item)"></app-user>
+        <app-user [userInfo]="item" (click)="channelService.toggleUserSelection(item)"></app-user>
         }
     </div>
     }
-
-
     }
-
-
-    <button (click)="addChannel()" class=" self-end h-12 text-white bg-slate-500 w-36 rounded-3xl hover:scale-[1.1] duration-200
+    <button (click)="createChannelAndClose()" class=" self-end h-12 text-white bg-slate-500 w-36 rounded-3xl hover:scale-[1.1] duration-200
         active:scale-[0.9]">
         hinzufügen
     </button>

@@ -1,7 +1,6 @@
-<div class="h-fit border border-lightpurple rounded-[20px] p-5 gap-5 flex flex-col">
+<div [class.border]="!edit" [class.border-lightpurple]="!edit" class="h-fit rounded-[20px] p-5 gap-5 flex flex-col">
     <div class="flex justify-between font-bold">
         <span>Beschreibung</span>
-
 
         @if (edit) {
         <button class="text-purple3" (click)="editDescription()">Speichern</button>
@@ -10,33 +9,23 @@
         <img (click)="editDescription()" class="sm:hidden cursor-pointer hover:scale-[1.1] duration-150"
             src="/assets/icons/edit.svg" alt="">
         }
-        <!-- 
-        <img (click)="editDescription()" class="cursor-pointer hover:scale-[1.1] duration-150"
-            src="/assets/icons/edit.svg" alt=""> -->
     </div>
-
-
-
     @if(edit){
     <textarea [(ngModel)]="channelService.channels[channelService.currentIndex()].description"
-        class="px-5 py-4 h-40 border border-lightpurple rounded-[40px]" name="" id=""></textarea>
+        class="px-5 py-4 h-40 border border-lightpurple rounded-[40px] resize-none" name="" id=""></textarea>
     } @else {
     <p>
         @if (channelService.channels.length > 0) {
-            {{channelService.channels[channelService.currentIndex()].description}}
+        {{channelService.channels[channelService.currentIndex()].description}}
         }
-        
     </p>
     }
-
+    
     <span class="w-full h-[1px] bg-[#ADB0D9]"></span>
-
-    <div class="flex flex-col">
-        Erstellt von
+    <div class="flex flex-col gap-3 ">
+        <span class="font-bold">Erstellt von</span>
         @if (channelService.channels.length > 0) {
-            <span> {{channelService.channels[channelService.currentIndex()].createdBy}}</span>
+        <span class="text-2xl text-purple1"> {{ userService.getUserById2(channelService.channels[channelService.currentIndex()].createdBy)?.name}}</span>
         }
-      
     </div>
-
 </div>

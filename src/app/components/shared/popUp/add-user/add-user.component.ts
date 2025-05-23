@@ -5,6 +5,9 @@ import { ChannelsService } from '../../../../services/channels/channels.service'
 import { FormsModule } from '@angular/forms';
 import { FilterService } from '../../../../pageServices/filters/filter.service';
 import { UserComponent } from '../../user/user.component';
+import { Channel } from '../../../../classes/channel.class';
+import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
+import { User } from '../../../../classes/user.class';
 
 @Component({
   selector: 'app-add-user',
@@ -12,19 +15,26 @@ import { UserComponent } from '../../user/user.component';
     CommonModule,
     FormsModule,
     UserComponent
-],
+  ],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.scss'
 })
 export class AddUserComponent {
 
-  constructor(public overlayService: OverlayService, public channelService: ChannelsService, public filterService: FilterService) {
+  currentUser;
 
+  constructor(
+    public overlayService: OverlayService,
+    public channelService: ChannelsService,
+    public filterService: FilterService,
+    public localStorageS: LocalStorageService
+  ) {
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
   choiceInput = false
 
-  choice() {
+  selectAllMembers() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
     const choiseUser = document.getElementById('choice') as HTMLInputElement | null;
     if (allPicker && choiseUser) {
@@ -36,7 +46,7 @@ export class AddUserComponent {
   }
 
 
-  checkAll() {
+  switchToManualMemberSelection() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
     const choiseUser = document.getElementById('choice') as HTMLInputElement | null;
     if (allPicker && choiseUser) {
@@ -48,9 +58,10 @@ export class AddUserComponent {
   }
 
 
-  addChannel(){
+  createChannelAndClose() {
     this.channelService.addChannel();
     this.overlayService.addUserOverlay();
+    this.channelService.resetCreateChannel();
   }
 
 }
