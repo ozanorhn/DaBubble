@@ -10,9 +10,8 @@
         </p>
     </div>
 
-
     <div class="flex justify-between w-full">
-        <button
+        <button (click)="overlayService.confirmLeaveChannel(); overlayService.editChannel(); leaveChannel()"
             class="p-3 border border-black hover:scale-[1.1] duration-150 active:scale-[0.9] rounded-[25px] bg-red-400">Verlassen
         </button>
 
@@ -20,6 +19,5 @@
             class="p-3 border border-black hover:scale-[1.1] duration-150 active:scale-[0.9] rounded-[25px] bg-slate-500">Abbrechen
         </button>
     </div>
-
 
 </section>
