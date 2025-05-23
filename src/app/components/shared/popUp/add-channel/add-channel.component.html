@@ -1,5 +1,8 @@
 <section class="h-[609px] flex flex-col px-5 py-10 gap-6 text-lg bg-white rounded-[30px] max-w-[870px]">
-
+  <p *ngIf="errorMessage" class="font-semibold text-red-500">
+    {{ errorMessage }}
+  </p>
+  
   <div class="flex justify-between">
     <h2 class="text-2xl font-bold">Channel erstellen</h2>
 
@@ -12,11 +15,14 @@
     themenbezogen sein #marketing zum Beispiel.
   </p>
 
-  <div class="flex flex-col gap-5">
-    <span class="font-bold">Channel-Name</span>
-    <input [(ngModel)]="channelService.createChannel.name" class="px-5 py-4 border border-black rounded-[40px]"
-      type="text" placeholder="#  z.B. Kooperationsprojekte" />
-  </div>
+  <input
+  [(ngModel)]="channelService.createChannel.name"
+  (input)="clearError()"
+  class="px-5 py-4 border border-black rounded-[40px]"
+  type="text"
+  placeholder="#  z.B. Kooperationsprojekte"
+/>
+
 
   <div class="flex flex-col gap-5">
     <span class="font-bold">Beschreibung</span>

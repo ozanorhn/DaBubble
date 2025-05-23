@@ -5,19 +5,18 @@ import { Channel } from '../../../../classes/channel.class';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { User } from '../../../../classes/user.class';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-channel',
-  imports: [
-    FormsModule
-  ],
+  standalone: true,
+  imports: [FormsModule, CommonModule],
   templateUrl: './add-channel.component.html',
   styleUrl: './add-channel.component.scss'
 })
 export class AddChannelComponent {
-
-  currentUser;
+  currentUser: User;
+  errorMessage: string = '';
 
   constructor(
     public overlayService: OverlayService,
@@ -27,17 +26,26 @@ export class AddChannelComponent {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
-
   closeOverlay() {
     this.overlayService.addCannelOverlay();
     this.channelService.createChannel = new Channel({ createdBy: this.currentUser.id });
   }
 
+  async openAddUser() {
+    const error = await this.channelService.addChannel();
 
-  openAddUser() {
-    this.overlayService.addCannelOverlay()
-    this.overlayService.addUserOverlay()
+    if (error) {
+      this.errorMessage = error;
+      return;
+    }
+
+    this.errorMessage = '';
+    this.overlayService.addCannelOverlay();
+    this.overlayService.addUserOverlay();
   }
 
-
+  clearError() {
+    this.errorMessage = '';
+  }
+  
 }

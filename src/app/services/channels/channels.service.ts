@@ -1,7 +1,7 @@
 import { effect, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Channel } from '../../classes/channel.class';
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, getDocs, onSnapshot, query, where } from "firebase/firestore";
 import { signal } from '@angular/core';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
@@ -46,8 +46,8 @@ export class ChannelsService implements OnInit, OnDestroy {
       }
     )
   }
-
-
+  
+  
   /**
    * Initializes the Firestore listener for channels collection
    * Updates local channels array when changes occur
@@ -79,20 +79,37 @@ export class ChannelsService implements OnInit, OnDestroy {
   * Adds a new channel to Firestore
   * Uses either selected members or all users as channel members
   */
-  async addChannel() {
-    if (this.choiceMembers()) {
-      this.createChannel.members
-    } else {
+  async addChannel(): Promise<string | null> {
+    // Sicherstellen, dass der aktuelle User enthalten ist
+    if (!this.createChannel.members.includes(this.currentUser.id)) {
+      this.createChannel.members.push(this.currentUser.id);
+    }
+  
+    if (!this.choiceMembers()) {
       this.createChannel.members = this.userService.users.map(user => user.id);
     }
+  
+    // ✅ Fehlerprüfung: existiert der Name schon?
+    const nameExists = await this.isChannelNameTaken(this.createChannel.name);
+    if (nameExists) {
+      return 'Ein Channel mit diesem Namen existiert bereits.';
+    }
+  
     try {
-      await addDoc(this.channelsCollection, this.createChannel.toJSON())
+      await addDoc(this.channelsCollection, this.createChannel.toJSON());
+      return null; // kein Fehler
     } catch (error) {
-      console.error('Error adding channel', error);
+      console.error('Fehler beim Erstellen des Channels:', error);
+      return 'Erstellen fehlgeschlagen. Bitte erneut versuchen.';
     }
   }
-
-
+  
+  private async isChannelNameTaken(name: string): Promise<boolean> {
+    const q = query(this.channelsCollection, where('name', '==', name));
+    const snapshot = await getDocs(q);
+    return !snapshot.empty;
+  }
+  
   /**
    * Prepares channel data for editing and updates Firestore
    */
@@ -138,6 +155,19 @@ export class ChannelsService implements OnInit, OnDestroy {
     }
   }
 
+  async waitUntilChannelsLoaded(): Promise<void> {
+    return new Promise((resolve) => {
+      const check = () => {
+        if (this.channels.length > 0) {
+          resolve();
+        } else {
+          setTimeout(check, 100); 
+        }
+      };
+      check();
+    });
+  }
+  
 
   /**
    * Gets the members of the current channel

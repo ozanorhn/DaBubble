@@ -4,6 +4,7 @@ import { LandingPageService } from '../../../pageServices/navigates/landing-nav.
 import { UsersService } from '../../../services/users/users.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ChannelsService } from '../../../services/channels/channels.service';
 
 import { FirebaseError } from 'firebase/app';
 import { AuthService } from '../../../services/auth/auth.service';
@@ -30,15 +31,17 @@ export class LoginComponent {
     public landing: LandingPageService,
     public userService: UsersService,
     public authService: AuthService,
-    public localStorageS: LocalStorageService
+    public localStorageS: LocalStorageService,
+    public channelsService: ChannelsService
   ) {}
+  
 
   async login() {
     try {
       const user = await this.authService.login(this.email, this.password);
   
-      // ✅ Warte, bis Users aus Firestore geladen wurden
       await this.userService.waitUntilUsersLoaded();
+      await this.channelsService.waitUntilChannelsLoaded(); 
   
       const profile = this.userService.getUserByEmail(user.email || '');
   
@@ -62,6 +65,7 @@ export class LoginComponent {
       }, 5000);
     }
   }
+  
   
 
   async googleLogin() {
