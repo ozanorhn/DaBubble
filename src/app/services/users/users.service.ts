@@ -63,13 +63,26 @@ export class UsersService implements OnDestroy {
   }
 
 
-  isUserOnline(lastOnline: Timestamp | undefined, thresholdSeconds = 20): boolean {
+  isUserOnline(lastOnline: any, thresholdSeconds = 20): boolean {
     if (!lastOnline) return false;
-    const now = Timestamp.now().toMillis();
-    const lastOnlineMillis = lastOnline.toMillis();
+  
+    let lastOnlineMillis: number;
+  
+    if (lastOnline.toMillis && typeof lastOnline.toMillis === 'function') {
+      lastOnlineMillis = lastOnline.toMillis();
+    }
+    else {
+      try {
+        lastOnlineMillis = new Date(lastOnline).getTime();
+      } catch {
+        return false;
+      }
+    }
+  
+    const now = Date.now();
     return (now - lastOnlineMillis) < thresholdSeconds * 1000;
   }
-
+  
 
   private unsubscribe!: () => void;
   private initUsersListener() {
