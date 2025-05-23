@@ -11,6 +11,7 @@ import { MessagesService } from '../../../services/messages/messages.service';
   styleUrl: './channel.component.scss'
 })
 export class ChannelComponent {
+  errorMessage: string = '';
 
   dummyThreatService = {
     messages: [{

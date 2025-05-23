@@ -9,21 +9,25 @@ import { Channel } from '../../../../classes/channel.class';
 
 @Component({
   selector: 'app-add-user',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     UserComponent
-],
+  ],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.scss'
 })
 export class AddUserComponent {
 
-  constructor(public overlayService: OverlayService, public channelService: ChannelsService, public filterService: FilterService) {
+  errorMessage: string = '';
+  choiceInput = false;
 
-  }
-
-  choiceInput = false
+  constructor(
+    public overlayService: OverlayService,
+    public channelService: ChannelsService,
+    public filterService: FilterService
+  ) {}
 
   choice() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
@@ -36,23 +40,27 @@ export class AddUserComponent {
     }
   }
 
-
   checkAll() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
     const choiseUser = document.getElementById('choice') as HTMLInputElement | null;
     if (allPicker && choiseUser) {
       allPicker.checked = false;
       choiseUser.checked = true;
-      this.choiceInput = true
+      this.choiceInput = true;
       this.channelService.choiceMembers.set(true);
     }
   }
 
+  async addChannel() {
+    const error = await this.channelService.addChannel();
 
-  addChannel(){
-    this.channelService.addChannel();
+    if (error) {
+      this.errorMessage = error;
+      return;
+    }
+
+    this.errorMessage = ''; // clear any previous error
     this.overlayService.addUserOverlay();
-    this.channelService.createChannel = new Channel({ createdBy: this.channelService.currentUser.id })
+    this.channelService.createChannel = new Channel({ createdBy: this.channelService.currentUser.id });
   }
-
 }

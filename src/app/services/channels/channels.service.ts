@@ -1,7 +1,7 @@
 import { effect, Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Channel } from '../../classes/channel.class';
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, getDocs, onSnapshot, query, where } from "firebase/firestore";
 import { signal } from '@angular/core';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
@@ -79,19 +79,46 @@ export class ChannelsService implements OnInit, OnDestroy {
   * Adds a new channel to Firestore
   * Uses either selected members or all users as channel members
   */
-  async addChannel() {
+  async addChannel(): Promise<string | null> {
     if (this.choiceMembers()) {
-      this.createChannel.members
+      this.createChannel.members;
     } else {
       this.createChannel.members = this.userService.users.map(user => user.id);
     }
+  
+    const nameExists = await this.isChannelNameTaken(this.createChannel.name);
+    if (nameExists) {
+      return 'Ein Channel mit diesem Namen existiert bereits.';
+    }
+  
     try {
-      await addDoc(this.channelsCollection, this.createChannel.toJSON())
+      await addDoc(this.channelsCollection, this.createChannel.toJSON());
+      return null; // kein Fehler
     } catch (error) {
-      console.error('Error adding channel', error);
+      console.error('Fehler beim Erstellen des Channels:', error);
+      return 'Erstellen fehlgeschlagen. Bitte erneut versuchen.';
     }
   }
 
+  private async isChannelNameTaken(name: string): Promise<boolean> {
+    const q = query(this.channelsCollection, where('name', '==', name));
+    const snapshot = await getDocs(q);
+    return !snapshot.empty;
+  }
+  
+  
+  async waitUntilChannelsLoaded(): Promise<void> {
+    return new Promise((resolve) => {
+      const check = () => {
+        if (this.channels.length > 0) {
+          resolve();
+        } else {
+          setTimeout(check, 100); // prüfe erneut in 100ms
+        }
+      };
+      check();
+    });
+  }
 
   /**
    * Prepares channel data for editing and updates Firestore
