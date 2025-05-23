@@ -43,7 +43,7 @@ export class ChatMessagesComponent {
   editIndex: number | null = null;
   emojiIndex: number | null = null;
   showEmojiPicker = false;
-  currentEmoji = '';
+  // currentEmoji = '';
 
 
   constructor(
@@ -73,33 +73,14 @@ export class ChatMessagesComponent {
 
 
   addEmoji(emoji: string, message: Message, i: number) {
-    this.currentEmoji = emoji;
+    // this.currentEmoji = emoji;
     switch (this.chatType) {
       case 'channel':
-        const currentUserId = this.userService.currentUser.id;
         const reactions = this.messageService.messages()[i].reactions;
         const reaction = reactions.find(r => r.emoji === emoji);
-        if (!reaction) {
-          this.messageService.messages()[i].reactions.push({
-            emoji,
-            users: [currentUserId]
-          });
-        } else {
-          const userIndex = reaction.users.indexOf(currentUserId);
-          let reactionsIndex = this.messageService.messages()[i].reactions.indexOf(reaction);
-          if (userIndex === -1) {
-            this.messageService.messages()[i].reactions[reactionsIndex].users.push(currentUserId);
-            console.log(this.messageService.messages()[i].reactions);
-          } else {
-            this.messageService.messages()[i].reactions[reactionsIndex].users.splice(userIndex, 1);
-            if (reaction.users.length === 0) {
-              const index = reactions.indexOf(reaction);
-              this.messageService.messages()[i].reactions.splice(reactionsIndex, 1);
-            }
-          }
-          this.messageService.editMessage(message);
-        }
+        this.manageReaction(reaction, emoji, i);
 
+        this.messageService.editMessage(message);
         break;
       case 'dm':
 
@@ -113,7 +94,29 @@ export class ChatMessagesComponent {
     }
     console.log(emoji);
     console.log(message);
+    this.emojiIndex = null;
+  }
 
+
+  manageReaction(reaction: any, emoji: string, i: number) {
+    const currentUserId = this.userService.currentUser.id;
+    if (!reaction) {
+      this.messageService.messages()[i].reactions.push({
+        emoji,
+        users: [currentUserId]
+      });
+    } else {
+      const userIndex = reaction.users.indexOf(currentUserId);
+      const reactionsIndex = this.messageService.messages()[i].reactions.indexOf(reaction);
+      if (userIndex === -1) {
+        this.messageService.messages()[i].reactions[reactionsIndex].users.push(currentUserId);
+      } else {
+        this.messageService.messages()[i].reactions[reactionsIndex].users.splice(userIndex, 1);
+        if (reaction.users.length === 0) {
+          this.messageService.messages()[i].reactions.splice(reactionsIndex, 1);
+        }
+      }
+    }
   }
 
 
