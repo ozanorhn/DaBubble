@@ -28,13 +28,13 @@ export class AddChannelComponent {
   }
 
 
-  closeOverlay() {
+  closeChannelCreationDialog() {
     this.overlayService.addCannelOverlay();
     this.channelService.resetCreateChannel();
   }
 
 
-  openAddUser() {
+  navigateToMemberSelection() {
     this.overlayService.addCannelOverlay()
     this.overlayService.addUserOverlay()
   }
