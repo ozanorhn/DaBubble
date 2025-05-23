@@ -10,7 +10,7 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ChannelsService implements OnDestroy {
+export class ChannelsService implements OnInit, OnDestroy {
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
@@ -34,6 +34,10 @@ export class ChannelsService implements OnDestroy {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.channelsCollection = collection(this.firestore, 'channels');
     this.setupChannelsListener();
+  }
+
+
+  ngOnInit(): void {
     this.resetCreateChannel(); // Initialisierung hier
   }
 
@@ -47,10 +51,10 @@ export class ChannelsService implements OnDestroy {
 
 
   getUserChannels(userId: string): Channel[] {
-  return this.channels.filter(channel => 
-    channel.members.includes(userId)
-  );
-}
+    return this.channels.filter(channel =>
+      channel.members.includes(userId)
+    );
+  }
 
 
   /**
@@ -58,6 +62,7 @@ export class ChannelsService implements OnDestroy {
    * Updates local channels array when changes occur
    */
   private setupChannelsListener() {
+
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
       this.channels = snapshot.docs.map((doc) => {
         const data = doc.data() as Channel;

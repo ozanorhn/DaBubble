@@ -19,7 +19,6 @@ export class LocalStorageService {
       const serialized = JSON.stringify(value);
       localStorage.setItem(key, serialized);
     } catch (error) {
-      // console.error('Fehler beim Speichern im localStorage:', error);
       throw new Error('Speichern fehlgeschlagen');
     }
   }
@@ -34,17 +33,9 @@ export class LocalStorageService {
       const serialized = localStorage.getItem(key);
       return serialized ? JSON.parse(serialized) as T : null;
     } catch (error) {
-      // console.error('Fehler beim Laden aus localStorage:', error);
       return null;
     }
   }
-
-
-  // loadObject<T>(key: string): T | null{
-  //   const currentUser = localStorage.getItem(key);
-  //   if (!currentUser) return null ;
-  //   return  JSON.parse(currentUser) as T
-  // }
 
 
   /**
