@@ -77,6 +77,7 @@ export class UsersService implements OnDestroy {
     });
   }
 
+  
   async waitUntilUsersLoaded(): Promise<void> {
     return new Promise((resolve) => {
       const check = () => {
@@ -89,6 +90,7 @@ export class UsersService implements OnDestroy {
       check();
     });
   }
+
 
   ngOnDestroy(): void {
     if (this.unsubscribe) {
