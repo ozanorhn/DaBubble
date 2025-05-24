@@ -14,7 +14,7 @@ export class ChannelsService implements OnInit, OnDestroy {
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
-  choiceMembers = signal(true);
+  choiceMembers = signal(false);
   loading = true;
   private unsubscribe!: () => void;
   currentUser;
@@ -50,10 +50,8 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  getUserChannels(userId: string): Channel[] {
-    return this.channels.filter(channel =>
-      channel.members.includes(userId)
-    );
+  isCurrentUserMember(channel: Channel): boolean {
+    return channel.members.includes(this.currentUser.id);
   }
 
 
@@ -86,21 +84,21 @@ export class ChannelsService implements OnInit, OnDestroy {
 
 
   async addChannel() {
-    if (!this.createChannel.members.includes(this.currentUser.id)) {
-      this.createChannel.members.push(this.currentUser.id);
-    }
-    if (this.choiceMembers()) {
-      this.createChannel.members = [...new Set([
-        ...this.userService.users.map(user => user.id),
-        this.currentUser.id
-      ])];
-    }
-    try {
-      await addDoc(this.channelsCollection, this.createChannel.toJSON());
-    } catch (error) {
-      console.error('Error adding channel', error);
-    }
+  if (!this.createChannel.members.includes(this.currentUser.id)) {
+    this.createChannel.members.push(this.currentUser.id);
   }
+  
+  if (!this.choiceMembers()) {
+    const allUserIds = this.userService.users.map(user => user.id);
+    this.createChannel.members = [...new Set([...allUserIds, this.currentUser.id])];
+  }
+
+  try {
+    await addDoc(this.channelsCollection, this.createChannel.toJSON());
+  } catch (error) {
+    console.error('Fehler beim Erstellen des Channels:', error);
+  }
+}
 
 
   /**
@@ -176,7 +174,6 @@ export class ChannelsService implements OnInit, OnDestroy {
       this.createChannel.members.push(user.id);
     }
   }
-
 
 
   /**
