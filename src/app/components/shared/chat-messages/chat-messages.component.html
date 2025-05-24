@@ -11,7 +11,7 @@
             }
             
             <div id="{{ chatType }}{{ i }}" 
-                class="relative flex gap-5 mt-[25px] px-4 py-2 cursor-pointer transition-all hover:bg-primary [&>#msg-options]:hover:opacity-100"
+                class="relative flex gap-5 mt-[25px] px-4 py-2 cursor-pointer transition-all hover:bg-primary [&>#msg-options]:hover:opacity-100 [&>#msg-options]:hover:pointer-events-auto"
                 [ngClass]="{ 'flex-row-reverse [&>#msg-options]:hover:left-[45px]':userService.fromCurrentUser(message.sender),
                              '[&>div>#msg-content]:hover:bg-white [&>#msg-options]:hover:right-[45px]': !userService.fromCurrentUser(message.sender)
                             }">
@@ -29,7 +29,7 @@
                     [i]="i"
                     [messageFromCurrentUser]="userService.fromCurrentUser(message.sender)"
                     id="msg-options"
-                    class="absolute top-0 translate-y-[-23px] opacity-0"></app-message-options>
+                    class="absolute pointer-events-none top-0 translate-y-[-23px] opacity-0"></app-message-options>
                 <div>
                     <img class="min-w-[50px] size-[50px] rounded-full" src="{{ userService.getUserById2(message.sender)?.avatar }}" alt="Avatar">
                 </div>
