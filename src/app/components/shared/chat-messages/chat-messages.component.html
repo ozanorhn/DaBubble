@@ -1,6 +1,6 @@
 <section class="box-border pb-4 bg-white">
     <div class="box-border flex flex-col">
-        @for (message of messages; track message; let i = $index) {
+        @for (message of messages; track i; let i = $index) {
             @if (messages !== undefined) {
                 @if (i === 0  || !messageService.isSameDay(messageService.getDateFromTimestamp(message.timestamp), messageService.getDateFromTimestamp(messages[i - 1].timestamp))) {
                     <app-chat-seperator

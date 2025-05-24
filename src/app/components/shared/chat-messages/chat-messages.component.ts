@@ -73,25 +73,17 @@ export class ChatMessagesComponent {
 
 
   async addEmoji(emoji: string, message: Message, i: number) {
-    let reactions;
-    let reaction;
+    let reactions = this.getReactions(i);
+    let reaction = reactions.find(r => r.emoji === emoji);
+    this.updateReaction(reaction, emoji, reactions);
     switch (this.chatType) {
       case 'channel':
-        reactions = this.messageService.messages()[i].reactions;
-        reaction = reactions.find(r => r.emoji === emoji);
-        this.manageReaction(reaction, emoji, reactions);
         await this.messageService.editMessage(message);
         break;
       case 'dm':
-        reactions = this.dmService.directMessage.content[i].reactions;
-        reaction = reactions.find(r => r.emoji === emoji);
-        this.manageReaction(reaction, emoji, reactions);
         await this.dmService.updateDM('');
         break;
       case 'thread':
-        reactions = this.threadService.currentThread().content[i].reactions;
-        reaction = reactions.find(r => r.emoji === emoji);
-        this.manageReaction(reaction, emoji, reactions);
         await this.threadService.updateThread(true);
         break;
       default:
@@ -101,23 +93,47 @@ export class ChatMessagesComponent {
   }
 
 
-  manageReaction(reaction: any, emoji: string, reactions: any) {
+  private getReactions(i: number) {
+    switch (this.chatType) {
+      case 'channel':
+        return this.messageService.messages()[i].reactions;
+      case 'dm':
+        return this.dmService.directMessage.content[i].reactions;
+      case 'thread':
+        return this.threadService.currentThread().content[i].reactions;
+      default:
+        return [];
+    }
+  }
+
+
+  private updateReaction(reaction: any, emoji: string, reactions: any) {
     const currentUserId = this.userService.currentUser.id;
     if (!reaction) {
-      reactions.push({
-        emoji,
-        users: [currentUserId]
-      });
+      this.addReaction(emoji, reactions, currentUserId);
     } else {
-      const userIndex = reaction.users.indexOf(currentUserId);
-      const reactionsIndex = reactions.indexOf(reaction);
-      if (userIndex === -1) {
-        reactions[reactionsIndex].users.push(currentUserId);
-      } else {
-        reactions[reactionsIndex].users.splice(userIndex, 1);
-        if (reaction.users.length === 0) {
-          reactions.splice(reactionsIndex, 1);
-        }
+      this.handleExistingReaction(reaction, reactions, currentUserId);
+    }
+  }
+
+
+  private addReaction(emoji: string, reactions: any, currentUserId: string) {
+    reactions.push({
+      emoji,
+      users: [currentUserId]
+    });
+  }
+
+
+  private handleExistingReaction(reaction: any, reactions: any, currentUserId: string) {
+    const userIndex = reaction.users.indexOf(currentUserId);
+    const reactionsIndex = reactions.indexOf(reaction);
+    if (userIndex === -1) {
+      reactions[reactionsIndex].users.push(currentUserId);
+    } else {
+      reactions[reactionsIndex].users.splice(userIndex, 1);
+      if (reaction.users.length === 0) {
+        reactions.splice(reactionsIndex, 1);
       }
     }
   }
@@ -136,6 +152,7 @@ export class ChatMessagesComponent {
     }
   }
 
+  
   toggleEmojiPickerReactions(index: number): void {
     if (this.emojiIndex === index) {
       this.emojiIndex = null;
