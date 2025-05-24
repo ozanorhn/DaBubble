@@ -1,16 +1,16 @@
 @for (reaction of message.reactions; track $index) {
-    <button class="relative flex items-center border-lightpurple border-[1px] rounded-full gap-[10px] py-[5px] px-[10px] [&>div]:hover:opacity-100">
+    <button (click)="react(reaction.emoji)" class="relative flex items-center border-lightpurple border-[1px] rounded-full gap-[10px] py-[5px] px-[10px] [&>div]:hover:opacity-100">
         <span class="size-6">{{ reaction.emoji }}</span>
         <span class="text-base">{{ reaction.users.length }}</span>
         <div class="absolute pointer-events-none z-10 left-[50%] top-0 translate-y-[-100%] flex flex-wrap justify-center py-[15px] px-[10px] bg-purple1 text-white rounded-[30px] rounded-es-none opacity-0">
             <p class="text-[30px]">{{ reaction.emoji }}</p>
             @for (user of reaction.users; track i; let i = $index) {
-                @if (i === 0 && reaction.users.length === 1) {
+                @if (i === 0 && reaction.users.length <= 2) {
                     <span class="font-bold whitespace-nowrap">{{ getUser(user) }}</span>
-                }@else if (i === 0) {
+                } @else if (i === 0 && reaction.users.length > 2) {
                     <span class="font-bold whitespace-nowrap">{{ getUser(user) }},</span>
-                }@else if (i > 0 && i < reaction.users.length - 1) {
-                    <span class="font-bold whitespace-nowrap">{{ getUser(user) }},</span>
+                } @else if (i > 0 && i < reaction.users.length - 1) {
+                    <span class="font-bold whitespace-nowrap">{{ getUser(user) }}</span>
                 } @else if (i === reaction.users.length - 1 && reaction.users.length > 1) {
                     <span class="font-bold whitespace-nowrap">und {{ getUser(user) }}</span>
                 }
