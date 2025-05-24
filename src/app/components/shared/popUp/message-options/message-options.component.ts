@@ -12,6 +12,12 @@ import { MessagesService } from '../../../../services/messages/messages.service'
   templateUrl: './message-options.component.html',
   styleUrl: './message-options.component.scss'
 })
+
+
+/**
+ * Displays action options for a single message such as editing, reacting with emojis, or opening threads.
+ * Emits events to the parent component to handle specific interactions.
+ */
 export class MessageOptionsComponent {
   @Input() messageFromCurrentUser = false;
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
@@ -29,17 +35,25 @@ export class MessageOptionsComponent {
   ) { }
 
 
+  /**
+   * Emits an event to toggle the emoji reaction picker UI.
+   */
   toggleEmojiReactionPicker() {
     this.emojiPickerReactions.emit()
   }
 
 
+  /**
+   * Emits an event when the edit action is triggered.
+   */
   onEditClick() {
-    console.log('Edit');
     this.editClicked.emit();
   }
 
-  // openThread(message: Message | DM, index: number) {
+
+  /**
+   * Opens a thread view for the current message, depending on chat type.
+   */
   openThread() {
     if (this.chatType === 'channel') {
       this.threadService.chatType = 'channel';
@@ -50,6 +64,11 @@ export class MessageOptionsComponent {
     }
   }
 
+
+  /**
+   * Emits the selected emoji to be added as a reaction.
+   * @param emoji The emoji string selected by the user.
+   */
   addEmoji(emoji: string) {
     this.emojiPicked.emit(emoji);
   }
