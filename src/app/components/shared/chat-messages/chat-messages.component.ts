@@ -72,48 +72,51 @@ export class ChatMessagesComponent {
   }
 
 
-  addEmoji(emoji: string, message: Message, i: number) {
-    // this.currentEmoji = emoji;
+  async addEmoji(emoji: string, message: Message, i: number) {
+    let reactions;
+    let reaction;
     switch (this.chatType) {
       case 'channel':
-        let service = this.messageService;
-        const reactions = this.messageService.messages()[i].reactions;
-        const reaction = reactions.find(r => r.emoji === emoji);
-        this.manageReaction(reaction, emoji, i, service);
-        this.messageService.editMessage(message);
+        reactions = this.messageService.messages()[i].reactions;
+        reaction = reactions.find(r => r.emoji === emoji);
+        this.manageReaction(reaction, emoji, reactions);
+        await this.messageService.editMessage(message);
         break;
       case 'dm':
-
+        reactions = this.dmService.directMessage.content[i].reactions;
+        reaction = reactions.find(r => r.emoji === emoji);
+        this.manageReaction(reaction, emoji, reactions);
+        await this.dmService.updateDM('');
         break;
       case 'thread':
-
+        reactions = this.threadService.currentThread().content[i].reactions;
+        reaction = reactions.find(r => r.emoji === emoji);
+        this.manageReaction(reaction, emoji, reactions);
+        await this.threadService.updateThread(true);
         break;
-
       default:
         break;
     }
-    console.log(emoji);
-    console.log(message);
     this.emojiIndex = null;
   }
 
 
-  manageReaction(reaction: any, emoji: string, i: number, service: any) {
+  manageReaction(reaction: any, emoji: string, reactions: any) {
     const currentUserId = this.userService.currentUser.id;
     if (!reaction) {
-      service.messages()[i].reactions.push({
+      reactions.push({
         emoji,
         users: [currentUserId]
       });
     } else {
       const userIndex = reaction.users.indexOf(currentUserId);
-      const reactionsIndex = service.messages()[i].reactions.indexOf(reaction);
+      const reactionsIndex = reactions.indexOf(reaction);
       if (userIndex === -1) {
-        service.messages()[i].reactions[reactionsIndex].users.push(currentUserId);
+        reactions[reactionsIndex].users.push(currentUserId);
       } else {
-        service.messages()[i].reactions[reactionsIndex].users.splice(userIndex, 1);
+        reactions[reactionsIndex].users.splice(userIndex, 1);
         if (reaction.users.length === 0) {
-          service.messages()[i].reactions.splice(reactionsIndex, 1);
+          reactions.splice(reactionsIndex, 1);
         }
       }
     }
