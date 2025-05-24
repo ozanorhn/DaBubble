@@ -68,6 +68,7 @@
                     @if (message.reactions.length > 0) {
                         <app-chat-message-reactions
                             (emojiPicked)="addEmoji($event, message, i)"
+                            (pickerToggled)="toggleEmojiPickerReactions(i)"
                             class="flex items-center gap-2 w-max"
                             [ngClass]="{'self-end pr-[5px]':userService.fromCurrentUser(message.sender)}"
                             [message]="message">

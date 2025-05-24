@@ -12,6 +12,7 @@ import { UsersService } from '../../../services/users/users.service';
 export class ChatMessageReactionsComponent {
   @Input() message: Message | DM = new Message();
   @Output() emojiPicked = new EventEmitter<string>();
+  @Output() pickerToggled = new EventEmitter<void>();
 
 
   constructor(
@@ -29,7 +30,12 @@ export class ChatMessageReactionsComponent {
   }
 
 
-  react(emoji: string) {
+  public react(emoji: string) {
     this.emojiPicked.emit(emoji);
+  }
+
+
+  public toggleEmojiPicker() {
+    this.pickerToggled.emit();
   }
 }
