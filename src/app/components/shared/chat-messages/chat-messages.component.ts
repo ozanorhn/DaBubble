@@ -89,10 +89,10 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
     // this.currentEmoji = emoji;
     switch (this.chatType) {
       case 'channel':
+        let service = this.messageService;
         const reactions = this.messageService.messages()[i].reactions;
         const reaction = reactions.find(r => r.emoji === emoji);
-        this.manageReaction(reaction, emoji, i);
-
+        this.manageReaction(reaction, emoji, i, service);
         this.messageService.editMessage(message);
         break;
       case 'dm':
@@ -110,22 +110,25 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
     this.emojiIndex = null;
   }
 
-  manageReaction(reaction: any, emoji: string, i: number) {
+
+
+  manageReaction(reaction: any, emoji: string, i: number, service: any) {
+
     const currentUserId = this.userService.currentUser.id;
     if (!reaction) {
-      this.messageService.messages()[i].reactions.push({
+      service.messages()[i].reactions.push({
         emoji,
         users: [currentUserId]
       });
     } else {
       const userIndex = reaction.users.indexOf(currentUserId);
-      const reactionsIndex = this.messageService.messages()[i].reactions.indexOf(reaction);
+      const reactionsIndex = service.messages()[i].reactions.indexOf(reaction);
       if (userIndex === -1) {
-        this.messageService.messages()[i].reactions[reactionsIndex].users.push(currentUserId);
+        service.messages()[i].reactions[reactionsIndex].users.push(currentUserId);
       } else {
-        this.messageService.messages()[i].reactions[reactionsIndex].users.splice(userIndex, 1);
+        service.messages()[i].reactions[reactionsIndex].users.splice(userIndex, 1);
         if (reaction.users.length === 0) {
-          this.messageService.messages()[i].reactions.splice(reactionsIndex, 1);
+          service.messages()[i].reactions.splice(reactionsIndex, 1);
         }
       }
     }
