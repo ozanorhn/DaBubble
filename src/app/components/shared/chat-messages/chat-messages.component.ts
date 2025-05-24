@@ -1,4 +1,4 @@
-import { Component, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, QueryList, ViewChildren, ViewChild, ElementRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
 import { MessagesService } from '../../../services/messages/messages.service';
@@ -31,7 +31,7 @@ import { User } from '../../../classes/user.class';
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
-export class ChatMessagesComponent {
+export class ChatMessagesComponent implements AfterViewInit, OnChanges {
   currentUser: User | null = null;
   lastMessageDate: Date | null = null;
   newDay = true;
@@ -44,7 +44,7 @@ export class ChatMessagesComponent {
   emojiIndex: number | null = null;
   showEmojiPicker = false;
   // currentEmoji = '';
-
+  @ViewChild('messagesEnd') messagesEndRef!: ElementRef<HTMLDivElement>;
 
   constructor(
     public mainNavService: MainNavService,
@@ -58,7 +58,6 @@ export class ChatMessagesComponent {
     this.currentUser = this.localStorageService.loadObject<User>('currentUser');
   }
 
-
   ngOnInit(): void {
     this.currentUser = this.localStorageService.loadObject<User>('currentUser');
     if (this.currentUser) {
@@ -66,11 +65,25 @@ export class ChatMessagesComponent {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['messages']) {
+      this.scrollToBottom();
+    }
+  }
+
+  scrollToBottom(): void {
+    setTimeout(() => {
+      this.messagesEndRef?.nativeElement?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  }
 
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
-
 
   addEmoji(emoji: string, message: Message, i: number) {
     // this.currentEmoji = emoji;
@@ -97,7 +110,6 @@ export class ChatMessagesComponent {
     this.emojiIndex = null;
   }
 
-
   manageReaction(reaction: any, emoji: string, i: number) {
     const currentUserId = this.userService.currentUser.id;
     if (!reaction) {
@@ -118,7 +130,6 @@ export class ChatMessagesComponent {
       }
     }
   }
-
 
   toggleEditInput(index: number): void {
     if (this.editIndex === index) {
