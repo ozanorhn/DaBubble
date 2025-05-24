@@ -180,4 +180,18 @@ export class ChannelsService implements OnInit, OnDestroy {
   isUserSelected(user: User): boolean {
     return this.createChannel.members.includes(user.id);
   }
+
+  public async waitUntilChannelsLoaded(): Promise<void> {
+    return new Promise(resolve => {
+      const check = () => {
+        if (!this.loading && this.channels.length > 0) {
+          resolve();
+        } else {
+          setTimeout(check, 100); // prüfe alle 100ms, bis geladen
+        }
+      };
+      check();
+    });
+  }
+  
 }
