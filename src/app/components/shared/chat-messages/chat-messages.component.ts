@@ -31,6 +31,11 @@ import { User } from '../../../classes/user.class';
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
 })
+
+
+/**
+ * Displays chat messages and manages reactions, editing, and emojis.
+ */
 export class ChatMessagesComponent {
   currentUser: User | null = null;
   lastMessageDate: Date | null = null;
@@ -43,7 +48,6 @@ export class ChatMessagesComponent {
   editIndex: number | null = null;
   emojiIndex: number | null = null;
   showEmojiPicker = false;
-  // currentEmoji = '';
 
 
   constructor(
@@ -54,11 +58,12 @@ export class ChatMessagesComponent {
     public threadService: ThreadsService,
     public dmService: DirectMessagesService,
     public localStorageService: LocalStorageService
-  ) {
-    this.currentUser = this.localStorageService.loadObject<User>('currentUser');
-  }
+  ) { }
 
 
+  /**
+   * Loads the current user from local storage and assigns it to the user service.
+   */
   ngOnInit(): void {
     this.currentUser = this.localStorageService.loadObject<User>('currentUser');
     if (this.currentUser) {
@@ -67,11 +72,21 @@ export class ChatMessagesComponent {
   }
 
 
+  /**
+   * Toggles the visibility of the emoji picker for composing new messages.
+   */
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
 
+  /**
+  * Adds or removes an emoji reaction from a message.
+  * Updates the corresponding service based on the chat type.
+  * @param emoji The selected emoji
+  * @param message The message to react to
+  * @param i The index of the message
+  */
   async addEmoji(emoji: string, message: Message, i: number) {
     let reactions = this.getReactions(i);
     let reaction = reactions.find(r => r.emoji === emoji);
@@ -93,6 +108,11 @@ export class ChatMessagesComponent {
   }
 
 
+  /**
+   * Retrieves the reactions array for a message based on the chat type.
+   * @param i Index of the message
+   * @returns The list of reactions for the message
+   */
   private getReactions(i: number) {
     switch (this.chatType) {
       case 'channel':
@@ -107,6 +127,12 @@ export class ChatMessagesComponent {
   }
 
 
+  /**
+   * Determines whether to add a new reaction or modify an existing one.
+   * @param reaction The current matching reaction object
+   * @param emoji The emoji being added or removed
+   * @param reactions The full reactions array for the message
+   */
   private updateReaction(reaction: any, emoji: string, reactions: any) {
     const currentUserId = this.userService.currentUser.id;
     if (!reaction) {
@@ -117,6 +143,12 @@ export class ChatMessagesComponent {
   }
 
 
+  /**
+   * Adds a new emoji reaction from the current user to the message.
+   * @param emoji The emoji to add
+   * @param reactions The message's reactions array
+   * @param currentUserId The ID of the current user
+   */
   private addReaction(emoji: string, reactions: any, currentUserId: string) {
     reactions.push({
       emoji,
@@ -125,6 +157,12 @@ export class ChatMessagesComponent {
   }
 
 
+  /**
+   * Handles toggling the user's reaction and removes empty reactions.
+   * @param reaction The existing reaction object
+   * @param reactions The message's reactions array
+   * @param currentUserId The ID of the current user
+   */
   private handleExistingReaction(reaction: any, reactions: any, currentUserId: string) {
     const userIndex = reaction.users.indexOf(currentUserId);
     const reactionsIndex = reactions.indexOf(reaction);
@@ -139,6 +177,11 @@ export class ChatMessagesComponent {
   }
 
 
+  /**
+   * Toggles the edit input for a specific message.
+   * Focuses the input field if it becomes active.
+   * @param index The index of the message being edited
+   */
   toggleEditInput(index: number): void {
     if (this.editIndex === index) {
       this.editIndex = null;
@@ -152,7 +195,11 @@ export class ChatMessagesComponent {
     }
   }
 
-  
+
+  /**
+   * Opens or closes the emoji picker for message reactions.
+   * @param index The index of the message for which to toggle the picker
+   */
   toggleEmojiPickerReactions(index: number): void {
     if (this.emojiIndex === index) {
       this.emojiIndex = null;
