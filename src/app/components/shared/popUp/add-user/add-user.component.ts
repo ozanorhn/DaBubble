@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { FilterService } from '../../../../pageServices/filters/filter.service';
 import { UserComponent } from '../../user/user.component';
 import { Channel } from '../../../../classes/channel.class';
+import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
+import { User } from '../../../../classes/user.class';
 
 @Component({
   selector: 'app-add-user',
@@ -13,46 +15,56 @@ import { Channel } from '../../../../classes/channel.class';
     CommonModule,
     FormsModule,
     UserComponent
-],
+  ],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.scss'
 })
 export class AddUserComponent {
 
-  constructor(public overlayService: OverlayService, public channelService: ChannelsService, public filterService: FilterService) {
-
-  }
-
+  currentUser;
   choiceInput = false
 
-  choice() {
+  constructor(
+    public overlayService: OverlayService,
+    public channelService: ChannelsService,
+    public filterService: FilterService,
+    public localStorageS: LocalStorageService
+  ) {
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+  }
+
+
+  selectAllMembers() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
-    const choiseUser = document.getElementById('choice') as HTMLInputElement | null;
-    if (allPicker && choiseUser) {
+    const choiceUser = document.getElementById('choice') as HTMLInputElement | null;
+
+    if (allPicker && choiceUser) {
       allPicker.checked = true;
-      choiseUser.checked = false;
+      choiceUser.checked = false;
       this.choiceInput = false;
       this.channelService.choiceMembers.set(false);
     }
   }
 
-
-  checkAll() {
+  switchToManualMemberSelection() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
-    const choiseUser = document.getElementById('choice') as HTMLInputElement | null;
-    if (allPicker && choiseUser) {
+    const choiceUser = document.getElementById('choice') as HTMLInputElement | null;
+
+    if (allPicker && choiceUser) {
       allPicker.checked = false;
-      choiseUser.checked = true;
-      this.choiceInput = true
+      choiceUser.checked = true;
+      this.choiceInput = true;
       this.channelService.choiceMembers.set(true);
+      this.channelService.createChannel.members = [this.currentUser.id];
     }
   }
 
 
-  addChannel(){
+  createChannelAndClose() {
     this.channelService.addChannel();
     this.overlayService.addUserOverlay();
-    this.channelService.createChannel = new Channel({ createdBy: this.channelService.currentUser.id })
+    this.channelService.resetCreateChannel();
   }
 
+  
 }

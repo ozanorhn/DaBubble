@@ -1,0 +1,23 @@
+<section class="relative flex flex-col bg-white min-w-80 h-80 max-w-[400px] rounded-[30px] p-8 justify-between">
+    <h2 class="text-xl font-bold">Möchten Sie den Channel wirklich verlassen?</h2>
+
+    <div class="flex items-center justify-between gap-3">
+
+        <img class="size-12" src="assets/icons/leave.png" alt="">
+        <p class="text-lg">
+            Sie haben danach keinen Zugriff mehr auf die
+            Unterhaltungen.
+        </p>
+    </div>
+
+    <div class="flex justify-between w-full">
+        <button (click)="overlayService.confirmLeaveChannel(); overlayService.editChannel(); leaveChannel()"
+            class="p-3 border border-black hover:scale-[1.1] duration-150 active:scale-[0.9] rounded-[25px] bg-red-400">Verlassen
+        </button>
+
+        <button (click)="overlayService.confirmLeaveChannel()"
+            class="p-3 border border-black hover:scale-[1.1] duration-150 active:scale-[0.9] rounded-[25px] bg-slate-500">Abbrechen
+        </button>
+    </div>
+
+</section>

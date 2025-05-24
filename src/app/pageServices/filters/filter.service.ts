@@ -1,25 +1,26 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { UsersService } from '../../services/users/users.service';
 import { ChannelsService } from '../../services/channels/channels.service';
+import { LocalStorageService } from '../../services/localStorage/local-storage.service';
+import { User } from '../../classes/user.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilterService {
 
-  constructor() { }
-
-  isChatInputActive = signal(false);//
-
+  currentUser;
+  isChatInputActive = signal(false);
   users = inject(UsersService);
   channels = inject(ChannelsService);
-
   searchValue = signal('');
-
   searchMembers = signal('');
-
   channelArray = this.channels.channels;
-  // userArray = this.users.users;
+
+
+  constructor(private localStorageS: LocalStorageService) {
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+  }
 
 
   filteredResults = computed(() => {
@@ -64,10 +65,6 @@ export class FilterService {
 
 
 
-
-
-
-
   filteredMembers = computed(() => {
     const search = this.searchMembers().toLowerCase();
     return this.filterMembers(search)
@@ -75,14 +72,11 @@ export class FilterService {
 
 
   filterMembers(searchMembers: string) {
-    console.log('Filter Array ', this.users.users.filter(user =>
-      user.name.toLowerCase().includes(searchMembers)));
-
-
     return this.users.users.filter(user =>
-      user.name.toLowerCase().includes(searchMembers)
-    )
+      user.name.toLowerCase().includes(searchMembers) &&
+      user.id !== this.currentUser.id // CurrentUser ausschließen
+    );
   }
-  
+
 
 }

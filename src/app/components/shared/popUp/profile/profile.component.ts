@@ -23,6 +23,7 @@ export class ProfileComponent {
   usersProfil = false;
   currentUser
   changeName = '';
+  avatars = [1, 2, 3, 4, 5, 6, 7, 8];
 
   constructor(
     public userService: UsersService,
@@ -42,6 +43,7 @@ export class ProfileComponent {
     }
     const profileData = this.currentUser.toJSON();
     profileData.name = this.changeName;
+    profileData.avatar = this.overlayService.profileObj.avatar; 
     profileData.password = ''
     console.log(profileData);
 
@@ -57,7 +59,11 @@ export class ProfileComponent {
       console.error('Error updating profile:', error);
     }
   }
-
+ 
+  selectAvatar(i: number) {
+    this.overlayService.profileObj.avatar = `/assets/imgs/avatar${i}.svg`;
+  }
+  
 
 }
 

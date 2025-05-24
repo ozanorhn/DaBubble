@@ -14,9 +14,10 @@ import { OverlayService } from '../../../../pageServices/overlays/overlay.servic
 export class EditChannelComponent {
 
 
-  constructor(public overlayService: OverlayService, public channelService: ChannelsService) {
-  
-  }
+  constructor(
+    public overlayService: OverlayService,
+    public channelService: ChannelsService
+  ) { }
 
 
 
