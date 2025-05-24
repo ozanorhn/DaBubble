@@ -127,14 +127,21 @@ export class ChannelsService implements OnInit, OnDestroy {
    */
   async updateChannelInFirestore(channel: Channel, channelData: any) {
     if (!channel || !channel.id) {
-      console.error('Channel nicht gefunden oder hat keine ID');
+      alert('Channel nicht gefunden oder hat keine ID.');
       return;
     }
-    await updateDoc(
-      doc(this.channelsCollection, channel.id),
-      channelData
-    );
+  
+    try {
+      await updateDoc(
+        doc(this.channelsCollection, channel.id),
+        channelData
+      );
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Channels', error);
+      alert('Channel konnte nicht aktualisiert werden.');
+    }
   }
+  
 
 
   /**
