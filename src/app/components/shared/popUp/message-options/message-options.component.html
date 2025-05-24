@@ -1,6 +1,6 @@
 <section class="relative py-[3px] pl-[20px] pr-[15px] flex border border-lightpurple rounded-full rounded-ee-none bg-white">
-    <button class="flex items-center justify-center transition-all rounded-full size-10 hover:bg-primary"><img class="size-5" src="assets/icons/emoji_hook.svg" alt=""></button>
-    <button class="flex items-center justify-center transition-all rounded-full size-10 hover:bg-primary"><img class="size-5" src="assets/icons/emoji_thumb_up.svg" alt=""></button>
+    <button class="flex items-center justify-center transition-all rounded-full size-10 hover:bg-primary" (click)="addEmoji('✅')"><img class="size-5" src="assets/icons/emoji_hook.svg" alt=""></button>
+    <button class="flex items-center justify-center transition-all rounded-full size-10 hover:bg-primary" (click)="addEmoji('👍')"><img class="size-5" src="assets/icons/emoji_thumb_up.svg" alt=""></button>
     <button class="flex items-center justify-center transition-all rounded-full size-10 hover:bg-primary" (click)="toggleEmojiReactionPicker()"><img class="size-5" src="assets/icons/add_emoji.svg" alt=""></button>
     <button class="flex items-center justify-center transition-all rounded-full size-10 hover:bg-primary" (click)="openThread(); navService.openThread();"><img class="size-5" src="assets/icons/open_thread.svg" alt=""></button>
     @if (messageFromCurrentUser) {

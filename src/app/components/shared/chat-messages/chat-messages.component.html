@@ -21,6 +21,7 @@
                 }
 
                 <app-message-options
+                    (emojiPicked)="addEmoji($event, message, i)"
                     (editClicked)="toggleEditInput(i)"
                     (emojiPickerReactions)="toggleEmojiPickerReactions(i)"
                     [chatType]="chatType"
