@@ -17,7 +17,7 @@
                             }">
 
                 @if (emojiIndex === i) {
-                    <app-emoji-picker class="absolute top-[27px] left-[45px] z-10" (emojiPicked)="addEmoji($event, message, i)"></app-emoji-picker>
+                    <app-emoji-picker class="absolute top-[27px] left-[45px] z-10" [ngClass]="{'left-[unset] right-[45px]': !userService.fromCurrentUser(message.sender)}" (emojiPicked)="addEmoji($event, message, i)"></app-emoji-picker>
                 }
 
                 <app-message-options
