@@ -1,4 +1,4 @@
-import { Component, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, QueryList, ViewChildren, ViewChild, ElementRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
 import { MessagesService } from '../../../services/messages/messages.service';
@@ -36,7 +36,9 @@ import { User } from '../../../classes/user.class';
 /**
  * Displays chat messages and manages reactions, editing, and emojis.
  */
-export class ChatMessagesComponent {
+
+export class ChatMessagesComponent implements AfterViewInit, OnChanges {
+
   currentUser: User | null = null;
   lastMessageDate: Date | null = null;
   newDay = true;
@@ -48,6 +50,9 @@ export class ChatMessagesComponent {
   editIndex: number | null = null;
   emojiIndex: number | null = null;
   showEmojiPicker = false;
+
+  // currentEmoji = '';
+  @ViewChild('messagesEnd') messagesEndRef!: ElementRef<HTMLDivElement>;
 
 
   constructor(
@@ -71,7 +76,26 @@ export class ChatMessagesComponent {
     }
   }
 
+  
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
 
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['messages']) {
+      this.scrollToBottom();
+    }
+  }
+
+  
+  scrollToBottom(): void {
+    setTimeout(() => {
+      this.messagesEndRef?.nativeElement?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  }
+
+  
   /**
    * Toggles the visibility of the emoji picker for composing new messages.
    */

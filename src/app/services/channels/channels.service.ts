@@ -14,8 +14,7 @@ export class ChannelsService implements OnInit, OnDestroy {
   channels: Channel[] = [];
   currentIndex = signal<number>(0);
   channelsCollection;
-  choiceMembers = signal(true);
-  // choiceMembersArray: string[] = [];
+  choiceMembers = signal(false);
   loading = true;
   private unsubscribe!: () => void;
   currentUser;
@@ -39,12 +38,20 @@ export class ChannelsService implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.createChannel = new Channel(
-      {
-        createdBy: this.currentUser.id,
-        members: [this.currentUser.id] /// Eigener Member noch hinzufügen, soll standart ????
-      }
-    )
+    this.resetCreateChannel(); // Initialisierung hier
+  }
+
+
+  resetCreateChannel() {
+    this.createChannel = new Channel({
+      createdBy: this.currentUser.id,
+      members: [this.currentUser.id] // Immer den aktuellen User als Mitglied hinzufügen
+    });
+  }
+
+
+  isCurrentUserMember(channel: Channel): boolean {
+    return channel.members.includes(this.currentUser.id);
   }
 
 
@@ -53,6 +60,7 @@ export class ChannelsService implements OnInit, OnDestroy {
    * Updates local channels array when changes occur
    */
   private setupChannelsListener() {
+
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
       this.channels = snapshot.docs.map((doc) => {
         const data = doc.data() as Channel;
@@ -75,22 +83,22 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  /**
-  * Adds a new channel to Firestore
-  * Uses either selected members or all users as channel members
-  */
   async addChannel() {
-    if (this.choiceMembers()) {
-      this.createChannel.members
-    } else {
-      this.createChannel.members = this.userService.users.map(user => user.id);
-    }
-    try {
-      await addDoc(this.channelsCollection, this.createChannel.toJSON())
-    } catch (error) {
-      console.error('Error adding channel', error);
-    }
+  if (!this.createChannel.members.includes(this.currentUser.id)) {
+    this.createChannel.members.push(this.currentUser.id);
   }
+  
+  if (!this.choiceMembers()) {
+    const allUserIds = this.userService.users.map(user => user.id);
+    this.createChannel.members = [...new Set([...allUserIds, this.currentUser.id])];
+  }
+
+  try {
+    await addDoc(this.channelsCollection, this.createChannel.toJSON());
+  } catch (error) {
+    console.error('Fehler beim Erstellen des Channels:', error);
+  }
+}
 
 
   /**
@@ -117,14 +125,21 @@ export class ChannelsService implements OnInit, OnDestroy {
    */
   async updateChannelInFirestore(channel: Channel, channelData: any) {
     if (!channel || !channel.id) {
-      console.error('Channel nicht gefunden oder hat keine ID');
+      alert('Channel nicht gefunden oder hat keine ID.');
       return;
     }
-    await updateDoc(
-      doc(this.channelsCollection, channel.id),
-      channelData
-    );
+  
+    try {
+      await updateDoc(
+        doc(this.channelsCollection, channel.id),
+        channelData
+      );
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Channels', error);
+      alert('Channel konnte nicht aktualisiert werden.');
+    }
   }
+  
 
 
   /**
@@ -161,7 +176,6 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-
   /**
    * Checks if a user is already selected for channel membership
    * @param {User} user - The user to check
@@ -170,4 +184,18 @@ export class ChannelsService implements OnInit, OnDestroy {
   isUserSelected(user: User): boolean {
     return this.createChannel.members.includes(user.id);
   }
+
+  public async waitUntilChannelsLoaded(): Promise<void> {
+    return new Promise(resolve => {
+      const check = () => {
+        if (!this.loading && this.channels.length > 0) {
+          resolve();
+        } else {
+          setTimeout(check, 100); // prüfe alle 100ms, bis geladen
+        }
+      };
+      check();
+    });
+  }
+  
 }

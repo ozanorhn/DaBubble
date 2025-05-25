@@ -20,6 +20,7 @@ import { User } from '../../classes/user.class';
 import { MembersComponent } from "../shared/popUp/members/members.component";
 import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
 import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
+import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-channel/confirm-leave-channel.component";
 
 
 @Component({
@@ -40,8 +41,9 @@ import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.
     LogOutComponent,
     MembersComponent,
     AddMembersComponent,
-    LoadingScreenComponent
-  ],
+    LoadingScreenComponent,
+    ConfirmLeaveChannelComponent
+],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
@@ -75,11 +77,23 @@ export class MainPageComponent {
   }
 
 
-  switchContent() {
+ /*  switchContent() {
     if (!this.isMobile) return;
     this.showAltLogo = !this.showAltLogo;
     this.navService.toggleNav()
-  }
+  }  */
+
+   switchContent() {
+      if (!this.isMobile) return;
+      this.showAltLogo = !this.showAltLogo;
+      this.navService.toggleNav();// Schalte Navigation ein/aus
+
+      this.mainNavService.directMessage = false; // Direktnachricht schließen
+      this.mainNavService.newMessage = true;  // New Message anzeigen
+      this.mainNavService.channel = false;  // channel  schließen:
+      this.mainNavService.thread = false;// Threads schließen:
+    }
+     
 
 
   updateIsMobile() {
