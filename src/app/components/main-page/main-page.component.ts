@@ -77,11 +77,23 @@ export class MainPageComponent {
   }
 
 
-  switchContent() {
+ /*  switchContent() {
     if (!this.isMobile) return;
     this.showAltLogo = !this.showAltLogo;
     this.navService.toggleNav()
-  }
+  }  */
+
+   switchContent() {
+      if (!this.isMobile) return;
+      this.showAltLogo = !this.showAltLogo;
+      this.navService.toggleNav();// Schalte Navigation ein/aus
+
+      this.mainNavService.directMessage = false; // Direktnachricht schließen
+      this.mainNavService.newMessage = true;  // New Message anzeigen
+      this.mainNavService.channel = false;  // channel  schließen:
+      this.mainNavService.thread = false;// Threads schließen:
+    }
+     
 
 
   updateIsMobile() {

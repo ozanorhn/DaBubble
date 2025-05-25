@@ -1,5 +1,4 @@
-<section
-    class="lg:max-w-[710px] h-fit rounded-[30px] bg-white py-7 px-4 flex flex-col gap-5 shadow-lg relative">
+<section class="lg:max-w-[710px] h-fit rounded-[30px] bg-white py-7 px-4 flex flex-col gap-5 shadow-lg relative">
 
     <div class="flex justify-between">
         <span class="text-2xl font-bold">Leute hinzufügen</span>
@@ -10,13 +9,13 @@
 
     <div class="flex flex-col gap-3">
         <span class="flex gap-3" (click)="selectAllMembers()">
-            <input type="radio" id="all" name="memberChoice" class="bg-purple1" checked>
-            <label for="all">Alle Mitglieder von OfficeTeam hinzufügen</label>
+            <input type="radio" id="all" name="memberChoice" [checked]="!choiceInput">
+            <label for="all">Alle Mitglieder hinzufügen</label>
         </span>
 
         <span class="flex gap-3" (click)="switchToManualMemberSelection()">
-            <input type="radio" id="choice" name="memberChoice" class="bg-purple1">
-            <label for="choice">Benutzer manuell auswählen</label>
+            <input type="radio" id="choice" name="memberChoice" [checked]="choiceInput">
+            <label for="choice">Manuell auswählen</label>
         </span>
     </div>
 

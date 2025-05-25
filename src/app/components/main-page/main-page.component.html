@@ -32,8 +32,6 @@
     <app-search class="lg:hidden"></app-search>
     <app-navigation class="w-full h-full"></app-navigation>
 
-    <!--  -->
-
     <div
       class="w-[60px] h-[60px] absolute bottom-10 right-4 rounded-[100px] bg-purple1 z-[999] flex items-center justify-center cursor-pointer block md:hidden"
       (click)="switchContent()"
@@ -44,17 +42,12 @@
         class="pl-[4px] w-8 h-8"
       />
     </div>
-
-    <!-- <div (click)="switchContent()"
-      class="w-[60px] h-[60px] absolute bottom-10 right-4 rounded-[100px] bg-purple1 z-[999] items-center justify-center cursor-pointer md:hidden">
-      <img src="assets/icons/edit_square2.svg" alt="" class="pl-[4px] w-8 h-8" />
-
-    </div> -->
   </div>
 
-
-
-  <div [class.active]="mainNavService.showChannel()" class="flex-1 my-6 channel-container">
+  <div
+    [class.active]="mainNavService.showChannel()"
+    class="flex-1 my-6 channel-container"
+  >
     @if (mainNavService.newMessage) {
     <app-new-message
       class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"
@@ -76,7 +69,6 @@
   ></app-thread>
   }
 </section>
-
 
 <!--Overlays-->
 
@@ -158,11 +150,16 @@
   ></app-members>
 </div>
 
-<div (click)="overlayService.confirmLeaveChannel()" [class.active]="!overlayService.hideConfirmLeaveChannel"
-  class="absolute top-0 overlay-backdrop bottom-0 left-0 right-0 flex z-[1] justify-center items-center bg-[rgba(0,0,0,0.4)]">
-  <app-confirm-leave-channel (click)="$event.stopPropagation()" class="absolute"></app-confirm-leave-channel>
+<div
+  (click)="overlayService.confirmLeaveChannel()"
+  [class.active]="!overlayService.hideConfirmLeaveChannel"
+  class="absolute top-0 overlay-backdrop bottom-0 left-0 right-0 flex z-[1] justify-center items-center bg-[rgba(0,0,0,0.4)]"
+>
+  <app-confirm-leave-channel
+    (click)="$event.stopPropagation()"
+    class="absolute"
+  ></app-confirm-leave-channel>
 </div>
-
 
 @if (channelService.loading) {
 <app-loading-screen></app-loading-screen>

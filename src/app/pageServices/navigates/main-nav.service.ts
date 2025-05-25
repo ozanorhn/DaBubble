@@ -215,10 +215,24 @@ export class MainNavService {
   UserMarked = 99999999;
   ChannelMarked = 99999999;
 
-  markedUser(i: number) {
+/*   markedUser(i: number) {
     this.UserMarked = i
     this.ChannelMarked = 99999999;
-  }
+  }  */
+    markedUser(i: number) {
+      if (this.UserMarked === i) {
+        // Wenn derselbe User erneut geklickt wird, Markierung entfernen und DM schließen
+        this.UserMarked = 99999999;
+        this.directMessage = false;
+        this.newMessage = true; // Optional: zeige z. B. die "Neue Nachricht"-Ansicht stattdessen
+      } else {
+        this.UserMarked = i;
+        this.ChannelMarked = 99999999;
+        this.directMessage = true;
+        this.newMessage = false;
+      }
+    } 
+    
 
 
   markedChannel(i: number) {
