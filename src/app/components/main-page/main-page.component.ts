@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -19,6 +19,10 @@ import { LocalStorageService } from '../../services/localStorage/local-storage.s
 import { User } from '../../classes/user.class';
 import { MembersComponent } from "../shared/popUp/members/members.component";
 import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
+import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
+import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-channel/confirm-leave-channel.component";
+import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.component";
+
 
 @Component({
   selector: 'app-main-page',
@@ -37,34 +41,69 @@ import { AddMembersComponent } from "../shared/popUp/add-members/add-members.com
     ProfileComponent,
     LogOutComponent,
     MembersComponent,
-    AddMembersComponent
-  ],
+    AddMembersComponent,
+    LoadingScreenComponent,
+    ConfirmLeaveChannelComponent,
+    OnlinePopupComponent
+],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
 export class MainPageComponent {
   showMessagesOnly = false;
-
   currentUser
+  showAltLogo = false;
+  isMobile = false;
 
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
     public overlayService: OverlayService,
-    public localStorageS: LocalStorageService
+    public localStorageS: LocalStorageService,
+    public navService: MainNavService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-
-    // setInterval(() => {
-    //   console.log(mainNavService.showNav());
-    // },1000)
+    this.updateIsMobile();
   }
 
 
-
+  ngOnInit() {
+    window.addEventListener('resize', () => {
+      this.updateIsMobile();
+    });
+  }
 
 
   toggleMessagesView() {
     this.showMessagesOnly = !this.showMessagesOnly;
   }
+
+
+ /*  switchContent() {
+    if (!this.isMobile) return;
+    this.showAltLogo = !this.showAltLogo;
+    this.navService.toggleNav()
+  }  */
+
+   switchContent() {
+      if (!this.isMobile) return;
+      this.showAltLogo = !this.showAltLogo;
+      this.navService.toggleNav();// Schalte Navigation ein/aus
+
+      this.mainNavService.directMessage = false; // Direktnachricht schließen
+      this.mainNavService.newMessage = true;  // New Message anzeigen
+      this.mainNavService.channel = false;  // channel  schließen:
+      this.mainNavService.thread = false;// Threads schließen:
+    }
+     
+
+
+  updateIsMobile() {
+    this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
+    if (!this.isMobile) {
+      this.showAltLogo = false;
+    }
+  }
+
+  
 }

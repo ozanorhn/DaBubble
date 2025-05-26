@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ChannelsService } from '../../../../../services/channels/channels.service';
 import { FormsModule } from '@angular/forms';
+import { UsersService } from '../../../../../services/users/users.service';
 
 @Component({
   selector: 'app-edit-description',
@@ -12,13 +13,16 @@ export class EditDescriptionComponent {
 
   edit = false;
 
-  constructor(public channelService: ChannelsService) { }
+  constructor(
+    public channelService: ChannelsService,
+    public userService: UsersService
+  ) { }
 
 
   editDescription() {
     this.edit = !this.edit
     if (!this.edit) {
-      this.channelService.editLocal();
+      this.channelService.prepareChannelForEdit();
     }
   }
 

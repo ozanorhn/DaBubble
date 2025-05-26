@@ -1,6 +1,6 @@
 <section class="box-border pb-4 bg-white">
     <div class="box-border flex flex-col">
-        @for (message of messages; track message; let i = $index) {
+        @for (message of messages; track i; let i = $index) {
             @if (messages !== undefined) {
                 @if (i === 0  || !messageService.isSameDay(messageService.getDateFromTimestamp(message.timestamp), messageService.getDateFromTimestamp(messages[i - 1].timestamp))) {
                     <app-chat-seperator
@@ -8,16 +8,28 @@
                         [date]="messageService.formatDate(message.timestamp)">
                     </app-chat-seperator>
                 }
-                <!-- @else if (!messageService.isSameDay(messageService.getDateFromTimestamp(message.timestamp), messageService.getDateFromTimestamp(messages[i - 1].timestamp))) {
-                    <app-chat-seperator
-                        class="flex items-center text-[18px] my-[10px] px-4"
-                        [date]="messageService.formatDate(message.timestamp)">
-                    </app-chat-seperator>
-                } -->
             }
-            <div id="{{ chatType }}{{ i }}" (click)="mainNavService.openThread(); openThread(message, i);" 
-                class="flex gap-5 mt-[25px] px-4 py-2 cursor-pointer hover:bg-primary"
-                [ngClass]="{ 'flex-row-reverse':userService.fromCurrentUser(message.sender), '[&>div>#msg-content]:hover:bg-white': !userService.fromCurrentUser(message.sender)}">
+            
+            <div id="{{ chatType }}{{ i }}" 
+                class="relative flex gap-5 mt-[25px] px-4 py-2 cursor-pointer transition-all hover:bg-primary [&>#msg-options]:hover:opacity-100 [&>#msg-options]:hover:pointer-events-auto"
+                [ngClass]="{ 'flex-row-reverse [&>#msg-options]:hover:left-[45px]':userService.fromCurrentUser(message.sender),
+                             '[&>div>#msg-content]:hover:bg-white [&>#msg-options]:hover:right-[45px]': !userService.fromCurrentUser(message.sender)
+                            }">
+
+                @if (emojiIndex === i) {
+                    <app-emoji-picker class="absolute top-[27px] left-[45px] z-10" [ngClass]="{'left-[unset] right-[45px]': !userService.fromCurrentUser(message.sender)}" (emojiPicked)="addEmoji($event, message, i)"></app-emoji-picker>
+                }
+
+                <app-message-options
+                    (emojiPicked)="addEmoji($event, message, i)"
+                    (editClicked)="toggleEditInput(i)"
+                    (emojiPickerReactions)="toggleEmojiPickerReactions(i)"
+                    [chatType]="chatType"
+                    [message]="message"
+                    [i]="i"
+                    [messageFromCurrentUser]="userService.fromCurrentUser(message.sender)"
+                    id="msg-options"
+                    class="absolute pointer-events-none top-0 translate-y-[-23px] opacity-0"></app-message-options>
                 <div>
                     <img class="min-w-[50px] size-[50px] rounded-full" src="{{ userService.getUserById2(message.sender)?.avatar }}" alt="Avatar">
                 </div>
@@ -26,10 +38,21 @@
                         <span class="text-lg font-bold">{{ userService.getUserById2(message.sender)?.name }}</span>
                         <span class="text-sm">{{ messageService.formatTime(message.timestamp) }}</span>
                     </div>
-                    <div class="flex" id="msg-content"
+                    <div class="flex msg-content" id="msg-content"
                         class="bg-primary p-[15px] rounded-[30px] max-w-full"
                         [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]':userService.fromCurrentUser(message.sender), ' rounded-ss-none': !userService.fromCurrentUser(message.sender) }">
-                        <span class="max-w-full">{{ message.message }}</span>
+                        @if (editIndex !== i) {
+                            <span class="max-w-full">{{ message.message }}</span>
+                        } @else {
+                            <app-chat-input
+                                class="text-black"
+                                [index]="i"
+                                [message]="message"
+                                [edit]="true"
+                                [chatType]="chatType"
+                                (saveClicked)="toggleEditInput(i)">
+                            </app-chat-input>
+                        }
                     </div>
                     
                     @if (message.threadId !== '' && chatType !== 'thread') {
@@ -37,12 +60,15 @@
                             class="cursor-pointer flex flex-col xs:flex-row xs:items-center xs:gap-[20px]"
                             [ngClass]="{'self-end':userService.fromCurrentUser(message.sender)}"
                             [message]="message"
-                            [chatType]="chatType">
+                            [chatType]="chatType"
+                            [i]="i">
                         </app-chat-message-answer>
                     }
 
                     @if (message.reactions.length > 0) {
                         <app-chat-message-reactions
+                            (emojiPicked)="addEmoji($event, message, i)"
+                            (pickerToggled)="toggleEmojiPickerReactions(i)"
                             class="flex items-center gap-2 w-max"
                             [ngClass]="{'self-end pr-[5px]':userService.fromCurrentUser(message.sender)}"
                             [message]="message">
@@ -52,5 +78,5 @@
             </div>
         }
     </div>
-
+    <div #messagesEnd></div>
 </section>

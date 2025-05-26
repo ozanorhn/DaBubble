@@ -1,6 +1,15 @@
+@if (!filterService.isChatInputActive()) {
+
 <div
-  class="w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px]">
-  <input type="text" [(ngModel)]="filterService.searchValue" placeholder="Search..."
-    class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none" />
+  class="w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px hidden lg:flex"
+>
+  <input
+    type="text"
+    [(ngModel)]="filterService.searchValue"
+    placeholder="Search..."
+    class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none pl-[10px]"
+    [disabled]="filterService.isChatInputActive()"
+  />
   <img src="assets/imgs/icons/icons.svg" alt="" class="w-[32px h-[32px]]" />
 </div>
+}

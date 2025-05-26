@@ -231,13 +231,13 @@ export class DirectMessagesService implements OnDestroy {
    * Updates the DM document in Firestore with the new thread ID.
    * @param {any} threadId - The ID of the associated thread.
    */
-  async updateDM(threadId: any) {
+  async updateDM(threadId: any = '') {
     try {
       await updateDoc(
         doc(this.directMessageCollection, this.directMessage.id),
         { content: this.directMessage.content }
       );
-      await this.threadService.loadThreadById(threadId);
+      if (threadId !== '') await this.threadService.loadThreadById(threadId);
     } catch (error) {
       console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
     }

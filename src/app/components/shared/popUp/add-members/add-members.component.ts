@@ -23,11 +23,10 @@ export class AddMembersComponent implements OnInit {
 
   filteredMembers: User[] = [];    // Gefilterte Liste (Channel + Suche)
   filterdUsers: User[] = [];
-  userSearch = '';
+  userSearchInput = '';
   channelMembers: string[] = [];
   userExist = false;
   dropdownOpen = false;
-
   addMember = new User();
 
   constructor(
@@ -39,9 +38,9 @@ export class AddMembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadInitialData();
-    setInterval(() => {
-      this.applyFilters();
-    }, 1000);
+    // setInterval(() => {
+    //   this.applyFilters();
+    // }, 1000);
   }
 
 
@@ -51,17 +50,17 @@ export class AddMembersComponent implements OnInit {
 
 
   applyFilters() {
-    this.channelMembers = this.channelService.channels[this.channelService.currentIndex()].members;
+    this.channelMembers = this.channelService.channels[this.channelService.currentIndex()]?.members;
     this.filterdUsers = this.userService.users.filter(user =>
       !this.channelMembers.some(channelUser => channelUser === user.id)
     );
-    this.searchUser()
+    this.searchUser();
   }
 
 
   searchUser() {
-    if (this.userSearch) {
-      const searchTerm = this.userSearch.toLowerCase();
+    if (this.userSearchInput) {
+      const searchTerm = this.userSearchInput.toLowerCase();
       this.filterdUsers = this.filterdUsers.filter(user =>
         user.name.toLowerCase().includes(searchTerm)
       );
@@ -91,7 +90,7 @@ export class AddMembersComponent implements OnInit {
 
 
   choiceUser(user: User) {
-    this.userSearch = user.name
+    this.userSearchInput = user.name
     this.addMember = user;
     this.dropdownOpen = false;
   }
@@ -102,29 +101,20 @@ export class AddMembersComponent implements OnInit {
   }
 
 
-
-
   async addUser() {
-    // this.channelService.channels[this.channelService.currentIndex()].members.push();
-
     console.log('Current Channel', this.channelService.channels[this.channelService.currentIndex()]);
-
     let channelId: string = this.channelService.channels[this.channelService.currentIndex()].id
-
     let channelData = this.channelService.channels[this.channelService.currentIndex()]
     channelData.members.push(this.addMember.id)
-
     await updateDoc(
       doc(this.channelService.channelsCollection, channelId),
       {
-        members: channelData.members  // Nur die Mitglieder aktualisieren
+        members: channelData.members
       }
-      
     );
-
-    this.overlayService.addMembersOverlay()
+    this.overlayService.addMembersOverlay();
+    this.userSearchInput = '';
   }
-
 
 
 

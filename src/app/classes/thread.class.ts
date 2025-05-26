@@ -7,9 +7,9 @@ export class Thread {
     message: string;
     sender: string;
     reactions: [{
-      id: number;
+      emoji: string;
       users: string[];
-    }] | [];
+    }];
     timestamp: Timestamp;
   }];
 
