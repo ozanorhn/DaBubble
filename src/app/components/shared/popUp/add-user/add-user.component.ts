@@ -22,6 +22,7 @@ import { User } from '../../../../classes/user.class';
 export class AddUserComponent {
 
   currentUser;
+  choiceInput = false
 
   constructor(
     public overlayService: OverlayService,
@@ -32,28 +33,29 @@ export class AddUserComponent {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
-  choiceInput = false
 
   selectAllMembers() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
-    const choiseUser = document.getElementById('choice') as HTMLInputElement | null;
-    if (allPicker && choiseUser) {
+    const choiceUser = document.getElementById('choice') as HTMLInputElement | null;
+
+    if (allPicker && choiceUser) {
       allPicker.checked = true;
-      choiseUser.checked = false;
+      choiceUser.checked = false;
       this.choiceInput = false;
       this.channelService.choiceMembers.set(false);
     }
   }
 
-
   switchToManualMemberSelection() {
     const allPicker = document.getElementById('all') as HTMLInputElement | null;
-    const choiseUser = document.getElementById('choice') as HTMLInputElement | null;
-    if (allPicker && choiseUser) {
+    const choiceUser = document.getElementById('choice') as HTMLInputElement | null;
+
+    if (allPicker && choiceUser) {
       allPicker.checked = false;
-      choiseUser.checked = true;
-      this.choiceInput = true
+      choiceUser.checked = true;
+      this.choiceInput = true;
       this.channelService.choiceMembers.set(true);
+      this.channelService.createChannel.members = [this.currentUser.id];
     }
   }
 
@@ -64,4 +66,5 @@ export class AddUserComponent {
     this.channelService.resetCreateChannel();
   }
 
+  
 }

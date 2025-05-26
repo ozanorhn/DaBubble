@@ -26,12 +26,10 @@
     <app-search class="lg:hidden"></app-search>
     <app-navigation class="w-full h-full"></app-navigation>
 
-    <!--  -->
-
-    <div (click)="switchContent()"
-      class="w-[60px] h-[60px] absolute bottom-10 right-4 rounded-[100px] bg-purple1 z-[999] items-center justify-center cursor-pointer md:hidden">
+    <div
+      class="w-[60px] h-[60px] absolute bottom-10 right-4 rounded-[100px] bg-purple1 z-[999] items-center justify-center cursor-pointer md:hidden"
+      (click)="switchContent()">
       <img src="assets/icons/edit_square2.svg" alt="" class="pl-[4px] w-8 h-8" />
-
     </div>
   </div>
 
@@ -49,7 +47,6 @@
   <app-thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
   }
 </section>
-
 
 <!--Overlays-->
 
@@ -96,6 +93,7 @@
   <app-confirm-leave-channel (click)="$event.stopPropagation()" class="absolute"></app-confirm-leave-channel>
 </div>
 
+<app-online-popup class="absolute left-52 top-3"></app-online-popup>
 
 @if (channelService.loading) {
 <app-loading-screen></app-loading-screen>

@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component} from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -21,6 +21,7 @@ import { MembersComponent } from "../shared/popUp/members/members.component";
 import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
 import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
 import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-channel/confirm-leave-channel.component";
+import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.component";
 
 
 @Component({
@@ -42,7 +43,8 @@ import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-chan
     MembersComponent,
     AddMembersComponent,
     LoadingScreenComponent,
-    ConfirmLeaveChannelComponent
+    ConfirmLeaveChannelComponent,
+    OnlinePopupComponent
 ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
@@ -77,11 +79,23 @@ export class MainPageComponent {
   }
 
 
-  switchContent() {
+ /*  switchContent() {
     if (!this.isMobile) return;
     this.showAltLogo = !this.showAltLogo;
     this.navService.toggleNav()
-  }
+  }  */
+
+   switchContent() {
+      if (!this.isMobile) return;
+      this.showAltLogo = !this.showAltLogo;
+      this.navService.toggleNav();// Schalte Navigation ein/aus
+
+      this.mainNavService.directMessage = false; // Direktnachricht schließen
+      this.mainNavService.newMessage = true;  // New Message anzeigen
+      this.mainNavService.channel = false;  // channel  schließen:
+      this.mainNavService.thread = false;// Threads schließen:
+    }
+     
 
 
   updateIsMobile() {

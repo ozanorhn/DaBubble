@@ -46,9 +46,18 @@ export class UsersService implements OnDestroy {
   }
 
 
+  private initUsersListener() {
+    this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
+      const users = snapshot.docs.map(doc => {
+        const data = doc.data() as User;
+        data.id = doc.id;
+        return data;
+      });
 
-
-
+      this.users = users;
+      this.checkOnlineStatusChanges(users);
+    });
+  }
 
 
   updateOnlineStatus() {
@@ -91,23 +100,13 @@ export class UsersService implements OnDestroy {
   //   });
   // }
 
-  private initUsersListener() {
-    this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
-      const users = snapshot.docs.map(doc => {
-        const data = doc.data() as User;
-        data.id = doc.id;
-        return data;
-      });
-
-      this.users = users;
-      this.checkOnlineStatusChanges(users);
-    });
-  }
-
-
 
   private checkOnlineStatusChanges(users: User[]) {
     const currentlyOnline = users.filter(user => this.isUserOnline(user.online));
+
+    // setInterval(() => {
+    //   console.log('current Online Users', currentlyOnline);
+    // }, 3000)
 
     // Finde neu online gegangene Benutzer
     const newOnlineUsers = currentlyOnline.filter(user => {
@@ -129,7 +128,8 @@ export class UsersService implements OnDestroy {
     // Hier kommt die Logik zur Anzeige der Benachrichtigung
     // Siehe nächster Schritt
     console.log(user, 'Is now Online');
-    
+
+
   }
 
 

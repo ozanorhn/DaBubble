@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MainNavService } from '../../../../pageServices/navigates/main-nav.service';
 import { ThreadsService } from '../../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../../services/directMessages/direct-messages.service';
@@ -12,13 +12,20 @@ import { MessagesService } from '../../../../services/messages/messages.service'
   templateUrl: './message-options.component.html',
   styleUrl: './message-options.component.scss'
 })
-export class MessageOptionsComponent implements OnInit {
+
+
+/**
+ * Displays action options for a single message such as editing, reacting with emojis, or opening threads.
+ * Emits events to the parent component to handle specific interactions.
+ */
+export class MessageOptionsComponent {
   @Input() messageFromCurrentUser = false;
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
   @Input() message: Message = new Message();
   @Input() i: number = 0;
   @Output() editClicked = new EventEmitter<void>();
   @Output() emojiPickerReactions = new EventEmitter<void>();
+  @Output() emojiPicked = new EventEmitter<string>();
 
   constructor(
     public navService: MainNavService,
@@ -28,26 +35,26 @@ export class MessageOptionsComponent implements OnInit {
   ) { }
 
 
+  /**
+   * Emits an event to toggle the emoji reaction picker UI.
+   */
   toggleEmojiReactionPicker() {
     this.emojiPickerReactions.emit()
   }
 
 
-  ngOnInit(): void {
-    // console.log(this.message);
-    // console.log(this.i);
-    // console.log(this.chatType);
-  }
-
-
+  /**
+   * Emits an event when the edit action is triggered.
+   */
   onEditClick() {
     this.editClicked.emit();
   }
 
-  // openThread(message: Message | DM, index: number) {
-  openThread() {
-    // console.log('i: ', this.i, ' message: ', ' chattype: ', this.chatType, this.message);
 
+  /**
+   * Opens a thread view for the current message, depending on chat type.
+   */
+  openThread() {
     if (this.chatType === 'channel') {
       this.threadService.chatType = 'channel';
       this.messageService.openChannelThread(this.message as Message);
@@ -57,15 +64,12 @@ export class MessageOptionsComponent implements OnInit {
     }
   }
 
-  editMessage() {
-    if (this.chatType === 'channel') {
-      // console.log('########### ', this.chatType, '########### ', this.message.id, '########### ', this.i);
-      let inputId: string = this.message.id + '_' + this.i + '_input';
-      let messageContentId: string = this.message.id + '_' + this.i + '_msg';
-      this.navService.toggleEditInput(inputId, messageContentId);
-    } else if (this.chatType === 'thread') {
-      // console.log('OOOOOOOOOO', this.i, 'OOOOOOOOOO', this.threadService.currentThread().threadId);
 
-    }
+  /**
+   * Emits the selected emoji to be added as a reaction.
+   * @param emoji The emoji string selected by the user.
+   */
+  addEmoji(emoji: string) {
+    this.emojiPicked.emit(emoji);
   }
 }
