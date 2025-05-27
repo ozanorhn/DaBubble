@@ -30,6 +30,9 @@ export class NavigationComponent {
     public directMessageService: DirectMessagesService
   ) { }
 
+  user = new User();
+  channel = new Channel();
+
 
   isUser(item: any): item is User {
     return 'name' in item && 'avatar' in item; // Anpassen an Ihre User-Properties
