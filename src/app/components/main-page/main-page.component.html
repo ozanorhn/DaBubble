@@ -1,96 +1,164 @@
 <app-header></app-header>
 
 @if (!mainNavService.mobile) {
-<button (click)="mainNavService.toggleNav()"
-  class="w-[60px] h-fit absolute top-[50%] left-0 rounded-tr-[30px] rounded-br-[30px] py-[23px] px-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50">
+<button
+  (click)="mainNavService.toggleNav()"
+  class="w-[60px] h-fit absolute top-[50%] left-0 rounded-tr-[30px] rounded-br-[30px] py-[23px] px-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50"
+>
   <span class="mt-2 text-xl">
     @if (mainNavService.nav) {
     <span><img src="assets/imgs/directions.svg" alt="" /></span>
     } @if (!mainNavService.nav) {
-    <span><img class="rotate-180" src="assets/imgs/directions.svg" alt="" /></span>
+    <span
+      ><img class="rotate-180" src="assets/imgs/directions.svg" alt=""
+    /></span>
     }
   </span>
   <span class="leading-tight text-center rotate-180 writing-vertical-lr text-l">
     {{
-    mainNavService.nav
-    ? "Workspace-Menü\nschließen"
-    : "Workspace-Menü\nöffnen"
+      mainNavService.nav
+        ? "Workspace-Menü\nschließen"
+        : "Workspace-Menü\nöffnen"
     }}
   </span>
 </button>
 }
 
 <section class="flex h-[calc(100vh-80px)] gap-3 p-3 bg-primary">
-  <div [class.active]="mainNavService.showNav()"
-    class="nav-container flex flex-col w-full h-[calc(100% - 3rem)] lg:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white">
+  <div
+    [class.active]="mainNavService.showNav()"
+    class="nav-container flex flex-col w-full h-[calc(100% - 3rem)] lg:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white"
+  >
     <app-search class="lg:hidden"></app-search>
     <app-navigation class="w-full h-full"></app-navigation>
 
     <div
-      class="w-[60px] h-[60px] absolute bottom-10 right-4 rounded-[100px] bg-purple1 z-[999] items-center justify-center cursor-pointer md:hidden"
-      (click)="switchContent()">
-      <img src="assets/icons/edit_square2.svg" alt="" class="pl-[4px] w-8 h-8" />
+      class="w-[60px] h-[60px] absolute bottom-10 right-4 rounded-[100px] bg-purple1 z-[999] flex items-center justify-center cursor-pointer block md:hidden"
+      (click)="switchContent()"
+    >
+      <img
+        src="assets/icons/edit_square2.svg"
+        alt=""
+        class="pl-[4px] w-8 h-8"
+      />
     </div>
   </div>
 
-  <div [class.active]="mainNavService.showChannel()" class="flex-1 my-6 channel-container">
+  <div
+    [class.active]="mainNavService.showChannel()"
+    class="flex-1 my-6 channel-container"
+  >
     @if (mainNavService.newMessage) {
-    <app-new-message class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"></app-new-message>
+    <app-new-message
+      class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"
+    ></app-new-message>
     } @else if (mainNavService.directMessage) {
-    <app-direct-message class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"></app-direct-message>
+    <app-direct-message
+      class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"
+    ></app-direct-message>
     } @else {
-    <app-channel class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"></app-channel>
+    <app-channel
+      class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"
+    ></app-channel>
     }
   </div>
 
   @if (mainNavService.showThread()) {
-  <app-thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
+  <app-thread
+    class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"
+  ></app-thread>
   }
 </section>
 
 <!--Overlays-->
 
-<div (click)="overlayService.addCannelOverlay()" [class.active]="!overlayService.hideAddChannel"
-  class="overlay-backdrop absolute flex top-0 bottom-0 left-0 right-0 z-[1] bg-white lg:bg-[rgba(0,0,0,0.4)] justify-center lg:items-center">
-  <app-add-channel (click)="$event.stopPropagation()" class="overlay-panel top-[20%]">
+<div
+  (click)="overlayService.addCannelOverlay()"
+  [class.active]="!overlayService.hideAddChannel"
+  class="overlay-backdrop absolute flex top-0 bottom-0 left-0 right-0 z-[1] bg-white lg:bg-[rgba(0,0,0,0.4)] justify-center lg:items-center"
+>
+  <app-add-channel
+    (click)="$event.stopPropagation()"
+    class="overlay-panel top-[20%]"
+  >
   </app-add-channel>
 </div>
 
-<div (click)="overlayService.addUserOverlay()" [class.active]="!overlayService.hideAddUser"
-  class="absolute top-0 bottom-0 left-0 right-0 flex items-end z-[1] lg:bg-[rgba(0,0,0,0.4)] justify-center overlay-backdrop lg:items-center">
-  <app-add-user (click)="$event.stopPropagation()" class="overlay-panel w-full lg:max-w-[710px]">
+<div
+  (click)="overlayService.addUserOverlay()"
+  [class.active]="!overlayService.hideAddUser"
+  class="absolute top-0 bottom-0 left-0 right-0 flex items-end z-[1] lg:bg-[rgba(0,0,0,0.4)] justify-center overlay-backdrop lg:items-center"
+>
+  <app-add-user
+    (click)="$event.stopPropagation()"
+    class="overlay-panel w-full lg:max-w-[710px]"
+  >
   </app-add-user>
 </div>
 
-<div (click)="overlayService.addMembersOverlay()" [class.active]="!overlayService.hideAddMembersOverlay"
-  class="absolute overlay-backdrop top-0 bottom-0 left-0 z-[1] right-0 flex items-end justify-center lg:items-center lg:bg-[rgba(0,0,0,0.4)]">
-  <app-add-members (click)="$event.stopPropagation()"
-    class="overlay-panel absolute top-[200px] right-[20px]"></app-add-members>
+<div
+  (click)="overlayService.addMembersOverlay()"
+  [class.active]="!overlayService.hideAddMembersOverlay"
+  class="absolute overlay-backdrop top-0 bottom-0 left-0 z-[1] right-0 flex items-end justify-center lg:items-center lg:bg-[rgba(0,0,0,0.4)]"
+>
+  <app-add-members
+    (click)="$event.stopPropagation()"
+    class="overlay-panel absolute top-[200px] right-[20px]"
+  ></app-add-members>
 </div>
 
-<div (click)="overlayService.editChannel()" [class.active]="!overlayService.hideEditChannel"
-  class="flex overlay-backdrop justify-center items-center absolute top-0 z-[1] bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.4)]">
-  <app-edit-channel class="overlay-panel" (click)="$event.stopPropagation()"></app-edit-channel>
+<div
+  (click)="overlayService.editChannel()"
+  [class.active]="!overlayService.hideEditChannel"
+  class="flex overlay-backdrop justify-center items-center absolute top-0 z-[1] bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.4)]"
+>
+  <app-edit-channel
+    class="overlay-panel"
+    (click)="$event.stopPropagation()"
+  ></app-edit-channel>
 </div>
 
-<div (click)="overlayService.profileOverlay(false, currentUser)" [class.active]="!overlayService.hideProfileOverlay"
-  class="absolute overlay-backdrop top-0 bottom-0 left-0 right-0 flex items-center justify-center z-[1] bg-[rgba(0,0,0,0.4)]">
-  <app-profile (click)="$event.stopPropagation()" class="w-full max-w-lg overlay-panel"></app-profile>
+<div
+  (click)="overlayService.profileOverlay(false, currentUser)"
+  [class.active]="!overlayService.hideProfileOverlay"
+  class="absolute overlay-backdrop top-0 bottom-0 left-0 right-0 flex items-center justify-center z-[1] bg-[rgba(0,0,0,0.4)]"
+>
+  <app-profile
+    (click)="$event.stopPropagation()"
+    class="w-full max-w-lg overlay-panel"
+  ></app-profile>
 </div>
 
-<div (click)="overlayService.logoutOvelay()" [class.active]="!overlayService.hideLogoutOverlay"
-  class="absolute overlay-backdrop top-0 bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
-  <app-log-out class="w-full overlay-panel lg:w-fit lg:mt-24 lg:mr-4"></app-log-out>
+<div
+  (click)="overlayService.logoutOvelay()"
+  [class.active]="!overlayService.hideLogoutOverlay"
+  class="absolute overlay-backdrop top-0 bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]"
+>
+  <app-log-out
+    class="w-full overlay-panel lg:w-fit lg:mt-24 lg:mr-4"
+  ></app-log-out>
 </div>
 
-<div (click)="overlayService.membersOverlay()" [class.active]="!overlayService.hideMembersOverlay"
-  class="absolute top-0 overlay-backdrop bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
-  <app-members class="absolute overlay-panel top-[180px] right-3" (click)="$event.stopPropagation()"></app-members>
+<div
+  (click)="overlayService.membersOverlay()"
+  [class.active]="!overlayService.hideMembersOverlay"
+  class="absolute top-0 overlay-backdrop bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]"
+>
+  <app-members
+    class="absolute overlay-panel top-[180px] right-3"
+    (click)="$event.stopPropagation()"
+  ></app-members>
 </div>
 
-<div (click)="overlayService.confirmLeaveChannel()" [class.active]="!overlayService.hideConfirmLeaveChannel"
-  class="absolute top-0 overlay-backdrop bottom-0 left-0 right-0 flex z-[1] justify-center items-center bg-[rgba(0,0,0,0.4)]">
-  <app-confirm-leave-channel (click)="$event.stopPropagation()" class="absolute"></app-confirm-leave-channel>
+<div
+  (click)="overlayService.confirmLeaveChannel()"
+  [class.active]="!overlayService.hideConfirmLeaveChannel"
+  class="absolute top-0 overlay-backdrop bottom-0 left-0 right-0 flex z-[1] justify-center items-center bg-[rgba(0,0,0,0.4)]"
+>
+  <app-confirm-leave-channel
+    (click)="$event.stopPropagation()"
+    class="absolute"
+  ></app-confirm-leave-channel>
 </div>
 
 <app-online-popup class="absolute left-52 top-3"></app-online-popup>
