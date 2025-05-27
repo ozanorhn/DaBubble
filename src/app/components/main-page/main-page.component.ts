@@ -66,9 +66,7 @@ export class MainPageComponent {
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService,
     public navService: MainNavService,
-
-
-    public userService : UsersService
+    public userService: UsersService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
@@ -81,11 +79,6 @@ export class MainPageComponent {
     });
 
 
-
-    // this.userService.onlineUsers$.subscribe(() => {
-    //   // nichts nötig hier – wird über showOnlineNotification erledigt
-    // });
-
     // Zeige das Popup wenn jemand neu online geht:
     this.userService.setOnlinePopupCallback((user) => {
       if (this.onlinePopup) {
@@ -95,38 +88,34 @@ export class MainPageComponent {
   }
 
 
-
-
-toggleMessagesView() {
-  this.showMessagesOnly = !this.showMessagesOnly;
-}
-
-
-/*  switchContent() {
-   if (!this.isMobile) return;
-   this.showAltLogo = !this.showAltLogo;
-   this.navService.toggleNav()
- }  */
-
-switchContent() {
-  if (!this.isMobile) return;
-  this.showAltLogo = !this.showAltLogo;
-  this.navService.toggleNav();// Schalte Navigation ein/aus
-
-  this.mainNavService.directMessage = false; // Direktnachricht schließen
-  this.mainNavService.newMessage = true;  // New Message anzeigen
-  this.mainNavService.channel = false;  // channel  schließen:
-  this.mainNavService.thread = false;// Threads schließen:
-}
-
-
-
-updateIsMobile() {
-  this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
-  if (!this.isMobile) {
-    this.showAltLogo = false;
+  toggleMessagesView() {
+    this.showMessagesOnly = !this.showMessagesOnly;
   }
-}
 
-  
+  /*  switchContent() {
+     if (!this.isMobile) return;
+     this.showAltLogo = !this.showAltLogo;
+     this.navService.toggleNav()
+   }  */
+
+  switchContent() {
+    if (!this.isMobile) return;
+    this.showAltLogo = !this.showAltLogo;
+    this.navService.toggleNav();// Schalte Navigation ein/aus
+
+    this.mainNavService.directMessage = false; // Direktnachricht schließen
+    this.mainNavService.newMessage = true;  // New Message anzeigen
+    this.mainNavService.channel = false;  // channel  schließen:
+    this.mainNavService.thread = false;// Threads schließen:
+  }
+
+
+  updateIsMobile() {
+    this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
+    if (!this.isMobile) {
+      this.showAltLogo = false;
+    }
+  }
+
+
 }
