@@ -16,12 +16,23 @@ export class MainNavService {
   directMessage = false;
   newMessage = true;
   hideChannelMembers = false;
+  showAltLogo = false;  // <-- hinzufügen
 
 
   constructor(
     public channelsService: ChannelsService,
     public messageService: MessagesService
   ) { }
+
+
+
+  toggleAltLogo() {
+    this.showAltLogo = !this.showAltLogo;
+  }
+
+  showLogoText(): boolean {
+    return !this.showAltLogo;
+  }
 
 
   /**

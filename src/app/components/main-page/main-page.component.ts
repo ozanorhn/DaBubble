@@ -52,7 +52,6 @@ import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.
 export class MainPageComponent {
   showMessagesOnly = false;
   currentUser
-  showAltLogo = false;
   isMobile = false;
 
   constructor(
@@ -87,8 +86,8 @@ export class MainPageComponent {
 
    switchContent() {
       if (!this.isMobile) return;
-      this.showAltLogo = !this.showAltLogo;
-      this.navService.toggleNav();// Schalte Navigation ein/aus
+      this.mainNavService.showAltLogo = false; 
+      this.mainNavService.toggleNav();// Schalte Navigation ein/aus
 
       this.mainNavService.directMessage = false; // Direktnachricht schließen
       this.mainNavService.newMessage = true;  // New Message anzeigen
@@ -101,7 +100,7 @@ export class MainPageComponent {
   updateIsMobile() {
     this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
     if (!this.isMobile) {
-      this.showAltLogo = false;
+      this.mainNavService.showAltLogo = false;
     }
   }
 
