@@ -39,4 +39,11 @@ export class MembersComponent {
   }
 
 
+  get currentChannelMembers(): string[] {
+  const channels = this.channelService.channels;
+  const index = this.channelService.currentIndex();
+  return channels?.[index]?.members ?? [];
+}
+
+
 }
