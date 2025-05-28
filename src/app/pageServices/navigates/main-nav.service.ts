@@ -18,7 +18,7 @@ export class MainNavService {
   directMessage = false;
   newMessage = true;
   hideChannelMembers = false;
-  showAltLogo = false;  // <-- hinzufügen
+  showAltLogo = false;  
 
 
   constructor(
@@ -28,13 +28,13 @@ export class MainNavService {
 
 
 
-  toggleAltLogo() {
+  /* toggleAltLogo() {
     this.showAltLogo = !this.showAltLogo;
   }
 
   showLogoText(): boolean {
     return !this.showAltLogo;
-  }
+  } */
 
 
   /**
@@ -196,7 +196,8 @@ export class MainNavService {
     this.channel = true;
     this.thread = false;
     if (this.mobile) {
-      this.nav = false
+      this.nav = false;
+      this.showAltLogo = false; 
     }
     if (dm) {
       this.directMessage = true;
