@@ -7,6 +7,7 @@ import { User } from '../../classes/user.class';
 import { LocalStorageService } from '../localStorage/local-storage.service';
 import { ThreadsService } from '../threads/threads.service';
 import { ThreadDMsService } from '../threadDMs/thread-dms.service';
+import { MainNavService } from '../../pageServices/navigates/main-nav.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class DirectMessagesService implements OnDestroy {
   currentUser;
   directMessageCollection;
   currentDMIndex: number = 0;
+  mobile = false;
 
   private unsubscribeSnapshot: Unsubscribe | null = null;
 
@@ -43,7 +45,8 @@ export class DirectMessagesService implements OnDestroy {
     public usersService: UsersService,
     public localStorageS: LocalStorageService,
     public threadService: ThreadsService,
-    public threadDMsService: ThreadDMsService
+    public threadDMsService: ThreadDMsService,
+    public mainNavService: MainNavService
   ) {
     this.directMessageCollection = collection(this.firestore, 'directMessages');
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
@@ -71,6 +74,10 @@ export class DirectMessagesService implements OnDestroy {
     this.clearDm();
     this.otherUser = otherUser;
     await this.checkExistingIds();
+    if (this.mobile) {
+      this.mainNavService.nav = false;
+      this.mainNavService.showAltLogo = false; 
+    }
     if (!this.docRef) {
       let tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
       this.docRef = doc(this.directMessageCollection, tempId);
