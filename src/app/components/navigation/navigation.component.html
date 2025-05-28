@@ -7,7 +7,7 @@
             Devspace
         </div>
 
-        <img (click)="mainNavService.removeMarker()" class="cursor-pointer hover:scale-[1.1] active:scale-[0.9] duration-150 size-8"
+        <img (click)="mainNavService.markedUser(user); mainNavService.markedChannel(channel)" class="cursor-pointer hover:scale-[1.1] active:scale-[0.9] duration-150 size-8"
             src="/assets/icons/edit_square.svg" alt="">
     </div>
 

@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -22,6 +22,7 @@ import { AddMembersComponent } from "../shared/popUp/add-members/add-members.com
 import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
 import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-channel/confirm-leave-channel.component";
 import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.component";
+import { UsersService } from '../../services/users/users.service';
 
 
 @Component({
@@ -45,7 +46,7 @@ import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.
     LoadingScreenComponent,
     ConfirmLeaveChannelComponent,
     OnlinePopupComponent
-],
+  ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
@@ -55,12 +56,17 @@ export class MainPageComponent {
   showAltLogo = false;
   isMobile = false;
 
+
+  //POPUP
+  @ViewChild(OnlinePopupComponent) onlinePopup!: OnlinePopupComponent;
+
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService,
-    public navService: MainNavService
+    public navService: MainNavService,
+    public userService: UsersService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
@@ -71,6 +77,14 @@ export class MainPageComponent {
     window.addEventListener('resize', () => {
       this.updateIsMobile();
     });
+
+
+    // Zeige das Popup wenn jemand neu online geht:
+    this.userService.setOnlinePopupCallback((user) => {
+      if (this.onlinePopup) {
+        this.onlinePopup.show(user);
+      }
+    });
   }
 
 
@@ -78,24 +92,22 @@ export class MainPageComponent {
     this.showMessagesOnly = !this.showMessagesOnly;
   }
 
+  /*  switchContent() {
+     if (!this.isMobile) return;
+     this.showAltLogo = !this.showAltLogo;
+     this.navService.toggleNav()
+   }  */
 
- /*  switchContent() {
+  switchContent() {
     if (!this.isMobile) return;
     this.showAltLogo = !this.showAltLogo;
-    this.navService.toggleNav()
-  }  */
+    this.navService.toggleNav();// Schalte Navigation ein/aus
 
-   switchContent() {
-      if (!this.isMobile) return;
-      this.showAltLogo = !this.showAltLogo;
-      this.navService.toggleNav();// Schalte Navigation ein/aus
-
-      this.mainNavService.directMessage = false; // Direktnachricht schließen
-      this.mainNavService.newMessage = true;  // New Message anzeigen
-      this.mainNavService.channel = false;  // channel  schließen:
-      this.mainNavService.thread = false;// Threads schließen:
-    }
-     
+    this.mainNavService.directMessage = false; // Direktnachricht schließen
+    this.mainNavService.newMessage = true;  // New Message anzeigen
+    this.mainNavService.channel = false;  // channel  schließen:
+    this.mainNavService.thread = false;// Threads schließen:
+  }
 
 
   updateIsMobile() {
@@ -105,5 +117,5 @@ export class MainPageComponent {
     }
   }
 
-  
+
 }
