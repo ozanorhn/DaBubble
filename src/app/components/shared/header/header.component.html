@@ -14,13 +14,13 @@
       <img src="/assets/icons/keyboard_arrow_down.svg" alt="" />
       <img
         [src]="
-          showAltLogo
+          mainNavService.showAltLogo
             ? 'assets/imgs/logo.svg'
             : '/assets/imgs/workspace-logo.svg'
         "
         alt=""
       />
-      @if (!showAltLogo) {
+      @if (!mainNavService.showAltLogo) {
       <p class="text-xl font-bold">DevSpace</p>
       }
     </div>

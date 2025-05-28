@@ -53,7 +53,6 @@ import { UsersService } from '../../services/users/users.service';
 export class MainPageComponent {
   showMessagesOnly = false;
   currentUser
-  showAltLogo = false;
   isMobile = false;
 
 
@@ -92,28 +91,26 @@ export class MainPageComponent {
     this.showMessagesOnly = !this.showMessagesOnly;
   }
 
-  /*  switchContent() {
-     if (!this.isMobile) return;
-     this.showAltLogo = !this.showAltLogo;
-     this.navService.toggleNav()
-   }  */
 
-  switchContent() {
-    if (!this.isMobile) return;
-    this.showAltLogo = !this.showAltLogo;
-    this.navService.toggleNav();// Schalte Navigation ein/aus
 
-    this.mainNavService.directMessage = false; // Direktnachricht schließen
-    this.mainNavService.newMessage = true;  // New Message anzeigen
-    this.mainNavService.channel = false;  // channel  schließen:
-    this.mainNavService.thread = false;// Threads schließen:
-  }
+   switchContent() {
+      if (!this.isMobile) return;
+      this.mainNavService.showAltLogo = false; 
+      this.mainNavService.toggleNav();
+
+      this.mainNavService.directMessage = false; 
+      this.mainNavService.newMessage = true; 
+      this.mainNavService.channel = false;  
+      this.mainNavService.thread = false;
+    }
+     
+
 
 
   updateIsMobile() {
     this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
     if (!this.isMobile) {
-      this.showAltLogo = false;
+      this.mainNavService.showAltLogo = false;
     }
   }
 
