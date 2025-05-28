@@ -89,24 +89,9 @@ export class UsersService implements OnDestroy {
   }
 
 
-  // private unsubscribe!: () => void;
-  // private initUsersListener() {
-  //   this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
-  //     this.users = snapshot.docs.map((doc) => {
-  //       const data = doc.data() as User;
-  //       data.id = doc.id;
-  //       return data;
-  //     });
-  //   });
-  // }
-
-
   private checkOnlineStatusChanges(users: User[]) {
     const currentlyOnline = users.filter(user => this.isUserOnline(user.online));
 
-    // setInterval(() => {
-    //   console.log('current Online Users', currentlyOnline);
-    // }, 3000)
 
     // Finde neu online gegangene Benutzer
     const newOnlineUsers = currentlyOnline.filter(user => {
@@ -115,22 +100,28 @@ export class UsersService implements OnDestroy {
       this.previousOnlineStatus[user.id] = isNowOnline;
       return isNowOnline && !wasOnline && user.id !== this.currentUser.id;
     });
-
     if (newOnlineUsers.length > 0) {
       this.showOnlineNotification(newOnlineUsers[0]);
     }
-
     this.onlineUsers.next(currentlyOnline);
   }
 
 
+
   showOnlineNotification(user: User) {
-    // Hier kommt die Logik zur Anzeige der Benachrichtigung
-    // Siehe nächster Schritt
     console.log(user, 'Is now Online');
 
-
+    if (this.onUserOnlineCallback) {
+      this.onUserOnlineCallback(user);
+    }
   }
+
+  private onUserOnlineCallback: ((user: User) => void) | null = null;
+
+  setOnlinePopupCallback(callback: (user: User) => void) {
+    this.onUserOnlineCallback = callback;
+  }
+
 
 
   async waitUntilUsersLoaded(): Promise<void> {

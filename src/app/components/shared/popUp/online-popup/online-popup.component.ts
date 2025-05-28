@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { User } from '../../../../classes/user.class';
 
 
 @Component({
@@ -9,6 +10,17 @@ import { Component } from '@angular/core';
 })
 export class OnlinePopupComponent {
 
+
+  @Input() user!: User | null;
+  showPopup = false;
+
+  show(user: User) {
+    this.user = user;
+    this.showPopup = true;
+    setTimeout(() => {
+      this.showPopup = false;
+    }, 5000); // nach 5 Sekunden ausblenden
+  }
 
 
 }
