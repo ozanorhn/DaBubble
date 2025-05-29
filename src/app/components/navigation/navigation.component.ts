@@ -27,7 +27,7 @@ export class NavigationComponent {
     public threadService: ThreadsService,
     public mainNavService: MainNavService,
     public filterService: FilterService,
-    public directMessageService: DirectMessagesService
+    public directMessageService: DirectMessagesService,
   ) { }
 
   user = new User();

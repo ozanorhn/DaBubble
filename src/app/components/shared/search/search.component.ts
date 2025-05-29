@@ -6,6 +6,7 @@ import { Channel } from '../../../classes/channel.class';
 import { User } from '../../../classes/user.class';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 import { UserComponent } from '../user/user.component';
+import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 
 @Component({
   selector: 'app-search',
@@ -23,7 +24,8 @@ export class SearchComponent {
 
   constructor(
     public filterService: FilterService,
-    public mainNavService: MainNavService
+    public mainNavService: MainNavService,
+    public dmService:DirectMessagesService
   ) { }
 
   user = new User();
@@ -36,6 +38,13 @@ export class SearchComponent {
 
   isChannel(item: any): item is Channel {
     return 'name' in item && 'id' in item; // Anpassen an Ihre Channel-Properties
+  }
+
+
+  clickUser(item:User){
+    this.dmService.openDMs(item);
+    this.mainNavService.openChannel(true);
+    this.filterService.searchValue.set('');
   }
 
 
