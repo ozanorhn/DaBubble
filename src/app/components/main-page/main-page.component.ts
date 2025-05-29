@@ -23,6 +23,7 @@ import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.
 import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-channel/confirm-leave-channel.component";
 import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.component";
 import { UsersService } from '../../services/users/users.service';
+import { DevspaceBtnComponent } from '../shared/devspace-btn/devspace-btn.component';
 
 
 @Component({
@@ -45,7 +46,8 @@ import { UsersService } from '../../services/users/users.service';
     AddMembersComponent,
     LoadingScreenComponent,
     ConfirmLeaveChannelComponent,
-    OnlinePopupComponent
+    OnlinePopupComponent,
+    DevspaceBtnComponent
   ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
