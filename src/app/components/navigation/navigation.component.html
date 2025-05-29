@@ -7,14 +7,19 @@
             Devspace
         </div>
 
-        <img (click)="mainNavService.markedUser(user); mainNavService.markedChannel(channel)" class="cursor-pointer hover:scale-[1.1] active:scale-[0.9] duration-150 size-8"
+        <img (click)="mainNavService.markedUser(user); mainNavService.markedChannel(channel)"
+            class="cursor-pointer hover:scale-[1.1] active:scale-[0.9] duration-150 size-8"
             src="/assets/icons/edit_square.svg" alt="">
     </div>
 
     <div class="flex flex-col pl-8">
 
         @if (filterService.searchValue().length >= 1) {
+
+        @if (filterService.filteredResults().length > 0) {
         <ul class="flex flex-col">
+
+
             @for (item of filterService.filteredResults(); track $index) {
 
             @if (isUser(item)) {
@@ -27,11 +32,16 @@
             }
 
             }
+
+
         </ul>
+        } @else {
+        <div class="flex items-center h-20 font-bold">Keine gefunden </div>
         }
 
-        @if(filterService.searchValue().length < 1) { 
-            <app-channels></app-channels>
+        }
+
+        @if(filterService.searchValue().length < 1) { <app-channels></app-channels>
             <app-direct-messages></app-direct-messages>
             }
     </div>
