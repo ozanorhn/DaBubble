@@ -19,34 +19,6 @@ export class AuthService {
   ) { }
 
 
-/*   async googleLogin() {
-    const provider = new GoogleAuthProvider();
-    try {
-      // Google-Popup für Anmeldung
-      const result = await signInWithPopup(this.auth, provider);
-      const user = result.user;
-      // Überprüfen, ob der Benutzer bereits in Firestore existiert
-      const existingUser = this.userService.users.find((u) => u.email === user.email);
-
-      if (existingUser) {
-        console.log('Benutzer gefunden:', existingUser.email);
-
-        const userDocRef = doc(this.userService.usersCollection, existingUser.id);
-        await updateDoc(userDocRef, { online: true });
-        console.log('Google Anmeldung erfolgreich:', user.email);
-
-      } else {
-        // Der Benutzer ist nicht registriert
-        console.error('Der Benutzer ist nicht in der Datenbank registriert!');
-        throw new Error('Der Benutzer ist nicht registriert. Bitte registrieren Sie sich zuerst.');
-      }
-    } catch (error) {
-      console.error('Fehler bei der Google-Anmeldung:', error);
-      throw error;
-    }
-  }
- */
-
 async googleLogin() {
       const provider = new GoogleAuthProvider();
     
@@ -129,14 +101,6 @@ async googleLogin() {
     }
     // this.saveUserLocal()
   }
-
-
-  // saveUserLocal() {
-  //   this.saveObject('currentUser', this.userService.getTempUser());
-  // }
-
-  // /* saveUserLocal(user: User){
-  // localStorage.setItem('currentUser, JSON.stringify(user))}; */
 
 
   checkLoggedInUser() {

@@ -17,24 +17,25 @@ export class RegisterComponent {
   public email = '';
   public password = '';
 
-   constructor(public landing: LandingPageService, public userService: UsersService){
-  
-    }
+  constructor(
+    public landing: LandingPageService,
+    public userService: UsersService
+  ) { }
+
+
+  goToAvatar() {
+    this.userService.setTempUser({
+      name: this.name,
+      email: this.email,
+      password: this.password
+    });
+
+    this.landing.landing.set('avatar');
+  }
 
   
+  goBack() {
+    this.landing.landing.set('login')
+  }
 
-    goToAvatar() {
-      this.userService.setTempUser({
-        name: this.name,
-        email: this.email,
-        password: this.password
-      });
-    
-      this.landing.landing.set('avatar');
-    }
-
-    goBack() {
-      this.landing.landing.set('login')
-    }
-    
 }
