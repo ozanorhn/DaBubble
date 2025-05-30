@@ -71,6 +71,7 @@ export class MainPageComponent {
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
+
   }
 
 
@@ -79,13 +80,13 @@ export class MainPageComponent {
       this.updateIsMobile();
     });
 
-
     // Zeige das Popup wenn jemand neu online geht:
     this.userService.setOnlinePopupCallback((user) => {
       if (this.onlinePopup) {
         this.onlinePopup.show(user);
       }
     });
+    this.channelService.setupChannelsListener()
   }
 
 
@@ -95,17 +96,17 @@ export class MainPageComponent {
 
 
 
-   switchContent() {
-      if (!this.isMobile) return;
-      this.mainNavService.showAltLogo = false; 
-      this.mainNavService.toggleNav();
+  switchContent() {
+    if (!this.isMobile) return;
+    this.mainNavService.showAltLogo = false;
+    this.mainNavService.toggleNav();
 
-      this.mainNavService.directMessage = false; 
-      this.mainNavService.newMessage = true; 
-      this.mainNavService.channel = false;  
-      this.mainNavService.thread = false;
-    }
-     
+    this.mainNavService.directMessage = false;
+    this.mainNavService.newMessage = true;
+    this.mainNavService.channel = false;
+    this.mainNavService.thread = false;
+  }
+
 
 
 

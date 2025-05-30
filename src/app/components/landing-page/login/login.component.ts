@@ -32,7 +32,7 @@ export class LoginComponent {
     public userService: UsersService,
     public authService: AuthService,
     public localStorageS: LocalStorageService,
-    public channelsService: ChannelsService
+    // public channelsService: ChannelsService
   ) {}
 
   async login() {
@@ -42,7 +42,8 @@ export class LoginComponent {
       // ✅ Warte, bis Users und Channel aus Firestore geladen wurden
       await Promise.all([
         this.userService.waitUntilUsersLoaded(),
-        this.channelsService.waitUntilChannelsLoaded()
+        // this.channelsService.waitUntilChannelsLoaded(),
+        // this.channelsService.setupChannelsListener()
       ]);
       
   
