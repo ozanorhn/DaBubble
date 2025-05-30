@@ -80,14 +80,12 @@ export class MainPageComponent {
       this.updateIsMobile();
     });
 
-
     // Zeige das Popup wenn jemand neu online geht:
     this.userService.setOnlinePopupCallback((user) => {
       if (this.onlinePopup) {
         this.onlinePopup.show(user);
       }
     });
-
     this.channelService.setupChannelsListener()
   }
 
