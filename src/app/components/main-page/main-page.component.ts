@@ -71,6 +71,7 @@ export class MainPageComponent {
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
+
   }
 
 
@@ -86,6 +87,8 @@ export class MainPageComponent {
         this.onlinePopup.show(user);
       }
     });
+
+    this.channelService.setupChannelsListener()
   }
 
 
@@ -95,17 +98,17 @@ export class MainPageComponent {
 
 
 
-   switchContent() {
-      if (!this.isMobile) return;
-      this.mainNavService.showAltLogo = false; 
-      this.mainNavService.toggleNav();
+  switchContent() {
+    if (!this.isMobile) return;
+    this.mainNavService.showAltLogo = false;
+    this.mainNavService.toggleNav();
 
-      this.mainNavService.directMessage = false; 
-      this.mainNavService.newMessage = true; 
-      this.mainNavService.channel = false;  
-      this.mainNavService.thread = false;
-    }
-     
+    this.mainNavService.directMessage = false;
+    this.mainNavService.newMessage = true;
+    this.mainNavService.channel = false;
+    this.mainNavService.thread = false;
+  }
+
 
 
 
