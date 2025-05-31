@@ -27,8 +27,11 @@ export class NavigationComponent {
     public threadService: ThreadsService,
     public mainNavService: MainNavService,
     public filterService: FilterService,
-    public directMessageService: DirectMessagesService
+    public directMessageService: DirectMessagesService,
   ) { }
+
+  user = new User();
+  channel = new Channel();
 
 
   isUser(item: any): item is User {

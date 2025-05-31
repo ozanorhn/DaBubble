@@ -1,15 +1,7 @@
 <section class="py-2 h-fit">
   <div class="flex items-center justify-between w-full h-12 px-2">
-    <button
-      (click)="directMessagesToggle()"
-      class="flex items-center gap-3 py-3"
-    >
-      <img
-        class="size-8"
-        id="driectArrow"
-        src="/assets/icons/arrow_drop_down.svg"
-        alt=""
-      />
+    <button (click)="directMessagesToggle()" class="flex items-center gap-3 py-3">
+      <img class="size-8" id="driectArrow" src="/assets/icons/arrow_drop_down.svg" alt="" />
       <div class="flex gap-2 text-xl font-bold">
         <img class="size-6" src="/assets/icons/account_circle.svg" alt="" />
         Direktnachrichten
@@ -18,34 +10,17 @@
   </div>
 
   <ul id="directList" class="flex flex-col gap-1 pl-8">
-    <!--     @for (userItem of userService.users; track $index; let i = $index) {
-    <li
-      [style.animation-delay]="i * 0.05 + 's'"
-      class="user-item"
-      (click)="
-        mainNavService.openChannel(true);
-        dmService.openDMs(userItem);
-        mainNavService.markedUser($index)
-      "
-    >
-      <app-user
-        class="hover:font-bold hover:text-purple3"
-        [userInfo]="userItem"
-        [i]="$index"
-      ></app-user>
-    </li>
-} -->
 
-    <li
-      *ngFor="let userItem of userService.users; let i = index"
-      [class.active]="mainNavService.UserMarked === i"
-      (click)="
+
+    @for (userItem of userService.users; track $index; let i = $index) {
+    <li [style.animation-delay]="i * 0.05 + 's'" class="user-item" (click)="
         mainNavService.openChannel(true);
         dmService.openDMs(userItem);
-        mainNavService.markedUser(i)
-      "
-    >
-      <app-user [userInfo]="userItem" [i]="i"></app-user>
+        mainNavService.markedUser(userItem)
+      ">
+      <app-user class="hover:font-bold hover:text-purple3" [userInfo]="userItem"></app-user>
     </li>
+    }
+
   </ul>
 </section>

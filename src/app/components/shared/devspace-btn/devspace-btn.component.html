@@ -1,0 +1,17 @@
+<button (click)="mainNavService.toggleNav()"
+  class="w-[60px] h-fit absolute top-[50%] left-0 rounded-tr-[30px] rounded-br-[30px] py-[23px] px-[14px] flex flex-col items-center justify-center gap-2 shadow-[4px_4px_7px_rgba(0,0,0,0.2)] bg-transparent text-black hover:bg-white/100 transition-all ease-in duration-100 z-50 hover:text-purple1">
+  <span class="mt-2 text-xl">
+    @if (mainNavService.nav) {
+    <span><img src="assets/imgs/directions.svg" alt="" /></span>
+    } @if (!mainNavService.nav) {
+    <span><img class="rotate-180" src="assets/imgs/directions.svg" alt="" /></span>
+    }
+  </span>
+  <span class="leading-tight text-center rotate-180 writing-vertical-lr text-l">
+    {{
+    mainNavService.nav
+    ? "Workspace-Menü\nschließen"
+    : "Workspace-Menü\nöffnen"
+    }}
+  </span>
+</button>

@@ -10,7 +10,7 @@
 
     <div class="flex flex-col w-full gap-3 p-3 overflow-auto h-52">
 
-        @for (item of channelService.channels[channelService.currentIndex()].members; track $index) {
+        @for (item of currentChannelMembers; track $index) {
         <app-user [userInfo]="getUser(usersService.getUserById2(item))"
             (click)="overlayService.profileOverlay( true, item);overlayService.membersOverlay()"></app-user>
         }

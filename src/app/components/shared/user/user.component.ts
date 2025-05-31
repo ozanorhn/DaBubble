@@ -44,7 +44,6 @@ export class UserComponent implements OnInit {
   
   updateOnlineStatus() {
     if (this.userInfo) {
-      
       this.isOnline = this.userService.isUserOnline(this.userInfo.online);
     }
   }

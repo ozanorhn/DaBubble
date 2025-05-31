@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -21,6 +21,9 @@ import { MembersComponent } from "../shared/popUp/members/members.component";
 import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
 import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
 import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-channel/confirm-leave-channel.component";
+import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.component";
+import { UsersService } from '../../services/users/users.service';
+import { DevspaceBtnComponent } from '../shared/devspace-btn/devspace-btn.component';
 
 
 @Component({
@@ -42,26 +45,61 @@ import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-chan
     MembersComponent,
     AddMembersComponent,
     LoadingScreenComponent,
-    ConfirmLeaveChannelComponent
-],
+    ConfirmLeaveChannelComponent,
+    OnlinePopupComponent,
+    DevspaceBtnComponent
+  ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
-export class MainPageComponent {
+export class MainPageComponent implements AfterViewInit {
   showMessagesOnly = false;
   currentUser
-  showAltLogo = false;
   isMobile = false;
+
+  @ViewChild('channel') channelRef?: ElementRef;
+  @ViewChild('thread', { read: ElementRef }) threadRef?: ElementRef;
+  @ViewChild(OnlinePopupComponent) onlinePopup!: OnlinePopupComponent;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.setReactionsAmount();
+  }
+
+  private setReactionsAmount() {
+    const channelWidth = this.channelRef?.nativeElement?.offsetWidth - 160;
+    const threadWidth = this.threadRef?.nativeElement?.offsetWidth - 160;
+    this.navService.currentChannelWidth = channelWidth ?? 0;
+    this.navService.currentThreadWidth = threadWidth ?? 0;
+    this.navService.amountChannelReactions.set(Math.floor((channelWidth ?? 0) / 73));
+    this.navService.amountThreadReactions.set(Math.floor((threadWidth ?? 0) / 73));
+    if (this.navService.amountChannelReactions() > 20) this.navService.amountChannelReactions.set(20);
+    if (this.navService.amountThreadReactions() > 20) this.navService.amountThreadReactions.set(20);
+  }
 
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService,
-    public navService: MainNavService
+    public navService: MainNavService,
+    public userService: UsersService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
+    effect(() => {
+      const showChannel = this.navService.channel();
+      const showThread = this.navService.thread();
+      let id = setTimeout(() => {
+        this.setReactionsAmount();
+        clearTimeout(id);
+      }, 100);
+    });
+  }
+
+
+  ngAfterViewInit(): void {
+    this.setReactionsAmount();
   }
 
 
@@ -69,6 +107,14 @@ export class MainPageComponent {
     window.addEventListener('resize', () => {
       this.updateIsMobile();
     });
+
+    // Zeige das Popup wenn jemand neu online geht:
+    this.userService.setOnlinePopupCallback((user) => {
+      if (this.onlinePopup) {
+        this.onlinePopup.show(user);
+      }
+    });
+    this.channelService.setupChannelsListener()
   }
 
 
@@ -77,31 +123,27 @@ export class MainPageComponent {
   }
 
 
- /*  switchContent() {
+
+  switchContent() {
     if (!this.isMobile) return;
-    this.showAltLogo = !this.showAltLogo;
-    this.navService.toggleNav()
-  }  */
+    this.mainNavService.showAltLogo = false;
+    this.mainNavService.toggleNav();
 
-   switchContent() {
-      if (!this.isMobile) return;
-      this.showAltLogo = !this.showAltLogo;
-      this.navService.toggleNav();// Schalte Navigation ein/aus
+    this.mainNavService.directMessage = false;
+    this.mainNavService.newMessage = true;
+    this.mainNavService.channel.set(false);
+    this.mainNavService.thread.set(false);
+  }
 
-      this.mainNavService.directMessage = false; // Direktnachricht schließen
-      this.mainNavService.newMessage = true;  // New Message anzeigen
-      this.mainNavService.channel = false;  // channel  schließen:
-      this.mainNavService.thread = false;// Threads schließen:
-    }
-     
+
 
 
   updateIsMobile() {
     this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
     if (!this.isMobile) {
-      this.showAltLogo = false;
+      this.mainNavService.showAltLogo = false;
     }
   }
 
-  
+
 }
