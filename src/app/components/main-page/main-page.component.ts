@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -52,14 +52,30 @@ import { DevspaceBtnComponent } from '../shared/devspace-btn/devspace-btn.compon
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
-export class MainPageComponent {
+export class MainPageComponent implements AfterViewInit {
   showMessagesOnly = false;
   currentUser
   isMobile = false;
 
-
-  //POPUP
+  @ViewChild('channel') channelRef?: ElementRef;
+  @ViewChild('thread', { read: ElementRef }) threadRef?: ElementRef;
   @ViewChild(OnlinePopupComponent) onlinePopup!: OnlinePopupComponent;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.setReactionsAmount();
+  }
+
+  private setReactionsAmount() {
+    const channelWidth = this.channelRef?.nativeElement?.offsetWidth - 160;
+    const threadWidth = this.threadRef?.nativeElement?.offsetWidth - 160;
+    this.navService.currentChannelWidth = channelWidth ?? 0;
+    this.navService.currentThreadWidth = threadWidth ?? 0;
+    this.navService.amountChannelReactions.set(Math.floor((channelWidth ?? 0) / 73));
+    this.navService.amountThreadReactions.set(Math.floor((threadWidth ?? 0) / 73));
+    if (this.navService.amountChannelReactions() > 20) this.navService.amountChannelReactions.set(20);
+    if (this.navService.amountThreadReactions() > 20) this.navService.amountThreadReactions.set(20);
+  }
 
   constructor(
     public mainNavService: MainNavService,
@@ -71,7 +87,19 @@ export class MainPageComponent {
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
+    effect(() => {
+      const showChannel = this.navService.channel();
+      const showThread = this.navService.thread();
+      let id = setTimeout(() => {
+        this.setReactionsAmount();
+        clearTimeout(id);
+      }, 100);
+    });
+  }
 
+
+  ngAfterViewInit(): void {
+    this.setReactionsAmount();
   }
 
 
@@ -103,8 +131,8 @@ export class MainPageComponent {
 
     this.mainNavService.directMessage = false;
     this.mainNavService.newMessage = true;
-    this.mainNavService.channel = false;
-    this.mainNavService.thread = false;
+    this.mainNavService.channel.set(false);
+    this.mainNavService.thread.set(false);
   }
 
 
