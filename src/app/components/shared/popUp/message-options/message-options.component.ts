@@ -33,7 +33,7 @@ export class MessageOptionsComponent {
     public threadService: ThreadsService,
     public dmService: DirectMessagesService,
     public messageService: MessagesService,
-    public EmojisService: EmojisService
+    public emojisService: EmojisService
   ) { }
 
 
