@@ -73,6 +73,8 @@ export class MainPageComponent implements AfterViewInit {
     this.navService.currentThreadWidth = threadWidth ?? 0;
     this.navService.amountChannelReactions.set(Math.floor((channelWidth ?? 0) / 73));
     this.navService.amountThreadReactions.set(Math.floor((threadWidth ?? 0) / 73));
+    if (this.navService.amountChannelReactions() > 20) this.navService.amountChannelReactions.set(20);
+    if (this.navService.amountThreadReactions() > 20) this.navService.amountThreadReactions.set(20);
   }
 
   constructor(
