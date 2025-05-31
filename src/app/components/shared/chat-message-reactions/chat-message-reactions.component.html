@@ -1,5 +1,5 @@
 @for (reaction of message.reactions; track i; let i = $index) {
-    @if (i < maxShown) {
+    @if (i < maxShown()) {
         <button (click)="react(reaction.emoji)" class="relative flex items-center border-lightpurple border-[1px] rounded-full gap-[10px] py-[5px] px-[10px] [&>div]:hover:opacity-100">
             <span class="size-6">{{ reaction.emoji }}</span>
             <span class="text-base">{{ reaction.users.length }}</span>
@@ -19,8 +19,8 @@
                 <span>hat reagiert</span>
             </div>
         </button>
-    } @else if (i === maxShown) {
-        +
+    } @else if (i === maxShown()) {
+        + {{ message.reactions.length - maxShown() }}
     }
 }
 <button (click)="toggleEmojiPicker()">

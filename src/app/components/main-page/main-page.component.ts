@@ -67,14 +67,12 @@ export class MainPageComponent implements AfterViewInit {
   }
 
   private setReactionsAmount() {
-    const channelWidth = this.channelRef?.nativeElement?.offsetWidth;
-    const threadWidth = this.threadRef?.nativeElement?.offsetWidth;
+    const channelWidth = this.channelRef?.nativeElement?.offsetWidth - 160;
+    const threadWidth = this.threadRef?.nativeElement?.offsetWidth - 160;
     this.navService.currentChannelWidth = channelWidth ?? 0;
     this.navService.currentThreadWidth = threadWidth ?? 0;
-    this.navService.amountChannelReactions = Math.floor((channelWidth ?? 0) / 73);
-    this.navService.amountThreadReactions = Math.floor((threadWidth ?? 0) / 73);
-    console.log('Channel Breite:', this.navService.amountChannelReactions);
-    console.log('Thread Breite:', this.navService.amountThreadReactions);
+    this.navService.amountChannelReactions.set(Math.floor((channelWidth ?? 0) / 73));
+    this.navService.amountThreadReactions.set(Math.floor((threadWidth ?? 0) / 73));
   }
 
   constructor(

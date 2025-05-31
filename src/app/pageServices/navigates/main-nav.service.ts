@@ -21,8 +21,8 @@ export class MainNavService {
   showAltLogo = false;
   currentChannelWidth = 0;
   currentThreadWidth = 0;
-  amountChannelReactions = 4;
-  amountThreadReactions = 4;
+  amountChannelReactions = signal(4);
+  amountThreadReactions = signal(4);
 
 
   constructor(
