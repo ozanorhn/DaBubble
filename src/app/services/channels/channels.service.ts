@@ -33,7 +33,7 @@ export class ChannelsService implements OnInit, OnDestroy {
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.channelsCollection = collection(this.firestore, 'channels');
-    this.setupChannelsListener();
+    // this.setupChannelsListener();
   }
 
 
@@ -59,7 +59,7 @@ export class ChannelsService implements OnInit, OnDestroy {
    * Initializes the Firestore listener for channels collection
    * Updates local channels array when changes occur
    */
-  private setupChannelsListener() {
+  public setupChannelsListener() {
 
     this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
       this.channels = snapshot.docs.map((doc) => {

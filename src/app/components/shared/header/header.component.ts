@@ -21,13 +21,14 @@ import { UsersService } from '../../../services/users/users.service';
 })
 export class HeaderComponent {
   currentUser
-  showAltLogo = false;
+ 
   isMobile = false;
 
   constructor(
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService,
     public navService: MainNavService,
+    public mainNavService: MainNavService,
     public usersService: UsersService
   ) {
     // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
@@ -41,12 +42,13 @@ export class HeaderComponent {
   }
 
   switchLogo() {
-    if (!this.isMobile) return;
-    this.showAltLogo = !this.showAltLogo;
-    this.navService.toggleNav()
+    if (!this.navService.showChannel()) return;
+    this.mainNavService.showAltLogo = !this.mainNavService.showAltLogo;
+    this.mainNavService.toggleNav();
   }
+
   updateIsMobile() {
-    this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
+    this.isMobile = window.innerWidth < 810; // Tailwind "sm" = 640px
   }
 
  

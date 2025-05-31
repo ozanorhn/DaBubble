@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ChannelsService } from '../../services/channels/channels.service';
 import { MessagesService } from '../../services/messages/messages.service';
+import { User } from '../../classes/user.class';
+import { Channel } from '../../classes/channel.class';
 
 
 @Injectable({
@@ -16,12 +18,23 @@ export class MainNavService {
   directMessage = false;
   newMessage = true;
   hideChannelMembers = false;
+  showAltLogo = false;  
 
 
   constructor(
     public channelsService: ChannelsService,
     public messageService: MessagesService
   ) { }
+
+
+
+  /* toggleAltLogo() {
+    this.showAltLogo = !this.showAltLogo;
+  }
+
+  showLogoText(): boolean {
+    return !this.showAltLogo;
+  } */
 
 
   /**
@@ -183,7 +196,8 @@ export class MainNavService {
     this.channel = true;
     this.thread = false;
     if (this.mobile) {
-      this.nav = false
+      this.nav = false;
+      this.showAltLogo = false; 
     }
     if (dm) {
       this.directMessage = true;
@@ -211,39 +225,27 @@ export class MainNavService {
   }
 
 
-
-  UserMarked = 99999999;
-  ChannelMarked = 99999999;
-
-/*   markedUser(i: number) {
-    this.UserMarked = i
-    this.ChannelMarked = 99999999;
-  }  */
-    markedUser(i: number) {
-      if (this.UserMarked === i) {
-        // Wenn derselbe User erneut geklickt wird, Markierung entfernen und DM schließen
-        this.UserMarked = 99999999;
-        this.directMessage = false;
-        this.newMessage = true; // Optional: zeige z. B. die "Neue Nachricht"-Ansicht stattdessen
-      } else {
-        this.UserMarked = i;
-        this.ChannelMarked = 99999999;
-        this.directMessage = true;
-        this.newMessage = false;
-      }
-    } 
-    
+  UserMarked = new User();
+  ChannelMarked = new Channel();
 
 
-  markedChannel(i: number) {
-    this.ChannelMarked = i
-    this.UserMarked = 99999999;
+  markedUser(user: User) {
+    if (this.UserMarked.name !== user.name) {
+      this.UserMarked = user
+    } else {
+      this.UserMarked = new User();
+    }
+    this.ChannelMarked = new Channel();
   }
 
 
-  removeMarker() {
-    this.ChannelMarked = 99999999;
-    this.UserMarked = 99999999;
+  markedChannel(channel: Channel) {
+    if (this.ChannelMarked.name !== channel.name) {
+      this.ChannelMarked = channel
+    } else {
+      this.ChannelMarked = new Channel();
+    }
+    this.UserMarked = new User();
   }
 
 

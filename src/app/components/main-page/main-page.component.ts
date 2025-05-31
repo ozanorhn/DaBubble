@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -21,6 +21,9 @@ import { MembersComponent } from "../shared/popUp/members/members.component";
 import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
 import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
 import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-channel/confirm-leave-channel.component";
+import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.component";
+import { UsersService } from '../../services/users/users.service';
+import { DevspaceBtnComponent } from '../shared/devspace-btn/devspace-btn.component';
 
 
 @Component({
@@ -42,26 +45,33 @@ import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-chan
     MembersComponent,
     AddMembersComponent,
     LoadingScreenComponent,
-    ConfirmLeaveChannelComponent
-],
+    ConfirmLeaveChannelComponent,
+    OnlinePopupComponent,
+    DevspaceBtnComponent
+  ],
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
 export class MainPageComponent {
   showMessagesOnly = false;
   currentUser
-  showAltLogo = false;
   isMobile = false;
+
+
+  //POPUP
+  @ViewChild(OnlinePopupComponent) onlinePopup!: OnlinePopupComponent;
 
   constructor(
     public mainNavService: MainNavService,
     public channelService: ChannelsService,
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService,
-    public navService: MainNavService
+    public navService: MainNavService,
+    public userService: UsersService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
+
   }
 
 
@@ -69,6 +79,14 @@ export class MainPageComponent {
     window.addEventListener('resize', () => {
       this.updateIsMobile();
     });
+
+    // Zeige das Popup wenn jemand neu online geht:
+    this.userService.setOnlinePopupCallback((user) => {
+      if (this.onlinePopup) {
+        this.onlinePopup.show(user);
+      }
+    });
+    this.channelService.setupChannelsListener()
   }
 
 
@@ -77,31 +95,27 @@ export class MainPageComponent {
   }
 
 
- /*  switchContent() {
+
+  switchContent() {
     if (!this.isMobile) return;
-    this.showAltLogo = !this.showAltLogo;
-    this.navService.toggleNav()
-  }  */
+    this.mainNavService.showAltLogo = false;
+    this.mainNavService.toggleNav();
 
-   switchContent() {
-      if (!this.isMobile) return;
-      this.showAltLogo = !this.showAltLogo;
-      this.navService.toggleNav();// Schalte Navigation ein/aus
+    this.mainNavService.directMessage = false;
+    this.mainNavService.newMessage = true;
+    this.mainNavService.channel = false;
+    this.mainNavService.thread = false;
+  }
 
-      this.mainNavService.directMessage = false; // Direktnachricht schließen
-      this.mainNavService.newMessage = true;  // New Message anzeigen
-      this.mainNavService.channel = false;  // channel  schließen:
-      this.mainNavService.thread = false;// Threads schließen:
-    }
-     
+
 
 
   updateIsMobile() {
     this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
     if (!this.isMobile) {
-      this.showAltLogo = false;
+      this.mainNavService.showAltLogo = false;
     }
   }
 
-  
+
 }

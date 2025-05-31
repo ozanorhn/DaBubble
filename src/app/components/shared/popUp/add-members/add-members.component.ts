@@ -117,5 +117,11 @@ export class AddMembersComponent implements OnInit {
   }
 
 
+  get currentChannelName(): string | null {
+  const index = this.channelService.currentIndex();
+  const channels = this.channelService.channels;
+  return channels && channels[index] ? channels[index].name : null;
+}
+
 
 }
