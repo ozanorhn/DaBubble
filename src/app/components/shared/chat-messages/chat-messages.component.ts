@@ -174,10 +174,12 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
    * @param currentUserId The ID of the current user
    */
   private addReaction(emoji: string, reactions: any, currentUserId: string) {
-    reactions.push({
-      emoji,
-      users: [currentUserId]
-    });
+    if (reactions.length < 20) {
+      reactions.push({
+        emoji,
+        users: [currentUserId]
+      });
+    }
   }
 
 
