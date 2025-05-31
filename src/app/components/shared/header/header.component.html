@@ -1,5 +1,8 @@
 <div class="w-full h-[80px] bg-primary flex justify-between items-center pr-[16px] pl-[16px]">
-  <div (click)="switchLogo()">
+
+
+
+  <!-- <div (click)="switchLogo()">
     @if (!isMobile) {
     <img id="logo" src="assets/imgs/logo.svg" alt="DaBubble Logo" class="hidden h-16 mt-4 sm:block" />
     } @if (isMobile) {
@@ -15,8 +18,29 @@
       }
     </div>
     }
+  </div> -->
+
+  <img id="logo" src="assets/imgs/logo.svg" alt="DaBubble Logo" class="hidden h-16 mt-4 md:block" />
+
+  <div 
+    (click)="switchLogo()"
+    class="flex items-center gap-2 cursor-pointer md:hidden">
+    @if (navService.showChannel()) {
+      <img src="/assets/icons/keyboard_arrow_down.svg" alt="" />
+    }
+    <img [src]="
+          mainNavService.showAltLogo
+            ? 'assets/imgs/logo.svg'
+            : '/assets/imgs/workspace-logo.svg'
+        " alt="" />
+    @if (!mainNavService.showAltLogo) {
+    <p class="text-xl font-bold">DevSpace</p>
+    }
   </div>
-  
+
+
+
+
   <app-search class="w-[50%] hidden lg:block self-end"></app-search>
 
   <img src="{{ usersService.storedUser.avatar }}" (click)="overlayService.logoutOvelay()"
