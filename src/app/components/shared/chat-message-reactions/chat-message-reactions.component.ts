@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Message } from '../../../classes/message.class';
 import { DM } from '../../../interfaces/dm';
 import { UsersService } from '../../../services/users/users.service';
+import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 
 @Component({
   selector: 'app-chat-message-reactions',
@@ -13,11 +14,22 @@ export class ChatMessageReactionsComponent {
   @Input() message: Message | DM = new Message();
   @Output() emojiPicked = new EventEmitter<string>();
   @Output() pickerToggled = new EventEmitter<void>();
+  maxShown = 7;
 
 
   constructor(
-    public usersService: UsersService
-  ) { }
+    public usersService: UsersService,
+    public navService: MainNavService
+  ) {
+    this.setMaxShown();
+  }
+
+
+  setMaxShown() {
+    if (this.navService.bigScreen()) {
+      this.maxShown = 20;
+    }
+  }
 
 
   public getUser(userId: string) {

@@ -25,7 +25,7 @@
 
 
 
-  <div [class.active]="mainNavService.showChannel()" class="flex-1 w-full xs:min-w-[400px] my-6 channel-container">
+  <div #channel [class.active]="mainNavService.showChannel()" class="flex-1 w-full xs:min-w-[400px] my-6 channel-container">
     @if (mainNavService.newMessage) {
     <app-new-message class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"></app-new-message>
     } @else if (mainNavService.directMessage) {
@@ -41,7 +41,7 @@
   
 
   @if (mainNavService.showThread()) {
-  <app-thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
+  <app-thread #thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
   }
 
 
