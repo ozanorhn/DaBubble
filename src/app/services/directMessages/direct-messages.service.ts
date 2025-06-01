@@ -75,7 +75,7 @@ export class DirectMessagesService implements OnDestroy {
     this.otherUser = otherUser;
     await this.checkExistingIds();
     if (this.mobile) {
-      this.mainNavService.nav = false;
+      this.mainNavService.nav.set(false);
       this.mainNavService.showAltLogo = false; 
     }
     if (!this.docRef) {
