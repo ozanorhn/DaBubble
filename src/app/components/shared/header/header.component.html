@@ -1,7 +1,11 @@
 <div
   class="w-full h-[80px] bg-primary flex justify-between items-center pr-[16px] pl-[16px]"
 >
-  <div (click)="switchLogo()">
+  <!-- Bedingter Wrapper für Logo / Mobile Darstellung -->
+  <div
+    [class.cursor-pointer]="isMobile && !mainNavService.showAltLogo"
+    (click)="isMobile && !mainNavService.showAltLogo && switchLogo()"
+  >
     @if (!isMobile) {
     <img
       id="logo"
@@ -10,8 +14,11 @@
       class="hidden h-16 mt-4 sm:block"
     />
     } @if (isMobile) {
-    <div class="flex items-center gap-2 cursor-pointer max810:flex hidden">
+    <div class="flex items-center gap-2 max810:flex hidden">
+      <!-- Nur anzeigen, wenn NICHT logo.svg aktiv -->
+      @if (!mainNavService.showAltLogo) {
       <img src="/assets/icons/keyboard_arrow_down.svg" alt="" />
+      }
       <img
         [src]="
           mainNavService.showAltLogo
@@ -20,6 +27,7 @@
         "
         alt=""
       />
+      <!-- Text nur bei workspace-logo -->
       @if (!mainNavService.showAltLogo) {
       <p class="text-xl font-bold">DevSpace</p>
       }
