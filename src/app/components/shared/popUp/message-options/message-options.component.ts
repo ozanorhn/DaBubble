@@ -4,6 +4,7 @@ import { ThreadsService } from '../../../../services/threads/threads.service';
 import { DirectMessagesService } from '../../../../services/directMessages/direct-messages.service';
 import { Message } from '../../../../classes/message.class';
 import { MessagesService } from '../../../../services/messages/messages.service';
+import { EmojisService } from '../../../../services/emojis/emojis.service';
 
 @Component({
   standalone: true,
@@ -31,7 +32,8 @@ export class MessageOptionsComponent {
     public navService: MainNavService,
     public threadService: ThreadsService,
     public dmService: DirectMessagesService,
-    public messageService: MessagesService
+    public messageService: MessagesService,
+    public emojisService: EmojisService
   ) { }
 
 

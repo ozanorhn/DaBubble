@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { ChannelsService } from '../../services/channels/channels.service';
 import { MessagesService } from '../../services/messages/messages.service';
 import { User } from '../../classes/user.class';
@@ -9,16 +9,20 @@ import { Channel } from '../../classes/channel.class';
   providedIn: 'root'
 })
 export class MainNavService {
-  mobile = false;
-  mediumScreen = false;
-  bigScreen = false;
-  channel = true;
-  thread = false;
-  nav = true;
+  mobile = signal(false);
+  mediumScreen = signal(false);
+  bigScreen = signal(false);
+  channel = signal(true);
+  thread = signal(false);
+  nav = signal(true);
   directMessage = false;
   newMessage = true;
   hideChannelMembers = false;
-  showAltLogo = false;  
+  showAltLogo = false;
+  currentChannelWidth = 0;
+  currentThreadWidth = 0;
+  amountChannelReactions = signal(4);
+  amountThreadReactions = signal(4);
 
 
   constructor(
@@ -49,10 +53,10 @@ export class MainNavService {
   // }
 
   toggleNav() {
-    this.nav = !this.nav;
+    this.nav.set(!this.nav());
     // Verzögerung für Animation
     setTimeout(() => {
-      if (this.nav) this.openNav();
+      if (this.nav()) this.openNav();
       else this.closeNav();
     }, 10);
   }
@@ -62,10 +66,10 @@ export class MainNavService {
    * Closes navigation panel
    */
   closeNav() {
-    if (!this.channel && !this.thread || this.mediumScreen && !this.channel) {
-      this.channel = true;
+    if (!this.channel() && !this.thread() || this.mediumScreen() && !this.channel()) {
+      this.channel.set(true);
     }
-    this.nav = false;
+    this.nav.set(false);
   }
 
 
@@ -73,13 +77,13 @@ export class MainNavService {
    * Opens navigation panel
    */
   openNav() {
-    this.nav = true;
-    if (this.mediumScreen && this.channel && this.thread) {
-      this.channel = false;
+    this.nav.set(true);
+    if (this.mediumScreen() && this.channel() && this.thread()) {
+      this.channel.set(false);
     }
-    if (this.mobile) {
-      this.channel = false;
-      this.thread = false;
+    if (this.mobile()) {
+      this.channel.set(false);
+      this.thread.set(false);
     }
   }
 
@@ -89,7 +93,7 @@ export class MainNavService {
    * @returns {boolean} Visibility state
    */
   showNav(): boolean {
-    return !this.channel && this.mobile && !this.thread && this.nav || this.mediumScreen && this.nav || this.bigScreen && this.nav;
+    return !this.channel() && this.mobile() && !this.thread() && this.nav() || this.mediumScreen() && this.nav() || this.bigScreen() && this.nav();
   }
 
 
@@ -98,7 +102,8 @@ export class MainNavService {
   * @returns {boolean} Visibility state
   */
   showChannel(): boolean {
-    return this.channel && this.mobile && !this.thread && !this.nav || this.mediumScreen && this.channel || this.bigScreen;
+    // this.channelIsShown.set(this.channel && this.mobile && !this.thread && !this.nav || this.mediumScreen && this.channel || this.bigScreen)
+    return this.channel() && this.mobile() && !this.thread() && !this.nav() || this.mediumScreen() && this.channel() || this.bigScreen();
   }
 
 
@@ -107,7 +112,8 @@ export class MainNavService {
   * @returns {boolean} Visibility state
   */
   showThread(): boolean {
-    return !this.channel && this.mobile && this.thread && !this.nav || this.mediumScreen && this.thread || this.bigScreen && this.thread;
+    // this.threadIsShown.set(!this.channel && this.mobile && this.thread && !this.nav || this.mediumScreen && this.thread || this.bigScreen && this.thread)
+    return !this.channel() && this.mobile() && this.thread() && !this.nav() || this.mediumScreen() && this.thread() || this.bigScreen() && this.thread();
   }
 
 
@@ -134,12 +140,12 @@ export class MainNavService {
     * @param {'big'|'medium'|'mobile'} size - Current screen size
     */
   setScreen(size: 'big' | 'medium' | 'mobile') {
-    this.bigScreen = false;
-    this.mediumScreen = false;
-    this.mobile = false;
-    if (size === 'big') this.bigScreen = true;
-    if (size === 'medium') this.mediumScreen = true;
-    if (size === 'mobile') this.mobile = true;
+    this.bigScreen.set(false);
+    this.mediumScreen.set(false);
+    this.mobile.set(false);
+    if (size === 'big') this.bigScreen.set(true);
+    if (size === 'medium') this.mediumScreen.set(true);
+    if (size === 'mobile') this.mobile.set(true);
   }
 
 
@@ -147,8 +153,8 @@ export class MainNavService {
    * Adjusts channel members visibility in header
    */
   setHeaderMembers() {
-    if (this.bigScreen) {
-      if (window.innerWidth < 1400 && this.thread) {
+    if (this.bigScreen()) {
+      if (window.innerWidth < 1400 && this.thread()) {
         this.hideChannelMembers = true;
       } else {
         this.hideChannelMembers = false;
@@ -163,10 +169,10 @@ export class MainNavService {
    * Adjusts layout for medium screens (810-1279px)
    */
   adjustMediumScreen() {
-    if (this.thread && this.nav) {
-      this.channel = false;
-    } else if (!this.nav && !this.channel && this.thread) {
-      this.channel = true;
+    if (this.thread() && this.nav()) {
+      this.channel.set(false);
+    } else if (!this.nav() && !this.channel() && this.thread()) {
+      this.channel.set(true);
     }
   }
 
@@ -175,14 +181,14 @@ export class MainNavService {
    * Adjusts layout for mobile screens (<810px)
    */
   adjustMobileScreen() {
-    if (this.channel && this.thread) {
-      this.channel = false;
-    } else if (this.channel && this.nav) {
-      this.nav = false;
-    } else if (!this.channel && !this.thread) {
-      this.nav = true;
-    } else if (this.nav && this.thread) {
-      this.nav = false;
+    if (this.channel() && this.thread()) {
+      this.channel.set(false);
+    } else if (this.channel() && this.nav()) {
+      this.nav.set(false);
+    } else if (!this.channel() && !this.thread()) {
+      this.nav.set(true);
+    } else if (this.nav() && this.thread()) {
+      this.nav.set(false);
     }
   }
 
@@ -193,11 +199,11 @@ export class MainNavService {
    */
   openChannel(dm: boolean = false) {
     this.newMessage = false;
-    this.channel = true;
-    this.thread = false;
-    if (this.mobile) {
-      this.nav = false;
-      this.showAltLogo = false; 
+    this.channel.set(true);
+    this.thread.set(false);
+    if (this.mobile()) {
+      this.nav.set(false);
+      this.showAltLogo = false;
     }
     if (dm) {
       this.directMessage = true;
@@ -212,14 +218,14 @@ export class MainNavService {
    * Opens thread view
    */
   openThread() {
-    if (this.mobile) {
-      this.channel = false;
-      this.thread = true;
-    } else if (this.mediumScreen) {
-      this.thread = true;
-      this.nav = false;
-    } else if (this.bigScreen) {
-      this.thread = true;
+    if (this.mobile()) {
+      this.channel.set(false);
+      this.thread.set(true);
+    } else if (this.mediumScreen()) {
+      this.thread.set(true);
+      this.nav.set(false);
+    } else if (this.bigScreen()) {
+      this.thread.set(true);
     }
     // this.setHeaderMembers();
   }
