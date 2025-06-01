@@ -35,7 +35,11 @@ export class LoginComponent {
     // public channelsService: ChannelsService
   ) {}
 
-  async login() {
+  async login(gast = false) {
+    if (gast) {
+      this.email = 'gast@user.de'
+      this.password = 'gast123'
+    }
     try {
       const user = await this.authService.login(this.email, this.password);
   
