@@ -31,6 +31,11 @@ export class MainNavService {
   ) { }
 
 
+  openNewMessage() {
+    this.directMessage = false;
+    this.newMessage = true;
+  }
+
 
   /* toggleAltLogo() {
     this.showAltLogo = !this.showAltLogo;
@@ -53,7 +58,7 @@ export class MainNavService {
   // }
 
   toggleNav() {
-    this.nav.set(!this.nav);
+    this.nav.set(!this.nav());
     // Verzögerung für Animation
     setTimeout(() => {
       if (this.nav()) this.openNav();

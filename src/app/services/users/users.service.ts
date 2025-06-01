@@ -6,43 +6,37 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Timestamp } from '@firebase/firestore';
 import { query, where, getDocs } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
-// import { OnlineNotificationComponent } from '../components/online-notification/online-notification.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService implements OnDestroy {
-
-
   private onlineUsers = new BehaviorSubject<User[]>([]);
   onlineUsers$ = this.onlineUsers.asObservable();
-
   private previousOnlineStatus: { [key: string]: boolean } = {};
   private unsubscribe: () => void = () => { }; // Initialisierung hinzufügen
-
-
   private firestore = inject(Firestore);
   usersCollection = collection(this.firestore, 'users');
   users: User[] = [];
   tempUser: Partial<User> = {};
   currentUser: User = new User();
-
   GuestUser = {
-    id: 'pEGZHQAC1HQNQQYnKNE1J04pbXM2',
-    name: 'Guest',
-    email: 'gast@test.de',
-    avatar: '/assets/imgs/avatar9.jpg',
-    online: true,
+    id: 'ALomQ9jH69QnE7Q7zjnA',
+    name: 'Gast',
+    email: 'gast@user.de',
   }
 
-  storedUser = new User();
 
   constructor(
     public localStorageS: LocalStorageService
   ) {
-    this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
     this.initUsersListener();
     this.updateOnlineStatus();
+  }
+
+
+  getCurrentUser() {
+      this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
   }
 
 
@@ -61,16 +55,16 @@ export class UsersService implements OnDestroy {
 
 
   updateOnlineStatus() {
-    if (this.storedUser.id !== this.GuestUser.id) {
+    if (this.currentUser.id !== this.GuestUser.id) {
       const update = async () => {
-        this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
-        if (!this.storedUser.id) return;
-        const userRef = doc(this.usersCollection, this.storedUser.id);
+        this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
+        if (!this.currentUser.id) return;
+        const userRef = doc(this.usersCollection, this.currentUser.id);
         try {
           await updateDoc(userRef, {
             online: Timestamp.now()
           });
-          console.log('Online-Status aktualisiert:', this.storedUser.id);
+          console.log('Online-Status aktualisiert:', this.currentUser.id);
         } catch (error) {
           console.error('Fehler beim Aktualisieren des Online-Status:', error);
         }
@@ -91,8 +85,6 @@ export class UsersService implements OnDestroy {
 
   private checkOnlineStatusChanges(users: User[]) {
     const currentlyOnline = users.filter(user => this.isUserOnline(user.online));
-
-
     // Finde neu online gegangene Benutzer
     const newOnlineUsers = currentlyOnline.filter(user => {
       const wasOnline = this.previousOnlineStatus[user.id] || false;
@@ -107,7 +99,6 @@ export class UsersService implements OnDestroy {
   }
 
 
-
   showOnlineNotification(user: User) {
     console.log(user, 'Is now Online');
 
@@ -116,12 +107,11 @@ export class UsersService implements OnDestroy {
     }
   }
 
-  private onUserOnlineCallback: ((user: User) => void) | null = null;
 
+  private onUserOnlineCallback: ((user: User) => void) | null = null;
   setOnlinePopupCallback(callback: (user: User) => void) {
     this.onUserOnlineCallback = callback;
   }
-
 
 
   async waitUntilUsersLoaded(): Promise<void> {
@@ -211,6 +201,4 @@ export class UsersService implements OnDestroy {
     }
     return undefined;
   }
-
-
 }

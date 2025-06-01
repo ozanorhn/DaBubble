@@ -42,7 +42,7 @@ export class HeaderComponent {
   }
 
   switchLogo() {
-    if (!this.navService.showChannel()) return;
+    // if (!this.navService.showChannel()) return;
     this.mainNavService.showAltLogo = !this.mainNavService.showAltLogo;
     this.mainNavService.toggleNav();
   }

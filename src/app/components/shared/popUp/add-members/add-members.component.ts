@@ -37,10 +37,10 @@ export class AddMembersComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.loadInitialData();
-    // setInterval(() => {
-    //   this.applyFilters();
-    // }, 1000);
+    let id = setTimeout(() => {
+      this.loadInitialData();
+      clearTimeout(id);
+    }, 1000);
   }
 
 

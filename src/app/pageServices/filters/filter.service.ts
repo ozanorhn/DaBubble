@@ -10,12 +10,14 @@ import { User } from '../../classes/user.class';
 export class FilterService {
 
   currentUser;
-  isChatInputActive = signal(false);
+  // isChatInputActive = signal(false);
   users = inject(UsersService);
   channels = inject(ChannelsService);
   searchValue = signal('');
+  searchNewMessage = signal('');
   searchMembers = signal('');
   channelArray = this.channels.channels;
+  // currentSearch: 'user' | 'channel' | null = null;
 
 
   constructor(private localStorageS: LocalStorageService) {
@@ -65,6 +67,9 @@ export class FilterService {
 
 
 
+
+
+
   filteredMembers = computed(() => {
     const search = this.searchMembers().toLowerCase();
     return this.filterMembers(search)
@@ -76,6 +81,40 @@ export class FilterService {
       user.name.toLowerCase().includes(searchMembers) &&
       user.id !== this.currentUser.id // CurrentUser ausschließen
     );
+  }
+
+
+
+
+
+
+  filteredMessageResults = computed(() => {
+    const searchTerm = this.searchNewMessage().toLowerCase();
+    if (searchTerm.startsWith('@')) {
+      return this.filterUsers(searchTerm)
+    }
+    else if (searchTerm.startsWith('#')) {
+      return this.filterChannels(searchTerm)
+    }
+    else {
+      return this.filterAll(searchTerm)
+    }
+  });
+
+
+  filterMessageUsers(searchTerm: string) {
+    const userSearch = searchTerm.substring(1);
+    return this.users.users.filter(user =>
+      user.name.toLowerCase().includes(userSearch)
+    )
+  }
+
+
+  filterMessageChannels(searchTerm: string) {
+    const channelSearch = searchTerm.substring(1);
+    return this.channels.channels.filter(channel =>
+      channel.name.toLowerCase().includes(channelSearch)
+    )
   }
 
 

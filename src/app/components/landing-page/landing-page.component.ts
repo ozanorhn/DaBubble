@@ -37,7 +37,7 @@ export class LandingPageComponent {
     public localStorageS: LocalStorageService
 
   ) { 
-    // this.localStorageS.clear();
+    this.localStorageS.clear();
   }
 
   ngOnInit() {
