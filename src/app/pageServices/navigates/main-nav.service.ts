@@ -31,6 +31,11 @@ export class MainNavService {
   ) { }
 
 
+  openNewMessage() {
+    this.directMessage = false;
+    this.newMessage = true;
+  }
+
 
   /* toggleAltLogo() {
     this.showAltLogo = !this.showAltLogo;
