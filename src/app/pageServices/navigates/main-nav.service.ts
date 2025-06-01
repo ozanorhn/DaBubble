@@ -53,7 +53,7 @@ export class MainNavService {
   // }
 
   toggleNav() {
-    this.nav.set(!this.nav);
+    this.nav.set(!this.nav());
     // Verzögerung für Animation
     setTimeout(() => {
       if (this.nav()) this.openNav();
