@@ -109,13 +109,39 @@ export class MainPageComponent {
 
 
 
-
+/* 
   updateIsMobile() {
     this.isMobile = window.innerWidth < 810; // Tailwind "sm" = 640px
     if (!this.isMobile) {
       this.mainNavService.showAltLogo = false;
     }
-  }
+  } */
+
+    updateIsMobile() {
+      const wasMobile = this.isMobile;
+      this.isMobile = window.innerWidth < 810;
+    
+      // Trigger bei Wechsel zu Mobile und wenn workspace-logo sichtbar ist
+      if (this.isMobile && this.mainNavService.showAltLogo) {
+        this.mainNavService.directMessage = false;
+        this.mainNavService.newMessage = true;
+        this.mainNavService.channel = false;
+        this.mainNavService.thread = false;
+      }
+    
+      // Optional: Zustände zurücksetzen bei Desktop
+      if (!this.isMobile && wasMobile) {
+        this.mainNavService.newMessage = false;
+        this.mainNavService.channel = true;
+        this.mainNavService.thread = false;
+      }
+    
+      // Logo-Zustand zurücksetzen auf Desktop
+      if (!this.isMobile) {
+        this.mainNavService.showAltLogo = false;
+      }
+    }
+    
 
 
 }
