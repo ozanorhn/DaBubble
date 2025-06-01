@@ -87,6 +87,7 @@ export class MainPageComponent implements AfterViewInit {
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
+    userService.getCurrentUser()
     effect(() => {
       const showChannel = this.navService.channel();
       const showThread = this.navService.thread();

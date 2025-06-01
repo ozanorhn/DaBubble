@@ -20,6 +20,6 @@
 
   <app-search class="w-[50%] hidden lg:block self-end"></app-search>
 
-  <img src="{{ usersService.storedUser.avatar }}" (click)="overlayService.logoutOvelay()"
+  <img src="{{ usersService.currentUser.avatar }}" (click)="overlayService.logoutOvelay()"
     class="h-16 mt-4 rounded-full cursor-pointer hover:scale-[1.1] duration-150" alt="DaBubble avatar" />
 </div>

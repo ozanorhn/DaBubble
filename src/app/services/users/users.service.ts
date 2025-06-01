@@ -36,7 +36,7 @@ export class UsersService implements OnDestroy {
   }
 
   //ALomQ9jH69QnE7Q7zjnA
-// "gast@user.de"
+  // "gast@user.de"
 
   storedUser = new User();
 
@@ -44,8 +44,19 @@ export class UsersService implements OnDestroy {
     public localStorageS: LocalStorageService
   ) {
     this.storedUser = new User(this.localStorageS.loadObject('currentUser'));
+    let id = setTimeout(() => {
+      this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
+      console.log('################### ', this.currentUser.id);
+
+      clearTimeout(id)
+    }, 100);
     this.initUsersListener();
     this.updateOnlineStatus();
+  }
+
+
+  getCurrentUser() {
+      this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
   }
 
 

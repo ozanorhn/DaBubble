@@ -31,7 +31,8 @@ export class ChannelsService implements OnInit, OnDestroy {
     public userService: UsersService,
     public localStorageS: LocalStorageService
   ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    this.currentUser = userService.currentUser;
     this.channelsCollection = collection(this.firestore, 'channels');
     // this.setupChannelsListener();
   }
