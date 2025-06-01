@@ -16,10 +16,14 @@ import { ThreadMessagesService } from '../../../services/threadMessages/thread-m
 import { Message } from '../../../classes/message.class';
 import { DM } from '../../../interfaces/dm';
 import { EmojiPickerComponent } from "../popUp/emoji-picker/emoji-picker.component";
+import { FilterService } from '../../../pageServices/filters/filter.service';
+import { UserComponent } from "../user/user.component";
+import { User } from '../../../classes/user.class';
+import { Channel } from '../../../classes/channel.class';
 
 @Component({
   selector: 'app-chat-input',
-  imports: [FormsModule, EmojiPickerComponent],
+  imports: [FormsModule, EmojiPickerComponent, UserComponent],
   templateUrl: './chat-input.component.html',
   styleUrls: ['./chat-input.component.scss']
 })
@@ -40,8 +44,9 @@ export class ChatInputComponent implements OnInit {
     public messageService: MessagesService,
     public threadService: ThreadsService,
     public directMessageService: DirectMessagesService,
-    public threadMessagesService: ThreadMessagesService
-  ) {}
+    public threadMessagesService: ThreadMessagesService,
+    public filterService: FilterService
+  ) { }
 
   toggleEmojiPicker() {
     this.showEmojiPiucker = this.showEmojiPiucker === true ? false : true;
@@ -74,25 +79,20 @@ export class ChatInputComponent implements OnInit {
   }
 
 
-  // addEmoji(emoji:string){
-  //   if (this.edit) {
-  //     this.editText = (this.editText || '') + emoji;
-  //     setTimeout(() => this.focusEditInput(), 0);
-  //   } else {
-  //     switch (this.chatType) {
-  //       case 'dm':
-  //         this.directMessageService.newMessage.message += emoji;
-  //         break;
-  //       case 'channel':
-  //         this.messageService.messageInput += emoji;
-  //         break;
-  //       case 'thread':
-  //         this.threadService.threadMessage.message += emoji;
-  //         break;
-  //     }
-  //     setTimeout(() => this.messageInputRef?.nativeElement?.focus(), 0);
-  //   }
+
+  // filterAsUser(item): User{
+
   // }
+
+  isUser(item: any): item is User {
+    return 'name' in item && 'avatar' in item; // Anpassen an Ihre User-Properties
+  }
+
+  isChannel(item: any): item is Channel {
+    return 'name' in item && 'id' in item; // Anpassen an Ihre Channel-Properties
+  }
+
+
 
   sendMessage(): void {
     switch (this.chatType) {
