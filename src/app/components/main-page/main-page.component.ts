@@ -111,7 +111,7 @@ export class MainPageComponent {
 
 
   updateIsMobile() {
-    this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
+    this.isMobile = window.innerWidth < 810; // Tailwind "sm" = 640px
     if (!this.isMobile) {
       this.mainNavService.showAltLogo = false;
     }

@@ -23,6 +23,7 @@ module.exports = {
         xxs: "320px",
         xs: "400px",
         "3xl": "1920px",
+        max810: { max: "809px" },
       },
       backgroundImage: {
         "icon-arrow-back": "url('/assets/icons/arrow_back.svg')",

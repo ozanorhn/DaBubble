@@ -29,7 +29,7 @@ export class HeaderComponent {
     public localStorageS: LocalStorageService,
     public navService: MainNavService,
     public mainNavService: MainNavService,
-    public usersService: UsersService
+    public usersService: UsersService,
   ) {
     // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
@@ -48,7 +48,7 @@ export class HeaderComponent {
   }
 
   updateIsMobile() {
-    this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
+    this.isMobile = window.innerWidth < 810; // Tailwind "sm" = 640px
   }
 
  
