@@ -46,7 +46,17 @@ export class ChatInputComponent implements OnInit {
     public directMessageService: DirectMessagesService,
     public threadMessagesService: ThreadMessagesService,
     public filterService: FilterService
-  ) { }
+  ) {
+    let id = setTimeout(() => {
+      this.focusInput();
+      clearTimeout(id);
+    }, 100);
+  }
+
+
+  focusInput() {
+    this.messageInputRef.nativeElement.focus();
+  }
 
   toggleEmojiPicker() {
     this.showEmojiPiucker = this.showEmojiPiucker === true ? false : true;
@@ -131,7 +141,7 @@ export class ChatInputComponent implements OnInit {
     }
 
     if (!this.edit) {
-      this.messageInputRef.nativeElement.focus();
+      this.focusInput();
     }
   }
 
