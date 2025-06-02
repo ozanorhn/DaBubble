@@ -6,7 +6,8 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  CUSTOM_ELEMENTS_SCHEMA
+  CUSTOM_ELEMENTS_SCHEMA,
+  effect
 } from '@angular/core';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { ThreadsService } from '../../../services/threads/threads.service';
@@ -20,6 +21,7 @@ import { FilterService } from '../../../pageServices/filters/filter.service';
 import { UserComponent } from "../user/user.component";
 import { User } from '../../../classes/user.class';
 import { Channel } from '../../../classes/channel.class';
+import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -45,8 +47,21 @@ export class ChatInputComponent implements OnInit {
     public threadService: ThreadsService,
     public directMessageService: DirectMessagesService,
     public threadMessagesService: ThreadMessagesService,
-    public filterService: FilterService
+    public filterService: FilterService,
+    public navService: MainNavService
   ) {
+    effect(() => {
+      const channelClicked = this.navService.channelClicked();
+      const dmClicked = this.directMessageService.dmClicked();
+      if (navService.channelClicked() || directMessageService.dmClicked()) {
+        navService.channelClicked.set(false);
+        directMessageService.dmClicked.set(false);
+        let id = setTimeout(() => {
+          this.focusInput();
+          clearTimeout(id);
+        }, 100);
+      }
+    });
     let id = setTimeout(() => {
       this.focusInput();
       clearTimeout(id);
