@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy, signal } from '@angular/core';
-import { collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, QueryDocumentSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc } from '@angular/fire/firestore';
+import { collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, query, QueryDocumentSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc, where } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { DirectMessage } from '../../classes/directMessage.class';
@@ -8,6 +8,7 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 import { ThreadsService } from '../threads/threads.service';
 import { ThreadDMsService } from '../threadDMs/thread-dms.service';
 import { MainNavService } from '../../pageServices/navigates/main-nav.service';
+import { DM } from '../../interfaces/dm';
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +21,14 @@ export class DirectMessagesService implements OnDestroy {
   currentDMIndex: number = 0;
   mobile = false;
   dmClicked = signal(false);
+  searchDMs: DirectMessage[] = [];
+  searched = false;
 
   private unsubscribeSnapshot: Unsubscribe | null = null;
+  private unsubscribeSeatchableDMs: Unsubscribe | null = null;
 
   directMessage: DirectMessage = new DirectMessage({
     id: '',
-    participants: {
-      user1: '',
-      user2: ''
-    },
     content: []
   })
 
@@ -51,6 +51,27 @@ export class DirectMessagesService implements OnDestroy {
   ) {
     this.directMessageCollection = collection(this.firestore, 'directMessages');
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+  }
+
+
+  getSearchableDMs() {
+    this.searched = true;
+    this.cleanUpSearchSnapshot();
+    this.searchDMs = [];
+
+    const q = query(
+      this.directMessageCollection,
+      where('participants', 'array-contains', this.usersService.currentUser.id)
+    );
+    console.log('im Query abgefragte Id ', this.usersService.currentUser.id);
+    this.unsubscribeSeatchableDMs = onSnapshot(q, (snapshot) => {
+      this.searchDMs = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as DirectMessage));
+    }, (error) => {
+      console.error('Fehler beim Abrufen der DMs:', error);
+    });
   }
 
 
@@ -78,7 +99,7 @@ export class DirectMessagesService implements OnDestroy {
     await this.checkExistingIds();
     if (this.mobile) {
       this.mainNavService.nav.set(false);
-      this.mainNavService.showAltLogo = false; 
+      this.mainNavService.showAltLogo = false;
     }
     if (!this.docRef) {
       let tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
@@ -105,13 +126,23 @@ export class DirectMessagesService implements OnDestroy {
 
 
   /**
-   * Cleans up Firestore snapshot listener
+   * Cleans up Firestore snapshot listeners
    */
   private cleanupSnapshot(): void {
     if (this.unsubscribeSnapshot) {
       this.unsubscribeSnapshot();
       this.unsubscribeSnapshot = null;
     }
+  }
+
+
+  private cleanUpSearchSnapshot() {
+  if (this.unsubscribeSeatchableDMs) {
+      this.unsubscribeSeatchableDMs();
+      this.unsubscribeSeatchableDMs = null;
+      this.searched = false;
+    }
+    this.searchDMs = [];
   }
 
 
@@ -165,10 +196,7 @@ export class DirectMessagesService implements OnDestroy {
     this.docRef = doc(this.directMessageCollection, tempId);
     await setDoc(this.docRef, {
       id: tempId,
-      participants: {
-        user1: this.currentUser.id,
-        user2: this.otherUser.id
-      },
+      participants: [this.currentUser.id, this.otherUser.id],
       content: []
     });
   }
@@ -212,6 +240,7 @@ export class DirectMessagesService implements OnDestroy {
   */
   ngOnDestroy(): void {
     this.cleanupSnapshot();
+    this.cleanUpSearchSnapshot()
   }
 
 

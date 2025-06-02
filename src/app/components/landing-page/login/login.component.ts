@@ -10,6 +10,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { User } from '../../../classes/user.class';
 import { ChannelsService } from '../../../services/channels/channels.service';
+import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,7 @@ export class LoginComponent {
     public userService: UsersService,
     public authService: AuthService,
     public localStorageS: LocalStorageService,
+    public dmService: DirectMessagesService
     // public channelsService: ChannelsService
   ) {}
 
