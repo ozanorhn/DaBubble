@@ -42,6 +42,8 @@ export class ChatInputComponent implements OnInit {
   editText: string = '';
   showEmojiPicker = false;
 
+  newMessageText = '';
+
   constructor(
     public messageService: MessagesService,
     public threadService: ThreadsService,
@@ -105,10 +107,6 @@ export class ChatInputComponent implements OnInit {
 
 
 
-  // filterAsUser(item): User{
-
-  // }
-
   isUser(item: any): item is User {
     return 'name' in item && 'avatar' in item; // Anpassen an Ihre User-Properties
   }
@@ -165,4 +163,47 @@ export class ChatInputComponent implements OnInit {
       this.messageEditInputRef.nativeElement.focus();
     }
   }
+
+
+
+
+
+  onInput(event: Event) {
+    const input = event.target as HTMLTextAreaElement;
+    const tag = this.filterService.getActiveTag(input.value);
+
+    this.filterService.searchNewTag.set(tag ?? ''); // if null, leere es
+  }
+
+
+  ngAfterViewInit(): void {
+    this.filterService.setTextareaRef(this.messageInputRef);
+  }
+
+
+  insertTag(tag: string) {
+    const textarea = this.messageInputRef.nativeElement;
+    const caretPos = textarea.selectionStart;
+    const textBeforeCursor = this.newMessageText.substring(0, caretPos);
+    const textAfterCursor = this.newMessageText.substring(caretPos);
+    const match = textBeforeCursor.match(/(?:^|\s)([@#][\w-]*)$/);
+    if (!match) return;
+    const tagStartIndex = caretPos - match[1].length;
+    const newTextBefore = textBeforeCursor.substring(0, tagStartIndex);
+    const finalText = `${newTextBefore}${match[1][0]}${tag}${textAfterCursor}`;
+    this.newMessageText = finalText;
+    // Cursor neu setzen
+    setTimeout(() => {
+      textarea.focus();
+      const newCaretPos = (newTextBefore + match[1][0] + tag).length;
+      textarea.setSelectionRange(newCaretPos, newCaretPos);
+    });
+
+    this.filterService.searchNewTag.set('');
+  }
+
+
+
+
+
 }

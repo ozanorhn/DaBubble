@@ -24,19 +24,22 @@
     }
     @case ('new') {
 
-    @if (filterService.searchNewMessage().includes('@') || filterService.searchNewMessage().includes('#')) {
-    <div class="absolute top-[-390px] w-64 border border-black h-96 rounded-[30px] shadow-lg bg-white overflow-auto p-5">
+    @if (filterService.searchNewTag() && (filterService.searchNewTag().startsWith('@') ||
+    filterService.searchNewTag().startsWith('#'))) {
+    <div
+        class="absolute top-[-390px] w-64 border border-black h-96 rounded-[30px] shadow-lg bg-white overflow-auto p-5">
 
         <ul>
             @for (item of filterService.filteredMessageResults(); track $index) {
-                @if (isUser(item)) {
-                    <li><app-user [userInfo]="item" ></app-user></li>
-                }@else if (isChannel(item)) {
-                    <li>{{ item.name }}</li>
-                }
+            @if (isUser(item)) {
+            <li (click)="insertTag(item.name)">
+                <app-user [userInfo]="item"></app-user>
+            </li>
+            } @else if (isChannel(item)) {
+            <li (click)="insertTag(item.name)">
+                #{{ item.name }}
+            </li>
             }
-            @empty {
-            <span>Keine Ergebnisse gefunden</span>
             }
         </ul>
 
@@ -45,8 +48,8 @@
     </div>
     }
 
-    <textarea #messageInput [(ngModel)]="filterService.searchNewMessage" class="flex-1 resize-none focus-visible:outline-none" type="text"
-        placeholder="Antworten...">
+    <textarea #messageInput [(ngModel)]="newMessageText" (input)="onInput($event)"
+        class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
           </textarea>
     }
     }
