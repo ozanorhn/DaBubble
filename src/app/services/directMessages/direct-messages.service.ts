@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, signal } from '@angular/core';
 import { collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, QueryDocumentSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
@@ -19,6 +19,7 @@ export class DirectMessagesService implements OnDestroy {
   directMessageCollection;
   currentDMIndex: number = 0;
   mobile = false;
+  dmClicked = signal(false);
 
   private unsubscribeSnapshot: Unsubscribe | null = null;
 
@@ -70,6 +71,7 @@ export class DirectMessagesService implements OnDestroy {
    * @param {User} otherUser - The user to start conversation with
    */
   async openDMs(otherUser: User) {
+    this.dmClicked.set(true);
     this.cleanupSnapshot();
     this.clearDm();
     this.otherUser = otherUser;
