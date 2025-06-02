@@ -50,8 +50,7 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
   editIndex: number | null = null;
   emojiIndex: number | null = null;
   showEmojiPicker = false;
-
-  // currentEmoji = '';
+  private lastMessageCount = 0;
   @ViewChild('messagesEnd') messagesEndRef!: ElementRef<HTMLDivElement>;
 
 
@@ -78,20 +77,31 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
 
   
   ngAfterViewInit(): void {
-    this.scrollToBottom();
+    this.scrollToBottomInstant();
+    this.lastMessageCount = this.messages?.length || 0;
   }
 
   
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['messages']) {
-      this.scrollToBottom();
+      const currentMessageCount = this.messages?.length || 0;
+      if (currentMessageCount > this.lastMessageCount) {
+        this.scrollToBottomSmooth();
+      }
+      this.lastMessageCount = currentMessageCount;
     }
   }
 
   
-  scrollToBottom(): void {
+  scrollToBottomSmooth(): void {
     setTimeout(() => {
       this.messagesEndRef?.nativeElement?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  }
+
+  scrollToBottomInstant(): void {
+    setTimeout(() => {
+      this.messagesEndRef?.nativeElement?.scrollIntoView({ behavior: 'auto' });
     }, 0);
   }
 
