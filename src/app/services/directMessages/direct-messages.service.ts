@@ -4,11 +4,9 @@ import { Firestore } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { DirectMessage } from '../../classes/directMessage.class';
 import { User } from '../../classes/user.class';
-import { LocalStorageService } from '../localStorage/local-storage.service';
 import { ThreadsService } from '../threads/threads.service';
 import { ThreadDMsService } from '../threadDMs/thread-dms.service';
 import { MainNavService } from '../../pageServices/navigates/main-nav.service';
-import { DM } from '../../interfaces/dm';
 
 @Injectable({
   providedIn: 'root'
@@ -44,13 +42,11 @@ export class DirectMessagesService implements OnDestroy {
   constructor(
     public firestore: Firestore,
     public usersService: UsersService,
-    public localStorageS: LocalStorageService,
     public threadService: ThreadsService,
     public threadDMsService: ThreadDMsService,
     public mainNavService: MainNavService
   ) {
     this.directMessageCollection = collection(this.firestore, 'directMessages');
-    // this.usersService.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
 

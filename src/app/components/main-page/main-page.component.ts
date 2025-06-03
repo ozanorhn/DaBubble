@@ -16,7 +16,6 @@ import { AddUserComponent } from "../shared/popUp/add-user/add-user.component";
 import { ProfileComponent } from "../shared/popUp/profile/profile.component";
 import { LogOutComponent } from "../shared/popUp/log-out/log-out.component";
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
-import { User } from '../../classes/user.class';
 import { MembersComponent } from "../shared/popUp/members/members.component";
 import { AddMembersComponent } from "../shared/popUp/add-members/add-members.component";
 import { LoadingScreenComponent } from '../shared/loading-screen/loading-screen.component';
@@ -90,11 +89,10 @@ export class MainPageComponent implements AfterViewInit {
     private router: Router
   ) {
     if (!userService.currentUser.name || userService.currentUser.name === 'gast') {
+      localStorageS.remove('currentUser');
       this.router.navigate(['/']);
     }
-    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
-    // userService.getCurrentUser()
     effect(() => {
       const showChannel = this.navService.channel();
       const showThread = this.navService.thread();

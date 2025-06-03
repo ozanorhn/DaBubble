@@ -2,7 +2,6 @@ import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
-import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Timestamp } from '@firebase/firestore';
 import { query, where, getDocs } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
@@ -27,17 +26,10 @@ export class UsersService implements OnDestroy {
   }
 
 
-  constructor(
-    public localStorageS: LocalStorageService
-  ) {
+  constructor( ) {
     this.initUsersListener();
     this.updateOnlineStatus();
   }
-
-
-  // getCurrentUser() {
-  //     this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
-  // }
 
 
   private initUsersListener() {
@@ -54,25 +46,44 @@ export class UsersService implements OnDestroy {
   }
 
 
+  // updateOnlineStatus() {
+  //   if (this.currentUser.id !== this.GuestUser.id) {
+  //     const update = async () => {
+  //       // this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
+  //       if (!this.currentUser.id) return;
+  //       const userRef = doc(this.usersCollection, this.currentUser.id);
+  //       try {
+  //         await updateDoc(userRef, {
+  //           online: Timestamp.now()
+  //         });
+  //         console.log('Online-Status aktualisiert:', this.currentUser.id);
+  //       } catch (error) {
+  //         console.error('Fehler beim Aktualisieren des Online-Status:', error);
+  //       }
+  //       setTimeout(update, 15000); // Nächste Aktualisierung in 15 Sekunden
+  //     };
+  //     update(); // Ersten Aufruf starten
+  //   }
+  // }
+
+
   updateOnlineStatus() {
-    if (this.currentUser.id !== this.GuestUser.id) {
-      const update = async () => {
-        // this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
+  if (this.currentUser.id !== this.GuestUser.id) {
+    const update = async () => {
+      try {
         if (!this.currentUser.id) return;
         const userRef = doc(this.usersCollection, this.currentUser.id);
-        try {
-          await updateDoc(userRef, {
-            online: Timestamp.now()
-          });
-          console.log('Online-Status aktualisiert:', this.currentUser.id);
-        } catch (error) {
-          console.error('Fehler beim Aktualisieren des Online-Status:', error);
-        }
-        setTimeout(update, 15000); // Nächste Aktualisierung in 15 Sekunden
-      };
-      update(); // Ersten Aufruf starten
-    }
+        await updateDoc(userRef, { online: Timestamp.now() });
+        console.log('Online-Status aktualisiert:', this.currentUser.id);
+      } catch (error) {
+        console.error('Fehler beim Aktualisieren des Online-Status:', error);
+      } finally {
+        setTimeout(() => update(), 15000); // sicheres rekursives Timeout
+      }
+    };
+    update();
   }
+}
 
 
   isUserOnline(lastOnline: Timestamp | undefined, thresholdSeconds = 20): boolean {

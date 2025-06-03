@@ -5,9 +5,6 @@ import { ChannelsService } from '../../../../services/channels/channels.service'
 import { FormsModule } from '@angular/forms';
 import { FilterService } from '../../../../pageServices/filters/filter.service';
 import { UserComponent } from '../../user/user.component';
-import { Channel } from '../../../../classes/channel.class';
-import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
-import { User } from '../../../../classes/user.class';
 import { UsersService } from '../../../../services/users/users.service';
 
 @Component({
@@ -29,11 +26,8 @@ export class AddUserComponent {
     public overlayService: OverlayService,
     public channelService: ChannelsService,
     public filterService: FilterService,
-    public usersService: UsersService,
-    public localStorageS: LocalStorageService
-  ) {
-    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-  }
+    public usersService: UsersService
+  ) { }
 
 
   selectAllMembers() {

@@ -9,7 +9,6 @@ import { LandingPageService } from '../../pageServices/navigates/landing-nav.ser
 import { SplashScreenComponent } from './splash-screen/splash-screen.component';
 import { RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { LocalStorageService } from '../../services/localStorage/local-storage.service';
 @Component({
   selector: 'app-landing-page',
   standalone: true,
@@ -33,12 +32,8 @@ export class LandingPageComponent {
   constructor(
     public landingService: LandingPageService,
     private route: ActivatedRoute,
-    public landing: LandingPageService,
-    public localStorageS: LocalStorageService
-
-  ) { 
-    // this.localStorageS.clear();
-  }
+    public landing: LandingPageService
+  ) { }
 
   ngOnInit() {
     this.route.url.subscribe(urlSegments => {

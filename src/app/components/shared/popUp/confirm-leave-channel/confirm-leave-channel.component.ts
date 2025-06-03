@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
-import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { ChannelsService } from '../../../../services/channels/channels.service';
-import { User } from '../../../../classes/user.class';
 import { doc, updateDoc } from '@angular/fire/firestore';
 import { UsersService } from '../../../../services/users/users.service';
 
@@ -19,12 +17,9 @@ export class ConfirmLeaveChannelComponent {
 
   constructor(
     public overlayService: OverlayService,
-    public localStorageService: LocalStorageService,
     public channelService: ChannelsService,
     public usersService: UsersService
-  ) {
-    // this.currentUser = this.localStorageService.loadObject<User>('currentUser');
-  }
+  ) { }
 
 
 

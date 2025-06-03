@@ -30,8 +30,6 @@ export class ProfileComponent {
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService
   ) {
-    // const storedUser = this.localStorageS.loadObject('currentUser');
-    // this.currentUser = new User(storedUser);
     this.changeName = this.userService.currentUser.name;
   }
 

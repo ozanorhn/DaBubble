@@ -13,8 +13,6 @@ import { Message } from '../../../classes/message.class';
 import { MessageOptionsComponent } from "../popUp/message-options/message-options.component";
 import { ChatInputComponent } from "../chat-input/chat-input.component";
 import { EmojiPickerComponent } from "../popUp/emoji-picker/emoji-picker.component";
-import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
-import { User } from '../../../classes/user.class';
 
 @Component({
   standalone: true,
@@ -60,20 +58,8 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
     public messageService: MessagesService,
     public userService: UsersService,
     public threadService: ThreadsService,
-    public dmService: DirectMessagesService,
-    public localStorageService: LocalStorageService
+    public dmService: DirectMessagesService
   ) { }
-
-
-  /**
-   * Loads the current user from local storage and assigns it to the user service.
-   */
-  ngOnInit(): void {
-    // this.currentUser = this.localStorageService.loadObject<User>('currentUser');
-    // if (this.currentUser) {
-    //   this.userService.currentUser = this.currentUser;
-    // }
-  }
 
   
   ngAfterViewInit(): void {

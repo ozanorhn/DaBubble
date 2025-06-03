@@ -52,7 +52,7 @@ export class SearchComponent {
       console.log('#','this.messagesService.messages()');
       // console.log('#','this.treads');
       clearTimeout(id);
-    }, 100);
+    }, 200);
   }
 
   // user = new User();

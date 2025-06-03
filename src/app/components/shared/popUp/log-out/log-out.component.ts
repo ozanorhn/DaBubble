@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
-import { User } from '../../../../classes/user.class';
 import { UsersService } from '../../../../services/users/users.service';
 import { DirectMessagesService } from '../../../../services/directMessages/direct-messages.service';
 
@@ -21,10 +20,7 @@ export class LogOutComponent {
     public usersService: UsersService,
     public localStorageS: LocalStorageService,
     public dmService: DirectMessagesService
-  ) {
-    // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
-    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-  }
+  ) { }
 
   logOut() {
     this.dmService.cleanUpSearchSnapshot()
