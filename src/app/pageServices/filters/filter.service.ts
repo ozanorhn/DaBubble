@@ -155,4 +155,30 @@ export class FilterService {
 
 
 
+ searchNewMessageValue = signal('');
+
+
+  filteredNewMessageResults = computed(() => {
+    const searchTerm = this.searchNewMessageValue().toLowerCase();
+    if (searchTerm.startsWith('@')) {
+      return this.filterUsers(searchTerm)
+    }
+    else if (searchTerm.startsWith('#')) {
+      return this.filterChannels(searchTerm)
+    }
+    else {
+      return this.filterAll(searchTerm)
+    }
+  });
+
+
+
+  
+
+
+
+
+
+
+
 }
