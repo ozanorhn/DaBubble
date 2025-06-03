@@ -2,7 +2,6 @@
     <div class="flex justify-between font-bold">
         <span>Channel-Name</span>
 
-
         @if (edit) {
         <button class="text-purple3" (click)="editName()">Speichern</button>
         } @else {
@@ -10,8 +9,11 @@
         <img (click)="editName()" class="sm:hidden cursor-pointer hover:scale-[1.1] duration-150"
             src="/assets/icons/edit.svg" alt="">
         }
-
     </div>
+
+    @if (nameError) {
+        <p class="text-red-500">Ein Channel mit diesem Namen existiert bereits.</p>
+    }
 
     @if (channelService.channels.length > 0) {
         @if(edit){
@@ -21,8 +23,4 @@
             <p># {{channelService.channels[channelService.currentIndex()].name}}</p>
         }
     }
-
-
-
-
 </div>
