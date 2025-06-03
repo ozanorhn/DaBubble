@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
 export class AddChannelComponent {
 
   currentUser;
+  nameError = false;
 
   constructor(
     public overlayService: OverlayService,
@@ -33,16 +34,23 @@ export class AddChannelComponent {
   closeChannelCreationDialog() {
     this.overlayService.addCannelOverlay();
     this.channelService.resetCreateChannel();
+    this.nameError = false;
   }
 
 
   navigateToMemberSelection() {
-    this.overlayService.addCannelOverlay()
-    this.overlayService.addUserOverlay()
+    if (this.channelNameExists()) {
+      this.nameError = true;
+      return;
+    }
+    this.nameError = false;
+    this.overlayService.addCannelOverlay();
+    this.overlayService.addUserOverlay();
   }
 
   channelNameExists(): boolean {
     const name = this.channelService.createChannel.name?.trim().toLowerCase();
+    if (!name) return false;
     return this.channelService.channels.some(channel => channel.name?.trim().toLowerCase() === name);
   }
   
