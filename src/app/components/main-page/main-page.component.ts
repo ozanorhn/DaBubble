@@ -139,12 +139,28 @@ export class MainPageComponent implements AfterViewInit {
 
 
 
-  updateIsMobile() {
+/*   updateIsMobile() {
     this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
     if (!this.isMobile) {
       this.mainNavService.showAltLogo = false;
     }
-  }
+  } */
+
+
+    updateIsMobile() {
+      const wasMobile = this.isMobile;
+      this.isMobile = window.innerWidth < 810;
+  
+      if (!this.isMobile && wasMobile) {
+        this.mainNavService.newMessage = false;
+        this.mainNavService.channel.set(true);
+        this.mainNavService.thread.set(false);
+      }
+    
+      if (!this.isMobile) {
+        this.mainNavService.showAltLogo = false;
+      }
+    }
 
 
 }
