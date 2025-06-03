@@ -3,21 +3,27 @@
   <img id="logo" src="assets/imgs/logo.svg" alt="DaBubble Logo" class="hidden h-16 mt-4 md:block" />
 
   <div 
-    class="flex items-center gap-2 cursor-pointer md:hidden"
-    (click)="!mainNavService.showAltLogo && switchLogo()"
-    [class.cursor-pointer]="!mainNavService.showAltLogo">
-    @if (navService.showChannel()) {
-      <img src="/assets/icons/keyboard_arrow_down.svg" alt="" />
-    }
-    <img [src]="
-          mainNavService.showAltLogo
-            ? 'assets/imgs/logo.svg'
-            : '/assets/imgs/workspace-logo.svg'
-        " alt="" />
-    @if (!mainNavService.showAltLogo) {
+  class="flex items-center gap-2 cursor-pointer md:hidden "
+  (click)="!mainNavService.showAltLogo && switchLogo()"
+  [class.cursor-pointer]="!mainNavService.showAltLogo">
+
+  @if (navService.showChannel() && !mainNavService.showAltLogo) {
+    <img src="/assets/icons/keyboard_arrow_down.svg" alt="Arrow Down" />
+  }
+
+  <img [src]="
+        mainNavService.showAltLogo
+          ? 'assets/imgs/logo.svg'
+          : '/assets/imgs/workspace-logo.svg'
+      " alt="Workspace Logo" 
+      [ngClass]="{
+        'hover:scale-[1.1] active:scale-[0.9] duration-150': !mainNavService.showAltLogo
+      }"/>
+
+  @if (!mainNavService.showAltLogo) {
     <p class="text-xl font-bold">DevSpace</p>
-    }
-  </div>
+  }
+</div>
 
   <app-search class="w-[50%] hidden lg:block self-end"></app-search>
 

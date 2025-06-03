@@ -149,7 +149,7 @@ export class MainPageComponent implements AfterViewInit {
 
     updateIsMobile() {
       const wasMobile = this.isMobile;
-      this.isMobile = window.innerWidth < 810;
+      this.isMobile = window.innerWidth < 1024;
   
       if (!this.isMobile && wasMobile) {
         this.mainNavService.newMessage = false;
