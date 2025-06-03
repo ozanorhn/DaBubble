@@ -3,6 +3,7 @@ import { UsersService } from '../../services/users/users.service';
 import { ChannelsService } from '../../services/channels/channels.service';
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
 import { User } from '../../classes/user.class';
+import { Channel } from '../../classes/channel.class';
 
 @Injectable({
   providedIn: 'root'
@@ -84,50 +85,18 @@ export class FilterService {
   }
 
 
-
-
-
-
-  // filteredMessageResults = computed(() => {
-  //   const searchTerm = this.searchNewTag().toLowerCase();
-  //   if (searchTerm.startsWith('@')) {
-  //     return this.filterUsers(searchTerm)
-  //   }
-  //   else if (searchTerm.startsWith('#')) {
-  //     return this.filterChannels(searchTerm)
-  //   }
-  //   else {
-  //     return this.filterAll(searchTerm)
-  //   }
-  // });
-
   filteredMessageResults = computed(() => {
     const tag = this.searchNewTag().toLowerCase();
     if (!tag) return [];
 
     if (tag.startsWith('@')) {
-      return this.filterMessageUsers(tag);
+      return this.filterUsers(tag);
     } else if (tag.startsWith('#')) {
-      return this.filterMessageChannels(tag);
+      return this.filterChannels(tag);
     }
     return [];
   });
 
-
-  filterMessageUsers(searchTerm: string) {
-    const userSearch = searchTerm.substring(1);
-    return this.users.users.filter(user =>
-      user.name.toLowerCase().includes(userSearch)
-    )
-  }
-
-
-  filterMessageChannels(searchTerm: string) {
-    const channelSearch = searchTerm.substring(1);
-    return this.channels.channels.filter(channel =>
-      channel.name.toLowerCase().includes(channelSearch)
-    )
-  }
 
 
   getActiveTag(text: string): string | null {
@@ -155,25 +124,78 @@ export class FilterService {
 
 
 
- searchNewMessageValue = signal('');
 
 
-  filteredNewMessageResults = computed(() => {
-    const searchTerm = this.searchNewMessageValue().toLowerCase();
-    if (searchTerm.startsWith('@')) {
-      return this.filterUsers(searchTerm)
+  newMessageChannels: Channel[] = [];
+  newMessagePersons: User[] = [];
+
+  searchNewMessageValue = signal('');
+
+  // filteredNewMessageResults = computed(() => {
+  //   const searchTerm = this.searchNewMessageValue().toLowerCase();
+  //   if (searchTerm.startsWith('@')) {
+  //     return this.filterUsers(searchTerm)
+  //   }
+  //   else if (searchTerm.startsWith('#')) {
+  //     return this.filterChannels(searchTerm)
+  //   }
+  //   else {
+  //     return this.filterAll(searchTerm)
+  //   }
+  // });
+
+    isUser(item: any): item is User {
+    return 'name' in item && 'avatar' in item; // Anpassen an Ihre User-Properties
+  }
+
+  isChannel(item: any): item is Channel {
+    return 'name' in item && 'id' in item; // Anpassen an Ihre Channel-Properties
+  }
+
+
+
+  addToSelection(item: User | Channel) {
+  if (this.isUser(item)) {
+    if (!this.newMessagePersons.some(u => u.id === item.id)) {
+      this.newMessagePersons.push(item);
     }
-    else if (searchTerm.startsWith('#')) {
-      return this.filterChannels(searchTerm)
+  } else if (this.isChannel(item)) {
+    if (!this.newMessageChannels.some(c => c.id === item.id)) {
+      this.newMessageChannels.push(item);
     }
-    else {
-      return this.filterAll(searchTerm)
-    }
-  });
+  }
+}
 
+removeFromSelection(item: User | Channel) {
+  if (this.isUser(item)) {
+    this.newMessagePersons = this.newMessagePersons.filter(u => u.id !== item.id);
+  } else {
+    this.newMessageChannels = this.newMessageChannels.filter(c => c.id !== item.id);
+  }
+}
 
-
+filteredNewMessageResults = computed(() => {
+  const searchTerm = this.searchNewMessageValue().toLowerCase();
+  let results: (User | Channel)[] = [];
   
+  if (searchTerm.startsWith('@')) {
+    results = this.filterUsers(searchTerm);
+  } else if (searchTerm.startsWith('#')) {
+    results = this.filterChannels(searchTerm);
+  } else {
+    results = this.filterAll(searchTerm);
+  }
+
+  // Filter out already selected items
+  return results.filter(item => 
+    !this.newMessagePersons.some(u => u.id === item.id) &&
+    !this.newMessageChannels.some(c => c.id === item.id)
+  );
+});
+
+
+
+
 
 
 
