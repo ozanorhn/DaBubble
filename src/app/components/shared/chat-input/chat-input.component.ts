@@ -6,7 +6,6 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  CUSTOM_ELEMENTS_SCHEMA,
   effect
 } from '@angular/core';
 import { MessagesService } from '../../../services/messages/messages.service';
@@ -22,6 +21,9 @@ import { UserComponent } from "../user/user.component";
 import { User } from '../../../classes/user.class';
 import { Channel } from '../../../classes/channel.class';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { Timestamp } from '@angular/fire/firestore';
+import { addDoc } from '@firebase/firestore';
 
 @Component({
   selector: 'app-chat-input',
@@ -43,6 +45,7 @@ export class ChatInputComponent implements OnInit {
   showEmojiPicker = false;
 
   newMessageText = '';
+  currentUser;
 
   constructor(
     public messageService: MessagesService,
@@ -50,7 +53,8 @@ export class ChatInputComponent implements OnInit {
     public directMessageService: DirectMessagesService,
     public threadMessagesService: ThreadMessagesService,
     public filterService: FilterService,
-    public navService: MainNavService
+    public navService: MainNavService,
+    public localStorageS: LocalStorageService
   ) {
     effect(() => {
       const channelClicked = this.navService.channelClicked();
@@ -68,6 +72,9 @@ export class ChatInputComponent implements OnInit {
       this.focusInput();
       clearTimeout(id);
     }, 100);
+
+
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
 
@@ -149,7 +156,16 @@ export class ChatInputComponent implements OnInit {
         }
         break;
       case 'new':
-        console.log('Funktion zum Senden einer neuen Nachricht einfügen :P');
+        console.log('Message', this.newMessageText);
+
+        this.filterService.newMessageChannels.forEach(channel => {
+          this.sendNewMessages(this.newMessageText, channel)
+        });
+
+
+        // this.newMessageText = '';
+        this.filterService.newMessageChannels = [];
+        this.filterService.newMessagePersons = [];
         break;
     }
 
@@ -165,8 +181,22 @@ export class ChatInputComponent implements OnInit {
   }
 
 
+  async sendNewMessages(messageInput: string, channel: Channel) {
+  const newMessage = new Message(); // Erstelle eine neue Message-Instanz
+  if (this.currentUser.id) newMessage.sender = this.currentUser.id;
+  newMessage.timestamp = Timestamp.now();
+  newMessage.message = messageInput;
+  newMessage.channelId = channel.id; // Direkt auf die id-Eigenschaft zugreifen
+  
+  try {
+    await addDoc(this.messageService.messageCollection, newMessage.toJSON());
+    this.newMessageText = '';
+  } catch (error) {
+    console.error('Error adding message', error);
+  }
+}
 
-
+  
 
   onInput(event: Event) {
     const input = event.target as HTMLTextAreaElement;
