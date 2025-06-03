@@ -3,8 +3,9 @@
   <img id="logo" src="assets/imgs/logo.svg" alt="DaBubble Logo" class="hidden h-16 mt-4 md:block" />
 
   <div 
-    (click)="switchLogo()"
-    class="flex items-center gap-2 cursor-pointer md:hidden">
+    class="flex items-center gap-2 cursor-pointer md:hidden"
+    (click)="!mainNavService.showAltLogo && switchLogo()"
+    [class.cursor-pointer]="!mainNavService.showAltLogo">
     @if (navService.showChannel()) {
       <img src="/assets/icons/keyboard_arrow_down.svg" alt="" />
     }
