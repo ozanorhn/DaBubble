@@ -6,7 +6,7 @@ import { OverlayService } from '../../../../pageServices/overlays/overlay.servic
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { User } from '../../../../classes/user.class';
 import { FormsModule } from '@angular/forms';
-import { doc, updateDoc } from '@firebase/firestore';
+import { doc, Timestamp, updateDoc } from '@firebase/firestore';
 @Component({
   selector: 'app-profile',
   imports: [
@@ -39,10 +39,11 @@ export class ProfileComponent {
       console.error('No user ID available');
       return;
     }
-    const profileData = this.userService.currentUser.toJSON();
+    const profileData = new User(this.userService.currentUser).toJSON();
     profileData.name = this.changeName;
     profileData.avatar = this.overlayService.profileObj.avatar; 
     profileData.password = ''
+    profileData.online = Timestamp.now();
     console.log(profileData);
 
     try {

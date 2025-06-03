@@ -38,8 +38,8 @@
                         <span class="text-lg font-bold">{{ userService.getUserById2(message.sender)?.name }}</span>
                         <span class="text-sm">{{ messageService.formatTime(message.timestamp) }}</span>
                     </div>
-                    <div class="flex msg-content" id="msg-content"
-                        class="bg-primary p-[15px] rounded-[30px] max-w-full"
+                    <div id="msg-content"
+                        class="bg-primary p-[15px] rounded-[30px] max-w-full flex"
                         [ngClass]="{ 'bg-purple2 text-white rounded-se-none rounded-ss-[30px]':userService.fromCurrentUser(message.sender), ' rounded-ss-none': !userService.fromCurrentUser(message.sender) }">
                         @if (editIndex !== i) {
                             <span class="max-w-full">{{ message.message }}</span>

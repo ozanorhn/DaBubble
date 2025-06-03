@@ -46,26 +46,26 @@ export class LoginComponent {
     }
     try {
       const user = await this.authService.login(this.email, this.password);
-  
+
       // ✅ Warte, bis Users und Channel aus Firestore geladen wurden
       await Promise.all([
         this.userService.waitUntilUsersLoaded(),
         // this.channelsService.waitUntilChannelsLoaded(),
         // this.channelsService.setupChannelsListener()
       ]);
-      
-  
+
+
       const profile = this.userService.getUserByEmail(user.email || '');
-  
-      if (!profile) {
-        this.error = 'Benutzerprofil konnte nicht gefunden werden.';
+
+      if (!profile || !profile.id) {
+        this.error = 'Benutzerprofil konnte nicht gefunden werden oder ist unvollständig.';
         return;
       }
-  
+
       this.userService.currentUser = profile;
       this.localStorageS.saveObject('currentUser', profile);
       this.router.navigate(['/main']);
-  
+
     } catch (error: any) {
       if (error instanceof FirebaseError) {
         this.error = this.getErrorMessage(error.code);
@@ -77,7 +77,7 @@ export class LoginComponent {
       }, 5000);
     }
   }
-  
+
 
   async googleLogin() {
     try {
