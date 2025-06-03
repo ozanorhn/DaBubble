@@ -35,7 +35,9 @@ export class LoginComponent {
     public localStorageS: LocalStorageService,
     public dmService: DirectMessagesService
     // public channelsService: ChannelsService
-  ) {}
+  ) {
+    // authService.getCurrentUser();
+  }
 
   async login(gast = false) {
     if (gast) {

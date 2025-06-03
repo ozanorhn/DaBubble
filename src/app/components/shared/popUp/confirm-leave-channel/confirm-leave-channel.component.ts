@@ -4,6 +4,7 @@ import { LocalStorageService } from '../../../../services/localStorage/local-sto
 import { ChannelsService } from '../../../../services/channels/channels.service';
 import { User } from '../../../../classes/user.class';
 import { doc, updateDoc } from '@angular/fire/firestore';
+import { UsersService } from '../../../../services/users/users.service';
 
 @Component({
   selector: 'app-confirm-leave-channel',
@@ -14,14 +15,15 @@ import { doc, updateDoc } from '@angular/fire/firestore';
 export class ConfirmLeaveChannelComponent {
 
 
-  currentUser;
+  // currentUser;
 
   constructor(
     public overlayService: OverlayService,
     public localStorageService: LocalStorageService,
     public channelService: ChannelsService,
+    public usersService: UsersService
   ) {
-    this.currentUser = this.localStorageService.loadObject<User>('currentUser');
+    // this.currentUser = this.localStorageService.loadObject<User>('currentUser');
   }
 
 
@@ -30,7 +32,7 @@ export class ConfirmLeaveChannelComponent {
 
   async leaveChannel() {
     let currentChannel = this.channelService.channels[this.channelService.currentIndex()]
-    let idToRemove = this.currentUser?.id
+    let idToRemove = this.usersService.currentUser.id
     const updatedIds = currentChannel.members.filter(id => id !== idToRemove);
     console.log(updatedIds);
 

@@ -26,7 +26,8 @@ registerLocaleData(localeDe);
 export class MessagesService implements OnDestroy {
   messageInput = '';
   messageCollection;
-  Message: [] = [];
+  // Message: [] = [];
+  searchableMessages: Message[] = [];
   messages = signal<Message[]>([]);
   members: [] = [];
   lastDate: Date = new Date();
@@ -59,6 +60,11 @@ export class MessagesService implements OnDestroy {
     this.messageCollection = collection(this.firestore, 'messages');
     this.channelService.currentIndex();
     this.date.setDate(this.date.getDate() - 1);
+  }
+
+
+  getSearchableMessages() {
+    
   }
 
 

@@ -4,19 +4,34 @@ import { addDoc, doc, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
 import { LocalStorageService } from '../localStorage/local-storage.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUser: User | null = null;
+  // private currentUser: User | null = null;
   private auth = inject(Auth);
 
 
   constructor(
-    private readonly userService: UsersService,
-    private readonly localStorageService: LocalStorageService,
-  ) { }
+    public userService: UsersService,
+    public localStorageService: LocalStorageService,
+    private router: Router
+  ) {
+    this.getCurrentUser();
+  }
+
+
+  getCurrentUser() {
+    let currentUser = new User(this.localStorageService.loadObject('currentUser'))
+    if (currentUser.id && currentUser.name !== 'Gast') {
+      console.log('Eingeloggt als: ', currentUser);
+      
+      this.userService.currentUser = currentUser;
+      this.router.navigate(['/main']);
+    }
+  }
 
 
   async googleLogin() {

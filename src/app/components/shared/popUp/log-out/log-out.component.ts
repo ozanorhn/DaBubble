@@ -3,6 +3,8 @@ import { RouterLink } from '@angular/router';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { User } from '../../../../classes/user.class';
+import { UsersService } from '../../../../services/users/users.service';
+import { DirectMessagesService } from '../../../../services/directMessages/direct-messages.service';
 
 @Component({
   selector: 'app-log-out',
@@ -12,14 +14,19 @@ import { User } from '../../../../classes/user.class';
 })
 export class LogOutComponent {
 
-  currentUser
+  // currentUser
 
   constructor(
     public overlayService: OverlayService,
-    public localStorageS: LocalStorageService
+    public usersService: UsersService,
+    public localStorageS: LocalStorageService,
+    public dmService: DirectMessagesService
   ) {
     // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
+  logOut() {
+    this.dmService.cleanUpSearchSnapshot()
+  }
 }

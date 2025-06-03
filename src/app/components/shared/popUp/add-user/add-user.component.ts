@@ -8,6 +8,7 @@ import { UserComponent } from '../../user/user.component';
 import { Channel } from '../../../../classes/channel.class';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { User } from '../../../../classes/user.class';
+import { UsersService } from '../../../../services/users/users.service';
 
 @Component({
   selector: 'app-add-user',
@@ -21,16 +22,17 @@ import { User } from '../../../../classes/user.class';
 })
 export class AddUserComponent {
 
-  currentUser;
+  // currentUser;
   choiceInput = false
 
   constructor(
     public overlayService: OverlayService,
     public channelService: ChannelsService,
     public filterService: FilterService,
+    public usersService: UsersService,
     public localStorageS: LocalStorageService
   ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
 
@@ -55,7 +57,7 @@ export class AddUserComponent {
       choiceUser.checked = true;
       this.choiceInput = true;
       this.channelService.choiceMembers.set(true);
-      this.channelService.createChannel.members = [this.currentUser.id];
+      this.channelService.createChannel.members = [this.usersService.currentUser.id];
     }
   }
 

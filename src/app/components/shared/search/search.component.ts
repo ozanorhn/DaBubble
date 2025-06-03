@@ -50,6 +50,7 @@ export class SearchComponent {
       console.log('# channels ',this.channelsService.channels);
       console.log('# DMs ',this.dmService.searchDMs);
       console.log('#','this.messagesService.messages()');
+      // console.log('#','this.treads');
       clearTimeout(id);
     }, 100);
   }

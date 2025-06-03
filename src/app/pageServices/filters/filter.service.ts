@@ -9,7 +9,7 @@ import { User } from '../../classes/user.class';
 })
 export class FilterService {
 
-  currentUser;
+  // currentUser;
   // isChatInputActive = signal(false);
   users = inject(UsersService);
   channels = inject(ChannelsService);
@@ -21,7 +21,7 @@ export class FilterService {
 
 
   constructor(private localStorageS: LocalStorageService) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
 
@@ -79,7 +79,7 @@ export class FilterService {
   filterMembers(searchMembers: string) {
     return this.users.users.filter(user =>
       user.name.toLowerCase().includes(searchMembers) &&
-      user.id !== this.currentUser.id // CurrentUser ausschließen
+      user.id !== this.users.currentUser.id // CurrentUser ausschließen
     );
   }
 

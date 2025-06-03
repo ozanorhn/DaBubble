@@ -17,7 +17,7 @@ import { UsersService } from '../../../services/users/users.service';
 })
 export class UserComponent implements OnInit {
 
-  currentUser
+  // currentUser
 
   constructor(
     public channelService: ChannelsService,
@@ -25,7 +25,7 @@ export class UserComponent implements OnInit {
     public mainNavService: MainNavService,
     public userService: UsersService
   ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
   timeChecker = Timestamp.now();

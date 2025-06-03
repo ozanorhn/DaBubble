@@ -39,7 +39,7 @@ import { User } from '../../../classes/user.class';
 
 export class ChatMessagesComponent implements AfterViewInit, OnChanges {
 
-  currentUser: User | null = null;
+  // currentUser: User | null = null;
   lastMessageDate: Date | null = null;
   newDay = true;
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
@@ -69,10 +69,10 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
    * Loads the current user from local storage and assigns it to the user service.
    */
   ngOnInit(): void {
-    this.currentUser = this.localStorageService.loadObject<User>('currentUser');
-    if (this.currentUser) {
-      this.userService.currentUser = this.currentUser;
-    }
+    // this.currentUser = this.localStorageService.loadObject<User>('currentUser');
+    // if (this.currentUser) {
+    //   this.userService.currentUser = this.currentUser;
+    // }
   }
 
   

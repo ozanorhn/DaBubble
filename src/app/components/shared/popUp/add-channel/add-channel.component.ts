@@ -19,14 +19,14 @@ import { CommonModule } from '@angular/common';
 })
 export class AddChannelComponent {
 
-  currentUser;
+  // currentUser;
 
   constructor(
     public overlayService: OverlayService,
     public channelService: ChannelsService,
     public localStorageS: LocalStorageService
   ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
 

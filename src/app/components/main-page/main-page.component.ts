@@ -24,6 +24,8 @@ import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-chan
 import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.component";
 import { UsersService } from '../../services/users/users.service';
 import { DevspaceBtnComponent } from '../shared/devspace-btn/devspace-btn.component';
+import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -54,7 +56,7 @@ import { DevspaceBtnComponent } from '../shared/devspace-btn/devspace-btn.compon
 })
 export class MainPageComponent implements AfterViewInit {
   showMessagesOnly = false;
-  currentUser
+  // currentUser
   isMobile = false;
 
   @ViewChild('channel') channelRef?: ElementRef;
@@ -83,11 +85,16 @@ export class MainPageComponent implements AfterViewInit {
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService,
     public navService: MainNavService,
-    public userService: UsersService
+    public userService: UsersService,
+    public authService: AuthService,
+    private router: Router
   ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    if (!userService.currentUser.name || userService.currentUser.name === 'gast') {
+      this.router.navigate(['/']);
+    }
+    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile();
-    userService.getCurrentUser()
+    // userService.getCurrentUser()
     effect(() => {
       const showChannel = this.navService.channel();
       const showThread = this.navService.thread();

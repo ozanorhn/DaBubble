@@ -17,7 +17,7 @@ export class ChannelsService implements OnInit, OnDestroy {
   choiceMembers = signal(false);
   loading = true;
   private unsubscribe!: () => void;
-  currentUser;
+  // currentUser;
   createChannel = new Channel();
 
 
@@ -32,7 +32,7 @@ export class ChannelsService implements OnInit, OnDestroy {
     public localStorageS: LocalStorageService
   ) {
     // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-    this.currentUser = userService.currentUser;
+    // this.currentUser = userService.currentUser;
     this.channelsCollection = collection(this.firestore, 'channels');
     // this.setupChannelsListener();
   }
@@ -45,14 +45,14 @@ export class ChannelsService implements OnInit, OnDestroy {
 
   resetCreateChannel() {
     this.createChannel = new Channel({
-      createdBy: this.currentUser.id,
-      members: [this.currentUser.id] // Immer den aktuellen User als Mitglied hinzufügen
+      createdBy: this.userService.currentUser.id,
+      members: [this.userService.currentUser.id] // Immer den aktuellen User als Mitglied hinzufügen
     });
   }
 
 
   isCurrentUserMember(channel: Channel): boolean {
-    return channel.members.includes(this.currentUser.id);
+    return channel.members.includes(this.userService.currentUser.id);
   }
 
 
@@ -85,13 +85,13 @@ export class ChannelsService implements OnInit, OnDestroy {
 
 
   async addChannel() {
-  if (!this.createChannel.members.includes(this.currentUser.id)) {
-    this.createChannel.members.push(this.currentUser.id);
+  if (!this.createChannel.members.includes(this.userService.currentUser.id)) {
+    this.createChannel.members.push(this.userService.currentUser.id);
   }
   
   if (!this.choiceMembers()) {
     const allUserIds = this.userService.users.map(user => user.id);
-    this.createChannel.members = [...new Set([...allUserIds, this.currentUser.id])];
+    this.createChannel.members = [...new Set([...allUserIds, this.userService.currentUser.id])];
   }
 
   try {

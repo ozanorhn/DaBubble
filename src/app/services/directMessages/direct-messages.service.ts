@@ -16,7 +16,7 @@ import { DM } from '../../interfaces/dm';
 export class DirectMessagesService implements OnDestroy {
   otherUser: User = new User();
   docRef: DocumentReference<DocumentData, DocumentData> | undefined;
-  currentUser;
+  // currentUser;
   directMessageCollection;
   currentDMIndex: number = 0;
   mobile = false;
@@ -50,7 +50,7 @@ export class DirectMessagesService implements OnDestroy {
     public mainNavService: MainNavService
   ) {
     this.directMessageCollection = collection(this.firestore, 'directMessages');
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    // this.usersService.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
 
@@ -102,7 +102,7 @@ export class DirectMessagesService implements OnDestroy {
       this.mainNavService.showAltLogo = false;
     }
     if (!this.docRef) {
-      let tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
+      let tempId = this.getDirectMessageId(this.otherUser.id, this.usersService.currentUser.id);
       this.docRef = doc(this.directMessageCollection, tempId);
     }
     this.setupRealtimeListener();
@@ -136,7 +136,7 @@ export class DirectMessagesService implements OnDestroy {
   }
 
 
-  private cleanUpSearchSnapshot() {
+  public cleanUpSearchSnapshot() {
   if (this.unsubscribeSeatchableDMs) {
       this.unsubscribeSeatchableDMs();
       this.unsubscribeSeatchableDMs = null;
@@ -171,8 +171,10 @@ export class DirectMessagesService implements OnDestroy {
    * Checks for existing DM conversations between current and other user
    */
   async checkExistingIds() {
-    const dmIdUser1First = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
-    const dmIdUser2First = this.getDirectMessageId(this.currentUser.id, this.otherUser.id);
+    console.log('checkExistingIds', this.otherUser.id, ' und ', this.usersService.currentUser.id);
+    
+    const dmIdUser1First = this.getDirectMessageId(this.otherUser.id, this.usersService.currentUser.id);
+    const dmIdUser2First = this.getDirectMessageId(this.usersService.currentUser.id, this.otherUser.id);
     const dmDocRefUser1First = doc(this.directMessageCollection, dmIdUser1First);
     const dmDocRefUser2First = doc(this.directMessageCollection, dmIdUser2First);
     const user1FirstDoc = await getDoc(dmDocRefUser1First);
@@ -191,12 +193,12 @@ export class DirectMessagesService implements OnDestroy {
    * Creates a new Firestore document for a direct message conversation.
    */
   async createDocRef() {
-    const tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
+    const tempId = this.getDirectMessageId(this.otherUser.id, this.usersService.currentUser.id);
     this.directMessage.id = tempId;
     this.docRef = doc(this.directMessageCollection, tempId);
     await setDoc(this.docRef, {
       id: tempId,
-      participants: [this.currentUser.id, this.otherUser.id],
+      participants: [this.usersService.currentUser.id, this.otherUser.id],
       content: []
     });
   }
@@ -223,7 +225,7 @@ export class DirectMessagesService implements OnDestroy {
    */
   async sendDirectMessage(): Promise<void> {
     this.newMessage.timestamp = Timestamp.now();
-    this.newMessage.sender = this.currentUser.id;
+    this.newMessage.sender = this.usersService.currentUser.id;
     if (this.docRef) {
       await setDoc(
         this.docRef,
@@ -240,7 +242,7 @@ export class DirectMessagesService implements OnDestroy {
   */
   ngOnDestroy(): void {
     this.cleanupSnapshot();
-    this.cleanUpSearchSnapshot()
+    this.cleanUpSearchSnapshot();
   }
 
 

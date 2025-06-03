@@ -20,7 +20,7 @@ import { UsersService } from '../../../services/users/users.service';
   styleUrls: ['./header.component.scss'],  // Korrektes Property: styleUrls
 })
 export class HeaderComponent {
-  currentUser
+  // currentUser
  
   isMobile = false;
 
@@ -32,7 +32,7 @@ export class HeaderComponent {
     public usersService: UsersService
   ) {
     // console.log('LocalStorage User', this.localStorageS.loadObject('currentUser'));
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
     this.updateIsMobile(); 
   }
   ngOnInit() {

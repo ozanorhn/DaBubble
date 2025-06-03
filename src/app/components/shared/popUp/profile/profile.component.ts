@@ -21,7 +21,7 @@ export class ProfileComponent {
 
   editProfil = false;
   usersProfil = false;
-  currentUser
+  // currentUser
   changeName = '';
   avatars = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -30,18 +30,18 @@ export class ProfileComponent {
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService
   ) {
-    const storedUser = this.localStorageS.loadObject('currentUser');
-    this.currentUser = new User(storedUser);
-    this.changeName = this.currentUser.name;
+    // const storedUser = this.localStorageS.loadObject('currentUser');
+    // this.currentUser = new User(storedUser);
+    this.changeName = this.userService.currentUser.name;
   }
 
 
   async editProfile() {
-    if (!this.currentUser?.id) {
+    if (!this.userService.currentUser?.id) {
       console.error('No user ID available');
       return;
     }
-    const profileData = this.currentUser.toJSON();
+    const profileData = this.userService.currentUser.toJSON();
     profileData.name = this.changeName;
     profileData.avatar = this.overlayService.profileObj.avatar; 
     profileData.password = ''
@@ -49,11 +49,11 @@ export class ProfileComponent {
 
     try {
       await updateDoc(
-        doc(this.userService.usersCollection, this.currentUser.id),
+        doc(this.userService.usersCollection, this.userService.currentUser.id),
         profileData
       );
       this.localStorageS.saveObject('currentUser', profileData);
-      this.currentUser = new User(profileData);
+      this.userService.currentUser = new User(profileData);
       this.overlayService.profileOverlay(true, profileData);
     } catch (error) {
       console.error('Error updating profile:', error);

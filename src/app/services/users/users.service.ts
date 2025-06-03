@@ -35,9 +35,9 @@ export class UsersService implements OnDestroy {
   }
 
 
-  getCurrentUser() {
-      this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
-  }
+  // getCurrentUser() {
+  //     this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
+  // }
 
 
   private initUsersListener() {
@@ -57,7 +57,7 @@ export class UsersService implements OnDestroy {
   updateOnlineStatus() {
     if (this.currentUser.id !== this.GuestUser.id) {
       const update = async () => {
-        this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
+        // this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
         if (!this.currentUser.id) return;
         const userRef = doc(this.usersCollection, this.currentUser.id);
         try {
