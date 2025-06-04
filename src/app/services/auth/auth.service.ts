@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User as FirebaseUser } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User as FirebaseUser, sendEmailVerification } from '@angular/fire/auth';
 import { addDoc, doc, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
@@ -53,6 +53,11 @@ export class AuthService {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       const firebaseUser = userCredential.user;
+
+       // Bestätigungsmail senden
+       await sendEmailVerification(firebaseUser);
+
+
       const user = new User(this.userService.tempUser);
       user.email = firebaseUser.email || '';
       user.avatar = user.avatar || '/assets/imgs/avatar1.svg';
