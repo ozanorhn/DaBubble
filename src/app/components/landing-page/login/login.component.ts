@@ -10,6 +10,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { User } from '../../../classes/user.class';
 import { ChannelsService } from '../../../services/channels/channels.service';
+import { Auth, sendEmailVerification, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,26 @@ export class LoginComponent {
     public authService: AuthService,
     public localStorageS: LocalStorageService,
     // public channelsService: ChannelsService
+    private auth: Auth,
   ) {}
+
+
+  getErrorMessage(code: string): string {
+    switch (code) {
+      case 'auth/user-not-found':
+        return 'Benutzer nicht gefunden!';
+      case 'auth/wrong-password':
+        return 'Falsches Passwort!';
+      case 'auth/invalid-email':
+        return 'Ungültiges E-Mail-Format!';
+      case 'auth/invalid-credential':
+        return 'E-Mail oder Passwort ist falsch.';
+      case 'auth/email-not-verified':
+        return 'Bitte bestätige deine E-Mail-Adresse über den Link, den wir dir gesendet haben.';
+      default:
+        return 'Unbekannter Fehler, bitte versuche es später erneut.';
+    }
+  }
 
   async login(gast = false) {
     if (gast) {
@@ -43,7 +63,7 @@ export class LoginComponent {
     try {
       const user = await this.authService.login(this.email, this.password);
   
-      // ✅ Warte, bis Users und Channel aus Firestore geladen wurden
+      // Warte, bis Users und Channel aus Firestore geladen wurden
       await Promise.all([
         this.userService.waitUntilUsersLoaded(),
         // this.channelsService.waitUntilChannelsLoaded(),
@@ -65,9 +85,12 @@ export class LoginComponent {
     } catch (error: any) {
       if (error instanceof FirebaseError) {
         this.error = this.getErrorMessage(error.code);
+      } else if (error.code === 'auth/email-not-verified') {
+        this.error = error.message;
       } else {
-        this.error = 'Unbekannter Fehler beim Login.';
+        this.error = error.message || 'Unbekannter Fehler beim Login.';
       }
+    
       setTimeout(() => {
         this.error = '';
       }, 5000);
@@ -85,20 +108,8 @@ export class LoginComponent {
     }
   }
 
-  getErrorMessage(code: string): string {
-    switch (code) {
-      case 'auth/user-not-found':
-        return 'Benutzer nicht gefunden!';
-      case 'auth/wrong-password':
-        return 'Falsches Passwort!';
-      case 'auth/invalid-email':
-        return 'Ungültiges E-Mail-Format!';
-      case 'auth/invalid-credential':
-        return 'E-Mail oder Passwort ist falsch.';
-      default:
-        return 'Unbekannter Fehler, bitte versuche es später erneut.';
-    }
-  }
+ 
+  
 
   change() {
     this.landing.landing.set('request');
@@ -107,4 +118,20 @@ export class LoginComponent {
   goToRegister() {
     this.landing.landing.set('register');
   }
+
+  async resendVerificationEmail() {
+    try {
+      const userID = await signInWithEmailAndPassword(this.auth, this.email, this.password);
+      const user = userID.user;
+      await sendEmailVerification(user);
+      this.error = 'Bestätigungs-E-Mail wurde erneut gesendet.';
+    } catch (err) {
+      this.error = 'Fehler beim erneuten Senden der E-Mail.';
+    }
+  
+    setTimeout(() => {
+      this.error = '';
+    }, 5000);
+  }
+  
 }

@@ -60,3 +60,9 @@
     </form>
   </div>
 </div>
+
+<div *ngIf="error?.includes('bestätige deine E-Mail-Adresse')" class="text-center mt-2">
+  <button class="text-sm text-purple1 hover:underline" (click)="resendVerificationEmail()">
+    E-Mail erneut senden
+  </button>
+</div>

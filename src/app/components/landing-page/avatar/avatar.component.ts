@@ -13,7 +13,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 
 export class AvatarComponent {
    currentAvatar: number = 0;
-   showMessage: boolean = true;
+   showMessage: boolean = false;
    userName: string = '';
    messageText: string = '';
 

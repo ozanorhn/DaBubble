@@ -1,5 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, User as FirebaseUser, sendEmailVerification } from '@angular/fire/auth';
+import { Auth, 
+  createUserWithEmailAndPassword, 
+  GoogleAuthProvider, 
+  signInWithEmailAndPassword, 
+  signInWithPopup, 
+  User as FirebaseUser, 
+  sendEmailVerification, 
+  reload} from '@angular/fire/auth';
 import { addDoc, doc, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
@@ -56,6 +63,7 @@ export class AuthService {
 
        // Bestätigungsmail senden
        await sendEmailVerification(firebaseUser);
+      
 
 
       const user = new User(this.userService.tempUser);
@@ -74,7 +82,7 @@ export class AuthService {
   }
 
 
-  async login(email: string, password: string): Promise<FirebaseUser> {
+/*   async login(email: string, password: string): Promise<FirebaseUser> {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       console.log('Login erfolgreich:', userCredential.user.email);
@@ -83,8 +91,48 @@ export class AuthService {
       console.error('Login fehlgeschlagen:', error);
       throw error;
     }
-  }
+  } */
 
+   /*  async login(email: string, password: string): Promise<FirebaseUser> {
+      try {
+        const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+        const user = userCredential.user;
+    
+        if (!user.emailVerified) {
+          // Zugriff verweigern
+          await sendEmailVerification(user); 
+          throw new Error('Bitte bestätige deine E-Mail-Adresse. Eine neue Bestätigungs-E-Mail wurde gesendet.');
+        }
+    
+        console.log('Login erfolgreich:', user.email);
+        return user;
+      } catch (error: unknown) {
+        throw error;
+      }
+    } */
+    
+async login(email: string, password: string): Promise<FirebaseUser> {
+        try {
+          const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+          const user = userCredential.user;
+      
+          if (!user.emailVerified) {
+            // Bestätigungs-E-Mail senden
+            await sendEmailVerification(user);
+      
+            // Eigener Fehler mit code für besseren Abgriff im UI
+            const error: any = new Error('Bitte bestätige deine E-Mail-Adresse. Eine neue Bestätigungs-E-Mail wurde gesendet.');
+            error.code = 'auth/email-not-verified';
+            throw error;
+          }
+      
+          console.log('Login erfolgreich:', user.email);
+          return user;
+        } catch (error: unknown) {
+          throw error;
+        }
+  }
+      
 
   checkLoggedInUser() {
     let obj = this.localStorageService.loadObject('currentUser');
