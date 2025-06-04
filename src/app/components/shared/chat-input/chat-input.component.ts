@@ -23,7 +23,7 @@ import { Channel } from '../../../classes/channel.class';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { Timestamp } from '@angular/fire/firestore';
-import { addDoc } from '@firebase/firestore';
+import { addDoc, arrayUnion, doc, getDoc, updateDoc } from '@firebase/firestore';
 
 @Component({
   selector: 'app-chat-input',
@@ -54,7 +54,8 @@ export class ChatInputComponent implements OnInit {
     public threadMessagesService: ThreadMessagesService,
     public filterService: FilterService,
     public navService: MainNavService,
-    public localStorageS: LocalStorageService
+    public localStorageS: LocalStorageService,
+    public dmService: DirectMessagesService
   ) {
     effect(() => {
       const channelClicked = this.navService.channelClicked();
@@ -162,8 +163,12 @@ export class ChatInputComponent implements OnInit {
           this.sendNewMessages(this.newMessageText, channel)
         });
 
+        this.filterService.newMessagePersons.forEach((person) => {
+          this.checkExistingIdsAddMessage(this.newMessageText, person)
+        });
 
-        // this.newMessageText = '';
+
+        this.newMessageText = '';
         this.filterService.newMessageChannels = [];
         this.filterService.newMessagePersons = [];
         break;
@@ -182,21 +187,90 @@ export class ChatInputComponent implements OnInit {
 
 
   async sendNewMessages(messageInput: string, channel: Channel) {
-  const newMessage = new Message(); // Erstelle eine neue Message-Instanz
-  if (this.currentUser.id) newMessage.sender = this.currentUser.id;
-  newMessage.timestamp = Timestamp.now();
-  newMessage.message = messageInput;
-  newMessage.channelId = channel.id; // Direkt auf die id-Eigenschaft zugreifen
-  
-  try {
-    await addDoc(this.messageService.messageCollection, newMessage.toJSON());
-    this.newMessageText = '';
-  } catch (error) {
-    console.error('Error adding message', error);
-  }
-}
+    const newMessage = new Message(); // Erstelle eine neue Message-Instanz
+    if (this.currentUser.id) newMessage.sender = this.currentUser.id;
+    newMessage.timestamp = Timestamp.now();
+    newMessage.message = messageInput;
+    newMessage.channelId = channel.id; // Direkt auf die id-Eigenschaft zugreifen
 
-  
+    try {
+      await addDoc(this.messageService.messageCollection, newMessage.toJSON());
+    } catch (error) {
+      console.error('Error adding message', error);
+    }
+  }
+
+
+  // async checkExistingIdsAddMessage(messageInput: string, person: User) {
+  //   const dmIdUser1First = this.dmService.getDirectMessageId(person.id, this.currentUser.id);
+  //   const dmIdUser2First = this.dmService.getDirectMessageId(this.currentUser.id, person.id);
+  //   const dmDocRefUser1First = doc(this.dmService.directMessageCollection, dmIdUser1First);
+  //   const dmDocRefUser2First = doc(this.dmService.directMessageCollection, dmIdUser2First);
+  //   const user1FirstDoc = await getDoc(dmDocRefUser1First);
+  //   const user2FirstDoc = await getDoc(dmDocRefUser2First);
+  //   // if (user1FirstDoc.exists()) {
+  //   //   this.setDocRef(dmIdUser1First, user1FirstDoc, dmDocRefUser1First);
+  //   // } else if (user2FirstDoc.exists()) {
+  //   //   this.setDocRef(dmIdUser2First, user2FirstDoc, dmDocRefUser2First);
+  //   // } else {
+  //   //   await this.createDocRef();
+  //   // }
+
+  //   if (user1FirstDoc.exists()) {
+  //     await updateDoc(
+  //       doc(this.dmService.directMessageCollection, dmIdUser1First),
+  //       { content: messageInput}
+  //     );
+  //   } else if (user2FirstDoc.exists()) {
+  //     await updateDoc(
+  //       doc(this.dmService.directMessageCollection, dmIdUser2First),
+  //       { content: messageInput}
+  //     );
+  //   }
+  // }
+
+  async checkExistingIdsAddMessage(messageInput: string, person: User) {
+    const dmIdUser1First = this.dmService.getDirectMessageId(person.id, this.currentUser.id);
+    const dmIdUser2First = this.dmService.getDirectMessageId(this.currentUser.id, person.id);
+    const dmDocRefUser1First = doc(this.dmService.directMessageCollection, dmIdUser1First);
+    const dmDocRefUser2First = doc(this.dmService.directMessageCollection, dmIdUser2First);
+    const user1FirstDoc = await getDoc(dmDocRefUser1First);
+    const user2FirstDoc = await getDoc(dmDocRefUser2First);
+
+    // Neue Nachricht als Objekt mit Timestamp, Sender etc.
+    const newMessage = {
+      threadId: '',
+      message: messageInput,
+      sender: this.currentUser.id,
+      timestamp: Timestamp.now(),
+      reactions: [],
+      // Weitere Felder je nach DM-Schnittstelle
+    };
+
+
+
+
+    if (user1FirstDoc.exists()) {
+      // Füge Nachricht zum bestehenden content-Array hinzu (nicht ersetzen!)
+      await updateDoc(dmDocRefUser1First, {
+        content: arrayUnion(newMessage) // WICHTIG: `arrayUnion` aus Firestore importieren
+      });
+    } else if (user2FirstDoc.exists()) {
+      await updateDoc(dmDocRefUser2First, {
+        content: arrayUnion(newMessage)
+      });
+    } else {
+      // Erstelle ein neues DM-Dokument, falls keine Konversation existiert
+      await addDoc(this.dmService.directMessageCollection, {
+        users: [this.currentUser.id, person.id],
+        content: [newMessage], // Initialer Array mit erster Nachricht
+        // Weitere Metadaten...
+      });
+    }
+  }
+
+
+
 
   onInput(event: Event) {
     const input = event.target as HTMLTextAreaElement;
