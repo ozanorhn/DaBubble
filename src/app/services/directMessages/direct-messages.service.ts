@@ -60,7 +60,7 @@ export class DirectMessagesService implements OnDestroy {
    * @param {string} user2Id - Second user ID
    * @returns {string} Formatted DM ID (dm_[id1]_[id2])
    */
-  private getDirectMessageId(user1Id: string, user2Id: string): string {
+  public getDirectMessageId(user1Id: string, user2Id: string): string {
     const sortedIds = [user1Id, user2Id].sort();
     return `dm_${sortedIds[0]}_${sortedIds[1]}`;
   }
@@ -78,7 +78,7 @@ export class DirectMessagesService implements OnDestroy {
     await this.checkExistingIds();
     if (this.mobile) {
       this.mainNavService.nav.set(false);
-      this.mainNavService.showAltLogo = false; 
+      this.mainNavService.showAltLogo = false;
     }
     if (!this.docRef) {
       let tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
