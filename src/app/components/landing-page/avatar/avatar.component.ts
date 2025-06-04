@@ -13,8 +13,9 @@ import { AuthService } from '../../../services/auth/auth.service';
 
 export class AvatarComponent {
    currentAvatar: number = 0;
-   showMessage: boolean = false;
+   showMessage: boolean = true;
    userName: string = '';
+   messageText: string = '';
 
   constructor(
     public landing: LandingPageService,
@@ -32,7 +33,7 @@ export class AvatarComponent {
     this.landing.landing.set('register');
   }
 
-  goForward() {
+/*   goForward() {
     this.userService.setTempUser({
       avatar: `/assets/imgs/avatar${this.currentAvatar}.svg`,
     });
@@ -44,12 +45,30 @@ export class AvatarComponent {
     setTimeout(() => {
       this.landing.landing.set('login');
     }, 3000); // Navigation erfolgt nach 5 Sek.
-  }
+  } */
 
-  openMessage() {
+  openMessage(message:string) {
+    this.messageText = message;
     this.showMessage = true;
     setTimeout(() => {
       this.showMessage = false;
     }, 3000); // Overlay wird 5 Sek. angezeigt
+  }
+
+  async goForward() {
+    this.userService.setTempUser({
+      avatar: `/assets/imgs/avatar${this.currentAvatar}.svg`,
+    });
+
+    try {
+      await this.authService.registerUser();
+      this.openMessage('Bestätigungs-E-Mail gesendet. Bitte Postfach prüfen.');
+      setTimeout(() => {
+        this.landing.landing.set('login');
+      }, 5000);
+    } catch (error) {
+      console.error('Registrierung fehlgeschlagen:', error);
+      this.openMessage('Registrierung fehlgeschlagen.');
+    }
   }
 }
