@@ -106,6 +106,9 @@ export class ChatInputComponent implements OnInit {
         case 'dm':
           this.directMessageService.newMessage.message += emoji;
           break;
+        case 'new':
+          this.newMessageText += emoji;
+          break;
         default:
           break;
       }
