@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, signal } from '@angular/core';
 import { collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, QueryDocumentSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
@@ -19,6 +19,7 @@ export class DirectMessagesService implements OnDestroy {
   directMessageCollection;
   currentDMIndex: number = 0;
   mobile = false;
+  dmClicked = signal(false);
 
   private unsubscribeSnapshot: Unsubscribe | null = null;
 
@@ -59,7 +60,7 @@ export class DirectMessagesService implements OnDestroy {
    * @param {string} user2Id - Second user ID
    * @returns {string} Formatted DM ID (dm_[id1]_[id2])
    */
-  private getDirectMessageId(user1Id: string, user2Id: string): string {
+  public getDirectMessageId(user1Id: string, user2Id: string): string {
     const sortedIds = [user1Id, user2Id].sort();
     return `dm_${sortedIds[0]}_${sortedIds[1]}`;
   }
@@ -70,13 +71,14 @@ export class DirectMessagesService implements OnDestroy {
    * @param {User} otherUser - The user to start conversation with
    */
   async openDMs(otherUser: User) {
+    this.dmClicked.set(true);
     this.cleanupSnapshot();
     this.clearDm();
     this.otherUser = otherUser;
     await this.checkExistingIds();
     if (this.mobile) {
       this.mainNavService.nav.set(false);
-      this.mainNavService.showAltLogo = false; 
+      this.mainNavService.showAltLogo = false;
     }
     if (!this.docRef) {
       let tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);

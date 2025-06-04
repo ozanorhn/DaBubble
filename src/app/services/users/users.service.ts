@@ -36,7 +36,18 @@ export class UsersService implements OnDestroy {
 
 
   getCurrentUser() {
-      this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
+    this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
+  }
+
+  getUsersWithCurrentFirst(): User[] {
+    if (!this.currentUser?.id) return this.users;
+    const usersCopy = [...this.users];
+    const currentUserIndex = usersCopy.findIndex(u => u.id === this.currentUser.id);
+    if (currentUserIndex > -1) {
+      const [currentUser] = usersCopy.splice(currentUserIndex, 1);
+      usersCopy.unshift(currentUser);
+    }
+    return usersCopy;
   }
 
 

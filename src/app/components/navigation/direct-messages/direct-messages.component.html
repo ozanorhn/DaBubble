@@ -12,7 +12,7 @@
   <ul id="directList" class="flex flex-col gap-1 pl-8">
 
 
-    @for (userItem of userService.users; track $index; let i = $index) {
+    @for (userItem of userService.getUsersWithCurrentFirst(); track $index; let i = $index) {
     <li [style.animation-delay]="i * 0.05 + 's'" class="user-item" (click)="
         mainNavService.openChannel(true);
         dmService.openDMs(userItem);

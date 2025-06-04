@@ -197,12 +197,13 @@ export class MainNavService {
     }
   }
 
-
+  channelClicked = signal(false);
   /**
    * Opens channel view
    * @param {boolean} [dm=false] - Whether to open direct messages
    */
   openChannel(dm: boolean = false) {
+    this.channelClicked.set(true);
     this.newMessage = false;
     this.channel.set(true);
     this.thread.set(false);

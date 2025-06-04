@@ -9,10 +9,17 @@ import { doc, getDoc, Timestamp } from '@angular/fire/firestore';
 import { UsersService } from '../../../services/users/users.service';
 import { FormsModule } from '@angular/forms';
 import { FilterService } from '../../../pageServices/filters/filter.service';
+import { Channel } from '../../../classes/channel.class';
+import { User } from '../../../classes/user.class';
+import { UserComponent } from '../user/user.component';
 
 @Component({
   selector: 'app-chat-header',
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    UserComponent
+  ],
   templateUrl: './chat-header.component.html',
   styleUrl: './chat-header.component.scss'
 })
@@ -25,7 +32,9 @@ export class ChatHeaderComponent implements OnInit {
     public dmService: DirectMessagesService,
     public userService: UsersService,
     public filterService: FilterService
-  ) { }
+  ) {
+    UserComponent
+  }
 
 
   @Input() chatType: 'new' | 'channel' | 'thread' | 'dm' = 'new';
@@ -38,9 +47,6 @@ export class ChatHeaderComponent implements OnInit {
   ngOnInit(): void {
     this.updateOnlineStatus();
     setInterval(() => this.updateOnlineStatus(), 1000);
-
-     // Setze den Zustand je nach chatType
-  //this.filterService.isChatInputActive.set(this.chatType === 'new');
   }
 
 
@@ -66,6 +72,16 @@ export class ChatHeaderComponent implements OnInit {
     if (snapshot.exists()) {
       this.isOnline = this.userService.isUserOnline(snapshot.data()['online']);
     }
+  }
+
+
+
+  isUser(item: any): item is User {
+    return 'name' in item && 'avatar' in item; // Anpassen an Ihre User-Properties
+  }
+
+  isChannel(item: any): item is Channel {
+    return 'name' in item && 'id' in item; // Anpassen an Ihre Channel-Properties
   }
 
 }

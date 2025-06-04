@@ -15,6 +15,8 @@ import { ChatInputComponent } from "../chat-input/chat-input.component";
 import { EmojiPickerComponent } from "../popUp/emoji-picker/emoji-picker.component";
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { User } from '../../../classes/user.class';
+import { FilterService } from '../../../pageServices/filters/filter.service';
+import { UserComponent } from '../user/user.component';
 
 @Component({
   standalone: true,
@@ -26,7 +28,8 @@ import { User } from '../../../classes/user.class';
     ChatMessageAnswerComponent,
     MessageOptionsComponent,
     ChatInputComponent,
-    EmojiPickerComponent
+    EmojiPickerComponent,
+    UserComponent
   ],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
@@ -50,8 +53,7 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
   editIndex: number | null = null;
   emojiIndex: number | null = null;
   showEmojiPicker = false;
-
-  // currentEmoji = '';
+  private lastMessageCount = 0;
   @ViewChild('messagesEnd') messagesEndRef!: ElementRef<HTMLDivElement>;
 
 
@@ -62,7 +64,8 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
     public userService: UsersService,
     public threadService: ThreadsService,
     public dmService: DirectMessagesService,
-    public localStorageService: LocalStorageService
+    public localStorageService: LocalStorageService,
+    public filterService: FilterService
   ) { }
 
 
@@ -78,20 +81,31 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
 
   
   ngAfterViewInit(): void {
-    this.scrollToBottom();
+    this.scrollToBottomInstant();
+    this.lastMessageCount = this.messages?.length || 0;
   }
 
   
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['messages']) {
-      this.scrollToBottom();
+      const currentMessageCount = this.messages?.length || 0;
+      if (currentMessageCount > this.lastMessageCount) {
+        this.scrollToBottomSmooth();
+      }
+      this.lastMessageCount = currentMessageCount;
     }
   }
 
   
-  scrollToBottom(): void {
+  scrollToBottomSmooth(): void {
     setTimeout(() => {
       this.messagesEndRef?.nativeElement?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  }
+
+  scrollToBottomInstant(): void {
+    setTimeout(() => {
+      this.messagesEndRef?.nativeElement?.scrollIntoView({ behavior: 'auto' });
     }, 0);
   }
 
