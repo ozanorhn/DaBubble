@@ -78,40 +78,36 @@ export class NavigationComponent {
 
 
 
-
-
-
-
   isMessage(item: any): item is Message {
-  return 'message' in item && 'timestamp' in item;
-}
-
-clickMessage(item: any) {
-  if (item.type === 'channelMessage') {
-    const channel = this.channelService.channels.find(c => c.id === item.channelId);
-    if (channel) {
-      this.channelService.openChannel(channel);
-      this.messageService.getMessages(channel);
-      // Optional: Scroll zur spezifischen Nachricht
-      setTimeout(() => {
-        const element = document.getElementById(`message-${item.id}`);
-        element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        element?.classList.add('highlight-message');
-        setTimeout(() => element?.classList.remove('highlight-message'), 2000);
-      }, 500);
-    }
-  } else if (item.type === 'dmMessage') {
-    const userId = item.sender === this.currentUser.id ? 
-      this.directMessageService.directMessage.participants.user2 : 
-      this.directMessageService.directMessage.participants.user1;
-    const user = this.usersService.users.find(u => u.id === userId);
-    if (user) {
-      this.directMessageService.openDMs(user);
-      // Ähnliches Scroll-Verhalten für DMs
-    }
+    return 'message' in item && 'timestamp' in item;
   }
-  this.filterService.searchValue.set('');
-}
+
+  clickMessage(item: any) {
+    if (item.type === 'channelMessage') {
+      const channel = this.channelService.channels.find(c => c.id === item.channelId);
+      if (channel) {
+        this.channelService.openChannel(channel);
+        this.messageService.getMessages(channel);
+        // Optional: Scroll zur spezifischen Nachricht
+        setTimeout(() => {
+          const element = document.getElementById(`message-${item.id}`);
+          element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element?.classList.add('highlight-message');
+          setTimeout(() => element?.classList.remove('highlight-message'), 2000);
+        }, 500);
+      }
+    } else if (item.type === 'dmMessage') {
+      const userId = item.sender === this.currentUser.id ?
+        this.directMessageService.directMessage.participants.user2 :
+        this.directMessageService.directMessage.participants.user1;
+      const user = this.usersService.users.find(u => u.id === userId);
+      if (user) {
+        this.directMessageService.openDMs(user);
+        // Ähnliches Scroll-Verhalten für DMs
+      }
+    }
+    this.filterService.searchValue.set('');
+  }
 
 
 }
