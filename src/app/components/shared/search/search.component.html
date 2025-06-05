@@ -9,9 +9,7 @@
 
 
     <input type="text" [(ngModel)]="filterService.searchValue" placeholder="Search..."
-      class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none pl-[10px]"
-      
-      />
+      class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none pl-[10px]" />
 
 
     <img src="assets/imgs/icons/icons.svg" alt="" class="w-[32px h-[32px]]" />
@@ -20,10 +18,11 @@
 
   @if (filterService.searchValue().length >= 1 && !mainNavService.showNav()) {
 
-  <div class="absolute z-10 w-full bg-white border border-black shadow-lg max-h-96 h-fit rounded-[30px] p-5 overflow-auto">
+  <div
+    class="absolute z-10 w-full bg-white border border-black shadow-lg max-h-96 h-fit rounded-[30px] p-5 overflow-auto">
 
     @if (filterService.filteredResults().length > 0) {
-    <ul class="flex flex-col">
+    <!-- <ul class="flex flex-col">
       @for (item of filterService.filteredResults(); track $index) {
 
       @if (isUser(item)) {
@@ -35,9 +34,27 @@
       </li>
       }
       }
+    </ul> -->
+
+    <ul class="flex flex-col">
+      @for (item of filterService.filteredResults(); track $index) {
+      @if (isUser(item)) {
+      <li (click)="clickUser(item)"><app-user [userInfo]="item"></app-user></li>
+      } @else if (isChannel(item) && isMember(item)) {
+      <li (click)="clickChannel(item)"
+        class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
+        <span class="font-bold">#</span> {{item.name}}
+      </li>
+      } @else if (isMessage(item)) {
+      <li (click)="clickMessage(item)"
+        class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
+        <span class="text-sm truncate">{{item.message}}</span>
+      </li>
+      }
+      }
     </ul>
     } @else {
-      <div class="flex items-center h-20 font-bold">Keine gefunden </div>
+    <div class="flex items-center h-20 font-bold">Keine gefunden </div>
     }
 
 
