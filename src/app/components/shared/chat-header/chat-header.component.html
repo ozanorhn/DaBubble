@@ -6,9 +6,9 @@
     class="flex items-center gap-[14px] py-[3px] px-[10px] w-max rounded-full cursor-pointer text-xl font-bold hover:bg-primary hover:text-purple1"
     (click)="overlayService.editChannel()">
     <img class="size-[22px]" src="assets/icons/hashtag.svg" alt="hashtag" />
-    @if (channelService.channels[this.channelService.currentIndex()]) {
+    @if (channelService.channels[this.channelService.selectedChannelIndex()]) {
     <span>{{
-      channelService.channels[this.channelService.currentIndex()].name
+      channelService.channels[this.channelService.selectedChannelIndex()].name
       }}</span>
     }
     <img class="ml-[14px]" src="assets/icons/arrow_down.svg" alt="" />
@@ -16,7 +16,7 @@
   } @case ('thread') {
   <div class="flex items-center gap-[14px] w-max rounded-full text-xl font-bold">
     <span>Thread </span><span class="text-purple2 text-[14px]"># {{
-      channelService.channels[channelService.currentIndex()].name }}</span>
+      channelService.channels[channelService.selectedChannelIndex()].name }}</span>
   </div>
   } @case ('dm') {
   <div class="flex items-center gap-4 px-4 py-2 rounded-[30px] cursor-pointer hover:bg-primary min-w-[300px]"

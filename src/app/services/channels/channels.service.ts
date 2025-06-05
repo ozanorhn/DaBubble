@@ -12,11 +12,11 @@ import { LocalStorageService } from '../localStorage/local-storage.service';
 })
 export class ChannelsService implements OnInit, OnDestroy {
   channels: Channel[] = [];
-  currentIndex = signal<number>(0);
+  selectedChannelIndex = signal<number>(0);
   channelsCollection;
   choiceMembers = signal(false);
   loading = true;
-  private unsubscribe!: () => void;
+  private channelsSnapshotUnsubscribe!: () => void;
   currentUser;
   createChannel = new Channel();
 
@@ -62,7 +62,7 @@ export class ChannelsService implements OnInit, OnDestroy {
    */
   public setupChannelsListener() {
 
-    this.unsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
+    this.channelsSnapshotUnsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
       this.channels = snapshot.docs.map((doc) => {
         const data = doc.data() as Channel;
         data.id = doc.id;
@@ -78,8 +78,8 @@ export class ChannelsService implements OnInit, OnDestroy {
    * Angular lifecycle hook - cleans up resources
    */
   ngOnDestroy(): void {
-    if (this.unsubscribe) {
-      this.unsubscribe();
+    if (this.channelsSnapshotUnsubscribe) {
+      this.channelsSnapshotUnsubscribe();
     }
   }
 
@@ -106,7 +106,7 @@ export class ChannelsService implements OnInit, OnDestroy {
    * Prepares channel data for editing and updates Firestore
    */
   async prepareChannelForEdit() {
-    const index = this.currentIndex();
+    const index = this.selectedChannelIndex();
     const channel = this.channels[index];
     const channelData = {
       name: channel.name,
@@ -150,14 +150,14 @@ export class ChannelsService implements OnInit, OnDestroy {
   */
   // openChannel(obj: Channel, i: number) {
   //   if (obj) {
-  //     this.currentIndex.set(i);
+  //     this.selectedChannelIndex.set(i);
   //   }
   // }
 
   openChannel(obj: Channel) {
     let channelIndex = this.channels.findIndex(channel => channel.id == obj.id)
     if (obj && channelIndex != -1) {
-      this.currentIndex.set(channelIndex);
+      this.selectedChannelIndex.set(channelIndex);
       console.log('current channel Index', channelIndex);
     }
   }
@@ -168,7 +168,7 @@ export class ChannelsService implements OnInit, OnDestroy {
    * @returns {User[]} Array of User objects who are members of the current channel
    */
   getChannelMembers(): User[] {
-    return this.userService.users.filter(user => this.channels[this.currentIndex()].members.includes(user.id));
+    return this.userService.users.filter(user => this.channels[this.selectedChannelIndex()].members.includes(user.id));
   }
 
 

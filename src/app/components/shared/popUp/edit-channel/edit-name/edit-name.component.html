@@ -17,10 +17,10 @@
 
     @if (channelService.channels.length > 0) {
         @if(edit){
-            <input [(ngModel)]="channelService.channels[channelService.currentIndex()].name" class="px-5 py-4 border border-lightpurple rounded-[40px]"
+            <input [(ngModel)]="channelService.channels[channelService.selectedChannelIndex()].name" class="px-5 py-4 border border-lightpurple rounded-[40px]"
             type="text">
         } @else {
-            <p># {{channelService.channels[channelService.currentIndex()].name}}</p>
+            <p># {{channelService.channels[channelService.selectedChannelIndex()].name}}</p>
         }
     }
 </div>
