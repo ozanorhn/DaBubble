@@ -116,15 +116,15 @@ async login(email: string, password: string): Promise<FirebaseUser> {
           const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
           const user = userCredential.user;
       
-          if (!user.emailVerified) {
-            // Bestätigungs-E-Mail senden
-            await sendEmailVerification(user);
+          // if (!user.emailVerified) {
+          //   // Bestätigungs-E-Mail senden
+          //   await sendEmailVerification(user);
       
-            // Eigener Fehler mit code für besseren Abgriff im UI
-            const error: any = new Error('Bitte bestätige deine E-Mail-Adresse. Eine neue Bestätigungs-E-Mail wurde gesendet.');
-            error.code = 'auth/email-not-verified';
-            throw error;
-          }
+          //   // Eigener Fehler mit code für besseren Abgriff im UI
+          //   const error: any = new Error('Bitte bestätige deine E-Mail-Adresse. Eine neue Bestätigungs-E-Mail wurde gesendet.');
+          //   error.code = 'auth/email-not-verified';
+          //   throw error;
+          // }
       
           console.log('Login erfolgreich:', user.email);
           return user;
