@@ -44,6 +44,8 @@ export class SearchComponent {
     if (!this.dmService.searched) {
       this.dmService.getSearchableDMs();
     }
+    // channelIds =
+    this.messagesService.getSearchableMessages(['Gg5qS4mawh9JTwKggLJX']);
     let id = setTimeout(() => {
       console.log('# searchInput ',this.searchInput);
       console.log('# users ',this.usersService.users);

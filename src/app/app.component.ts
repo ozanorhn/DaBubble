@@ -19,6 +19,12 @@ export class AppComponent {
     this.mainNavService.checkScreenView();
   }
 
+  @HostListener('window:unhandledrejection', ['$event'])
+  handleUnhandledRejection(event: PromiseRejectionEvent): void {
+    console.error('Global Unhandled Promise Rejection:', event.reason);
+    // Optional: event.preventDefault();
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.mainNavService.checkScreenView();

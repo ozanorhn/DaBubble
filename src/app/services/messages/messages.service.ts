@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, signal } from '@angular/core';
+import { Injectable, NgZone, OnDestroy, signal } from '@angular/core';
 import { ChannelsService } from '../channels/channels.service';
 import { addDoc, collection, doc, Firestore, onSnapshot, query, Timestamp, updateDoc, where } from '@angular/fire/firestore';
 import { Message } from '../../classes/message.class';
@@ -34,6 +34,7 @@ export class MessagesService implements OnDestroy {
   date = new Date();
   edit: boolean = false;
 
+  unsubSearchableMessages?: () => void;
   unsubscribeFromMessages?: () => void;
 
   message: Message = new Message({
@@ -55,7 +56,8 @@ export class MessagesService implements OnDestroy {
     public userService: UsersService,
     public threadService: ThreadsService,
     public threadDMsService: ThreadDMsService,
-    public threadMessagesService: ThreadMessagesService
+    public threadMessagesService: ThreadMessagesService,
+    private ngZone: NgZone
   ) {
     this.messageCollection = collection(this.firestore, 'messages');
     this.channelService.currentIndex();
@@ -63,8 +65,76 @@ export class MessagesService implements OnDestroy {
   }
 
 
-  getSearchableMessages() {
-    
+  getSearchableMessages(channelIDs: string[]) {
+    if (this.unsubscribeFromMessages) this.unsubscribeFromMessages();
+
+    this.ngZone.run(() => {
+      this.searchableMessages = [];
+    });
+
+    if (!channelIDs || channelIDs.length === 0) return;
+
+    const allChannelIds = this.channelService.channels.map(ch => ch.id);
+    const allChannelIdSet = new Set(allChannelIds);
+    const inputSet = new Set(channelIDs);
+
+    const validIds = channelIDs.filter(id => allChannelIdSet.has(id));
+    const invalidIds = allChannelIds.filter(id => !inputSet.has(id));
+
+    const useExclusion = channelIDs.length > allChannelIds.length / 2;
+
+    const messageMap = new Map<string, Message>();
+    const unsubscribes: (() => void)[] = [];
+
+    const chunkArray = (arr: string[], size: number): string[][] => {
+      const chunks = [];
+      for (let i = 0; i < arr.length; i += size) {
+        chunks.push(arr.slice(i, i + size));
+      }
+      return chunks;
+    };
+
+    const processChunk = (chunk: string[], filterType: 'in' | 'not-in') => {
+      const q = query(
+        this.messageCollection,
+        where('channelId', filterType, chunk)
+      );
+
+      const unsubscribe = onSnapshot(q, snapshot => {
+        this.ngZone.run(() => {
+          snapshot.docChanges().forEach(change => {
+            const data = change.doc.data();
+            data['id'] = change.doc.id;
+            const message = new Message(data);
+
+            if (change.type === 'removed') {
+              messageMap.delete(change.doc.id);
+            } else {
+              messageMap.set(change.doc.id, message);
+            }
+          });
+
+          const sorted = this.sortMessages(Array.from(messageMap.values()));
+          this.searchableMessages = sorted as Message[];
+        });
+      }, error => {
+        console.error('Fehler bei onSnapshot (channel filter):', error);
+      });
+
+      unsubscribes.push(unsubscribe);
+    };
+
+    const chunks = chunkArray(useExclusion ? invalidIds : validIds, 10);
+
+    for (const chunk of chunks) {
+      processChunk(chunk, useExclusion ? 'not-in' : 'in');
+    }
+
+    this.unsubscribeFromMessages = () => unsubscribes.forEach(unsub => unsub());
+    let id = setTimeout( () => {
+      console.log('## SearchMessages: ', this.searchableMessages);
+      clearTimeout(id);
+    }, 200);
   }
 
 
@@ -264,6 +334,9 @@ export class MessagesService implements OnDestroy {
   ngOnDestroy(): void {
     if (this.unsubscribeFromMessages) {
       this.unsubscribeFromMessages();
+    }
+    if (this.unsubSearchableMessages) {
+      this.unsubSearchableMessages();
     }
   }
 }

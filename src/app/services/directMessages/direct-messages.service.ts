@@ -1,5 +1,5 @@
-import { Injectable, OnDestroy, signal } from '@angular/core';
-import { collection, doc, DocumentData, DocumentReference, getDoc, onSnapshot, query, QueryDocumentSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc, where } from '@angular/fire/firestore';
+import { inject, Injectable, NgZone, OnDestroy, OnInit, signal } from '@angular/core';
+import { collection, CollectionReference, doc, DocumentData, DocumentReference, DocumentSnapshot, getDoc, onSnapshot, query, QueryDocumentSnapshot, setDoc, Timestamp, Unsubscribe, updateDoc, where } from '@angular/fire/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
 import { DirectMessage } from '../../classes/directMessage.class';
@@ -11,10 +11,9 @@ import { MainNavService } from '../../pageServices/navigates/main-nav.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DirectMessagesService implements OnDestroy {
+export class DirectMessagesService implements OnInit, OnDestroy {
   otherUser: User = new User();
   docRef: DocumentReference<DocumentData, DocumentData> | undefined;
-  // currentUser;
   directMessageCollection;
   currentDMIndex: number = 0;
   mobile = false;
@@ -38,36 +37,87 @@ export class DirectMessagesService implements OnDestroy {
     reactions: [],
   };
 
+  // firestore: Firestore | undefined;
+
+  firestore = inject(Firestore);
+
+  ngOnInit(): void {
+    // this.firestore = inject(Firestore)
+    //  if (this.firestore) {
+    //   this.directMessageCollection = collection(this.firestore, 'directMessages');
+    // }
+    // this.directMessageCollection = collection(this.firestore, 'directMessages');
+  }
 
   constructor(
-    public firestore: Firestore,
+    // public firestore: Firestore,
     public usersService: UsersService,
     public threadService: ThreadsService,
     public threadDMsService: ThreadDMsService,
-    public mainNavService: MainNavService
+    public mainNavService: MainNavService,
+    private ngZone: NgZone
   ) {
+    // if (this.firestore) {
     this.directMessageCollection = collection(this.firestore, 'directMessages');
+    // }
   }
 
 
-  getSearchableDMs() {
-    this.searched = true;
-    this.cleanUpSearchSnapshot();
-    this.searchDMs = [];
+  // getSearchableDMs() {
+  //   this.resetSearchParameter();
+  //   const q = this.queryForSearch();
+  //   if (this.firestore && this.directMessageCollection) {
+  //     this.unsubscribeSeatchableDMs = onSnapshot(q, (snapshot) => {
+  //       this.ngZone.run(() => {
+  //         this.searchDMs = snapshot.docs.map(doc => ({
+  //           id: doc.id,
+  //           ...doc.data()
+  //         } as DirectMessage));
+  //       });
+  //     }, (error) => {
+  //       console.error('Fehler beim Abrufen der DMs:', error);
+  //     });
 
-    const q = query(
+  //   }
+  // }
+
+  getSearchableDMs() {
+    this.resetSearchParameter();
+    const q = this.queryForSearch();
+
+    this.cleanUpSearchSnapshot(); // Alten Listener bereinigen
+
+    this.unsubscribeSeatchableDMs = onSnapshot(
+      q,
+      {
+        next: (snapshot) => {
+          this.ngZone.run(() => {
+            this.searchDMs = snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            } as DirectMessage));
+          });
+        },
+        error: (error) => {
+          console.error('Fehler beim Abrufen der DMs:', error);
+        }
+      }
+    );
+  }
+
+
+  queryForSearch() {
+    return query(
       this.directMessageCollection,
       where('participants', 'array-contains', this.usersService.currentUser.id)
     );
-    console.log('im Query abgefragte Id ', this.usersService.currentUser.id);
-    this.unsubscribeSeatchableDMs = onSnapshot(q, (snapshot) => {
-      this.searchDMs = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as DirectMessage));
-    }, (error) => {
-      console.error('Fehler beim Abrufen der DMs:', error);
-    });
+  }
+
+
+  resetSearchParameter() {
+    this.searched = true;
+    this.cleanUpSearchSnapshot();
+    this.searchDMs = [];
   }
 
 
@@ -88,20 +138,30 @@ export class DirectMessagesService implements OnDestroy {
    * @param {User} otherUser - The user to start conversation with
    */
   async openDMs(otherUser: User) {
-    this.dmClicked.set(true);
+    this.otherUser = otherUser;
     this.cleanupSnapshot();
     this.clearDm();
-    this.otherUser = otherUser;
     await this.checkExistingIds();
+    this.manageNavigation();
+    this.checkDocRef();
+    this.setupRealtimeListener();
+  }
+
+
+  checkDocRef() {
+    if (!this.docRef) {
+      let tempId = this.getDirectMessageId(this.otherUser.id, this.usersService.currentUser.id);
+      this.docRef = doc(this.firestore, 'directMessages', tempId);
+    }
+  }
+
+
+  manageNavigation() {
+    this.dmClicked.set(true);
     if (this.mobile) {
       this.mainNavService.nav.set(false);
       this.mainNavService.showAltLogo = false;
     }
-    if (!this.docRef) {
-      let tempId = this.getDirectMessageId(this.otherUser.id, this.usersService.currentUser.id);
-      this.docRef = doc(this.directMessageCollection, tempId);
-    }
-    this.setupRealtimeListener();
   }
 
 
@@ -133,7 +193,7 @@ export class DirectMessagesService implements OnDestroy {
 
 
   public cleanUpSearchSnapshot() {
-  if (this.unsubscribeSeatchableDMs) {
+    if (this.unsubscribeSeatchableDMs) {
       this.unsubscribeSeatchableDMs();
       this.unsubscribeSeatchableDMs = null;
       this.searched = false;
@@ -145,42 +205,104 @@ export class DirectMessagesService implements OnDestroy {
   /**
   * Sets up realtime listener for DM conversation updates
   */
+  // private setupRealtimeListener(): void {
+  //   if (!this.docRef) return;
+
+  //   this.unsubscribeSnapshot = onSnapshot(this.docRef, (docSnapshot) => {
+  //     this.ngZone.run(() => {
+  //       if (docSnapshot.exists()) {
+  //         const data = docSnapshot.data();
+  //         this.directMessage = new DirectMessage({
+  //           id: docSnapshot.id,
+  //           ...data
+  //         });
+  //         console.log('Echtzeit-Update:', this.directMessage);
+  //       }
+  //     });
+  //   }, (error) => {
+  //     console.error('Fehler bei Echtzeit-Updates:', error);
+  //   });
+  // }
+
+  // private setupRealtimeListener(): void {
+  //   if (!this.docRef) return;
+
+  //   this.unsubscribeSnapshot = onSnapshot(this.docRef, (docSnapshot) => {
+  //     this.ngZone.run(() => {
+  //       if (docSnapshot.exists()) {
+  //         const data = docSnapshot.data();
+  //         this.directMessage = new DirectMessage({
+  //           id: docSnapshot.id,
+  //           ...data
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
+
   private setupRealtimeListener(): void {
     if (!this.docRef) return;
 
-    this.unsubscribeSnapshot = onSnapshot(this.docRef, (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        const data = docSnapshot.data();
-        this.directMessage = new DirectMessage({
-          id: docSnapshot.id,
-          ...data
+    this.cleanupSnapshot(); // Alte Listener immer erst entfernen
+
+    this.unsubscribeSnapshot = onSnapshot(this.docRef, {
+      next: (docSnapshot) => {
+        this.ngZone.run(() => this.handleSnapshot(docSnapshot));
+      },
+      error: (error) => {
+        this.ngZone.run(() => {
+          console.error('Fehler:', error);
+          if (error.code === 'unavailable') {
+            setTimeout(() => this.setupRealtimeListener(), 2000);
+          }
         });
-        console.log('Echtzeit-Update:', this.directMessage);
       }
-    }, (error) => {
-      console.error('Fehler bei Echtzeit-Updates:', error);
     });
   }
 
+  private handleSnapshot(docSnapshot: DocumentSnapshot) {
+    if (docSnapshot.exists()) {
+      this.directMessage = new DirectMessage({
+        id: docSnapshot.id,
+        ...docSnapshot.data()
+      });
+    }
+  }
 
   /**
    * Checks for existing DM conversations between current and other user
    */
+  // async checkExistingIds() {
+  //   console.log('checkExistingIds', this.otherUser.id, ' und ', this.usersService.currentUser.id);
+
+  //   const dmIdUser1First = this.getDirectMessageId(this.otherUser.id, this.usersService.currentUser.id);
+  //   const dmIdUser2First = this.getDirectMessageId(this.usersService.currentUser.id, this.otherUser.id);
+  //   const dmDocRefUser1First = doc(this.directMessageCollection, dmIdUser1First);
+  //   const dmDocRefUser2First = doc(this.directMessageCollection, dmIdUser2First);
+  //   const user1FirstDoc = await getDoc(dmDocRefUser1First);
+  //   const user2FirstDoc = await getDoc(dmDocRefUser2First);
+  //   if (user1FirstDoc.exists()) {
+  //     this.setDocRef(dmIdUser1First, user1FirstDoc, dmDocRefUser1First);
+  //   } else if (user2FirstDoc.exists()) {
+  //     this.setDocRef(dmIdUser2First, user2FirstDoc, dmDocRefUser2First);
+  //   } else {
+  //     await this.createDocRef();
+  //   }
+  // }
+
   async checkExistingIds() {
-    console.log('checkExistingIds', this.otherUser.id, ' und ', this.usersService.currentUser.id);
-    
-    const dmIdUser1First = this.getDirectMessageId(this.otherUser.id, this.usersService.currentUser.id);
-    const dmIdUser2First = this.getDirectMessageId(this.usersService.currentUser.id, this.otherUser.id);
-    const dmDocRefUser1First = doc(this.directMessageCollection, dmIdUser1First);
-    const dmDocRefUser2First = doc(this.directMessageCollection, dmIdUser2First);
-    const user1FirstDoc = await getDoc(dmDocRefUser1First);
-    const user2FirstDoc = await getDoc(dmDocRefUser2First);
-    if (user1FirstDoc.exists()) {
-      this.setDocRef(dmIdUser1First, user1FirstDoc, dmDocRefUser1First);
-    } else if (user2FirstDoc.exists()) {
-      this.setDocRef(dmIdUser2First, user2FirstDoc, dmDocRefUser2First);
-    } else {
-      await this.createDocRef();
+    const dmId = this.getDirectMessageId(this.otherUser.id, this.usersService.currentUser.id);
+    const docRef = doc(this.firestore, 'directMessages', dmId);
+
+    try {
+      const docSnap = await this.ngZone.run(() => getDoc(docRef));
+      if (docSnap.exists()) {
+        this.setDocRef(dmId, docSnap, docRef);
+      } else {
+        await this.createDocRef();
+      }
+    } catch (error) {
+      this.ngZone.run(() => console.error('Fehler:', error));
     }
   }
 
@@ -191,7 +313,7 @@ export class DirectMessagesService implements OnDestroy {
   async createDocRef() {
     const tempId = this.getDirectMessageId(this.otherUser.id, this.usersService.currentUser.id);
     this.directMessage.id = tempId;
-    this.docRef = doc(this.directMessageCollection, tempId);
+    this.docRef = doc(this.firestore, 'directMessages', tempId);
     await setDoc(this.docRef, {
       id: tempId,
       participants: [this.usersService.currentUser.id, this.otherUser.id],
@@ -267,15 +389,42 @@ export class DirectMessagesService implements OnDestroy {
    * Updates the DM document in Firestore with the new thread ID.
    * @param {any} threadId - The ID of the associated thread.
    */
-  async updateDM(threadId: any = '') {
+  // async updateDM(threadId: any = '') {
+  //   try {
+  //     await updateDoc(
+  //       doc(this.directMessageCollection, this.directMessage.id),
+  //       { content: this.directMessage.content }
+  //     );
+  //     if (threadId !== '') await this.threadService.loadThreadById(threadId);
+  //   } catch (error) {
+  //     console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
+  //   }
+  // }
+
+  async updateDM(threadId: string = ''): Promise<void> {
+    if (!this.directMessage?.id) {
+      throw new Error('directMessage.id ist nicht definiert.');
+    }
     try {
-      await updateDoc(
-        doc(this.directMessageCollection, this.directMessage.id),
+      // ✅ Korrekte Dokumentreferenz mit modularer Syntax
+      const docRef = doc(this.firestore, 'directMessages', this.directMessage.id);
+
+      // ✅ Firebase-Operation in NgZone für korrekte Change Detection
+      await this.ngZone.run(() => updateDoc(
+        docRef,
         { content: this.directMessage.content }
-      );
-      if (threadId !== '') await this.threadService.loadThreadById(threadId);
+      ));
+
+      // ✅ Thread nur laden wenn ID existiert
+      if (threadId) {
+        await this.threadService.loadThreadById(threadId);
+      }
     } catch (error) {
-      console.error('Fehler beim Aktualisieren der ThreadID in Firestore:', error);
+      // ✅ Error Handling in NgZone
+      this.ngZone.run(() => {
+        console.error('Fehler beim Aktualisieren der ThreadID:', error);
+        // Optional: Benutzerfeedback z.B. via Snackbar
+      });
     }
   }
 
