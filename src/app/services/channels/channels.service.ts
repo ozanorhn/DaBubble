@@ -85,21 +85,21 @@ export class ChannelsService implements OnInit, OnDestroy {
 
 
   async addChannel() {
-  if (!this.createChannel.members.includes(this.currentUser.id)) {
-    this.createChannel.members.push(this.currentUser.id);
-  }
-  
-  if (!this.choiceMembers()) {
-    const allUserIds = this.userService.users.map(user => user.id);
-    this.createChannel.members = [...new Set([...allUserIds, this.currentUser.id])];
-  }
+    if (!this.createChannel.members.includes(this.currentUser.id)) {
+      this.createChannel.members.push(this.currentUser.id);
+    }
 
-  try {
-    await addDoc(this.channelsCollection, this.createChannel.toJSON());
-  } catch (error) {
-    console.error('Fehler beim Erstellen des Channels:', error);
+    if (!this.choiceMembers()) {
+      const allUserIds = this.userService.users.map(user => user.id);
+      this.createChannel.members = [...new Set([...allUserIds, this.currentUser.id])];
+    }
+
+    try {
+      await addDoc(this.channelsCollection, this.createChannel.toJSON());
+    } catch (error) {
+      console.error('Fehler beim Erstellen des Channels:', error);
+    }
   }
-}
 
 
   /**
@@ -129,7 +129,7 @@ export class ChannelsService implements OnInit, OnDestroy {
       alert('Channel nicht gefunden oder hat keine ID.');
       return;
     }
-  
+
     try {
       await updateDoc(
         doc(this.channelsCollection, channel.id),
@@ -140,7 +140,7 @@ export class ChannelsService implements OnInit, OnDestroy {
       alert('Channel konnte nicht aktualisiert werden.');
     }
   }
-  
+
 
 
   /**
@@ -148,9 +148,17 @@ export class ChannelsService implements OnInit, OnDestroy {
   * @param {Channel} obj - The channel to open
   * @param {number} i - The index of the channel
   */
-  openChannel(obj: Channel, i: number) {
-    if (obj) {
-      this.currentIndex.set(i);
+  // openChannel(obj: Channel, i: number) {
+  //   if (obj) {
+  //     this.currentIndex.set(i);
+  //   }
+  // }
+
+  openChannel(obj: Channel) {
+    let channelIndex = this.channels.findIndex(channel => channel.id == obj.id)
+    if (obj && channelIndex != -1) {
+      this.currentIndex.set(channelIndex);
+      console.log('current channel Index', channelIndex);
     }
   }
 
@@ -198,5 +206,5 @@ export class ChannelsService implements OnInit, OnDestroy {
       check();
     });
   }
-  
+
 }

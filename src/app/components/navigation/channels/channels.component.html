@@ -18,7 +18,7 @@
         @for (channel of channelService.channels; track $index; let i = $index) {
         @if (channelService.isCurrentUserMember(channel)) {
         <li [style.animation-delay]="(i * 0.05) + 's'"
-            (click)="mainNavService.openChannel(); channelService.openChannel(channel,i); messageService.getMessages(channel); mainNavService.markedChannel(channel)"
+            (click)="mainNavService.openChannel(); channelService.openChannel(channel); messageService.getMessages(channel); mainNavService.markedChannel(channel)"
             [ngClass]="{'userChecked': channel.name == mainNavService.ChannelMarked.name}"
             class="channel-item flex items-center gap-4 min-w-[200px] rounded-[20px] px-10 cursor-pointer w-fit h-9 hover:bg-primary hover:font-bold hover:text-purple3 duration-150">
             <span class="font-bold">#</span> {{channel.name}}

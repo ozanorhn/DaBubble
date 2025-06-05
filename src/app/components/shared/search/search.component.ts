@@ -7,6 +7,9 @@ import { User } from '../../../classes/user.class';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 import { UserComponent } from '../user/user.component';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
+import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
+import { ChannelsService } from '../../../services/channels/channels.service';
+import { MessagesService } from '../../../services/messages/messages.service';
 
 @Component({
   selector: 'app-search',
@@ -22,11 +25,18 @@ export class SearchComponent {
 
   devspace = ''
 
+  currentUser;
+
   constructor(
     public filterService: FilterService,
     public mainNavService: MainNavService,
-    public dmService:DirectMessagesService
-  ) { }
+    public dmService: DirectMessagesService,
+    public localStorageS: LocalStorageService,
+    public channelService: ChannelsService,
+    public messageService: MessagesService
+  ) {
+    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+  }
 
   user = new User();
   channel = new Channel();
@@ -41,10 +51,24 @@ export class SearchComponent {
   }
 
 
-  clickUser(item:User){
+  clickUser(item: User) {
     this.dmService.openDMs(item);
     this.mainNavService.openChannel(true);
     this.filterService.searchValue.set('');
+  }
+
+  
+  clickChannel(item: Channel) {
+    this.mainNavService.openChannel();
+    this.channelService.openChannel(item);
+    this.messageService.getMessages(item);
+    this.mainNavService.markedChannel(item);
+    this.filterService.searchValue.set('')
+  }
+
+
+  isMember(channel: Channel): boolean {
+    return channel.members.some(memberId => memberId === this.currentUser.id);
   }
 
 
