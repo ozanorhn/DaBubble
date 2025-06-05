@@ -10,6 +10,8 @@ import { DirectMessagesService } from '../../../services/directMessages/direct-m
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { ChannelsService } from '../../../services/channels/channels.service';
 import { MessagesService } from '../../../services/messages/messages.service';
+import { Message } from '../../../classes/message.class';
+import { UsersService } from '../../../services/users/users.service';
 
 @Component({
   selector: 'app-search',
@@ -33,7 +35,8 @@ export class SearchComponent {
     public dmService: DirectMessagesService,
     public localStorageS: LocalStorageService,
     public channelService: ChannelsService,
-    public messageService: MessagesService
+    public messageService: MessagesService,
+    public usersService: UsersService
   ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
@@ -57,7 +60,7 @@ export class SearchComponent {
     this.filterService.searchValue.set('');
   }
 
-  
+
   clickChannel(item: Channel) {
     this.mainNavService.openChannel();
     this.channelService.openChannel(item);
@@ -70,6 +73,43 @@ export class SearchComponent {
   isMember(channel: Channel): boolean {
     return channel.members.some(memberId => memberId === this.currentUser.id);
   }
+
+
+
+
+
+
+  isMessage(item: any): item is Message {
+    return 'message' in item && 'timestamp' in item;
+  }
+
+  clickMessage(item: any) {
+    if (item.type === 'channelMessage') {
+      const channel = this.channelService.channels.find(c => c.id === item.channelId);
+      if (channel) {
+        this.channelService.openChannel(channel);
+        this.messageService.getMessages(channel);
+        // Optional: Scroll zur spezifischen Nachricht
+        setTimeout(() => {
+          const element = document.getElementById(`message-${item.id}`);
+          element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element?.classList.add('highlight-message');
+          setTimeout(() => element?.classList.remove('highlight-message'), 2000);
+        }, 500);
+      }
+    } else if (item.type === 'dmMessage') {
+      const userId = item.sender === this.currentUser.id ?
+        this.dmService.directMessage.participants.user2 :
+        this.dmService.directMessage.participants.user1;
+      const user = this.usersService.users.find(u => u.id === userId);
+      if (user) {
+        this.dmService.openDMs(user);
+        // Ähnliches Scroll-Verhalten für DMs
+      }
+    }
+    this.filterService.searchValue.set('');
+  }
+
 
 
 }
