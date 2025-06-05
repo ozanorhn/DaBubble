@@ -4,6 +4,8 @@ import { ChannelsService } from '../../services/channels/channels.service';
 import { LocalStorageService } from '../../services/localStorage/local-storage.service';
 import { User } from '../../classes/user.class';
 import { Channel } from '../../classes/channel.class';
+import { MessagesService } from '../../services/messages/messages.service';
+import { DirectMessagesService } from '../../services/directMessages/direct-messages.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,23 +23,74 @@ export class FilterService {
   // currentSearch: 'user' | 'channel' | null = null;
 
 
-  constructor(private localStorageS: LocalStorageService) {
+  constructor(
+    private localStorageS: LocalStorageService,
+    public messageService: MessagesService,
+    public dmService: DirectMessagesService
+  ) {
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
 
+  // filteredResults = computed(() => {
+  //   const searchTerm = this.searchValue().toLowerCase();
+  //   if (searchTerm.startsWith('@')) {
+  //     return this.filterUsers(searchTerm)
+  //   }
+  //   else if (searchTerm.startsWith('#')) {
+  //     return this.filterChannels(searchTerm)
+  //   }
+  //   else {
+  //     return this.filterAll(searchTerm)
+  //   }
+  // });
+
   filteredResults = computed(() => {
     const searchTerm = this.searchValue().toLowerCase();
+
     if (searchTerm.startsWith('@')) {
-      return this.filterUsers(searchTerm)
-    }
-    else if (searchTerm.startsWith('#')) {
-      return this.filterChannels(searchTerm)
-    }
-    else {
-      return this.filterAll(searchTerm)
+      return this.filterUsers(searchTerm);
+    } else if (searchTerm.startsWith('#')) {
+      return this.filterChannels(searchTerm);
+    } else if (searchTerm.startsWith('"')) {
+      return this.filterMessages(searchTerm.substring(1));
+    } else {
+      return [...this.filterAll(searchTerm), ...this.filterMessages(searchTerm)];
     }
   });
+
+
+
+  // Neue Methode zum Filtern von Nachrichten
+  filterMessages(searchTerm: string): any[] {
+    const channelMessages = this.messageService.messages().filter(msg =>
+      msg.message.toLowerCase().includes(searchTerm)
+    ).map(msg => ({
+      ...msg,
+      type: 'channelMessage',
+      channelId: msg.channelId
+    }));
+
+    // Falls du auch Direktnachrichten durchsuchen möchtest:
+    const dmMessages = this.dmService.directMessage.content.filter(msg =>
+      msg.message.toLowerCase().includes(searchTerm)
+    ).map(msg => ({
+      ...msg,
+      type: 'dmMessage',
+      dmId: this.dmService.directMessage.id
+    }));
+
+    return [...channelMessages, ...dmMessages];
+  }
+
+
+
+
+
+
+
+
+
 
 
   filterUsers(searchTerm: string) {
@@ -144,7 +197,7 @@ export class FilterService {
   //   }
   // });
 
-    isUser(item: any): item is User {
+  isUser(item: any): item is User {
     return 'name' in item && 'avatar' in item; // Anpassen an Ihre User-Properties
   }
 
@@ -155,43 +208,43 @@ export class FilterService {
 
 
   addToSelection(item: User | Channel) {
-  if (this.isUser(item)) {
-    if (!this.newMessagePersons.some(u => u.id === item.id)) {
-      this.newMessagePersons.push(item);
+    if (this.isUser(item)) {
+      if (!this.newMessagePersons.some(u => u.id === item.id)) {
+        this.newMessagePersons.push(item);
+      }
+    } else if (this.isChannel(item)) {
+      if (!this.newMessageChannels.some(c => c.id === item.id)) {
+        this.newMessageChannels.push(item);
+      }
     }
-  } else if (this.isChannel(item)) {
-    if (!this.newMessageChannels.some(c => c.id === item.id)) {
-      this.newMessageChannels.push(item);
+  }
+
+  removeFromSelection(item: User | Channel) {
+    if (this.isUser(item)) {
+      this.newMessagePersons = this.newMessagePersons.filter(u => u.id !== item.id);
+    } else {
+      this.newMessageChannels = this.newMessageChannels.filter(c => c.id !== item.id);
     }
   }
-}
 
-removeFromSelection(item: User | Channel) {
-  if (this.isUser(item)) {
-    this.newMessagePersons = this.newMessagePersons.filter(u => u.id !== item.id);
-  } else {
-    this.newMessageChannels = this.newMessageChannels.filter(c => c.id !== item.id);
-  }
-}
+  filteredNewMessageResults = computed(() => {
+    const searchTerm = this.searchNewMessageValue().toLowerCase();
+    let results: (User | Channel)[] = [];
 
-filteredNewMessageResults = computed(() => {
-  const searchTerm = this.searchNewMessageValue().toLowerCase();
-  let results: (User | Channel)[] = [];
-  
-  if (searchTerm.startsWith('@')) {
-    results = this.filterUsers(searchTerm);
-  } else if (searchTerm.startsWith('#')) {
-    results = this.filterChannels(searchTerm);
-  } else {
-    results = this.filterAll(searchTerm);
-  }
+    if (searchTerm.startsWith('@')) {
+      results = this.filterUsers(searchTerm);
+    } else if (searchTerm.startsWith('#')) {
+      results = this.filterChannels(searchTerm);
+    } else {
+      results = this.filterAll(searchTerm);
+    }
 
-  // Filter out already selected items
-  return results.filter(item => 
-    !this.newMessagePersons.some(u => u.id === item.id) &&
-    !this.newMessageChannels.some(c => c.id === item.id)
-  );
-});
+    // Filter out already selected items
+    return results.filter(item =>
+      !this.newMessagePersons.some(u => u.id === item.id) &&
+      !this.newMessageChannels.some(c => c.id === item.id)
+    );
+  });
 
 
 

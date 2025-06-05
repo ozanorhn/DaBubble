@@ -23,7 +23,7 @@ import { Channel } from '../../../classes/channel.class';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { Timestamp } from '@angular/fire/firestore';
-import { addDoc, arrayUnion, doc, getDoc, updateDoc } from '@firebase/firestore';
+import { addDoc, arrayUnion, doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
 
 @Component({
   selector: 'app-chat-input',
@@ -204,70 +204,29 @@ export class ChatInputComponent implements OnInit {
   }
 
 
-  // async checkExistingIdsAddMessage(messageInput: string, person: User) {
-  //   const dmIdUser1First = this.dmService.getDirectMessageId(person.id, this.currentUser.id);
-  //   const dmIdUser2First = this.dmService.getDirectMessageId(this.currentUser.id, person.id);
-  //   const dmDocRefUser1First = doc(this.dmService.directMessageCollection, dmIdUser1First);
-  //   const dmDocRefUser2First = doc(this.dmService.directMessageCollection, dmIdUser2First);
-  //   const user1FirstDoc = await getDoc(dmDocRefUser1First);
-  //   const user2FirstDoc = await getDoc(dmDocRefUser2First);
-  //   // if (user1FirstDoc.exists()) {
-  //   //   this.setDocRef(dmIdUser1First, user1FirstDoc, dmDocRefUser1First);
-  //   // } else if (user2FirstDoc.exists()) {
-  //   //   this.setDocRef(dmIdUser2First, user2FirstDoc, dmDocRefUser2First);
-  //   // } else {
-  //   //   await this.createDocRef();
-  //   // }
-
-  //   if (user1FirstDoc.exists()) {
-  //     await updateDoc(
-  //       doc(this.dmService.directMessageCollection, dmIdUser1First),
-  //       { content: messageInput}
-  //     );
-  //   } else if (user2FirstDoc.exists()) {
-  //     await updateDoc(
-  //       doc(this.dmService.directMessageCollection, dmIdUser2First),
-  //       { content: messageInput}
-  //     );
-  //   }
-  // }
-
   async checkExistingIdsAddMessage(messageInput: string, person: User) {
-    const dmIdUser1First = this.dmService.getDirectMessageId(person.id, this.currentUser.id);
-    const dmIdUser2First = this.dmService.getDirectMessageId(this.currentUser.id, person.id);
-    const dmDocRefUser1First = doc(this.dmService.directMessageCollection, dmIdUser1First);
-    const dmDocRefUser2First = doc(this.dmService.directMessageCollection, dmIdUser2First);
-    const user1FirstDoc = await getDoc(dmDocRefUser1First);
-    const user2FirstDoc = await getDoc(dmDocRefUser2First);
+    const dmId = this.dmService.getDirectMessageId(this.currentUser.id, person.id);
+    const dmDocRef = doc(this.dmService.directMessageCollection, dmId);
+    const dmDoc = await getDoc(dmDocRef);
 
-    // Neue Nachricht als Objekt mit Timestamp, Sender etc.
     const newMessage = {
       threadId: '',
       message: messageInput,
       sender: this.currentUser.id,
       timestamp: Timestamp.now(),
       reactions: [],
-      // Weitere Felder je nach DM-Schnittstelle
     };
 
-
-
-
-    if (user1FirstDoc.exists()) {
-      // Füge Nachricht zum bestehenden content-Array hinzu (nicht ersetzen!)
-      await updateDoc(dmDocRefUser1First, {
-        content: arrayUnion(newMessage) // WICHTIG: `arrayUnion` aus Firestore importieren
-      });
-    } else if (user2FirstDoc.exists()) {
-      await updateDoc(dmDocRefUser2First, {
+    if (dmDoc.exists()) {
+      await updateDoc(dmDocRef, {
         content: arrayUnion(newMessage)
       });
     } else {
-      // Erstelle ein neues DM-Dokument, falls keine Konversation existiert
-      await addDoc(this.dmService.directMessageCollection, {
+      await setDoc(dmDocRef, {
+        id: dmId, // Explizite ID-Zuweisung
         users: [this.currentUser.id, person.id],
-        content: [newMessage], // Initialer Array mit erster Nachricht
-        // Weitere Metadaten...
+        content: [newMessage],
+        createdAt: Timestamp.now()
       });
     }
   }
