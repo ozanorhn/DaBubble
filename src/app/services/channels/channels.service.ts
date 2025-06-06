@@ -1,4 +1,4 @@
-import { effect, Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { Channel } from '../../classes/channel.class';
 import { Firestore, collection, addDoc, updateDoc } from '@angular/fire/firestore';
 import { doc, onSnapshot } from "firebase/firestore";
