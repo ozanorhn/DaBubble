@@ -49,7 +49,7 @@ export class AddChannelComponent {
   }
 
   channelNameExists(): boolean {
-    const name = this.channelService.createChannel.name?.trim().toLowerCase();
+    const name = this.channelService.channelTemplate.name?.trim().toLowerCase();
     if (!name) return false;
     return this.channelService.channels.some(channel => channel.name?.trim().toLowerCase() === name);
   }

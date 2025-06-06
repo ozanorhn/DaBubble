@@ -50,7 +50,7 @@ export class AddMembersComponent implements OnInit {
 
 
   applyFilters() {
-    this.channelMembers = this.channelService.channels[this.channelService.currentIndex()]?.members;
+    this.channelMembers = this.channelService.channels[this.channelService.selectedChannelIndex()]?.members;
     this.filterdUsers = this.userService.users.filter(user =>
       !this.channelMembers.some(channelUser => channelUser === user.id)
     );
@@ -102,9 +102,9 @@ export class AddMembersComponent implements OnInit {
 
 
   async addUser() {
-    console.log('Current Channel', this.channelService.channels[this.channelService.currentIndex()]);
-    let channelId: string = this.channelService.channels[this.channelService.currentIndex()].id
-    let channelData = this.channelService.channels[this.channelService.currentIndex()]
+    console.log('Current Channel', this.channelService.channels[this.channelService.selectedChannelIndex()]);
+    let channelId: string = this.channelService.channels[this.channelService.selectedChannelIndex()].id
+    let channelData = this.channelService.channels[this.channelService.selectedChannelIndex()]
     channelData.members.push(this.addMember.id)
     await updateDoc(
       doc(this.channelService.channelsCollection, channelId),
@@ -118,7 +118,7 @@ export class AddMembersComponent implements OnInit {
 
 
   get currentChannelName(): string | null {
-  const index = this.channelService.currentIndex();
+  const index = this.channelService.selectedChannelIndex();
   const channels = this.channelService.channels;
   return channels && channels[index] ? channels[index].name : null;
 }

@@ -36,7 +36,7 @@ export class OverlayService {
 
   addUserOverlay() {
     this.hideAddUser = !this.hideAddUser;
-    this.channelsService.createChannel.members = [];
+    this.channelsService.channelTemplate.members = [];
   }
 
 

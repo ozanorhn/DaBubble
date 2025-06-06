@@ -29,7 +29,7 @@ export class ConfirmLeaveChannelComponent {
 
 
   async leaveChannel() {
-    let currentChannel = this.channelService.channels[this.channelService.currentIndex()]
+    let currentChannel = this.channelService.channels[this.channelService.selectedChannelIndex()]
     let idToRemove = this.currentUser?.id
     const updatedIds = currentChannel.members.filter(id => id !== idToRemove);
     console.log(updatedIds);

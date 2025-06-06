@@ -41,7 +41,7 @@ export class MembersComponent {
 
   get currentChannelMembers(): string[] {
   const channels = this.channelService.channels;
-  const index = this.channelService.currentIndex();
+  const index = this.channelService.selectedChannelIndex();
   return channels?.[index]?.members ?? [];
 }
 

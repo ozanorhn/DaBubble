@@ -13,11 +13,11 @@ import { MainNavService } from '../../pageServices/navigates/main-nav.service';
   providedIn: 'root'
 })
 export class DirectMessagesService implements OnDestroy {
-  otherUser: User = new User();
-  docRef: DocumentReference<DocumentData, DocumentData> | undefined;
+  chatPartner: User = new User();
+  currentConversationRef: DocumentReference<DocumentData, DocumentData> | undefined;
   currentUser;
-  directMessageCollection;
-  currentDMIndex: number = 0;
+  dmsCollection;
+  selectedMessageIndex: number = 0;
   mobile = false;
   dmClicked = signal(false);
 
@@ -49,7 +49,7 @@ export class DirectMessagesService implements OnDestroy {
     public threadDMsService: ThreadDMsService,
     public mainNavService: MainNavService
   ) {
-    this.directMessageCollection = collection(this.firestore, 'directMessages');
+    this.dmsCollection = collection(this.firestore, 'directMessages');
     this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
@@ -68,21 +68,21 @@ export class DirectMessagesService implements OnDestroy {
 
   /**
    * Opens or creates a DM conversation with another user
-   * @param {User} otherUser - The user to start conversation with
+   * @param {User} chatPartner - The user to start conversation with
    */
-  async openDMs(otherUser: User) {
+  async openDMs(chatPartner: User) {
     this.dmClicked.set(true);
     this.cleanupSnapshot();
     this.clearDm();
-    this.otherUser = otherUser;
+    this.chatPartner = chatPartner;
     await this.checkExistingIds();
     if (this.mobile) {
       this.mainNavService.nav.set(false);
       this.mainNavService.showAltLogo = false;
     }
-    if (!this.docRef) {
-      let tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
-      this.docRef = doc(this.directMessageCollection, tempId);
+    if (!this.currentConversationRef) {
+      let tempId = this.getDirectMessageId(this.chatPartner.id, this.currentUser.id);
+      this.currentConversationRef = doc(this.dmsCollection, tempId);
     }
     this.setupRealtimeListener();
   }
@@ -92,7 +92,7 @@ export class DirectMessagesService implements OnDestroy {
   * Clears current DM conversation data
   */
   clearDm() {
-    this.docRef = undefined;
+    this.currentConversationRef = undefined;
     this.directMessage = new DirectMessage({
       id: '',
       participants: {
@@ -119,9 +119,9 @@ export class DirectMessagesService implements OnDestroy {
   * Sets up realtime listener for DM conversation updates
   */
   private setupRealtimeListener(): void {
-    if (!this.docRef) return;
+    if (!this.currentConversationRef) return;
 
-    this.unsubscribeSnapshot = onSnapshot(this.docRef, (docSnapshot) => {
+    this.unsubscribeSnapshot = onSnapshot(this.currentConversationRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
         this.directMessage = new DirectMessage({
@@ -140,10 +140,10 @@ export class DirectMessagesService implements OnDestroy {
    * Checks for existing DM conversations between current and other user
    */
   async checkExistingIds() {
-    const dmIdUser1First = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
-    const dmIdUser2First = this.getDirectMessageId(this.currentUser.id, this.otherUser.id);
-    const dmDocRefUser1First = doc(this.directMessageCollection, dmIdUser1First);
-    const dmDocRefUser2First = doc(this.directMessageCollection, dmIdUser2First);
+    const dmIdUser1First = this.getDirectMessageId(this.chatPartner.id, this.currentUser.id);
+    const dmIdUser2First = this.getDirectMessageId(this.currentUser.id, this.chatPartner.id);
+    const dmDocRefUser1First = doc(this.dmsCollection, dmIdUser1First);
+    const dmDocRefUser2First = doc(this.dmsCollection, dmIdUser2First);
     const user1FirstDoc = await getDoc(dmDocRefUser1First);
     const user2FirstDoc = await getDoc(dmDocRefUser2First);
     if (user1FirstDoc.exists()) {
@@ -160,14 +160,14 @@ export class DirectMessagesService implements OnDestroy {
    * Creates a new Firestore document for a direct message conversation.
    */
   async createDocRef() {
-    const tempId = this.getDirectMessageId(this.otherUser.id, this.currentUser.id);
+    const tempId = this.getDirectMessageId(this.chatPartner.id, this.currentUser.id);
     this.directMessage.id = tempId;
-    this.docRef = doc(this.directMessageCollection, tempId);
-    await setDoc(this.docRef, {
+    this.currentConversationRef = doc(this.dmsCollection, tempId);
+    await setDoc(this.currentConversationRef, {
       id: tempId,
       participants: {
         user1: this.currentUser.id,
-        user2: this.otherUser.id
+        user2: this.chatPartner.id
       },
       content: []
     });
@@ -185,7 +185,7 @@ export class DirectMessagesService implements OnDestroy {
       id: id,
       ...doc.data()
     });
-    this.docRef = ref;
+    this.currentConversationRef = ref;
   }
 
 
@@ -196,9 +196,9 @@ export class DirectMessagesService implements OnDestroy {
   async sendDirectMessage(): Promise<void> {
     this.newMessage.timestamp = Timestamp.now();
     this.newMessage.sender = this.currentUser.id;
-    if (this.docRef) {
+    if (this.currentConversationRef) {
       await setDoc(
-        this.docRef,
+        this.currentConversationRef,
         { content: [...this.directMessage.content, this.newMessage] },
         { merge: true }
       );
@@ -221,13 +221,13 @@ export class DirectMessagesService implements OnDestroy {
   * @param {number} index - Index of the message in the DM content array.
   */
   async openDmThread(index: number) {
-    this.currentDMIndex = index;
-    const currentMessage = this.directMessage.content[this.currentDMIndex];
+    this.selectedMessageIndex = index;
+    const currentMessage = this.directMessage.content[this.selectedMessageIndex];
     if (!currentMessage.threadId) {
       await this.threadDMsService.createThreadForDM(currentMessage);
       const newThreadId = this.threadService.currentThread?.().threadId;
       if (newThreadId) {
-        this.directMessage.content[this.currentDMIndex].threadId = newThreadId;
+        this.directMessage.content[this.selectedMessageIndex].threadId = newThreadId;
         this.updateDM(newThreadId)
       }
     } else {
@@ -243,7 +243,7 @@ export class DirectMessagesService implements OnDestroy {
   async updateDM(threadId: any = '') {
     try {
       await updateDoc(
-        doc(this.directMessageCollection, this.directMessage.id),
+        doc(this.dmsCollection, this.directMessage.id),
         { content: this.directMessage.content }
       );
       if (threadId !== '') await this.threadService.loadThreadById(threadId);
@@ -259,8 +259,8 @@ export class DirectMessagesService implements OnDestroy {
   async updateThread() {
     console.log(this.threadService.threadMessage);
     const threadData = await this.threadDMsService.updateThread();
-    this.directMessage.content[this.currentDMIndex].answers = threadData.answers;
-    this.directMessage.content[this.currentDMIndex].lastAnswer = threadData.lastAnswer;
+    this.directMessage.content[this.selectedMessageIndex].answers = threadData.answers;
+    this.directMessage.content[this.selectedMessageIndex].lastAnswer = threadData.lastAnswer;
     this.updateDM(this.threadDMsService.threadService.currentThread().threadId)
   }
 }

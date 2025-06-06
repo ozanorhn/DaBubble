@@ -22,7 +22,7 @@ export class EditDescriptionComponent {
   editDescription() {
     this.edit = !this.edit
     if (!this.edit) {
-      this.channelService.prepareChannelForEdit();
+      this.channelService.updateSelectedChannel();
     }
   }
 

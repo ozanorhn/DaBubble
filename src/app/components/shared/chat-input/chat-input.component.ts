@@ -206,7 +206,7 @@ export class ChatInputComponent implements OnInit {
 
   async checkExistingIdsAddMessage(messageInput: string, person: User) {
     const dmId = this.dmService.getDirectMessageId(this.currentUser.id, person.id);
-    const dmDocRef = doc(this.dmService.directMessageCollection, dmId);
+    const dmDocRef = doc(this.dmService.dmsCollection, dmId);
     const dmDoc = await getDoc(dmDocRef);
 
     const newMessage = {

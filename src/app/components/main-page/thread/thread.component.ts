@@ -40,9 +40,9 @@ export class ThreadComponent {
       };
     } else {
       return {
-        sender: this.dmService.directMessage.content[this.dmService.currentDMIndex].sender,
-        timestamp:  this.dmService.directMessage.content[this.dmService.currentDMIndex].timestamp,
-        message:  this.dmService.directMessage.content[this.dmService.currentDMIndex].message
+        sender: this.dmService.directMessage.content[this.dmService.selectedMessageIndex].sender,
+        timestamp:  this.dmService.directMessage.content[this.dmService.selectedMessageIndex].timestamp,
+        message:  this.dmService.directMessage.content[this.dmService.selectedMessageIndex].message
       };
     }
   }
