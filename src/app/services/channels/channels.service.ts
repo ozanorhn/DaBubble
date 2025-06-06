@@ -15,10 +15,10 @@ export class ChannelsService implements OnInit, OnDestroy {
   selectedChannelIndex = signal<number>(0);
   channelsCollection;
   choiceMembers = signal(false);
-  loading = true;
+  isLoadingChannels = true;
   private channelsSnapshotUnsubscribe!: () => void;
   currentUser;
-  createChannel = new Channel();
+  channelTemplate = new Channel();
 
 
   /**
@@ -44,7 +44,7 @@ export class ChannelsService implements OnInit, OnDestroy {
 
 
   resetCreateChannel() {
-    this.createChannel = new Channel({
+    this.channelTemplate = new Channel({
       createdBy: this.currentUser.id,
       members: [this.currentUser.id] // Immer den aktuellen User als Mitglied hinzufügen
     });
@@ -68,7 +68,7 @@ export class ChannelsService implements OnInit, OnDestroy {
         data.id = doc.id;
         return data;
       })
-      this.loading = false;
+      this.isLoadingChannels = false;
       console.log('Channels updated:', this.channels); // 👈 Fügen Sie diesen Log hinzu
     })
   }
@@ -84,18 +84,18 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-  async addChannel() {
-    if (!this.createChannel.members.includes(this.currentUser.id)) {
-      this.createChannel.members.push(this.currentUser.id);
+  async createNewChannel() {
+    if (!this.channelTemplate.members.includes(this.currentUser.id)) {
+      this.channelTemplate.members.push(this.currentUser.id);
     }
 
     if (!this.choiceMembers()) {
       const allUserIds = this.userService.users.map(user => user.id);
-      this.createChannel.members = [...new Set([...allUserIds, this.currentUser.id])];
+      this.channelTemplate.members = [...new Set([...allUserIds, this.currentUser.id])];
     }
 
     try {
-      await addDoc(this.channelsCollection, this.createChannel.toJSON());
+      await addDoc(this.channelsCollection, this.channelTemplate.toJSON());
     } catch (error) {
       console.error('Fehler beim Erstellen des Channels:', error);
     }
@@ -105,7 +105,7 @@ export class ChannelsService implements OnInit, OnDestroy {
   /**
    * Prepares channel data for editing and updates Firestore
    */
-  async prepareChannelForEdit() {
+  async updateSelectedChannel() {
     const index = this.selectedChannelIndex();
     const channel = this.channels[index];
     const channelData = {
@@ -178,9 +178,9 @@ export class ChannelsService implements OnInit, OnDestroy {
   */
   toggleUserSelection(user: User) {
     if (this.isUserSelected(user)) {
-      this.createChannel.members = this.createChannel.members.filter(id => id !== user.id);
+      this.channelTemplate.members = this.channelTemplate.members.filter(id => id !== user.id);
     } else {
-      this.createChannel.members.push(user.id);
+      this.channelTemplate.members.push(user.id);
     }
   }
 
@@ -191,13 +191,13 @@ export class ChannelsService implements OnInit, OnDestroy {
    * @returns {boolean} True if user is already selected, false otherwise
    */
   isUserSelected(user: User): boolean {
-    return this.createChannel.members.includes(user.id);
+    return this.channelTemplate.members.includes(user.id);
   }
 
   public async waitUntilChannelsLoaded(): Promise<void> {
     return new Promise(resolve => {
       const check = () => {
-        if (!this.loading && this.channels.length > 0) {
+        if (!this.isLoadingChannels && this.channels.length > 0) {
           resolve();
         } else {
           setTimeout(check, 100); // prüfe alle 100ms, bis geladen

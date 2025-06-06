@@ -45,7 +45,7 @@ export class EditNameComponent {
         return;
       }
       this.nameError = false;
-      this.channelService.prepareChannelForEdit();
+      this.channelService.updateSelectedChannel();
     }
     this.edit = !this.edit;
   }

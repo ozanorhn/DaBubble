@@ -55,13 +55,13 @@ export class AddUserComponent {
       choiceUser.checked = true;
       this.choiceInput = true;
       this.channelService.choiceMembers.set(true);
-      this.channelService.createChannel.members = [this.currentUser.id];
+      this.channelService.channelTemplate.members = [this.currentUser.id];
     }
   }
 
 
   createChannelAndClose() {
-    this.channelService.addChannel();
+    this.channelService.createNewChannel();
     this.overlayService.addUserOverlay();
     this.channelService.resetCreateChannel();
   }
