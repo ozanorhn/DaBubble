@@ -30,13 +30,13 @@ export class AuthService {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
 
-      if (!user.emailVerified) {
-
-        const error: any = new Error('E-Mail nicht verifiziert. Bitte überprüfe dein Postfach.');
-        error.code = 'auth/email-not-verified';
-        throw error;
-
-      }
+      /*   if (!user.emailVerified) {
+  
+          const error: any = new Error('E-Mail nicht verifiziert. Bitte überprüfe dein Postfach.');
+          error.code = 'auth/email-not-verified';
+          throw error;
+  
+        } */
 
       console.log('Login erfolgreich:', user.email);
       return user;
