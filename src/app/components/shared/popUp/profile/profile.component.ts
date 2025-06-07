@@ -76,6 +76,6 @@ export class ProfileComponent {
      this.mainNavService.openChannel(true);
         this.dmService.openDMs(profileObj);
         this.mainNavService.markedUser(profileObj);
-        this.overlayService.profileOverlay(true, this.currentUser)
+        this.overlayService.profileOverlay(true, this.userService.currentUser)
   }
 }
