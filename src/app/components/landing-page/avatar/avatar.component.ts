@@ -39,7 +39,7 @@ export class AvatarComponent {
       this.userService.setTempUser({
         avatar: `/assets/imgs/avatar${this.currentAvatar}.svg`,
       });
-      this.authService.registerUser(); // add und regist
+      this.authService.completeUserRegistration(); // add und regist
   
       console.log('Konto erstellt');
       this.openMessage();
@@ -63,7 +63,7 @@ export class AvatarComponent {
     });
 
     try {
-      await this.authService.registerUser();
+      await this.authService.completeUserRegistration();
       this.openMessage('Bestätigungs-E-Mail gesendet. Bitte Postfach prüfen.');
       setTimeout(() => {
         this.landing.landing.set('login');

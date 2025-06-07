@@ -36,7 +36,7 @@ export class LandingPageComponent {
     public landing: LandingPageService,
     public authService: AuthService
   ) {
-    // authService.getCurrentUser()
+    // authService.loadCurrentUserFromStorage()
   }
 
   ngOnInit() {

@@ -88,14 +88,14 @@ export class MainPageComponent implements AfterViewInit {
     public authService: AuthService,
     private router: Router
   ) {
-    if (!authService.logedIn) {
-      authService.getCurrentUser();
+    if (!authService.isLoggedIn) {
+      authService.loadCurrentUserFromStorage();
       if (!userService.currentUser.id) {
         this.router.navigate(['/']);
       }
     }
     this.updateIsMobile();
-    // userService.getCurrentUser()
+    // userService.loadCurrentUserFromStorage()
     effect(() => {
       const showChannel = this.navService.channel();
       const showThread = this.navService.thread();

@@ -24,7 +24,7 @@ export class MainNavService {
   amountChannelReactions = signal(4);
   amountThreadReactions = signal(4);
   channelClicked = signal(false);
-  UserMarked = new User();
+  selectedUser = new User();
   ChannelMarked = new Channel();
 
 
@@ -219,10 +219,10 @@ export class MainNavService {
 
 
   markedUser(user: User) {
-    if (this.UserMarked.name !== user.name) {
-      this.UserMarked = user
+    if (this.selectedUser.name !== user.name) {
+      this.selectedUser = user
     } else {
-      this.UserMarked = new User();
+      this.selectedUser = new User();
     }
     this.ChannelMarked = new Channel();
   }
@@ -234,7 +234,7 @@ export class MainNavService {
     } else {
       this.ChannelMarked = new Channel();
     }
-    this.UserMarked = new User();
+    this.selectedUser = new User();
   }
 
 

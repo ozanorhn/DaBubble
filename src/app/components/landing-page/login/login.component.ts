@@ -36,8 +36,8 @@ export class LoginComponent {
     // public channelsService: ChannelsService
     private auth: Auth,
   ) {
-    if (!authService.logedIn) {
-      authService.getCurrentUser();
+    if (!authService.isLoggedIn) {
+      authService.loadCurrentUserFromStorage();
       if (userService.currentUser.id) {
         this.router.navigate(['/main']);
       }
@@ -106,9 +106,9 @@ export class LoginComponent {
   }
 
 
-  async googleLogin() {
+  async signInWithGoogle() {
     try {
-      await this.authService.googleLogin();
+      await this.authService.signInWithGoogle();
       this.router.navigate(['/main']);
     } catch (error: any) {
       console.error('Fehler beim Google-Login:', error);

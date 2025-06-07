@@ -23,6 +23,6 @@ export class LogOutComponent {
 
   logOut() {
     this.usersService.currentUser = new User();
-    this.authService.logedIn = false;
+    this.authService.isLoggedIn = false;
   }
 }
