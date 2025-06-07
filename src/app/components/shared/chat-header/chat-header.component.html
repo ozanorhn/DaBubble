@@ -40,7 +40,8 @@
       class="absolute h-48 border border-black min-w-[300px] bg-white rounded-[30px] bottom-[-180px] p-4 overflow-auto">
       <ul>
         @for (item of filterService.filteredNewMessageResults(); track $index) {
-        <li (click)="filterService.addToSelection(item);filterService.searchNewMessageValue.set('')" class="p-2 cursor-pointer hover:bg-gray-100">
+        <li (click)="filterService.addToSelection(item);filterService.searchNewMessageValue.set('')"
+          class="p-2 cursor-pointer hover:bg-gray-100">
           @if (isUser(item)) {
           <app-user [userInfo]="item"></app-user>
           } @else if (isChannel(item)) {

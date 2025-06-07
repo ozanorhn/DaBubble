@@ -43,7 +43,7 @@ export class ProfileComponent {
     }
     const profileData = this.currentUser.toJSON();
     profileData.name = this.changeName;
-    profileData.avatar = this.overlayService.profileObj.avatar; 
+    profileData.avatar = this.overlayService.profileObj.avatar;
     profileData.password = ''
     console.log(profileData);
 
@@ -59,11 +59,16 @@ export class ProfileComponent {
       console.error('Error updating profile:', error);
     }
   }
- 
+
   selectAvatar(i: number) {
     this.overlayService.profileObj.avatar = `/assets/imgs/avatar${i}.svg`;
   }
-  
+
+
+  updateOnlineStatus(user: User) {
+    return this.userService.isUserOnline(user.online);
+  }
+
 
 }
 
