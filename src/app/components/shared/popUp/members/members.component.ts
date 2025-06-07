@@ -39,11 +39,16 @@ export class MembersComponent {
   }
 
 
+  getUserObj(userId: string): User {
+    return this.usersService.users.find((u) => u.id === userId) || new User();
+  }
+
+
   get currentChannelMembers(): string[] {
-  const channels = this.channelService.channels;
-  const index = this.channelService.selectedChannelIndex();
-  return channels?.[index]?.members ?? [];
-}
+    const channels = this.channelService.channels;
+    const index = this.channelService.selectedChannelIndex();
+    return channels?.[index]?.members ?? [];
+  }
 
 
 }
