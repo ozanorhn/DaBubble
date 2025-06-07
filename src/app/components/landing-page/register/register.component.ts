@@ -33,7 +33,7 @@ export class RegisterComponent {
     this.landing.landing.set('avatar');
   }
 
-  
+
   goBack() {
     this.landing.landing.set('login')
   }

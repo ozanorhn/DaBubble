@@ -1,0 +1,20 @@
+@keyframes elegant-pulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 0 2px rgba(124, 58, 237, 0.1),  
+            0 0 0 4px rgba(124, 58, 237, 0.05); 
+        background-color: #edf0ff;             
+    }
+    50% {
+        box-shadow: 
+            0 0 0 6px rgba(124, 58, 237, 0.15),
+            0 0 0 12px rgba(124, 58, 237, 0);
+        background-color: #f5f7ff;               
+    }
+}
+
+.elegant-pulse-container {
+    animation: elegant-pulse 3s ease-in-out infinite;
+    border-radius: 30px;
+    background-color: #edf0ff;                   
+}

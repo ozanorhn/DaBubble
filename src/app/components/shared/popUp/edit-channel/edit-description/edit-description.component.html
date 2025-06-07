@@ -11,12 +11,12 @@
         }
     </div>
     @if(edit){
-    <textarea [(ngModel)]="channelService.channels[channelService.currentIndex()].description"
+    <textarea [(ngModel)]="channelService.channels[channelService.selectedChannelIndex()].description"
         class="px-5 py-4 h-40 border border-lightpurple rounded-[40px] resize-none" name="" id=""></textarea>
     } @else {
     <p>
         @if (channelService.channels.length > 0) {
-        {{channelService.channels[channelService.currentIndex()].description}}
+        {{channelService.channels[channelService.selectedChannelIndex()].description}}
         }
     </p>
     }
@@ -25,7 +25,7 @@
     <div class="flex flex-col gap-3 ">
         <span class="font-bold">Erstellt von</span>
         @if (channelService.channels.length > 0) {
-        <span class="text-2xl text-purple1"> {{ userService.getUserById2(channelService.channels[channelService.currentIndex()].createdBy)?.name}}</span>
+        <span class="text-2xl text-purple1"> {{ userService.getUserById2(channelService.channels[channelService.selectedChannelIndex()].createdBy)?.name}}</span>
         }
     </div>
 </div>

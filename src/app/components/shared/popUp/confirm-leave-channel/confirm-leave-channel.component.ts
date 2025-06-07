@@ -3,7 +3,7 @@ import { OverlayService } from '../../../../pageServices/overlays/overlay.servic
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { ChannelsService } from '../../../../services/channels/channels.service';
 import { User } from '../../../../classes/user.class';
-import { doc, updateDoc } from '@angular/fire/firestore';
+import { deleteDoc, doc, updateDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-confirm-leave-channel',
@@ -29,18 +29,21 @@ export class ConfirmLeaveChannelComponent {
 
 
   async leaveChannel() {
-    let currentChannel = this.channelService.channels[this.channelService.currentIndex()]
+    let currentChannel = this.channelService.channels[this.channelService.selectedChannelIndex()]
     let idToRemove = this.currentUser?.id
     const updatedIds = currentChannel.members.filter(id => id !== idToRemove);
     console.log(updatedIds);
 
-    await updateDoc(
-          doc(this.channelService.channelsCollection, currentChannel.id),
-          {
-            members: updatedIds
-          }
-        );
-
+    if (updatedIds.length > 0) {
+      await updateDoc(
+        doc(this.channelService.channelsCollection, currentChannel.id),
+        {
+          members: updatedIds
+        }
+      );
+    } else {
+      await deleteDoc(doc(this.channelService.channelsCollection, currentChannel.id));
+    }
   }
 
 

@@ -12,17 +12,19 @@ import { AuthService } from '../../../services/auth/auth.service';
 })
 
 export class AvatarComponent {
-   currentAvatar: number = 0;
-   showMessage: boolean = false;
-   userName: string = '';
-   messageText: string = '';
+  currentAvatar: number = 0;
+  showMessage: boolean = false;
+  userName: string = '';
+  messageText: string = '';
 
   constructor(
     public landing: LandingPageService,
     public userService: UsersService,
     public authService: AuthService
-  ) {  const tempUser = this.userService.getTempUser();
-    this.userName = tempUser?.name ?? '';}
+  ) {
+    const tempUser = this.userService.getTempUser();
+    this.userName = tempUser?.name ?? '';
+  }
 
   changeAvatar(i: number) {
     this.currentAvatar = i;
@@ -33,21 +35,21 @@ export class AvatarComponent {
     this.landing.landing.set('register');
   }
 
-/*   goForward() {
-    this.userService.setTempUser({
-      avatar: `/assets/imgs/avatar${this.currentAvatar}.svg`,
-    });
-    this.authService.registerUser(); // add und regist
+  /*   goForward() {
+      this.userService.setTempUser({
+        avatar: `/assets/imgs/avatar${this.currentAvatar}.svg`,
+      });
+      this.authService.registerUser(); // add und regist
+  
+      console.log('Konto erstellt');
+      this.openMessage();
+  
+      setTimeout(() => {
+        this.landing.landing.set('login');
+      }, 3000); // Navigation erfolgt nach 5 Sek.
+    } */
 
-    console.log('Konto erstellt');
-    this.openMessage();
-
-    setTimeout(() => {
-      this.landing.landing.set('login');
-    }, 3000); // Navigation erfolgt nach 5 Sek.
-  } */
-
-  openMessage(message:string) {
+  openMessage(message: string) {
     this.messageText = message;
     this.showMessage = true;
     setTimeout(() => {
