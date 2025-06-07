@@ -20,12 +20,11 @@ import { DirectMessagesService } from '../../../../services/directMessages/direc
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
-
   editProfil = false;
   usersProfil = false;
-  currentUser
   changeName = '';
   avatars = [1, 2, 3, 4, 5, 6, 7, 8];
+
 
   constructor(
     public userService: UsersService,
@@ -34,18 +33,16 @@ export class ProfileComponent {
     public mainNavService: MainNavService,
     public dmService: DirectMessagesService
   ) {
-    const storedUser = this.localStorageS.loadObject('currentUser');
-    this.currentUser = new User(storedUser);
-    this.changeName = this.currentUser.name;
+    this.changeName = this.userService.currentUser.name;
   }
 
 
   async editProfile() {
-    if (!this.currentUser?.id) {
+    if (!this.userService.currentUser.id) {
       console.error('No user ID available');
       return;
     }
-    const profileData = this.currentUser.toJSON();
+    const profileData = this.userService.currentUser.toJSON();
     profileData.name = this.changeName;
     profileData.avatar = this.overlayService.profileObj.avatar;
     profileData.password = ''
@@ -53,17 +50,18 @@ export class ProfileComponent {
 
     try {
       await updateDoc(
-        doc(this.userService.usersCollection, this.currentUser.id),
+        doc(this.userService.usersCollection, this.userService.currentUser.id),
         profileData
       );
       this.localStorageS.saveObject('currentUser', profileData);
-      this.currentUser = new User(profileData);
+      this.userService.currentUser = new User(profileData);
       this.overlayService.profileOverlay(true, profileData);
     } catch (error) {
       console.error('Error updating profile:', error);
     }
   }
 
+  
   selectAvatar(i: number) {
     this.overlayService.profileObj.avatar = `/assets/imgs/avatar${i}.svg`;
   }
@@ -80,8 +78,4 @@ export class ProfileComponent {
         this.mainNavService.markedUser(profileObj);
         this.overlayService.profileOverlay(true, this.currentUser)
   }
-
-
 }
-
-

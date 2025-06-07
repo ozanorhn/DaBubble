@@ -2,7 +2,6 @@ import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
-import { LocalStorageService } from '../localStorage/local-storage.service';
 import { Timestamp } from '@firebase/firestore';
 import { query, where, getDocs } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
@@ -27,17 +26,11 @@ export class UsersService implements OnDestroy {
   }
 
 
-  constructor(
-    public localStorageS: LocalStorageService
-  ) {
+  constructor() {
     this.initUsersListener();
     this.updateOnlineStatus();
   }
 
-
-  getCurrentUser() {
-    this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
-  }
 
   getUsersWithCurrentFirst(): User[] {
     if (!this.currentUser?.id) return this.users;
@@ -68,7 +61,6 @@ export class UsersService implements OnDestroy {
   updateOnlineStatus() {
     if (this.currentUser.id !== this.GuestUser.id) {
       const update = async () => {
-        this.currentUser = new User(this.localStorageS.loadObject('currentUser'));
         if (!this.currentUser.id) return;
         const userRef = doc(this.usersCollection, this.currentUser.id);
         try {

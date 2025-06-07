@@ -24,6 +24,8 @@ import { ConfirmLeaveChannelComponent } from "../shared/popUp/confirm-leave-chan
 import { OnlinePopupComponent } from "../shared/popUp/online-popup/online-popup.component";
 import { UsersService } from '../../services/users/users.service';
 import { DevspaceBtnComponent } from '../shared/devspace-btn/devspace-btn.component';
+import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -54,7 +56,6 @@ import { DevspaceBtnComponent } from '../shared/devspace-btn/devspace-btn.compon
 })
 export class MainPageComponent implements AfterViewInit {
   showMessagesOnly = false;
-  currentUser
   isMobile = false;
 
   @ViewChild('channel') channelRef?: ElementRef;
@@ -83,11 +84,18 @@ export class MainPageComponent implements AfterViewInit {
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService,
     public navService: MainNavService,
-    public userService: UsersService
+    public userService: UsersService,
+    public authService: AuthService,
+    private router: Router
   ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
+    if (!authService.logedIn) {
+      authService.getCurrentUser();
+      if (!userService.currentUser.id) {
+        this.router.navigate(['/']);
+      }
+    }
     this.updateIsMobile();
-    userService.getCurrentUser()
+    // userService.getCurrentUser()
     effect(() => {
       const showChannel = this.navService.channel();
       const showThread = this.navService.thread();
@@ -97,6 +105,7 @@ export class MainPageComponent implements AfterViewInit {
       }, 100);
     });
   }
+
 
 
   ngAfterViewInit(): void {
@@ -139,28 +148,28 @@ export class MainPageComponent implements AfterViewInit {
 
 
 
-/*   updateIsMobile() {
-    this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
-    if (!this.isMobile) {
-      this.mainNavService.showAltLogo = false;
-    }
-  } */
-
-
-    updateIsMobile() {
-      const wasMobile = this.isMobile;
-      this.isMobile = window.innerWidth < 1024;
-  
-      if (!this.isMobile && wasMobile) {
-        this.mainNavService.newMessage = false;
-        this.mainNavService.channel.set(true);
-        this.mainNavService.thread.set(false);
-      }
-    
+  /*   updateIsMobile() {
+      this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
       if (!this.isMobile) {
         this.mainNavService.showAltLogo = false;
       }
+    } */
+
+
+  updateIsMobile() {
+    const wasMobile = this.isMobile;
+    this.isMobile = window.innerWidth < 1024;
+
+    if (!this.isMobile && wasMobile) {
+      this.mainNavService.newMessage = false;
+      this.mainNavService.channel.set(true);
+      this.mainNavService.thread.set(false);
     }
+
+    if (!this.isMobile) {
+      this.mainNavService.showAltLogo = false;
+    }
+  }
 
 
 }

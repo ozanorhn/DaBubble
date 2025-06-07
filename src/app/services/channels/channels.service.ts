@@ -5,7 +5,6 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { signal } from '@angular/core';
 import { UsersService } from '../users/users.service';
 import { User } from '../../classes/user.class';
-import { LocalStorageService } from '../localStorage/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +16,6 @@ export class ChannelsService implements OnInit, OnDestroy {
   choiceMembers = signal(false);
   isLoadingChannels = true;
   private channelsSnapshotUnsubscribe!: () => void;
-  currentUser;
   channelTemplate = new Channel();
 
 
@@ -28,13 +26,9 @@ export class ChannelsService implements OnInit, OnDestroy {
    */
   constructor(
     public firestore: Firestore,
-    public userService: UsersService,
-    public localStorageS: LocalStorageService
+    public userService: UsersService
   ) {
-    // this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-    this.currentUser = userService.currentUser;
     this.channelsCollection = collection(this.firestore, 'channels');
-    // this.setupChannelsListener();
   }
 
 
@@ -45,14 +39,14 @@ export class ChannelsService implements OnInit, OnDestroy {
 
   resetCreateChannel() {
     this.channelTemplate = new Channel({
-      createdBy: this.currentUser.id,
-      members: [this.currentUser.id] // Immer den aktuellen User als Mitglied hinzufügen
+      createdBy: this.userService.currentUser.id,
+      members: [this.userService.currentUser.id] // Immer den aktuellen User als Mitglied hinzufügen
     });
   }
 
 
   isCurrentUserMember(channel: Channel): boolean {
-    return channel.members.includes(this.currentUser.id);
+    return channel.members.includes(this.userService.currentUser.id);
   }
 
 
@@ -85,13 +79,13 @@ export class ChannelsService implements OnInit, OnDestroy {
 
 
   async createNewChannel() {
-    if (!this.channelTemplate.members.includes(this.currentUser.id)) {
-      this.channelTemplate.members.push(this.currentUser.id);
+    if (!this.channelTemplate.members.includes(this.userService.currentUser.id)) {
+      this.channelTemplate.members.push(this.userService.currentUser.id);
     }
 
     if (!this.choiceMembers()) {
       const allUserIds = this.userService.users.map(user => user.id);
-      this.channelTemplate.members = [...new Set([...allUserIds, this.currentUser.id])];
+      this.channelTemplate.members = [...new Set([...allUserIds, this.userService.currentUser.id])];
     }
 
     try {

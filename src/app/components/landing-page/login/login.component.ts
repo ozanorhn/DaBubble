@@ -35,7 +35,14 @@ export class LoginComponent {
     public localStorageS: LocalStorageService,
     // public channelsService: ChannelsService
     private auth: Auth,
-  ) { }
+  ) {
+    if (!authService.logedIn) {
+      authService.getCurrentUser();
+      if (userService.currentUser.id) {
+        this.router.navigate(['/main']);
+      }
+    }
+  }
 
 
   getErrorMessage(code: string): string {
@@ -79,7 +86,9 @@ export class LoginComponent {
       }
 
       this.userService.currentUser = profile;
-      this.localStorageS.saveObject('currentUser', profile);
+      if (!gast) {
+        this.localStorageS.saveObject('currentUser', profile);
+      }
       this.router.navigate(['/main']);
 
     } catch (error: any) {
