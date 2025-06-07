@@ -20,13 +20,14 @@ export class FilterService {
   newMessageChannels: Channel[] = [];
   newMessagePersons: User[] = [];
   searchNewMessageValue = signal('');
+  textareaRef!: ElementRef<HTMLTextAreaElement>;
 
   filteredMembers = computed(() => {
     const search = this.searchMembers().toLowerCase();
     return this.filterMembers(search)
   })
-  
-  
+
+
   filteredResults = computed(() => {
     const searchTerm = this.searchValue().toLowerCase();
     if (searchTerm.startsWith('@')) {
@@ -39,8 +40,41 @@ export class FilterService {
       return [...this.filterAll(searchTerm), ...this.filterMessages(searchTerm)];
     }
   });
+
+
+  filteredMessageResults = computed(() => {
+    const tag = this.searchNewTag().toLowerCase();
+    if (!tag) return [];
+
+    if (tag.startsWith('@')) {
+      return this.filterUsers(tag);
+    } else if (tag.startsWith('#')) {
+      return this.filterChannels(tag);
+    }
+    return [];
+  });
+
   
-  
+  filteredNewMessageResults = computed(() => {
+    const searchTerm = this.searchNewMessageValue().toLowerCase();
+    let results: (User | Channel)[] = [];
+
+    if (searchTerm.startsWith('@')) {
+      results = this.filterUsers(searchTerm);
+    } else if (searchTerm.startsWith('#')) {
+      results = this.filterChannels(searchTerm);
+    } else {
+      results = this.filterAll(searchTerm);
+    }
+
+    // Filter out already selected items
+    return results.filter(item =>
+      !this.newMessagePersons.some(u => u.id === item.id) &&
+      !this.newMessageChannels.some(c => c.id === item.id)
+    );
+  });
+
+
   constructor(
     public messageService: MessagesService,
     public dmService: DirectMessagesService,
@@ -73,7 +107,7 @@ export class FilterService {
       return channelMessages;
     }
   }
-  
+
 
   filterUsers(searchTerm: string) {
     const userSearch = searchTerm.substring(1);
@@ -102,27 +136,12 @@ export class FilterService {
   }
 
 
-
   filterMembers(searchMembers: string) {
     return this.users.users.filter(user =>
       user.name.toLowerCase().includes(searchMembers) &&
       user.id !== this.usersService.currentUser.id // CurrentUser ausschließen
     );
   }
-
-
-  filteredMessageResults = computed(() => {
-    const tag = this.searchNewTag().toLowerCase();
-    if (!tag) return [];
-
-    if (tag.startsWith('@')) {
-      return this.filterUsers(tag);
-    } else if (tag.startsWith('#')) {
-      return this.filterChannels(tag);
-    }
-    return [];
-  });
-
 
 
   getActiveTag(text: string): string | null {
@@ -133,6 +152,7 @@ export class FilterService {
     return match ? match[1] : null;
   }
 
+
   getCaretPosition(): number {
     if (!this.textareaRef) {
       console.warn('TextareaRef ist noch nicht gesetzt');
@@ -141,16 +161,10 @@ export class FilterService {
     return this.textareaRef.nativeElement.selectionStart;
   }
 
-  textareaRef!: ElementRef<HTMLTextAreaElement>;
 
   setTextareaRef(ref: ElementRef<HTMLTextAreaElement>) {
     this.textareaRef = ref;
   }
-
-
-
-
-
 
 
   isUser(item: any): item is User {
@@ -160,7 +174,6 @@ export class FilterService {
   isChannel(item: any): item is Channel {
     return 'name' in item && 'id' in item; // Anpassen an Ihre Channel-Properties
   }
-
 
 
   addToSelection(item: User | Channel) {
@@ -175,6 +188,7 @@ export class FilterService {
     }
   }
 
+
   removeFromSelection(item: User | Channel) {
     if (this.isUser(item)) {
       this.newMessagePersons = this.newMessagePersons.filter(u => u.id !== item.id);
@@ -182,23 +196,4 @@ export class FilterService {
       this.newMessageChannels = this.newMessageChannels.filter(c => c.id !== item.id);
     }
   }
-
-  filteredNewMessageResults = computed(() => {
-    const searchTerm = this.searchNewMessageValue().toLowerCase();
-    let results: (User | Channel)[] = [];
-
-    if (searchTerm.startsWith('@')) {
-      results = this.filterUsers(searchTerm);
-    } else if (searchTerm.startsWith('#')) {
-      results = this.filterChannels(searchTerm);
-    } else {
-      results = this.filterAll(searchTerm);
-    }
-
-    // Filter out already selected items
-    return results.filter(item =>
-      !this.newMessagePersons.some(u => u.id === item.id) &&
-      !this.newMessageChannels.some(c => c.id === item.id)
-    );
-  });
 }
