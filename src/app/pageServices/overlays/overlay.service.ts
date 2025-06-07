@@ -8,20 +8,18 @@ import { User } from '../../classes/user.class';
   providedIn: 'root'
 })
 export class OverlayService {
-
   hideAddChannel = true;
   hideAddUser = true;
   hideEditChannel = true;
-
   hideProfileOverlay = true;
   usersProfilView = false;
   editProfil = false;
   profileObj: User = new User();
-
   hideLogoutOverlay = true;
   hideMembersOverlay = true;
   hideAddMembersOverlay = true;
   hideConfirmLeaveChannel = true;
+
 
   constructor(
     public channelsService: ChannelsService,
@@ -77,6 +75,4 @@ export class OverlayService {
   confirmLeaveChannel() {
     this.hideConfirmLeaveChannel = !this.hideConfirmLeaveChannel
   }
-
-
 }

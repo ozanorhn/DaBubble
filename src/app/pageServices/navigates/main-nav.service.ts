@@ -23,6 +23,9 @@ export class MainNavService {
   currentThreadWidth = 0;
   amountChannelReactions = signal(4);
   amountThreadReactions = signal(4);
+  channelClicked = signal(false);
+  UserMarked = new User();
+  ChannelMarked = new Channel();
 
 
   constructor(
@@ -37,29 +40,8 @@ export class MainNavService {
   }
 
 
-  /* toggleAltLogo() {
-    this.showAltLogo = !this.showAltLogo;
-  }
-
-  showLogoText(): boolean {
-    return !this.showAltLogo;
-  } */
-
-
-  /**
-  * Toggles navigation visibility
-  */
-  // toggleNav() {
-  //   if (this.nav) {
-  //     this.closeNav();
-  //   } else {
-  //     this.openNav();
-  //   }
-  // }
-
   toggleNav() {
     this.nav.set(!this.nav());
-    // Verzögerung für Animation
     setTimeout(() => {
       if (this.nav()) this.openNav();
       else this.closeNav();
@@ -197,7 +179,7 @@ export class MainNavService {
     }
   }
 
-  channelClicked = signal(false);
+
   /**
    * Opens channel view
    * @param {boolean} [dm=false] - Whether to open direct messages
@@ -233,12 +215,7 @@ export class MainNavService {
     } else if (this.bigScreen()) {
       this.thread.set(true);
     }
-    // this.setHeaderMembers();
   }
-
-
-  UserMarked = new User();
-  ChannelMarked = new Channel();
 
 
   markedUser(user: User) {
