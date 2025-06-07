@@ -55,7 +55,6 @@ export class ChannelsService implements OnInit, OnDestroy {
    * Updates local channels array when changes occur
    */
   public setupChannelsListener() {
-
     this.channelsSnapshotUnsubscribe = onSnapshot(this.channelsCollection, (snapshot) => {
       this.channels = snapshot.docs.map((doc) => {
         const data = doc.data() as Channel;
@@ -82,12 +81,10 @@ export class ChannelsService implements OnInit, OnDestroy {
     if (!this.channelTemplate.members.includes(this.userService.currentUser.id)) {
       this.channelTemplate.members.push(this.userService.currentUser.id);
     }
-
     if (!this.choiceMembers()) {
       const allUserIds = this.userService.users.map(user => user.id);
       this.channelTemplate.members = [...new Set([...allUserIds, this.userService.currentUser.id])];
     }
-
     try {
       await addDoc(this.channelsCollection, this.channelTemplate.toJSON());
     } catch (error) {
@@ -136,18 +133,6 @@ export class ChannelsService implements OnInit, OnDestroy {
   }
 
 
-
-  /**
-  * Sets the current channel
-  * @param {Channel} obj - The channel to open
-  * @param {number} i - The index of the channel
-  */
-  // openChannel(obj: Channel, i: number) {
-  //   if (obj) {
-  //     this.selectedChannelIndex.set(i);
-  //   }
-  // }
-
   openChannel(obj: Channel) {
     let channelIndex = this.channels.findIndex(channel => channel.id == obj.id)
     if (obj && channelIndex != -1) {
@@ -188,6 +173,7 @@ export class ChannelsService implements OnInit, OnDestroy {
     return this.channelTemplate.members.includes(user.id);
   }
 
+
   public async waitUntilChannelsLoaded(): Promise<void> {
     return new Promise(resolve => {
       const check = () => {
@@ -200,5 +186,4 @@ export class ChannelsService implements OnInit, OnDestroy {
       check();
     });
   }
-
 }
