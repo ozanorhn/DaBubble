@@ -7,7 +7,6 @@ import { User } from '../../../classes/user.class';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
 import { UserComponent } from '../user/user.component';
 import { DirectMessagesService } from '../../../services/directMessages/direct-messages.service';
-import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { ChannelsService } from '../../../services/channels/channels.service';
 import { MessagesService } from '../../../services/messages/messages.service';
 import { Message } from '../../../classes/message.class';
@@ -24,22 +23,17 @@ import { UsersService } from '../../../services/users/users.service';
   styleUrl: './search.component.scss'
 })
 export class SearchComponent {
-
   devspace = ''
 
-  currentUser;
 
   constructor(
     public filterService: FilterService,
     public mainNavService: MainNavService,
     public dmService: DirectMessagesService,
-    public localStorageS: LocalStorageService,
     public channelService: ChannelsService,
     public messageService: MessagesService,
     public usersService: UsersService
-  ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-  }
+  ) { }
 
   user = new User();
   channel = new Channel();
@@ -71,7 +65,7 @@ export class SearchComponent {
 
 
   isMember(channel: Channel): boolean {
-    return channel.members.some(memberId => memberId === this.currentUser.id);
+    return channel.members.some(memberId => memberId === this.usersService.currentUser.id);
   }
 
 
@@ -98,7 +92,7 @@ export class SearchComponent {
         }, 500);
       }
     } else if (item.type === 'dmMessage') {
-      const userId = item.sender === this.currentUser.id ?
+      const userId = item.sender === this.usersService.currentUser.id ?
         this.dmService.directMessage.participants.user2 :
         this.dmService.directMessage.participants.user1;
       const user = this.usersService.users.find(u => u.id === userId);

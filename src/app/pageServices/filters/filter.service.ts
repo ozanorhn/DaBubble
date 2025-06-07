@@ -1,7 +1,6 @@
 import { computed, ElementRef, inject, Injectable, signal } from '@angular/core';
 import { UsersService } from '../../services/users/users.service';
 import { ChannelsService } from '../../services/channels/channels.service';
-import { LocalStorageService } from '../../services/localStorage/local-storage.service';
 import { User } from '../../classes/user.class';
 import { Channel } from '../../classes/channel.class';
 import { MessagesService } from '../../services/messages/messages.service';
@@ -12,24 +11,19 @@ import { DirectMessagesService } from '../../services/directMessages/direct-mess
 })
 export class FilterService {
 
-  currentUser;
-  // isChatInputActive = signal(false);
   users = inject(UsersService);
   channels = inject(ChannelsService);
   searchValue = signal('');
   searchNewTag = signal('');
   searchMembers = signal('');
   channelArray = this.channels.channels;
-  // currentSearch: 'user' | 'channel' | null = null;
 
 
   constructor(
-    private localStorageS: LocalStorageService,
     public messageService: MessagesService,
-    public dmService: DirectMessagesService
-  ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-  }
+    public dmService: DirectMessagesService,
+    public usersService: UsersService
+  ) { }
 
 
   // filteredResults = computed(() => {
@@ -133,7 +127,7 @@ export class FilterService {
   filterMembers(searchMembers: string) {
     return this.users.users.filter(user =>
       user.name.toLowerCase().includes(searchMembers) &&
-      user.id !== this.currentUser.id // CurrentUser ausschließen
+      user.id !== this.usersService.currentUser.id // CurrentUser ausschließen
     );
   }
 

@@ -7,5 +7,5 @@
             [ngClass]="{'bg-online' :isOnline, 'bg-offline' : !isOnline}"></span>
     </div>
 
-    <span>{{userInfo.name}} @if(userInfo.name == currentUser.name){(DU)} </span>
+    <span>{{userInfo.name}} @if(userInfo.name == userService.currentUser.name){(DU)} </span>
 </section>

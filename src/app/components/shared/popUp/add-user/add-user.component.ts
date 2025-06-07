@@ -5,10 +5,7 @@ import { ChannelsService } from '../../../../services/channels/channels.service'
 import { FormsModule } from '@angular/forms';
 import { FilterService } from '../../../../pageServices/filters/filter.service';
 import { UserComponent } from '../../user/user.component';
-import { Channel } from '../../../../classes/channel.class';
-import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
-import { User } from '../../../../classes/user.class';
-
+import { UsersService } from '../../../../services/users/users.service';
 @Component({
   selector: 'app-add-user',
   imports: [
@@ -21,17 +18,14 @@ import { User } from '../../../../classes/user.class';
 })
 export class AddUserComponent {
 
-  currentUser;
   choiceInput = false
 
   constructor(
     public overlayService: OverlayService,
     public channelService: ChannelsService,
     public filterService: FilterService,
-    public localStorageS: LocalStorageService
-  ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-  }
+    public usersService: UsersService
+  ) { }
 
 
   selectAllMembers() {
@@ -55,7 +49,7 @@ export class AddUserComponent {
       choiceUser.checked = true;
       this.choiceInput = true;
       this.channelService.choiceMembers.set(true);
-      this.channelService.channelTemplate.members = [this.currentUser.id];
+      this.channelService.channelTemplate.members = [this.usersService.currentUser.id];
     }
   }
 

@@ -52,7 +52,7 @@
         <button type="submit" class="flex-1 py-2 text-white rounded-full bg-purple1 hover:bg-purple3">
           Anmelden
         </button>
-        <button (click)="this.localStorageS.saveObject('currentUser', this.userService.GuestUser); login(true)" routerLink="main"
+        <button (click)="login(true)" routerLink="main"
           type="button" class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary">
           Gäste-Login
         </button>
@@ -61,7 +61,7 @@
   </div>
 </div>
 
-<div *ngIf="error?.includes('bestätige deine E-Mail-Adresse')" class="text-center mt-2">
+<div *ngIf="error?.includes('bestätige deine E-Mail-Adresse')" class="mt-2 text-center">
   <button class="text-sm text-purple1 hover:underline" (click)="resendVerificationEmail()">
     E-Mail erneut senden
   </button>
