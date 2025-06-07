@@ -21,9 +21,9 @@ import { UserComponent } from "../user/user.component";
 import { User } from '../../../classes/user.class';
 import { Channel } from '../../../classes/channel.class';
 import { MainNavService } from '../../../pageServices/navigates/main-nav.service';
-import { LocalStorageService } from '../../../services/localStorage/local-storage.service';
 import { Timestamp } from '@angular/fire/firestore';
 import { addDoc, arrayUnion, doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
+import { UsersService } from '../../../services/users/users.service';
 
 @Component({
   selector: 'app-chat-input',
@@ -45,7 +45,6 @@ export class ChatInputComponent implements OnInit {
   showEmojiPicker = false;
 
   newMessageText = '';
-  currentUser;
 
   constructor(
     public messageService: MessagesService,
@@ -54,15 +53,15 @@ export class ChatInputComponent implements OnInit {
     public threadMessagesService: ThreadMessagesService,
     public filterService: FilterService,
     public navService: MainNavService,
-    public localStorageS: LocalStorageService,
+    public usersService: UsersService,
     public dmService: DirectMessagesService
   ) {
     effect(() => {
       const channelClicked = this.navService.channelClicked();
-      const dmClicked = this.directMessageService.dmClicked();
-      if (navService.channelClicked() || directMessageService.dmClicked()) {
+      const isDirectMessageViewActive = this.directMessageService.isDirectMessageViewActive();
+      if (navService.channelClicked() || directMessageService.isDirectMessageViewActive()) {
         navService.channelClicked.set(false);
-        directMessageService.dmClicked.set(false);
+        directMessageService.isDirectMessageViewActive.set(false);
         let id = setTimeout(() => {
           this.focusInput();
           clearTimeout(id);
@@ -73,9 +72,6 @@ export class ChatInputComponent implements OnInit {
       this.focusInput();
       clearTimeout(id);
     }, 100);
-
-
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
   }
 
 
@@ -191,7 +187,7 @@ export class ChatInputComponent implements OnInit {
 
   async sendNewMessages(messageInput: string, channel: Channel) {
     const newMessage = new Message(); // Erstelle eine neue Message-Instanz
-    if (this.currentUser.id) newMessage.sender = this.currentUser.id;
+    if (this.usersService.currentUser.id) newMessage.sender = this.usersService.currentUser.id;
     newMessage.timestamp = Timestamp.now();
     newMessage.message = messageInput;
     newMessage.channelId = channel.id; // Direkt auf die id-Eigenschaft zugreifen
@@ -205,14 +201,14 @@ export class ChatInputComponent implements OnInit {
 
 
   async checkExistingIdsAddMessage(messageInput: string, person: User) {
-    const dmId = this.dmService.getDirectMessageId(this.currentUser.id, person.id);
-    const dmDocRef = doc(this.dmService.directMessageCollection, dmId);
+    const dmId = this.dmService.getDirectMessageId(this.usersService.currentUser.id, person.id);
+    const dmDocRef = doc(this.dmService.dmsCollection, dmId);
     const dmDoc = await getDoc(dmDocRef);
 
     const newMessage = {
       threadId: '',
       message: messageInput,
-      sender: this.currentUser.id,
+      sender: this.usersService.currentUser.id,
       timestamp: Timestamp.now(),
       reactions: [],
     };
@@ -224,7 +220,7 @@ export class ChatInputComponent implements OnInit {
     } else {
       await setDoc(dmDocRef, {
         id: dmId, // Explizite ID-Zuweisung
-        users: [this.currentUser.id, person.id],
+        users: [this.usersService.currentUser.id, person.id],
         content: [newMessage],
         createdAt: Timestamp.now()
       });

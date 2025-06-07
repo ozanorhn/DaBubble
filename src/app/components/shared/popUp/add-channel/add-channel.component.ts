@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { ChannelsService } from '../../../../services/channels/channels.service';
 import { FormsModule } from '@angular/forms';
-import { Channel } from '../../../../classes/channel.class';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
-import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
-import { User } from '../../../../classes/user.class';
 import { CommonModule } from '@angular/common';
 
 
@@ -19,16 +16,12 @@ import { CommonModule } from '@angular/common';
 })
 export class AddChannelComponent {
 
-  currentUser;
   nameError = false;
 
   constructor(
     public overlayService: OverlayService,
     public channelService: ChannelsService,
-    public localStorageS: LocalStorageService
-  ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-  }
+  ) { }
 
 
   closeChannelCreationDialog() {
@@ -49,7 +42,7 @@ export class AddChannelComponent {
   }
 
   channelNameExists(): boolean {
-    const name = this.channelService.createChannel.name?.trim().toLowerCase();
+    const name = this.channelService.channelTemplate.name?.trim().toLowerCase();
     if (!name) return false;
     return this.channelService.channels.some(channel => channel.name?.trim().toLowerCase() === name);
   }

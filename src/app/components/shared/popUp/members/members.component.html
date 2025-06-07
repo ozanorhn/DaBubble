@@ -12,7 +12,7 @@
 
         @for (item of currentChannelMembers; track $index) {
         <app-user [userInfo]="getUser(usersService.getUserById2(item))"
-            (click)="overlayService.profileOverlay( true, item);overlayService.membersOverlay()"></app-user>
+            (click)="overlayService.profileOverlay( true, getUserObj(item));overlayService.membersOverlay()"></app-user>
         }
     </div>
 

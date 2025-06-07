@@ -9,7 +9,6 @@ import { MainNavService } from '../../pageServices/navigates/main-nav.service';
 import { FilterService } from '../../pageServices/filters/filter.service';
 import { ThreadsService } from '../../services/threads/threads.service';
 import { DirectMessagesService } from '../../services/directMessages/direct-messages.service';
-import { LocalStorageService } from '../../services/localStorage/local-storage.service';
 import { ChannelsService } from '../../services/channels/channels.service';
 import { MessagesService } from '../../services/messages/messages.service';
 import { Message } from '../../classes/message.class';
@@ -29,20 +28,15 @@ import { UsersService } from '../../services/users/users.service';
 })
 export class NavigationComponent {
 
-  currentUser;
-
   constructor(
     public threadService: ThreadsService,
     public mainNavService: MainNavService,
     public filterService: FilterService,
     public directMessageService: DirectMessagesService,
-    public localStorageS: LocalStorageService,
     public channelService: ChannelsService,
     public messageService: MessagesService,
     public usersService: UsersService
-  ) {
-    this.currentUser = this.localStorageS.loadObject('currentUser') as User;
-  }
+  ) { }
 
   user = new User();
   channel = new Channel();
@@ -57,12 +51,12 @@ export class NavigationComponent {
   }
 
   isMember(channel: Channel): boolean {
-    return channel.members.some(memberId => memberId === this.currentUser.id);
+    return channel.members.some(memberId => memberId === this.usersService.currentUser.id);
   }
 
 
   clickUser(item: User) {
-    this.directMessageService.openDMs(item);
+    this.directMessageService.openOrCreateDirectMessageConversation(item);
     this.mainNavService.openChannel(true);
     this.filterService.searchValue.set('')
   }
@@ -97,12 +91,12 @@ export class NavigationComponent {
         }, 500);
       }
     } else if (item.type === 'dmMessage') {
-      const userId = item.sender === this.currentUser.id ?
+      const userId = item.sender === this.usersService.currentUser.id ?
         this.directMessageService.directMessage.participants.user2 :
         this.directMessageService.directMessage.participants.user1;
       const user = this.usersService.users.find(u => u.id === userId);
       if (user) {
-        this.directMessageService.openDMs(user);
+        this.directMessageService.openOrCreateDirectMessageConversation(user);
         // Ähnliches Scroll-Verhalten für DMs
       }
     }

@@ -32,7 +32,6 @@ export class MessagesService implements OnDestroy {
   lastDate: Date = new Date();
   date = new Date();
   edit: boolean = false;
-
   unsubscribeFromMessages?: () => void;
 
   message: Message = new Message({
@@ -57,7 +56,7 @@ export class MessagesService implements OnDestroy {
     public threadMessagesService: ThreadMessagesService
   ) {
     this.messageCollection = collection(this.firestore, 'messages');
-    this.channelService.currentIndex();
+    this.channelService.selectedChannelIndex();
     this.date.setDate(this.date.getDate() - 1);
   }
 
@@ -70,6 +69,7 @@ export class MessagesService implements OnDestroy {
   sortMessages(messages: Message[] | DM[]): Message[] | DM[] {
     return messages.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
   }
+  
 
   /**
    * Subscribes to messages for a specific channel and updates the local message array.
@@ -99,7 +99,7 @@ export class MessagesService implements OnDestroy {
     if (this.userService.currentUser.id) this.message.sender = this.userService.currentUser.id;
     this.message.timestamp = Timestamp.now();
     this.message.message = this.messageInput;
-    this.message.channelId = this.channelService.channels[this.channelService.currentIndex()].id;
+    this.message.channelId = this.channelService.channels[this.channelService.selectedChannelIndex()].id;
     try {
       const docRef = await addDoc(this.messageCollection, this.message.toJSON())
       this.messageInput = '';

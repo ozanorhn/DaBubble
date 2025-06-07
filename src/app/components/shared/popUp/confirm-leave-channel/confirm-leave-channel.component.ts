@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
-import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { ChannelsService } from '../../../../services/channels/channels.service';
 import { User } from '../../../../classes/user.class';
-import { doc, updateDoc } from '@angular/fire/firestore';
+import { deleteDoc, doc, updateDoc } from '@angular/fire/firestore';
+import { UsersService } from '../../../../services/users/users.service';
 
 @Component({
   selector: 'app-confirm-leave-channel',
@@ -13,34 +13,29 @@ import { doc, updateDoc } from '@angular/fire/firestore';
 })
 export class ConfirmLeaveChannelComponent {
 
-
-  currentUser;
-
   constructor(
     public overlayService: OverlayService,
-    public localStorageService: LocalStorageService,
     public channelService: ChannelsService,
-  ) {
-    this.currentUser = this.localStorageService.loadObject<User>('currentUser');
-  }
-
-
-
+    public usersService: UsersService
+  ) { }
 
 
   async leaveChannel() {
-    let currentChannel = this.channelService.channels[this.channelService.currentIndex()]
-    let idToRemove = this.currentUser?.id
+    let currentChannel = this.channelService.channels[this.channelService.selectedChannelIndex()]
+    let idToRemove = this.usersService.currentUser?.id
     const updatedIds = currentChannel.members.filter(id => id !== idToRemove);
     console.log(updatedIds);
 
-    await updateDoc(
-          doc(this.channelService.channelsCollection, currentChannel.id),
-          {
-            members: updatedIds
-          }
-        );
-
+    if (updatedIds.length > 0) {
+      await updateDoc(
+        doc(this.channelService.channelsCollection, currentChannel.id),
+        {
+          members: updatedIds
+        }
+      );
+    } else {
+      await deleteDoc(doc(this.channelService.channelsCollection, currentChannel.id));
+    }
   }
 
 

@@ -54,7 +54,7 @@
   <app-edit-channel class="overlay-panel" (click)="$event.stopPropagation()"></app-edit-channel>
 </div>
 
-<div (click)="overlayService.profileOverlay(false, currentUser)" [class.active]="!overlayService.hideProfileOverlay"
+<div (click)="overlayService.profileOverlay(false, userService.currentUser)" [class.active]="!overlayService.hideProfileOverlay"
   class="absolute overlay-backdrop top-0 bottom-0 left-0 right-0 flex items-center justify-center z-[1] bg-[rgba(0,0,0,0.4)]">
   <app-profile (click)="$event.stopPropagation()" class="w-full max-w-lg overlay-panel"></app-profile>
 </div>
@@ -76,6 +76,6 @@
 
 <app-online-popup class="absolute sm:left-10 top-3"></app-online-popup>
 
-@if (channelService.loading) {
+@if (channelService.isLoadingChannels) {
 <app-loading-screen></app-loading-screen>
 }

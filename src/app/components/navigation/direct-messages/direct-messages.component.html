@@ -15,7 +15,7 @@
     @for (userItem of userService.getUsersWithCurrentFirst(); track $index; let i = $index) {
     <li [style.animation-delay]="i * 0.05 + 's'" class="user-item" (click)="
         mainNavService.openChannel(true);
-        dmService.openDMs(userItem);
+        dmService.openOrCreateDirectMessageConversation(userItem);
         mainNavService.markedUser(userItem)
       ">
       <app-user class="hover:font-bold hover:text-purple3" [userInfo]="userItem"></app-user>

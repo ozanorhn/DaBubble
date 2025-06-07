@@ -62,7 +62,7 @@ export class MessageOptionsComponent {
       this.messageService.openChannelThread(this.message as Message);
     } else if (this.chatType === 'dm') {
       this.threadService.chatType = 'dm';
-      this.dmService.openDmThread(this.i);
+      this.dmService.openOrCreateMessageThread(this.i);
     }
   }
 

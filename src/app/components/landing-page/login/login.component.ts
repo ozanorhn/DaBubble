@@ -35,7 +35,14 @@ export class LoginComponent {
     public localStorageS: LocalStorageService,
     // public channelsService: ChannelsService
     private auth: Auth,
-  ) {}
+  ) {
+    if (!authService.isLoggedIn) {
+      authService.loadCurrentUserFromStorage();
+      if (userService.currentUser.id) {
+        this.router.navigate(['/main']);
+      }
+    }
+  }
 
 
   getErrorMessage(code: string): string {
@@ -49,7 +56,7 @@ export class LoginComponent {
       case 'auth/invalid-credential':
         return 'E-Mail oder Passwort ist falsch.';
       case 'auth/email-not-verified':
-        return 'Bitte bestätige deine E-Mail-Adresse über den Link, den wir dir gesendet haben.';
+        return 'Bitte bestätige deine E-Mail-Adresse. Du kannst dir eine neue Bestätungs-E-Mail senden lassen.';
       default:
         return 'Unbekannter Fehler, bitte versuche es später erneut.';
     }
@@ -62,45 +69,46 @@ export class LoginComponent {
     }
     try {
       const user = await this.authService.login(this.email, this.password);
-  
+
       // Warte, bis Users und Channel aus Firestore geladen wurden
       await Promise.all([
         this.userService.waitUntilUsersLoaded(),
         // this.channelsService.waitUntilChannelsLoaded(),
         // this.channelsService.setupChannelsListener()
       ]);
-      
-  
+
+
       const profile = this.userService.getUserByEmail(user.email || '');
-  
+
       if (!profile) {
         this.error = 'Benutzerprofil konnte nicht gefunden werden.';
         return;
       }
-  
+
       this.userService.currentUser = profile;
-      this.localStorageS.saveObject('currentUser', profile);
+      if (!gast) {
+        this.localStorageS.saveObject('currentUser', profile);
+      }
       this.router.navigate(['/main']);
-  
+
     } catch (error: any) {
       if (error instanceof FirebaseError) {
         this.error = this.getErrorMessage(error.code);
-      } else if (error.code === 'auth/email-not-verified') {
-        this.error = error.message;
       } else {
         this.error = error.message || 'Unbekannter Fehler beim Login.';
       }
-    
+
       setTimeout(() => {
         this.error = '';
       }, 5000);
     }
-  }
-  
 
-  async googleLogin() {
+  }
+
+
+  async signInWithGoogle() {
     try {
-      await this.authService.googleLogin();
+      await this.authService.signInWithGoogle();
       this.router.navigate(['/main']);
     } catch (error: any) {
       console.error('Fehler beim Google-Login:', error);
@@ -108,8 +116,8 @@ export class LoginComponent {
     }
   }
 
- 
-  
+
+
 
   change() {
     this.landing.landing.set('request');
@@ -121,17 +129,22 @@ export class LoginComponent {
 
   async resendVerificationEmail() {
     try {
-      const userID = await signInWithEmailAndPassword(this.auth, this.email, this.password);
-      const user = userID.user;
-      await sendEmailVerification(user);
-      this.error = 'Bestätigungs-E-Mail wurde erneut gesendet.';
-    } catch (err) {
-      this.error = 'Fehler beim erneuten Senden der E-Mail.';
+      const userCredential = await signInWithEmailAndPassword(this.auth, this.email, this.password);
+      const user = userCredential.user;
+
+      if (user.emailVerified) {
+        this.error = 'Diese E-Mail-Adresse wurde bereits bestätigt.';
+      } else {
+        await sendEmailVerification(user);
+        this.error = 'Bestätigungs-E-Mail wurde erneut gesendet.';
+      }
+    } catch (err: any) {
+      this.error = 'Fehler beim erneuten Senden der E-Mail: ' + (err.message || '');
     }
-  
+
     setTimeout(() => {
       this.error = '';
-    }, 5000);
+    }, 25000);
   }
-  
+
 }
