@@ -7,6 +7,8 @@ import { LocalStorageService } from '../../../../services/localStorage/local-sto
 import { User } from '../../../../classes/user.class';
 import { FormsModule } from '@angular/forms';
 import { doc, updateDoc } from '@firebase/firestore';
+import { MainNavService } from '../../../../pageServices/navigates/main-nav.service';
+import { DirectMessagesService } from '../../../../services/directMessages/direct-messages.service';
 @Component({
   selector: 'app-profile',
   imports: [
@@ -27,7 +29,9 @@ export class ProfileComponent {
   constructor(
     public userService: UsersService,
     public overlayService: OverlayService,
-    public localStorageS: LocalStorageService
+    public localStorageS: LocalStorageService,
+    public mainNavService: MainNavService,
+    public dmService: DirectMessagesService
   ) {
     this.changeName = this.userService.currentUser.name;
   }
@@ -40,7 +44,7 @@ export class ProfileComponent {
     }
     const profileData = this.userService.currentUser.toJSON();
     profileData.name = this.changeName;
-    profileData.avatar = this.overlayService.profileObj.avatar; 
+    profileData.avatar = this.overlayService.profileObj.avatar;
     profileData.password = ''
     console.log(profileData);
 
@@ -57,8 +61,21 @@ export class ProfileComponent {
     }
   }
 
- 
+  
   selectAvatar(i: number) {
     this.overlayService.profileObj.avatar = `/assets/imgs/avatar${i}.svg`;
+  }
+
+
+  updateOnlineStatus(user: User) {
+    return this.userService.isUserOnline(user.online);
+  }
+
+
+  clickToDm(profileObj: User){
+     this.mainNavService.openChannel(true);
+        this.dmService.openDMs(profileObj);
+        this.mainNavService.markedUser(profileObj);
+        this.overlayService.profileOverlay(true, this.currentUser)
   }
 }

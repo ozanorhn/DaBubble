@@ -46,12 +46,15 @@
     </div>
 
     <div class="flex items-center gap-4">
-      <div class="rounded-[50%] size-4" [ngClass]="{
-          'bg-online': overlayService.profileObj.online,
-          'bg-offline': !overlayService.profileObj.online
-        }"></div>
-      @if(overlayService.profileObj.online){ Aktiv } @else { Abwesend }
+      @if (updateOnlineStatus(overlayService.profileObj)) {
+      <div class="rounded-[50%] size-4 bg-online"></div>
+      <span>Aktiv</span>
+      }@else {
+      <div class="rounded-[50%] size-4 bg-offline"></div>
+      <span>Abwesend</span>
+      }
     </div>
+
   </div>
 
   <div class="flex items-start gap-5">
@@ -66,7 +69,7 @@
 
   } @if (overlayService.usersProfilView) {
   <div class="flex justify-center w-full">
-    <button
+    <button (click)="clickToDm(overlayService.profileObj)"
       class="flex text-white px-6 py-3 bg-purple1 rounded-[50px] gap-3 hover:scale-[1.2] duration-200 active:scale-[0.9]">
       <img src="/assets/icons/mode_comment.svg" alt="" />
       Nachricht
