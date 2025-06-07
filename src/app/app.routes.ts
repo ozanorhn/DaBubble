@@ -9,7 +9,11 @@ import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.
 
 export const routes: Routes = [
     { path: "", component: LandingPageComponent },
-    { path: "main", component: MainPageComponent },
+    {
+        path: "main",
+        loadComponent: () => import('./components/main-page/main-page.component')
+            .then(m => m.MainPageComponent)
+    },
     { path: "legal", component: LegalNoticePageComponent },
     { path: "privacy", component: PrivacyPolicyPageComponent },
     { path: 'confirm-password', component: ConfirmEmailComponent },
