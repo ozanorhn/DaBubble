@@ -16,9 +16,8 @@ export class DirectMessagesService implements OnDestroy {
   currentConversationRef: DocumentReference<DocumentData, DocumentData> | undefined;
   dmsCollection;
   selectedMessageIndex: number = 0;
-  mobile = false;
-  dmClicked = signal(false);
-
+  isMobileView = false;
+  isDirectMessageViewActive = signal(false);
   private unsubscribeSnapshot: Unsubscribe | null = null;
 
   directMessage: DirectMessage = new DirectMessage({
@@ -66,21 +65,31 @@ export class DirectMessagesService implements OnDestroy {
    * Opens or creates a DM conversation with another user
    * @param {User} chatPartner - The user to start conversation with
    */
-  async openDMs(chatPartner: User) {
-    this.dmClicked.set(true);
-    this.cleanupSnapshot();
-    this.clearDm();
-    this.chatPartner = chatPartner;
+  async openOrCreateDirectMessageConversation(chatPartner: User) {
+    this.resetDMValues(chatPartner);
     await this.checkExistingIds();
-    if (this.mobile) {
-      this.mainNavService.nav.set(false);
-      this.mainNavService.showAltLogo = false;
-    }
+    this.handleNavigation();
     if (!this.currentConversationRef) {
       let tempId = this.getDirectMessageId(this.chatPartner.id, this.usersService.currentUser.id);
       this.currentConversationRef = doc(this.dmsCollection, tempId);
     }
     this.setupRealtimeListener();
+  }
+
+
+  resetDMValues(chatPartner: User) {
+    this.isDirectMessageViewActive.set(true);
+    this.cleanupSnapshot();
+    this.clearDm();
+    this.chatPartner = chatPartner;
+  }
+
+
+  handleNavigation() {
+    if (this.isMobileView) {
+      this.mainNavService.nav.set(false);
+      this.mainNavService.showAltLogo = false;
+    }
   }
 
 
@@ -116,7 +125,6 @@ export class DirectMessagesService implements OnDestroy {
   */
   private setupRealtimeListener(): void {
     if (!this.currentConversationRef) return;
-
     this.unsubscribeSnapshot = onSnapshot(this.currentConversationRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         const data = docSnapshot.data();
@@ -143,9 +151,9 @@ export class DirectMessagesService implements OnDestroy {
     const user1FirstDoc = await getDoc(dmDocRefUser1First);
     const user2FirstDoc = await getDoc(dmDocRefUser2First);
     if (user1FirstDoc.exists()) {
-      this.setDocRef(dmIdUser1First, user1FirstDoc, dmDocRefUser1First);
+      this.loadExistingConversation(dmIdUser1First, user1FirstDoc, dmDocRefUser1First);
     } else if (user2FirstDoc.exists()) {
-      this.setDocRef(dmIdUser2First, user2FirstDoc, dmDocRefUser2First);
+      this.loadExistingConversation(dmIdUser2First, user2FirstDoc, dmDocRefUser2First);
     } else {
       await this.createDocRef();
     }
@@ -176,7 +184,7 @@ export class DirectMessagesService implements OnDestroy {
  * @param {QueryDocumentSnapshot} doc - Firestore document snapshot.
  * @param {DocumentReference} ref - Firestore document reference.
  */
-  setDocRef(id: string, doc: QueryDocumentSnapshot<DocumentData, DocumentData>, ref: DocumentReference<DocumentData, DocumentData>) {
+  loadExistingConversation(id: string, doc: QueryDocumentSnapshot<DocumentData, DocumentData>, ref: DocumentReference<DocumentData, DocumentData>) {
     this.directMessage = new DirectMessage({
       id: id,
       ...doc.data()
@@ -216,7 +224,7 @@ export class DirectMessagesService implements OnDestroy {
   * Creates a new thread if one does not exist.
   * @param {number} index - Index of the message in the DM content array.
   */
-  async openDmThread(index: number) {
+  async openOrCreateMessageThread(index: number) {
     this.selectedMessageIndex = index;
     const currentMessage = this.directMessage.content[this.selectedMessageIndex];
     if (!currentMessage.threadId) {

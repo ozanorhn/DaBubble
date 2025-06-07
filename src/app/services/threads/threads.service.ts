@@ -35,14 +35,7 @@ export class ThreadsService implements OnDestroy {
   * @returns {Promise<void>}
   */
   async updateThread(edit: boolean = false): Promise<void> {
-    let updatedContent;
-    if (edit) {
-      updatedContent = this.currentThread().content;
-    } else {
-      this.threadMessage.sender = this.usersService.currentUser.id;
-      this.threadMessage.timestamp = Timestamp.now();
-      updatedContent = [...this.currentThread().content, this.threadMessage];
-    }
+    let updatedContent = this.getUpdateContent(edit);
     await updateDoc(
       doc(this.threadCollection, this.currentThread()?.threadId),
       {
@@ -50,6 +43,17 @@ export class ThreadsService implements OnDestroy {
       }
     );
     this.threadMessage.message = '';
+  }
+
+
+  getUpdateContent(edit: boolean) {
+    if (edit) {
+      return this.currentThread().content;
+    } else {
+      this.threadMessage.sender = this.usersService.currentUser.id;
+      this.threadMessage.timestamp = Timestamp.now();
+      return [...this.currentThread().content, this.threadMessage];
+    }
   }
 
 
@@ -72,7 +76,7 @@ export class ThreadsService implements OnDestroy {
     });
   }
 
-  
+
   /**
    * Lifecycle hook for cleaning up the Firestore thread subscription on service destruction.
    */

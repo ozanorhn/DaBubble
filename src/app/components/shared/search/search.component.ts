@@ -49,7 +49,7 @@ export class SearchComponent {
 
 
   clickUser(item: User) {
-    this.dmService.openDMs(item);
+    this.dmService.openOrCreateDirectMessageConversation(item);
     this.mainNavService.openChannel(true);
     this.filterService.searchValue.set('');
   }
@@ -97,7 +97,7 @@ export class SearchComponent {
         this.dmService.directMessage.participants.user1;
       const user = this.usersService.users.find(u => u.id === userId);
       if (user) {
-        this.dmService.openDMs(user);
+        this.dmService.openOrCreateDirectMessageConversation(user);
         // Ähnliches Scroll-Verhalten für DMs
       }
     }

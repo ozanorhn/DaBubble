@@ -32,7 +32,6 @@ export class MessagesService implements OnDestroy {
   lastDate: Date = new Date();
   date = new Date();
   edit: boolean = false;
-
   unsubscribeFromMessages?: () => void;
 
   message: Message = new Message({
@@ -70,6 +69,7 @@ export class MessagesService implements OnDestroy {
   sortMessages(messages: Message[] | DM[]): Message[] | DM[] {
     return messages.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
   }
+  
 
   /**
    * Subscribes to messages for a specific channel and updates the local message array.

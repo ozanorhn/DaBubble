@@ -51,7 +51,6 @@ export class UsersService implements OnDestroy {
         data.id = doc.id;
         return data;
       });
-
       this.users = users;
       this.checkOnlineStatusChanges(users);
     });
@@ -67,13 +66,10 @@ export class UsersService implements OnDestroy {
           await updateDoc(userRef, {
             online: Timestamp.now()
           });
-          console.log('Online-Status aktualisiert:', this.currentUser.id);
-        } catch (error) {
-          console.error('Fehler beim Aktualisieren des Online-Status:', error);
-        }
-        setTimeout(update, 15000); // Nächste Aktualisierung in 15 Sekunden
+        } catch (error) {console.error('Fehler beim Aktualisieren des Online-Status:', error);}
+        setTimeout(update, 15000);
       };
-      update(); // Ersten Aufruf starten
+      update();
     }
   }
 
@@ -88,7 +84,6 @@ export class UsersService implements OnDestroy {
 
   private checkOnlineStatusChanges(users: User[]) {
     const currentlyOnline = users.filter(user => this.isUserOnline(user.online));
-    // Finde neu online gegangene Benutzer
     const newOnlineUsers = currentlyOnline.filter(user => {
       const wasOnline = this.previousOnlineStatus[user.id] || false;
       const isNowOnline = this.isUserOnline(user.online);

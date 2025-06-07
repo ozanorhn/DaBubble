@@ -58,10 +58,10 @@ export class ChatInputComponent implements OnInit {
   ) {
     effect(() => {
       const channelClicked = this.navService.channelClicked();
-      const dmClicked = this.directMessageService.dmClicked();
-      if (navService.channelClicked() || directMessageService.dmClicked()) {
+      const isDirectMessageViewActive = this.directMessageService.isDirectMessageViewActive();
+      if (navService.channelClicked() || directMessageService.isDirectMessageViewActive()) {
         navService.channelClicked.set(false);
-        directMessageService.dmClicked.set(false);
+        directMessageService.isDirectMessageViewActive.set(false);
         let id = setTimeout(() => {
           this.focusInput();
           clearTimeout(id);

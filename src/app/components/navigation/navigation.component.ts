@@ -56,7 +56,7 @@ export class NavigationComponent {
 
 
   clickUser(item: User) {
-    this.directMessageService.openDMs(item);
+    this.directMessageService.openOrCreateDirectMessageConversation(item);
     this.mainNavService.openChannel(true);
     this.filterService.searchValue.set('')
   }
@@ -96,7 +96,7 @@ export class NavigationComponent {
         this.directMessageService.directMessage.participants.user1;
       const user = this.usersService.users.find(u => u.id === userId);
       if (user) {
-        this.directMessageService.openDMs(user);
+        this.directMessageService.openOrCreateDirectMessageConversation(user);
         // Ähnliches Scroll-Verhalten für DMs
       }
     }

@@ -5,10 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class LocalStorageService {
 
-  constructor() { }
-
-
-
   /**
      * Speichert ein Objekt im localStorage
      * @param key Schlüssel für den Storage
@@ -53,6 +49,4 @@ export class LocalStorageService {
   clear(): void {
     localStorage.clear();
   }
-
-
 }

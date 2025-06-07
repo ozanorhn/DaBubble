@@ -74,7 +74,7 @@ export class ProfileComponent {
 
   clickToDm(profileObj: User){
      this.mainNavService.openChannel(true);
-        this.dmService.openDMs(profileObj);
+        this.dmService.openOrCreateDirectMessageConversation(profileObj);
         this.mainNavService.markedUser(profileObj);
         this.overlayService.profileOverlay(true, this.userService.currentUser)
   }
