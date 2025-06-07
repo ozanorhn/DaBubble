@@ -51,13 +51,13 @@ export class LandingPageComponent {
       }
     });
 
+    // Wait for splash screen animations to complete (1.3s) plus fade out (0.5s)
     setTimeout(() => {
       this.showContent = true;
       setTimeout(() => {
         this.showSplash = false;
-      }, 700);
-    }, 950);
-
+      }, 500);
+    }, 1800);
   }
 
 

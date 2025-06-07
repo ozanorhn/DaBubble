@@ -44,7 +44,7 @@ export class AuthService {
     try {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
-      this.verifyEmailOrThrow(user)
+      // this.verifyEmailOrThrow(user)
       console.log('Login erfolgreich:', user.email);
       this.isLoggedIn = true;
       return user;
