@@ -78,6 +78,7 @@
   class="relative min-w-[320px] flex flex-col items-center w-full gap-4 px-5 py-5 text-lg bg-white shadow-md sm:py-10 sm:gap-8 sm:px-10 sm:text-xl rounded-3xl"
   (ngSubmit)="guestLogin()" #contactForm="ngForm">
 
+  
   <h1 class="text-2xl font-bold xs:text-3xl sm:text-4xl text-purple1">
     Anmeldung
   </h1>
@@ -128,6 +129,7 @@
     <span class="w-full border bg-slate-400"></span>
   </div>
 
+
   <!-- @if (error) {
   <p class="w-full text-sm text-center text-red-500">{{ error }}</p>
   } -->
@@ -144,7 +146,6 @@
     <button type="submit" class="flex-1 py-2 text-white rounded-full bg-purple1 hover:bg-purple3">
       Anmelden
     </button>
-
     <button (click)="guestLogin(true)" routerLink="main" type="button"
       class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary">
       Gäste-Login

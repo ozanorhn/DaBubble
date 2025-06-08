@@ -73,13 +73,10 @@ export class LoginComponent {
       this.password = 'gast123'
     }
     try {
-      const user = await this.authService.login(this.email, this.password);
+      const user = await this.authService.login(this.loginData.email, this.loginData.password);
 
-      // Warte, bis Users und Channel aus Firestore geladen wurden
       await Promise.all([
         this.userService.waitUntilUsersLoaded(),
-        // this.channelsService.waitUntilChannelsLoaded(),
-        // this.channelsService.setupChannelsListener()
       ]);
 
 
