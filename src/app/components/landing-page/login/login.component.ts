@@ -40,7 +40,11 @@ export class LoginComponent {
     // if (navEntries.length > 0 && navEntries[0].type === 'reload') { }
     if (!this.authService.isLoggedIn || (navEntries.length > 0 && (navEntries[0].type === 'reload' || navEntries[0].type === 'back_forward'))) {
       this.authService.loadCurrentUserFromStorage();
-      if (this.userService.currentUser.id) {
+      console.log('seite wurde neu geladen');
+      console.log(this.userService.currentUser.id);
+      console.log(userService.GuestUser.id);
+      
+      if (this.userService.currentUser.id !== userService.GuestUser.id && this.userService.currentUser.id) {
         this.router.navigate(['/main']);
       }
     }

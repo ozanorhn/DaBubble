@@ -32,6 +32,7 @@ export class AuthService {
    * Only applies if the user has a valid ID.
    */
   loadCurrentUserFromStorage() {
+    this.isLoggedIn = true;
     let currentUser = new User(this.localStorageService.loadObject('currentUser'))
     if (currentUser.id) {
       console.log('Eingeloggt als: ', currentUser);
@@ -53,8 +54,8 @@ export class AuthService {
     }
   }
 
-  
-  verifyEmailOrThrow(user:FirebaseUser) {
+
+  verifyEmailOrThrow(user: FirebaseUser) {
     if (!user.emailVerified) {
       const error: any = new Error('E-Mail nicht verifiziert. Bitte überprüfe dein Postfach.');
       error.code = 'auth/email-not-verified';
