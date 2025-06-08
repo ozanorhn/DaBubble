@@ -1,4 +1,4 @@
-<div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
+<!-- <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
   <div class="w-full max-w-sm space-y-6">
     <div class="flex items-center space-x-2">
       <img src="assets/icons/Property 1=Default (1).svg" alt="Zurück" class="w-6 h-6 cursor-pointer"
@@ -13,38 +13,141 @@
     </p>
 
     <form class="space-y-4" (ngSubmit)="goToAvatar(contactForm)" #contactForm="ngForm">
-      <div class="relative">
+
+
+      <div class="flex items-center max-w-[500px]  text-black border border-black ">
+
         <img src="assets/imgs/icons/person_filled.svg" alt="User Icon"
-          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
-        <input  type="text" placeholder="Name und Nachname"
-          class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
-          [(ngModel)]="name" name="name" required />
+          class="w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
+
+        <input type="text" placeholder="Name und Nachname"
+          class="w-full pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
+          [(ngModel)]="registerData.name" name="name" required />
+
       </div>
 
+
       <div class="relative">
+
         <img src="assets/imgs/icons/mail.svg" alt="Mail Icon"
           class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
+
         <input type="email" placeholder="beispielname@email.com"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
-          [(ngModel)]="email" name="email"
-          required
-          pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
-         />
+          [(ngModel)]="registerData.email" name="email" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" />
+
       </div>
+
+
+
 
       <div class="relative">
         <img src="assets/imgs/icons/lock.svg" alt="Lock Icon"
           class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
         <input type="password" placeholder="Passwort"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
-          [(ngModel)]="password" required name="password" />
+          [(ngModel)]="registerData.password" required name="password" />
       </div>
 
+
+
       <button type="submit"
-        class="w-full py-2 font-semibold text-center text-white transition duration-200 rounded-full bg-purple1 hover:bg-purple3"
-        >
+        class="w-full py-2 font-semibold text-center text-white transition duration-200 rounded-full bg-purple1 hover:bg-purple3">
         Weiter
       </button>
+
+
+
     </form>
   </div>
-</div>
+</div> -->
+
+
+<!-- <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl"> -->
+
+
+
+
+<form class="relative flex flex-col items-center w-full gap-8 px-10 py-10 text-xl bg-white shadow-md rounded-3xl"
+  (ngSubmit)="goToAvatar(contactForm)" #contactForm="ngForm">
+
+
+  <img src="assets/icons/Property 1=Default (1).svg" alt="Zurück"
+    class="absolute hover:scale-[1.1] duration-150 cursor-pointer left-10 size-10" (click)="goBack()" />
+
+  <div class="flex items-center">
+
+    <h1 class="text-4xl font-bold text-purple1">Konto erstellen</h1>
+  </div>
+
+
+
+  <p class="w-full text-center text-textgray">
+    Mit deinem Namen und deiner E-Mail-Adresse hast <br> du dein neues
+    DABubble-Konto.
+  </p>
+
+
+
+  <div
+    class="flex items-center w-full max-w-[500px] relative bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
+    [ngClass]="{'invalid': !name.valid && (name.touched || contactForm.submitted), 'valid': name.valid}">
+    <img src="assets/imgs/icons/person_filled.svg" alt="User Icon" class="size-5" />
+
+    <input #name="ngModel" type="text" placeholder="Name und Nachname" class="flex-1 outline-none bg-primary"
+      [(ngModel)]="registerData.name" name="name" required />
+
+    @if(!name.valid && name.touched){
+    <span class="shake-animation absolute w-full text-center text-lg text-red-500 bottom-[-30px]">Pleace enter
+      name</span>
+    }
+  </div>
+
+
+  <div
+    class="flex relative items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
+    [ngClass]="{'invalid': !email.valid && (email.touched || contactForm.submitted), 'valid': email.valid}">
+    <img src="assets/imgs/icons/mail.svg" alt="Mail Icon" class="size-5" />
+
+    <input #email="ngModel" type="text" placeholder="beispielname@email.com" class="flex-1 outline-none bg-primary"
+      [(ngModel)]="registerData.email" name="email" required
+      pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" />
+
+    @if(!email.valid && email.touched){
+    <span class="absolute shake-animation w-full text-lg text-red-500 bottom-[-30px] text-center">Pleace enter email</span>
+    }
+
+  </div>
+
+
+  <div
+    class="relative flex items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
+    [ngClass]="{'invalid': !password.valid && (password.touched || contactForm.submitted), 'valid': password.valid}">
+    <img src="assets/imgs/icons/lock.svg" alt="Lock Icon" class="size-5" />
+
+    <input #password="ngModel" type="password" type="text" placeholder="Passwort" class="flex-1 outline-none bg-primary"
+      [(ngModel)]="registerData.password" name="password" required />
+
+    @if(!password.valid && password.touched){
+    <span class="absolute w-full shake-animation text-lg text-center text-red-500 bottom-[-30px]">Pleace enter password</span>
+    }
+  </div>
+
+
+  <div class="flex w-full gap-2">
+    <span class="flex items-center justify-center rounded-full hover:bg-[rgba(121,126,243,0.2)] size-7">
+      <img class="cursor-pointer size-5" [src]="imageUrl" alt="" (click)="changeImage();checkCheckbox()">
+    </span>
+
+    Ich stimme der <a class="text-purple1" href="privacy">Datenschutzerklärung</a> zu.
+  </div>
+
+
+  <button type="submit" (click)="checkCheckbox()"
+    class="w-28 h-14 cursor-pointer self-end text-white rounded-[30px] hover:scale-[1.1] active:scale-[0.9] duration-150 bg-purple1">
+    Weiter
+  </button>
+
+</form>
+
+<!-- </div> -->

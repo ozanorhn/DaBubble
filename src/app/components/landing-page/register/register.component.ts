@@ -13,9 +13,16 @@ import { FormsModule, NgForm } from '@angular/forms';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  public name = '';
-  public email = '';
-  public password = '';
+
+  registerData = {
+    name: '',
+    email: '',
+    password: ''
+  }
+
+  checkbox = false;
+  imageUrl = '/assets/icons/check_box_outline_blank.svg';
+  checkboxError = false;
 
   constructor(
     public landing: LandingPageService,
@@ -24,13 +31,46 @@ export class RegisterComponent {
 
 
   goToAvatar(ngForm: NgForm) {
+   if (!this.checkbox) {  
+        return;  
+    }
+
     this.userService.setTempUser({
-      name: this.name,
-      email: this.email,
-      password: this.password
+      name: this.registerData.name,
+      email: this.registerData.email,
+      password: this.registerData.password
     });
-    if (ngForm.valid && ngForm.submitted) {
+
+    if (ngForm.valid) {
       this.landing.landing.set('avatar');
+    }
+  }
+
+
+  resetCheckbox() {
+    this.checkbox = false;
+    this.imageUrl = '/assets/icons/check_box_outline_blank.svg';
+  }
+
+
+  checkCheckbox() {
+    if (this.checkbox == false) {
+      this.imageUrl = '/assets/icons/check_box_outline_blank_red.svg';
+      this.checkboxError = true;
+    } else {
+      this.checkboxError = false;
+    }
+  }
+
+
+  changeImage() {
+    this.checkbox = !this.checkbox;
+    this.checkboxError = false; 
+
+    if (this.checkbox) {
+      this.imageUrl = '/assets/icons/check_box.svg';
+    } else {
+      this.imageUrl = '/assets/icons/check_box_outline_blank.svg';
     }
   }
 
@@ -39,11 +79,5 @@ export class RegisterComponent {
     this.landing.landing.set('login')
   }
 
-
-
-
-  // onSubmit(ngForm: NgForm) {
-  // this.goToAvatar()
-  // }
 
 }
