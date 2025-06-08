@@ -1,4 +1,7 @@
-<section class="flex items-center justify-center w-full bg-primary">
+<section class="flex flex-col items-center justify-center w-full h-screen bg-primary">
+
+  <img src="assets/imgs/icons/logo.svg" alt="Logo"
+    class="absolute h-12 xs:h-14 md:h-16 lg:h-18 top-[5%] md:block md:top-4 md:left-4" />
 
   @if (showSplash) {
   <app-splash-screen class="splash-screen"></app-splash-screen>
@@ -13,42 +16,37 @@
   </div>
 
 
-  <img src="assets/imgs/icons/logo.svg" alt="Logo" class="absolute hidden h-16 md:block top-4 left-4" />
-
-  <div
-    class="flex flex-col items-center justify-center min-h-screen px-4"
-    >
-
-    <div class="items-center justify-center w-full">
-      @if (landingService.landing() == 'login') {
-      <app-login class="flex items-center justify-center"></app-login>
-      }
-      @if (landingService.landing() == 'register') {
-      <app-register class="flex items-center justify-center"></app-register>
-      }
-      @if (landingService.landing() == 'avatar') {
-      <app-avatar class="flex items-center justify-center"></app-avatar>
-      }
-      @if (landingService.landing() == 'confirm') {
-      <app-resetpw-confirm class="flex items-center justify-center"></app-resetpw-confirm>
-      }
-      @if (landingService.landing() == 'request') {
-      <app-resetpw-request class="flex items-center justify-center"></app-resetpw-request>
-      }
-    </div>
 
 
-    <div class="flex gap-4 p-5 m-0 ">
-      <button routerLink="legal"
-        class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border opacity-[0.8] hover:opacity-[1] hover:border-textgray rounded-full text-purple1">Legal
-        Notice
-      </button>
-      <button routerLink="privacy"
-        class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border opacity-[0.8] hover:opacity-[1] hover:border-textgray rounded-full text-purple1">Privacy
-        Policy
-      </button>
-    </div>
 
+  <div class="flex items-center justify-center w-full">
+    @if (landingService.landing() == 'login') {
+    <app-login class="flex items-center justify-center"></app-login>
+    }
+    @if (landingService.landing() == 'register') {
+    <app-register class="flex items-center justify-center"></app-register>
+    }
+    @if (landingService.landing() == 'avatar') {
+    <app-avatar class="flex items-center justify-center"></app-avatar>
+    }
+    @if (landingService.landing() == 'confirm') {
+    <app-resetpw-confirm class="flex items-center justify-center"></app-resetpw-confirm>
+    }
+    @if (landingService.landing() == 'request') {
+    <app-resetpw-request class="flex items-center justify-center"></app-resetpw-request>
+    }
+  </div>
+
+
+  <div class="absolute bottom-0 flex gap-32">
+    <button routerLink="legal"
+      class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border opacity-[0.8] hover:opacity-[1] hover:border-textgray rounded-full text-purple1">Legal
+      Notice
+    </button>
+    <button routerLink="privacy"
+      class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border opacity-[0.8] hover:opacity-[1] hover:border-textgray rounded-full text-purple1">Privacy
+      Policy
+    </button>
   </div>
 
 
