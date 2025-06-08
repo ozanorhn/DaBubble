@@ -75,34 +75,28 @@
   <div class="flex ">
     <img src="assets/icons/Property 1=Default (1).svg" alt="Zurück"
       class=" xs:absolute hover:scale-[1.1] duration-150 cursor-pointer left-10 size-10" (click)="goBack()" />
-
     <div class="flex items-center">
-
       <h1 class="text-2xl font-bold xs:text-3xl sm:text-4xl text-purple1">Konto erstellen</h1>
     </div>
-
   </div>
 
 
-
-
-  <p class="w-full text-center text-textgray">
+  <p class="w-full leading-6 text-center text-textgray">
     Mit deinem Namen und deiner E-Mail-Adresse hast <br> du dein neues
     DABubble-Konto.
   </p>
-
 
 
   <div
     class="flex items-center w-full max-w-[500px] relative bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
     [ngClass]="{'invalid': !name.valid && (name.touched || contactForm.submitted), 'valid': name.valid}">
     <img src="assets/imgs/icons/person_filled.svg" alt="User Icon" class="size-5" />
-
     <input #name="ngModel" type="text" placeholder="Name und Nachname" class="flex-1 outline-none bg-primary"
       [(ngModel)]="registerData.name" name="name" required />
-
     @if(!name.valid && name.touched){
-    <span class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace enter
+    <span
+      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
+      enter
       name</span>
     }
   </div>
@@ -112,16 +106,15 @@
     class="flex relative items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
     [ngClass]="{'invalid': !email.valid && (email.touched || contactForm.submitted), 'valid': email.valid}">
     <img src="assets/imgs/icons/mail.svg" alt="Mail Icon" class="size-5" />
-
     <input #email="ngModel" type="text" placeholder="beispielname@email.com" class="flex-1 outline-none bg-primary"
       [(ngModel)]="registerData.email" name="email" required
       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" />
-
     @if(!email.valid && email.touched){
-    <span class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace enter
+    <span
+      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
+      enter
       email</span>
     }
-
   </div>
 
 
@@ -129,12 +122,12 @@
     class="relative flex items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
     [ngClass]="{'invalid': !password.valid && (password.touched || contactForm.submitted), 'valid': password.valid}">
     <img src="assets/imgs/icons/lock.svg" alt="Lock Icon" class="size-5" />
-
     <input #password="ngModel" type="password" type="text" placeholder="Passwort" class="flex-1 outline-none bg-primary"
       [(ngModel)]="registerData.password" name="password" required />
-
     @if(!password.valid && password.touched){
-    <span class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace enter
+    <span
+      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
+      enter
       password</span>
     }
   </div>
@@ -144,7 +137,6 @@
     <span class="flex items-center justify-center rounded-full hover:bg-[rgba(121,126,243,0.2)] size-7">
       <img class="cursor-pointer size-5" [src]="imageUrl" alt="" (click)="changeImage();checkCheckbox()">
     </span>
-
     <span>Ich stimme der <a class="text-purple1" href="privacy">Datenschutzerklärung</a> zu.</span>
   </div>
 
@@ -155,5 +147,3 @@
   </button>
 
 </form>
-
-<!-- </div> -->
