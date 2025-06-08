@@ -42,7 +42,7 @@ export class ProfileComponent {
       console.error('No user ID available');
       return;
     }
-    const profileData = this.userService.currentUser.toJSON();
+    const profileData = new User(this.userService.currentUser).toJSON();
     profileData.name = this.changeName;
     profileData.avatar = this.overlayService.profileObj.avatar;
     profileData.password = ''
