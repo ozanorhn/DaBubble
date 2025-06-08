@@ -36,6 +36,7 @@
       </p>
 
       @if (overlayService.usersProfilView) {} @else {
+        @if (userService.currentUser.id !== userService.GuestUser.id) {
       <img
         class="max-[500px]:block cursor-pointer hidden hover:scale-[1.2] duration-200 active:scale-[0.9] w-[40px] h-[40px] rounded-[40px] p-[3px]"
         (click)="overlayService.editProfileView()" src="/assets/icons/edit2.svg" alt="" />
@@ -43,6 +44,7 @@
       [ngClass]="{'d-none': userService.currentUser.id === userService.GuestUser.id}"
         class="max-[500px]:hidden cursor-pointer hover:scale-[1.2] duration-200 active:scale-[0.9] p-[3px] gap-[0px] transition-all text-purple1 ease-out"
         (click)="overlayService.editProfileView()">Bearbeiten</span>
+        }
       }
     </div>
 
