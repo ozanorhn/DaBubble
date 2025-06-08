@@ -28,7 +28,7 @@ import { UserComponent } from '../user/user.component';
     MessageOptionsComponent,
     ChatInputComponent,
     EmojiPickerComponent,
-    UserComponent
+
   ],
   templateUrl: './chat-messages.component.html',
   styleUrl: './chat-messages.component.scss'
@@ -65,13 +65,13 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
     public filterService: FilterService
   ) { }
 
-  
+
   ngAfterViewInit(): void {
     this.scrollToBottomInstant();
     this.lastMessageCount = this.messages?.length || 0;
   }
 
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['messages']) {
       const currentMessageCount = this.messages?.length || 0;
@@ -82,7 +82,7 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  
+
   scrollToBottomSmooth(): void {
     setTimeout(() => {
       this.messagesEndRef?.nativeElement?.scrollIntoView({ behavior: 'smooth' });
@@ -95,7 +95,7 @@ export class ChatMessagesComponent implements AfterViewInit, OnChanges {
     }, 0);
   }
 
-  
+
   /**
    * Toggles the visibility of the emoji picker for composing new messages.
    */
