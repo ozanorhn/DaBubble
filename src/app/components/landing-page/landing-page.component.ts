@@ -36,7 +36,7 @@ export class LandingPageComponent {
     public landing: LandingPageService,
     public authService: AuthService
   ) {
-    // authService.loadCurrentUserFromStorage()
+
   }
 
   ngOnInit() {
@@ -57,6 +57,24 @@ export class LandingPageComponent {
         this.showSplash = false;
       }, 700);
     }, 950);
+
+    const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+      console.log('Seite wurde neu geladen (Browser-Refresh)');
+      this.showSplash = false;
+    } else {
+      console.log('Normale Navigation (kein Reload)');
+      this.showSplash = true;
+    }
+
+
+    // const splashShown = localStorage.getItem('splashShown');
+    // if (splashShown === 'true') {
+    //   this.showSplash = false; // Nicht mehr anzeigen
+    // } else {
+    //   localStorage.setItem('splashShown', 'true'); // Als "gezeigt" markieren
+    //   this.showSplash = true; // Einmalig anzeigen
+    // }
 
   }
 
