@@ -27,6 +27,11 @@ export class LoginComponent {
   password: string = '';
   error: string = '';
 
+  loginData = {
+    email: '',
+    password: ''
+  }
+
   constructor(
     private router: Router,
     public landing: LandingPageService,
@@ -62,7 +67,7 @@ export class LoginComponent {
     }
   }
 
-  async login(gast = false) {
+  async guestLogin(gast = false) {
     if (gast) {
       this.email = 'gast@user.de'
       this.password = 'gast123'
