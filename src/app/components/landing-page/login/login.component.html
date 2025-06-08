@@ -78,7 +78,7 @@
   class="relative min-w-[320px] flex flex-col items-center w-full gap-4 px-5 py-5 text-lg bg-white shadow-md sm:py-10 sm:gap-8 sm:px-10 sm:text-xl rounded-3xl"
   (ngSubmit)="guestLogin()" #contactForm="ngForm">
 
-  
+
   <h1 class="text-2xl font-bold xs:text-3xl sm:text-4xl text-purple1">
     Anmeldung
   </h1>
@@ -120,7 +120,7 @@
   </div>
 
 
-  <span (click)="change()" class=" text-purple2 hover:underline">Passwort vergessen?</span>
+  <span (click)="change()" class="cursor-pointer  text-purple2 hover:underline">Passwort vergessen?</span>
 
 
   <div class="flex items-center w-full gap-4">
@@ -136,18 +136,20 @@
 
 
   <button (click)="signInWithGoogle()" type="button"
-    class="flex items-center justify-center w-full gap-2 px-4 py-2 border rounded-full hover:border-lightpurple bg-primary">
+    class="flex items-center justify-center w-full gap-2 px-4 py-2 border rounded-full hover:border-lightpurple bg-primary hover:scale-[1.1] duration-150 active:scale-[0.9]">
     <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Icon" class="w-5 h-5" />
     Anmelden mit Google
   </button>
 
 
   <div class="flex w-full gap-7">
-    <button type="submit" class="flex-1 py-2 text-white rounded-full bg-purple1 hover:bg-purple3">
+    <button type="submit"
+      class="flex-1 py-2 text-white rounded-full bg-purple1 hover:bg-purple3 hover:scale-[1.1] duration-150 active:scale-[0.9]">
       Anmelden
     </button>
+
     <button (click)="guestLogin(true)" routerLink="main" type="button"
-      class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary">
+      class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary hover:scale-[1.1] duration-150 active:scale-[0.9]">
       Gäste-Login
     </button>
   </div>
