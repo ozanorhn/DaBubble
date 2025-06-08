@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { LandingPageService } from '../../../pageServices/navigates/landing-nav.service';
 import { CommonModule } from '@angular/common';
 import { UsersService } from '../../../services/users/users.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -23,19 +23,27 @@ export class RegisterComponent {
   ) { }
 
 
-  goToAvatar() {
+  goToAvatar(ngForm: NgForm) {
     this.userService.setTempUser({
       name: this.name,
       email: this.email,
       password: this.password
     });
-
-    this.landing.landing.set('avatar');
+    if (ngForm.valid && ngForm.submitted) {
+      this.landing.landing.set('avatar');
+    }
   }
 
 
   goBack() {
     this.landing.landing.set('login')
   }
+
+
+
+
+  // onSubmit(ngForm: NgForm) {
+  // this.goToAvatar()
+  // }
 
 }

@@ -12,13 +12,13 @@
       DABubble-Konto.
     </p>
 
-    <form class="space-y-4">
+    <form class="space-y-4" (ngSubmit)="goToAvatar(contactForm)" #contactForm="ngForm">
       <div class="relative">
         <img src="assets/imgs/icons/person_filled.svg" alt="User Icon"
           class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
-        <input type="text" placeholder="Name und Nachname"
+        <input  type="text" placeholder="Name und Nachname"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
-          [(ngModel)]="name" name="name" />
+          [(ngModel)]="name" name="name" required />
       </div>
 
       <div class="relative">
@@ -26,7 +26,10 @@
           class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
         <input type="email" placeholder="beispielname@email.com"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
-          [(ngModel)]="email" name="email" />
+          [(ngModel)]="email" name="email"
+          required
+          pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+         />
       </div>
 
       <div class="relative">
@@ -34,12 +37,12 @@
           class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
         <input type="password" placeholder="Passwort"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
-          [(ngModel)]="password" name="password" />
+          [(ngModel)]="password" required name="password" />
       </div>
 
-      <button type="button"
+      <button type="submit"
         class="w-full py-2 font-semibold text-center text-white transition duration-200 rounded-full bg-purple1 hover:bg-purple3"
-        (click)="goToAvatar()">
+        >
         Weiter
       </button>
     </form>
