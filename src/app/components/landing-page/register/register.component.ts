@@ -31,8 +31,8 @@ export class RegisterComponent {
 
 
   goToAvatar(ngForm: NgForm) {
-   if (!this.checkbox) {  
-        return;  
+    if (!this.checkbox) {
+      return;
     }
 
     this.userService.setTempUser({
@@ -65,7 +65,7 @@ export class RegisterComponent {
 
   changeImage() {
     this.checkbox = !this.checkbox;
-    this.checkboxError = false; 
+    this.checkboxError = false;
 
     if (this.checkbox) {
       this.imageUrl = '/assets/icons/check_box.svg';
