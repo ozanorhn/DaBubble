@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LandingPageService } from '../../../pageServices/navigates/landing-nav.service';
 import { UsersService } from '../../../services/users/users.service';
@@ -36,9 +36,11 @@ export class LoginComponent {
     // public channelsService: ChannelsService
     private auth: Auth,
   ) {
-    if (!authService.isLoggedIn) {
-      authService.loadCurrentUserFromStorage();
-      if (userService.currentUser.id) {
+    const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    // if (navEntries.length > 0 && navEntries[0].type === 'reload') { }
+    if (!this.authService.isLoggedIn || (navEntries.length > 0 && (navEntries[0].type === 'reload' || navEntries[0].type === 'back_forward'))) {
+      this.authService.loadCurrentUserFromStorage();
+      if (this.userService.currentUser.id) {
         this.router.navigate(['/main']);
       }
     }

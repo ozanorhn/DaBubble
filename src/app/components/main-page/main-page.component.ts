@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, effect, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -54,7 +54,7 @@ import { Router } from '@angular/router';
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
-export class MainPageComponent implements AfterViewInit {
+export class MainPageComponent implements AfterViewInit, OnInit {
   showMessagesOnly = false;
   isMobile = false;
 
@@ -88,12 +88,8 @@ export class MainPageComponent implements AfterViewInit {
     public authService: AuthService,
     private router: Router
   ) {
-    if (!authService.isLoggedIn) {
-      authService.loadCurrentUserFromStorage();
-      if (!userService.currentUser.id) {
-        this.router.navigate(['/']);
-      }
-    }
+
+
     this.updateIsMobile();
     // userService.loadCurrentUserFromStorage()
     effect(() => {
@@ -113,7 +109,22 @@ export class MainPageComponent implements AfterViewInit {
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.channelService.setupChannelsListener()
+    const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+      this.authService.loadCurrentUserFromStorage();
+      if (!this.userService.currentUser.id) {
+        await this.reLoginAsGuest();
+      }
+    } else {
+      if (!this.authService.isLoggedIn) {
+        this.authService.loadCurrentUserFromStorage();
+        if (!this.userService.currentUser.id) {
+          this.router.navigate(['/']);
+        }
+      }
+    }
     window.addEventListener('resize', () => {
       this.updateIsMobile();
     });
@@ -124,7 +135,26 @@ export class MainPageComponent implements AfterViewInit {
         this.onlinePopup.show(user);
       }
     });
-    this.channelService.setupChannelsListener()
+  }
+
+
+  async reLoginAsGuest() {
+    this.authService.loadCurrentUserFromStorage();
+    this.authService.isLoggedIn = true;
+    const email = 'gast@user.de'
+    const password = 'gast123'
+    try {
+      const user = await this.authService.login(email, password);
+      await this.userService.waitUntilUsersLoaded();
+      const profile = this.userService.getUserByEmail(user.email || '');
+      if (!profile) {
+        console.error('Benutzerprofil konnte nicht gefunden werden.');
+        return;
+      }
+      this.userService.currentUser = profile;
+    } catch (error: any) {
+      console.error(error);
+    }
   }
 
 

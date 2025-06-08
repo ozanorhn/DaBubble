@@ -66,7 +66,6 @@ export class LandingPageComponent {
       console.log('Normale Navigation (kein Reload)');
       this.showSplash = true;
     }
-
   }
 
 
