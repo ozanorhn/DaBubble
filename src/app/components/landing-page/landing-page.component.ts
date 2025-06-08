@@ -67,15 +67,6 @@ export class LandingPageComponent {
       this.showSplash = true;
     }
 
-
-    // const splashShown = localStorage.getItem('splashShown');
-    // if (splashShown === 'true') {
-    //   this.showSplash = false; // Nicht mehr anzeigen
-    // } else {
-    //   localStorage.setItem('splashShown', 'true'); // Als "gezeigt" markieren
-    //   this.showSplash = true; // Einmalig anzeigen
-    // }
-
   }
 
 
