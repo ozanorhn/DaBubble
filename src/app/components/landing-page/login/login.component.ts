@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LandingPageService } from '../../../pageServices/navigates/landing-nav.service';
 import { UsersService } from '../../../services/users/users.service';
@@ -15,7 +15,7 @@ import { Auth, sendEmailVerification, signInWithEmailAndPassword } from '@angula
 @Component({
   selector: 'app-login',
   imports: [
-    RouterLink,
+    // RouterLink,
     FormsModule,
     CommonModule,
   ],
@@ -41,12 +41,17 @@ export class LoginComponent {
     // public channelsService: ChannelsService
     private auth: Auth,
   ) {
-    if (!authService.isLoggedIn) {
-      authService.loadCurrentUserFromStorage();
-      if (userService.currentUser.id) {
-        this.router.navigate(['/main']);
-      }
-    }
+    // const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    // if (navEntries.length > 0 && navEntries[0].type === 'reload') { }
+    // console.log('navEntries login: ');
+    // console.warn(navEntries[0].type);
+    
+    // if (!this.authService.isLoggedIn || (navEntries.length > 0 && (navEntries[0].type === 'reload' || navEntries[0].type === 'back_forward'))) {
+    //   this.authService.loadCurrentUserFromStorage();
+    //   if (this.userService.currentUser.id !== userService.GuestUser.id && this.userService.currentUser.id) {
+    //     this.router.navigate(['/main']);
+    //   }
+    // }
   }
 
 
@@ -86,7 +91,7 @@ export class LoginComponent {
         this.error = 'Benutzerprofil konnte nicht gefunden werden.';
         return;
       }
-
+      this.userService.componentExsits = false;
       this.userService.currentUser = profile;
       if (!gast) {
         this.localStorageS.saveObject('currentUser', profile);
