@@ -69,6 +69,7 @@ export class UsersService implements OnDestroy {
     if (this.currentUser.id !== this.GuestUser.id) {
       const update = async () => {
         try {
+          this.currentUser.online = Timestamp.now();
           if (!this.currentUser.id) return;
           const userRef = doc(this.usersCollection, this.currentUser.id);
           await updateDoc(userRef, { online: Timestamp.now() });
