@@ -52,7 +52,7 @@
     class="relative flex items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
     [ngClass]="{'invalid': !password.valid && (password.touched || contactForm.submitted), 'valid': password.valid}">
     <img src="assets/imgs/icons/lock.svg" alt="Lock Icon" class="size-5" />
-    <input #password="ngModel" type="password" type="text" placeholder="Passwort" class="flex-1 outline-none bg-primary"
+    <input #password="ngModel" type="password" placeholder="Passwort" class="flex-1 outline-none bg-primary"
       [(ngModel)]="registerData.password" name="password" required />
     @if(!password.valid && (password.touched || contactForm.submitted)){
     <span
