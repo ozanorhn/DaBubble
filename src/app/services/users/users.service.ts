@@ -30,7 +30,6 @@ export class UsersService implements OnDestroy {
 
   constructor() {
     this.initUsersListener();
-    this.updateOnlineStatus();
     const reloaded = sessionStorage.getItem('reloaded');
     if (reloaded === null) {
       let id = setTimeout(() => {
@@ -66,22 +65,6 @@ export class UsersService implements OnDestroy {
   }
 
 
-  // updateOnlineStatus() {
-  //   if (this.currentUser.id !== this.GuestUser.id) {
-  //     const update = async () => {
-  //       if (!this.currentUser.id) return;
-  //       const userRef = doc(this.usersCollection, this.currentUser.id);
-  //       try {
-  //         await updateDoc(userRef, {
-  //           online: Timestamp.now()
-  //         });
-  //       } catch (error) { console.error('Fehler beim Aktualisieren des Online-Status:', error); }
-  //       setTimeout(update, 15000);
-  //     };
-  //     update();
-  //   }
-  // }
-
   updateOnlineStatus() {
     if (this.currentUser.id !== this.GuestUser.id) {
       const update = async () => {
@@ -94,6 +77,7 @@ export class UsersService implements OnDestroy {
         } finally {
           setTimeout(update, 15000); // Immer neu planen
         }
+        console.log('Update OnlineStatus:', this.currentUser);
       };
       update();
     }

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -18,13 +18,24 @@ import { User } from '../../classes/user.class';
 })
 export class AuthService {
   private auth = inject(Auth);
-  isLoggedIn = false;
+  isLoggedIn = signal(false);
 
 
   constructor(
     public userService: UsersService,
     private readonly localStorageService: LocalStorageService
-  ) { }
+  ) {
+    effect(() => {
+      const showChannel = this.isLoggedIn();
+      if (this.isLoggedIn()) {
+        userService.updateOnlineStatus();
+      }
+      // let id = setTimeout(() => {
+      //   this.setReactionsAmount();
+      //   clearTimeout(id);
+      // }, 100);
+    });
+  }
 
 
   /**
@@ -32,13 +43,13 @@ export class AuthService {
    * Only applies if the user has a valid ID.
    */
   loadCurrentUserFromStorage() {
-    this.isLoggedIn = true;
     let currentUser = new User(this.localStorageService.loadObject('currentUser'))
     currentUser.online = new Timestamp(currentUser.online.seconds, currentUser.online.nanoseconds);
     if (currentUser.id) {
       console.log('Eingeloggt als: ', currentUser);
       this.userService.currentUser = currentUser;
     }
+    this.isLoggedIn.set(true);
   }
 
 
@@ -48,7 +59,7 @@ export class AuthService {
       const user = userCredential.user;
       // this.verifyEmailOrThrow(user)
       console.log('Login erfolgreich:', user.email);
-      this.isLoggedIn = true;
+      this.isLoggedIn.set(true);
       return user;
     } catch (error: unknown) {
       throw error;
@@ -111,7 +122,7 @@ export class AuthService {
     const userDocRef = doc(this.userService.usersCollection, existingUser.id);
     await updateDoc(userDocRef, { online: Timestamp.now() });
     this.localStorageService.saveObject('currentUser', existingUser);
-    this.isLoggedIn = true;
+    this.isLoggedIn.set(true);
   }
 
 
@@ -139,5 +150,5 @@ export class AuthService {
     }
   }
 
-  
+
 }

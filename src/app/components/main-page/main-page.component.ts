@@ -146,7 +146,6 @@ export class MainPageComponent implements AfterViewInit, OnInit {
 
   async reLoginAsGuest() {
     this.authService.loadCurrentUserFromStorage();
-    this.authService.isLoggedIn = true;
     const email = 'gast@user.de'
     const password = 'gast123'
     try {
@@ -158,6 +157,7 @@ export class MainPageComponent implements AfterViewInit, OnInit {
         return;
       }
       this.userService.currentUser = profile;
+      this.authService.isLoggedIn.set(true);
     } catch (error: any) {
       console.error(error);
     }

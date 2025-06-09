@@ -25,7 +25,7 @@ export class LogOutComponent {
   logOut() {
     this.usersService.componentExsits = false;
     this.usersService.currentUser = new User();
-    this.authService.isLoggedIn = false;
+    this.authService.isLoggedIn.set(false);
     let id = setTimeout(() => {
       this.router.navigate(['/']);
       clearTimeout(id);
