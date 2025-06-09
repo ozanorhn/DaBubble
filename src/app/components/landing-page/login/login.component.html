@@ -33,12 +33,12 @@
     class="flex relative items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
     [ngClass]="{'invalid': !password.valid && (password.touched || contactForm.submitted), 'valid': password.valid}">
     <img src="assets/imgs/icons/lock.svg" alt="Lock Icon" class="size-5" />
-    <input #password="ngModel" type="password" placeholder="beispielname@email.com"
+    <input #password="ngModel" type="password" placeholder="Passwort"
       class="flex-1 outline-none bg-primary" [(ngModel)]="loginData.password" name="password" required />
     @if(!password.valid && (password.touched || contactForm.submitted)){
     <span
       class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">
-      Pleace enter email
+      Pleace enter password
     </span>
     }
   </div>
