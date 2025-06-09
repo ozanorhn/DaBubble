@@ -69,8 +69,8 @@ export class LoginComponent {
 
   async guestLogin(gast = false) {
     if (gast) {
-      this.email = 'gast@user.de'
-      this.password = 'gast123'
+      this.loginData.email = 'gast@user.de'
+      this.loginData.password = 'gast123'
     }
     try {
       const user = await this.authService.login(this.loginData.email, this.loginData.password);
