@@ -1,8 +1,12 @@
 <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
   <div class="w-full max-w-sm space-y-6">
     <div class="flex items-center space-x-2">
-      <img src="assets/icons/Property 1=Default (1).svg" alt="Zurück" class="w-6 h-6 cursor-pointer"
-        (click)="goBack()" />
+      <img
+        src="assets/icons/Property 1=Default (1).svg"
+        alt="Zurück"
+        class="w-6 h-6 cursor-pointer"
+        (click)="goBack()"
+      />
 
       <h1 class="text-[32px] leading-[38.4px] text-purple1">Konto erstellen</h1>
     </div>
@@ -12,37 +16,64 @@
       DABubble-Konto.
     </p>
 
-    <form class="space-y-4" (ngSubmit)="goToAvatar(contactForm)" #contactForm="ngForm">
+    <form
+      class="space-y-4"
+      (ngSubmit)="goToAvatar(contactForm)"
+      #contactForm="ngForm"
+    >
       <div class="relative">
-        <img src="assets/imgs/icons/person_filled.svg" alt="User Icon"
-          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
-        <input  type="text" placeholder="Name und Nachname"
+        <img
+          src="assets/imgs/icons/person_filled.svg"
+          alt="User Icon"
+          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2"
+        />
+        <input
+          type="text"
+          placeholder="Name und Nachname"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
-          [(ngModel)]="name" name="name" required />
+          [(ngModel)]="name"
+          name="name"
+          required
+        />
       </div>
 
       <div class="relative">
-        <img src="assets/imgs/icons/mail.svg" alt="Mail Icon"
-          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
-        <input type="email" placeholder="beispielname@email.com"
+        <img
+          src="assets/imgs/icons/mail.svg"
+          alt="Mail Icon"
+          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2"
+        />
+        <input
+          type="email"
+          placeholder="beispielname@email.com"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
-          [(ngModel)]="email" name="email"
+          [(ngModel)]="email"
+          name="email"
           required
           pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
-         />
+        />
       </div>
 
       <div class="relative">
-        <img src="assets/imgs/icons/lock.svg" alt="Lock Icon"
-          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2" />
-        <input type="password" placeholder="Passwort"
+        <img
+          src="assets/imgs/icons/lock.svg"
+          alt="Lock Icon"
+          class="absolute w-5 h-5 transform -translate-y-1/2 left-4 top-1/2"
+        />
+        <input
+          type="password"
+          placeholder="Passwort"
           class="w-full py-2 pl-12 pr-4 text-black transition duration-200 border border-white rounded-full bg-primary input-fancy focus:bg-primary focus:border-purple2 focus:ring-2 focus:ring-purple2 focus:outline-none"
-          [(ngModel)]="password" required name="password" />
+          [(ngModel)]="password"
+          required
+          name="password"
+        />
       </div>
-
-      <button type="submit"
-        class="w-full py-2 font-semibold text-center text-white transition duration-200 rounded-full bg-purple1 hover:bg-purple3"
-        >
+      <button
+        type="submit"
+        class="w-full py-2 font-semibold text-center text-white transition duration-200 rounded-full bg-purple1 hover:bg-purple3 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+        [disabled]="!contactForm.valid"
+      >
         Weiter
       </button>
     </form>
