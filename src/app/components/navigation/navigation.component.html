@@ -14,58 +14,9 @@
 
     <div class="flex flex-col pl-8">
 
-        @if (filterService.searchValue().length >= 1) {
+        <app-channels></app-channels>
+        <app-direct-messages></app-direct-messages>
 
-        @if (filterService.filteredResults().length > 0) {
-        <!-- <ul class="flex flex-col">
-
-
-            @for (item of filterService.filteredResults(); track $index) {
-
-            @if (isUser(item)) {
-            <li
-                (click)="clickUser(item)">
-                <app-user [userInfo]="item"></app-user>
-            </li>
-
-            } @else if (isChannel(item) && isMember(item)) {
-            <li (click)="clickChannel(item)"
-                class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
-                <span class="font-bold">#</span> {{item.name}}
-            </li>
-            }
-
-            }
-
-
-        </ul> -->
-
-        <ul class="flex flex-col">
-            @for (item of filterService.filteredResults(); track $index) {
-            @if (isUser(item)) {
-            <li (click)="clickUser(item)"><app-user [userInfo]="item"></app-user></li>
-            } @else if (isChannel(item) && isMember(item)) {
-            <li (click)="clickChannel(item)"
-                class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
-                <span class="font-bold">#</span> {{item.name}}
-            </li>
-            } @else if (isMessage(item)) {
-            <li (click)="clickMessage(item)"
-                class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
-                <span class="text-sm truncate">{{item.message}}</span>
-            </li>
-            }
-            }
-        </ul>
-        } @else {
-        <div class="flex items-center h-20 font-bold">Keine gefunden </div>
-        }
-
-        }
-
-        @if(filterService.searchValue().length < 1) { <app-channels></app-channels>
-            <app-direct-messages></app-direct-messages>
-            }
     </div>
 
 </section>

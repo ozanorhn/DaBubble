@@ -1,40 +1,21 @@
-<section class="relative">
-
-
-
-  <!-- @if (!filterService.isChatInputActive()) { -->
+<section class="relative text-xl">
 
   <div
-    class="w-full h-[48px] bg-white border border-gray-300 rounded-[42px] flex justify-between pt-[8px] pr-[24px] pb-[8px] pl-[24px] lg:flex">
+    class="w-full h-16 bg-white border border-gray-300 rounded-[42px] flex items-center justify-between py-[8px] px-[24px] lg:flex">
 
+    <input type="text" [(ngModel)]="filterService.searchValue" placeholder="Devspace durchsuchen"
+      class="size-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none pl-[10px]" />
 
-    <input type="text" [(ngModel)]="filterService.searchValue" placeholder="Search..."
-      class="w-full h-full text-gray-800 placeholder-gray-400 bg-transparent border-none focus:outline-none pl-[10px]" />
-
-
-    <img src="assets/imgs/icons/icons.svg" alt="" class="w-[32px h-[32px]]" />
+    <img src="assets/imgs/icons/icons.svg" alt="" class="size-9" />
   </div>
-  <!-- } [disabled]="filterService.isChatInputActive()" -->
+  
 
-  @if (filterService.searchValue().length >= 1 && !mainNavService.showNav()) {
+  @if (filterService.searchValue().length >= 1) {
 
   <div
     class="absolute z-10 w-full bg-white border border-black shadow-lg max-h-96 h-fit rounded-[30px] p-5 overflow-auto">
 
     @if (filterService.filteredResults().length > 0) {
-    <!-- <ul class="flex flex-col">
-      @for (item of filterService.filteredResults(); track $index) {
-
-      @if (isUser(item)) {
-      <li (click)="clickUser(item)"><app-user [userInfo]="item"></app-user></li>
-      } @else if (isChannel(item) && isMember(item)) {
-      <li (click)="clickChannel(item)"
-        class="flex items-center gap-4 px-10 cursor-pointer h-9 hover:bg-primary hover:font-bold hover:text-purple3">
-        <span class="font-bold">#</span> {{item.name}}
-      </li>
-      }
-      }
-    </ul> -->
 
     <ul class="flex flex-col">
       @for (item of filterService.filteredResults(); track $index) {
@@ -56,8 +37,6 @@
     } @else {
     <div class="flex items-center h-20 font-bold">Keine gefunden </div>
     }
-
-
 
 
   </div>

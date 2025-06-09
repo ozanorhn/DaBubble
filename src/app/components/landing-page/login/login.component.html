@@ -1,4 +1,4 @@
-<div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
+<!-- <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
 
   <div class="w-full max-w-sm p-6 space-y-6 bg-white rounded-3xl">
     <h1 class="text-[32px] leading-[38.4px] text-center text-purple1">
@@ -52,11 +52,15 @@
         <button type="submit" class="flex-1 py-2 text-white rounded-full bg-purple1 hover:bg-purple3">
           Anmelden
         </button>
-        <button (click)="login(true)" routerLink="main"
-          type="button" class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary">
+
+        <button (click)="login(true)" routerLink="main" type="button"
+          class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary">
           Gäste-Login
         </button>
+
       </div>
+
+
     </form>
   </div>
 </div>
@@ -65,4 +69,89 @@
   <button class="text-sm text-purple1 hover:underline" (click)="resendVerificationEmail()">
     E-Mail erneut senden
   </button>
-</div>
+</div> -->
+
+
+
+
+<form
+  class="relative min-w-[320px] flex flex-col items-center w-full gap-4 px-5 py-5 text-lg bg-white shadow-md sm:py-10 sm:gap-8 sm:px-10 sm:text-xl rounded-3xl"
+  (ngSubmit)="guestLogin()" #contactForm="ngForm">
+
+
+  <h1 class="text-2xl font-bold xs:text-3xl sm:text-4xl text-purple1">
+    Anmeldung
+  </h1>
+
+
+  <p class="leading-6 text-center text-textgray">
+    Wir empfehlen dir, die E-Mail-Adresse zu <br> nutzen, die du bei der Arbeit
+    verwendest.
+  </p>
+
+
+  <div
+    class="flex items-center w-full max-w-[500px] relative bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
+    [ngClass]="{'invalid': !name.valid && (name.touched || contactForm.submitted), 'valid': name.valid}">
+    <img src="assets/imgs/icons/person_filled.svg" alt="User Icon" class="size-5" />
+    <input #name="ngModel" type="text" placeholder="beispielname@email.com" class="flex-1 outline-none bg-primary"
+      [(ngModel)]="loginData.email" name="name" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" required />
+    @if(!name.valid && name.touched){
+    <span
+      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
+      enter
+      name</span>
+    }
+  </div>
+
+
+  <div
+    class="flex relative items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
+    [ngClass]="{'invalid': !email.valid && (email.touched || contactForm.submitted), 'valid': email.valid}">
+    <img src="assets/imgs/icons/mail.svg" alt="Mail Icon" class="size-5" />
+    <input #email="ngModel" type="text" placeholder="beispielname@email.com" class="flex-1 outline-none bg-primary"
+      [(ngModel)]="loginData.password" name="email" required />
+    @if(!email.valid && email.touched){
+    <span
+      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
+      enter
+      email</span>
+    }
+  </div>
+
+
+  <span (click)="change()" class="cursor-pointer  text-purple2 hover:underline">Passwort vergessen?</span>
+
+
+  <div class="flex items-center w-full gap-4">
+    <span class="w-full h-0 border bg-slate-400"></span>
+    ODER
+    <span class="w-full border bg-slate-400"></span>
+  </div>
+
+
+  <!-- @if (error) {
+  <p class="w-full text-sm text-center text-red-500">{{ error }}</p>
+  } -->
+
+
+  <button (click)="signInWithGoogle()" type="button"
+    class="flex items-center justify-center w-full gap-2 px-4 py-2 border rounded-full hover:border-lightpurple bg-primary hover:scale-[1.1] duration-150 active:scale-[0.9]">
+    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Icon" class="w-5 h-5" />
+    Anmelden mit Google
+  </button>
+
+
+  <div class="flex w-full gap-7">
+    <button type="submit"
+      class="flex-1 py-2 text-white rounded-full bg-purple1 hover:bg-purple3 hover:scale-[1.1] duration-150 active:scale-[0.9]">
+      Anmelden
+    </button>
+
+    <button (click)="guestLogin(true)" routerLink="main" type="button"
+      class="flex-1 py-2 border rounded-full border-purple1 text-purple1 hover:bg-primary hover:scale-[1.1] duration-150 active:scale-[0.9]">
+      Gäste-Login
+    </button>
+  </div>
+
+</form>
