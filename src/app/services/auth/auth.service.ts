@@ -130,7 +130,8 @@ export class AuthService {
 
 
   checkLoggedInUser() {
-    const storedUserData = this.localStorageService.loadObject('currentUser');
+    let storedUserData = this.localStorageService.loadObject('currentUser') as User;
+    storedUserData.online = Timestamp.now();
     if (storedUserData) {
       this.userService.tempUser = storedUserData;
       console.log('Lokal User: ', storedUserData);
