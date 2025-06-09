@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
@@ -19,16 +19,25 @@ export class UsersService implements OnDestroy {
   users: User[] = [];
   tempUser: Partial<User> = {};
   currentUser: User = new User();
+  componentExsits = false;
   GuestUser = {
     id: 'ALomQ9jH69QnE7Q7zjnA',
     name: 'Gast',
     email: 'gast@user.de',
+    avatar: '/assets/imgs/avatar4.svg'
   }
 
 
   constructor() {
     this.initUsersListener();
     this.updateOnlineStatus();
+    const reloaded = sessionStorage.getItem('reloaded');
+    if (reloaded === null) {
+      let id = setTimeout(() => {
+        sessionStorage.setItem('reloaded', 'true');
+        clearTimeout(id);
+      }, 100);
+    }
   }
 
 
@@ -66,7 +75,7 @@ export class UsersService implements OnDestroy {
           await updateDoc(userRef, {
             online: Timestamp.now()
           });
-        } catch (error) {console.error('Fehler beim Aktualisieren des Online-Status:', error);}
+        } catch (error) { console.error('Fehler beim Aktualisieren des Online-Status:', error); }
         setTimeout(update, 15000);
       };
       update();

@@ -57,15 +57,11 @@ import { Router } from '@angular/router';
 export class MainPageComponent implements AfterViewInit, OnInit {
   showMessagesOnly = false;
   isMobile = false;
-
   @ViewChild('channel') channelRef?: ElementRef;
   @ViewChild('thread', { read: ElementRef }) threadRef?: ElementRef;
   @ViewChild(OnlinePopupComponent) onlinePopup!: OnlinePopupComponent;
-
   @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
-    this.setReactionsAmount();
-  }
+
 
   private setReactionsAmount() {
     const channelWidth = this.channelRef?.nativeElement?.offsetWidth - 160;
@@ -89,9 +85,29 @@ export class MainPageComponent implements AfterViewInit, OnInit {
     private router: Router
   ) {
 
+    const lastVisitedComponent = sessionStorage.getItem('lastVisitedComponent');
+    if (lastVisitedComponent === 'main') {
+      if (localStorage.getItem('currentUser') !== null) {
+        authService.loadCurrentUserFromStorage();
+      } else {
+        this.reLoginAsGuest();
+      }
+    } else {
+      if (localStorage.getItem('currentUser') !== null) {
+        authService.loadCurrentUserFromStorage();
+      } else if (userService.currentUser.id !== userService.GuestUser.id) {
+        router.navigate(['/'])
+      }
+    }
+    userService.componentExsits = true;
+    console.log('MainPage Constructor');
+    let id = setTimeout(() => {
+      sessionStorage.setItem('lastVisitedComponent', 'main');
+      clearTimeout(id);
+    }, 100);
+
 
     this.updateIsMobile();
-    // userService.loadCurrentUserFromStorage()
     effect(() => {
       const showChannel = this.navService.channel();
       const showThread = this.navService.thread();
@@ -103,6 +119,10 @@ export class MainPageComponent implements AfterViewInit, OnInit {
   }
 
 
+  onResize(event: Event) {
+    this.setReactionsAmount();
+  }
+
 
   ngAfterViewInit(): void {
     this.setReactionsAmount();
@@ -111,20 +131,6 @@ export class MainPageComponent implements AfterViewInit, OnInit {
 
   async ngOnInit() {
     this.channelService.setupChannelsListener()
-    const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
-    if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-      this.authService.loadCurrentUserFromStorage();
-      if (!this.userService.currentUser.id) {
-        await this.reLoginAsGuest();
-      }
-    } else {
-      if (!this.authService.isLoggedIn) {
-        this.authService.loadCurrentUserFromStorage();
-        if (!this.userService.currentUser.id) {
-          this.router.navigate(['/']);
-        }
-      }
-    }
     window.addEventListener('resize', () => {
       this.updateIsMobile();
     });
@@ -163,7 +169,6 @@ export class MainPageComponent implements AfterViewInit, OnInit {
   }
 
 
-
   switchContent() {
     if (!this.isMobile) return;
     this.mainNavService.showAltLogo = false;
@@ -174,16 +179,6 @@ export class MainPageComponent implements AfterViewInit, OnInit {
     this.mainNavService.channel.set(false);
     this.mainNavService.thread.set(false);
   }
-
-
-
-
-  /*   updateIsMobile() {
-      this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
-      if (!this.isMobile) {
-        this.mainNavService.showAltLogo = false;
-      }
-    } */
 
 
   updateIsMobile() {
@@ -200,6 +195,4 @@ export class MainPageComponent implements AfterViewInit, OnInit {
       this.mainNavService.showAltLogo = false;
     }
   }
-
-
 }

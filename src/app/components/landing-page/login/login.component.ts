@@ -15,7 +15,7 @@ import { Auth, sendEmailVerification, signInWithEmailAndPassword } from '@angula
 @Component({
   selector: 'app-login',
   imports: [
-    RouterLink,
+    // RouterLink,
     FormsModule,
     CommonModule,
   ],
@@ -36,18 +36,17 @@ export class LoginComponent {
     // public channelsService: ChannelsService
     private auth: Auth,
   ) {
-    const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    // const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
     // if (navEntries.length > 0 && navEntries[0].type === 'reload') { }
-    if (!this.authService.isLoggedIn || (navEntries.length > 0 && (navEntries[0].type === 'reload' || navEntries[0].type === 'back_forward'))) {
-      this.authService.loadCurrentUserFromStorage();
-      console.log('seite wurde neu geladen');
-      console.log(this.userService.currentUser.id);
-      console.log(userService.GuestUser.id);
-      
-      if (this.userService.currentUser.id !== userService.GuestUser.id && this.userService.currentUser.id) {
-        this.router.navigate(['/main']);
-      }
-    }
+    // console.log('navEntries login: ');
+    // console.warn(navEntries[0].type);
+    
+    // if (!this.authService.isLoggedIn || (navEntries.length > 0 && (navEntries[0].type === 'reload' || navEntries[0].type === 'back_forward'))) {
+    //   this.authService.loadCurrentUserFromStorage();
+    //   if (this.userService.currentUser.id !== userService.GuestUser.id && this.userService.currentUser.id) {
+    //     this.router.navigate(['/main']);
+    //   }
+    // }
   }
 
 
@@ -90,7 +89,7 @@ export class LoginComponent {
         this.error = 'Benutzerprofil konnte nicht gefunden werden.';
         return;
       }
-
+      this.userService.componentExsits = false;
       this.userService.currentUser = profile;
       if (!gast) {
         this.localStorageS.saveObject('currentUser', profile);
