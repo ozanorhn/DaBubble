@@ -66,17 +66,34 @@ export class UsersService implements OnDestroy {
   }
 
 
+  // updateOnlineStatus() {
+  //   if (this.currentUser.id !== this.GuestUser.id) {
+  //     const update = async () => {
+  //       if (!this.currentUser.id) return;
+  //       const userRef = doc(this.usersCollection, this.currentUser.id);
+  //       try {
+  //         await updateDoc(userRef, {
+  //           online: Timestamp.now()
+  //         });
+  //       } catch (error) { console.error('Fehler beim Aktualisieren des Online-Status:', error); }
+  //       setTimeout(update, 15000);
+  //     };
+  //     update();
+  //   }
+  // }
+
   updateOnlineStatus() {
     if (this.currentUser.id !== this.GuestUser.id) {
       const update = async () => {
-        if (!this.currentUser.id) return;
-        const userRef = doc(this.usersCollection, this.currentUser.id);
         try {
-          await updateDoc(userRef, {
-            online: Timestamp.now()
-          });
-        } catch (error) { console.error('Fehler beim Aktualisieren des Online-Status:', error); }
-        setTimeout(update, 15000);
+          if (!this.currentUser.id) return;
+          const userRef = doc(this.usersCollection, this.currentUser.id);
+          await updateDoc(userRef, { online: Timestamp.now() });
+        } catch (error) {
+          console.error('Update failed, retrying...', error);
+        } finally {
+          setTimeout(update, 15000); // Immer neu planen
+        }
       };
       update();
     }

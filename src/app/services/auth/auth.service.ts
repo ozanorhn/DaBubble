@@ -34,6 +34,7 @@ export class AuthService {
   loadCurrentUserFromStorage() {
     this.isLoggedIn = true;
     let currentUser = new User(this.localStorageService.loadObject('currentUser'))
+    currentUser.online = new Timestamp(currentUser.online.seconds, currentUser.online.nanoseconds);
     if (currentUser.id) {
       console.log('Eingeloggt als: ', currentUser);
       this.userService.currentUser = currentUser;
@@ -137,4 +138,6 @@ export class AuthService {
       console.log('Lokal User: ', storedUserData);
     }
   }
+
+  
 }
