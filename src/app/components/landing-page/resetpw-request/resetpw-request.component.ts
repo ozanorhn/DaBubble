@@ -14,7 +14,7 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './resetpw-request.component.scss'
 })
 export class ResetpwRequestComponent {
-  
+
   email: string = '';
   showMessage: boolean = false;
 
@@ -32,7 +32,6 @@ export class ResetpwRequestComponent {
 
   async sendeResetAnfrage() {
     if (!this.email) {
-      alert('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
       console.log('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
       return;
     }
@@ -42,7 +41,6 @@ export class ResetpwRequestComponent {
 
     } catch (err) {
       console.error(err);
-      alert('Fehler beim Senden der E-Mail. Bitte überprüfen Sie die Adresse.');
     }
   }
 

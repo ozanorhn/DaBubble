@@ -73,11 +73,11 @@
     <img src="assets/imgs/icons/mail.svg" alt="Mail Icon" class="size-5" />
     <input #name="ngModel" type="text" placeholder="beispielname@email.com" class="flex-1 outline-none bg-primary"
       [(ngModel)]="email" name="name" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" required />
-    @if(!name.valid && name.touched){
+    @if(!name.valid && (name.touched || contactForm.submitted)){
     <span
-      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
-      enter
-      name</span>
+      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">
+      Pleace enter email
+    </span>
     }
   </div>
 
@@ -92,10 +92,6 @@
     class="flex-1 px-6 py-3 self-end text-white rounded-full bg-purple1 hover:bg-purple3 hover:scale-[1.1] duration-150 active:scale-[0.9]">
     E-Mail senden
   </button>
-
-
-
-
 
 
 

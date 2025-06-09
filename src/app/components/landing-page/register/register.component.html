@@ -93,7 +93,7 @@
     <img src="assets/imgs/icons/person_filled.svg" alt="User Icon" class="size-5" />
     <input #name="ngModel" type="text" placeholder="Name und Nachname" class="flex-1 outline-none bg-primary"
       [(ngModel)]="registerData.name" name="name" required />
-    @if(!name.valid && name.touched){
+    @if(!name.valid && (name.touched || contactForm.submitted)){
     <span
       class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
       enter
@@ -109,7 +109,7 @@
     <input #email="ngModel" type="text" placeholder="beispielname@email.com" class="flex-1 outline-none bg-primary"
       [(ngModel)]="registerData.email" name="email" required
       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" />
-    @if(!email.valid && email.touched){
+    @if(!email.valid && (email.touched || contactForm.submitted)){
     <span
       class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
       enter
@@ -124,7 +124,7 @@
     <img src="assets/imgs/icons/lock.svg" alt="Lock Icon" class="size-5" />
     <input #password="ngModel" type="password" type="text" placeholder="Passwort" class="flex-1 outline-none bg-primary"
       [(ngModel)]="registerData.password" name="password" required />
-    @if(!password.valid && password.touched){
+    @if(!password.valid && (password.touched || contactForm.submitted)){
     <span
       class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
       enter
