@@ -28,7 +28,13 @@ export class UsersService implements OnDestroy {
 
   constructor() {
     this.initUsersListener();
-    this.updateOnlineStatus();
+    // Warte bis der currentUser korrekt geladen ist
+    setTimeout(() => {
+    if (this.currentUser && this.currentUser.id && this.currentUser.id !== this.GuestUser.id) {
+      this.updateOnlineStatus();
+    }
+      }, 500); // ggf. anpassen, je nachdem wann der User gesetzt wird
+     
   }
 
 
@@ -43,8 +49,7 @@ export class UsersService implements OnDestroy {
     return usersCopy;
   }
 
-
-  private initUsersListener() {
+ private initUsersListener() {
     this.unsubscribe = onSnapshot(this.usersCollection, (snapshot) => {
       const users = snapshot.docs.map(doc => {
         const data = doc.data() as User;
@@ -82,19 +87,25 @@ export class UsersService implements OnDestroy {
   }
 
 
-  private checkOnlineStatusChanges(users: User[]) {
-    const currentlyOnline = users.filter(user => this.isUserOnline(user.online));
-    const newOnlineUsers = currentlyOnline.filter(user => {
-      const wasOnline = this.previousOnlineStatus[user.id] || false;
-      const isNowOnline = this.isUserOnline(user.online);
-      this.previousOnlineStatus[user.id] = isNowOnline;
-      return isNowOnline && !wasOnline && user.id !== this.currentUser.id;
-    });
-    if (newOnlineUsers.length > 0) {
-      this.showOnlineNotification(newOnlineUsers[0]);
-    }
-    this.onlineUsers.next(currentlyOnline);
+private checkOnlineStatusChanges(users: User[]) {
+  const currentlyOnline = users.filter(user => this.isUserOnline(user.online));
+
+  // Info- und Popup-Benachrichtigung nur für neue andere User
+  const newOnlineUsers = currentlyOnline.filter(user => {
+    const wasOnline = this.previousOnlineStatus[user.id] || false;
+    const isNowOnline = this.isUserOnline(user.online);
+    this.previousOnlineStatus[user.id] = isNowOnline;
+    return isNowOnline && !wasOnline && user.id !== this.currentUser.id;
+  });
+
+  if (newOnlineUsers.length > 0) {
+    this.showOnlineNotification(newOnlineUsers[0]);
   }
+
+ 
+  this.onlineUsers.next(currentlyOnline);
+}
+
 
 
   showOnlineNotification(user: User) {
