@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, effect, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../shared/header/header.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { AddChannelComponent } from "../shared/popUp/add-channel/add-channel.component";
@@ -54,18 +54,14 @@ import { Router } from '@angular/router';
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
-export class MainPageComponent implements AfterViewInit {
+export class MainPageComponent implements AfterViewInit, OnInit {
   showMessagesOnly = false;
   isMobile = false;
-
   @ViewChild('channel') channelRef?: ElementRef;
   @ViewChild('thread', { read: ElementRef }) threadRef?: ElementRef;
   @ViewChild(OnlinePopupComponent) onlinePopup!: OnlinePopupComponent;
-
   @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
-    this.setReactionsAmount();
-  }
+
 
   private setReactionsAmount() {
     const channelWidth = this.channelRef?.nativeElement?.offsetWidth - 160;
@@ -88,14 +84,29 @@ export class MainPageComponent implements AfterViewInit {
     public authService: AuthService,
     private router: Router
   ) {
-    if (!authService.isLoggedIn) {
-      authService.loadCurrentUserFromStorage();
-      if (!userService.currentUser.id) {
-        this.router.navigate(['/']);
+
+    const lastVisitedComponent = sessionStorage.getItem('lastVisitedComponent');
+    if (lastVisitedComponent === 'main') {
+      if (localStorage.getItem('currentUser') !== null) {
+        authService.loadCurrentUserFromStorage();
+      } else {
+        this.reLoginAsGuest();
+      }
+    } else {
+      if (localStorage.getItem('currentUser') !== null) {
+        authService.loadCurrentUserFromStorage();
+      } else if (userService.currentUser.id !== userService.GuestUser.id) {
+        router.navigate(['/'])
       }
     }
+    userService.componentExsits = true;
+    let id = setTimeout(() => {
+      sessionStorage.setItem('lastVisitedComponent', 'main');
+      clearTimeout(id);
+    }, 100);
+
+
     this.updateIsMobile();
-    // userService.loadCurrentUserFromStorage()
     effect(() => {
       const showChannel = this.navService.channel();
       const showThread = this.navService.thread();
@@ -107,13 +118,18 @@ export class MainPageComponent implements AfterViewInit {
   }
 
 
+  onResize(event: Event) {
+    this.setReactionsAmount();
+  }
+
 
   ngAfterViewInit(): void {
     this.setReactionsAmount();
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.channelService.setupChannelsListener()
     window.addEventListener('resize', () => {
       this.updateIsMobile();
     });
@@ -124,14 +140,32 @@ export class MainPageComponent implements AfterViewInit {
         this.onlinePopup.show(user);
       }
     });
-    this.channelService.setupChannelsListener()
+  }
+
+
+  async reLoginAsGuest() {
+    this.authService.loadCurrentUserFromStorage();
+    const email = 'gast@user.de'
+    const password = 'gast123'
+    try {
+      const user = await this.authService.login(email, password);
+      await this.userService.waitUntilUsersLoaded();
+      const profile = this.userService.getUserByEmail(user.email || '');
+      if (!profile) {
+        console.error('Benutzerprofil konnte nicht gefunden werden.');
+        return;
+      }
+      this.userService.currentUser = profile;
+      this.authService.isLoggedIn.set(true);
+    } catch (error: any) {
+      console.error(error);
+    }
   }
 
 
   toggleMessagesView() {
     this.showMessagesOnly = !this.showMessagesOnly;
   }
-
 
 
   switchContent() {
@@ -144,16 +178,6 @@ export class MainPageComponent implements AfterViewInit {
     this.mainNavService.channel.set(false);
     this.mainNavService.thread.set(false);
   }
-
-
-
-
-  /*   updateIsMobile() {
-      this.isMobile = window.innerWidth < 640; // Tailwind "sm" = 640px
-      if (!this.isMobile) {
-        this.mainNavService.showAltLogo = false;
-      }
-    } */
 
 
   updateIsMobile() {
@@ -170,6 +194,4 @@ export class MainPageComponent implements AfterViewInit {
       this.mainNavService.showAltLogo = false;
     }
   }
-
-
 }

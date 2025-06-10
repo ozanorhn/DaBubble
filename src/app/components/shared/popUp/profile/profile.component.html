@@ -39,8 +39,7 @@
       <img
         class="max-[500px]:block cursor-pointer hidden hover:scale-[1.2] duration-200 active:scale-[0.9] w-[40px] h-[40px] rounded-[40px] p-[3px]"
         (click)="overlayService.editProfileView()" src="/assets/icons/edit2.svg" alt="" />
-      <span
-      [ngClass]="{'d-none': userService.currentUser.id === userService.GuestUser.id}"
+      <span [ngClass]="{'d-none': userService.currentUser.id === userService.GuestUser.id}"
         class="max-[500px]:hidden cursor-pointer hover:scale-[1.2] duration-200 active:scale-[0.9] p-[3px] gap-[0px] transition-all text-purple1 ease-out"
         (click)="overlayService.editProfileView()">Bearbeiten</span>
       }
@@ -49,7 +48,7 @@
     <div class="flex items-center gap-4">
 
 
-      @if (updateOnlineStatus(overlayService.profileObj) || this.userService.currentUser.id === this.userService.GuestUser.id) {
+      @if (updateOnlineStatus(overlayService.profileObj)) {
       <div class="rounded-[50%] size-4 bg-online"></div>
       <span>Aktiv</span>
       }@else {

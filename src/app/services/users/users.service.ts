@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, OnInit, inject } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { User } from '../../classes/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection, doc, onSnapshot, updateDoc } from '@firebase/firestore';
@@ -19,16 +19,24 @@ export class UsersService implements OnDestroy {
   users: User[] = [];
   tempUser: Partial<User> = {};
   currentUser: User = new User();
+  componentExsits = false;
   GuestUser = {
     id: 'ALomQ9jH69QnE7Q7zjnA',
     name: 'Gast',
     email: 'gast@user.de',
+    avatar: '/assets/imgs/avatar4.svg'
   }
 
 
   constructor() {
     this.initUsersListener();
-    this.updateOnlineStatus();
+    const reloaded = sessionStorage.getItem('reloaded');
+    if (reloaded === null) {
+      let id = setTimeout(() => {
+        sessionStorage.setItem('reloaded', 'true');
+        clearTimeout(id);
+      }, 100);
+    }
   }
 
 
@@ -60,14 +68,16 @@ export class UsersService implements OnDestroy {
   updateOnlineStatus() {
     if (this.currentUser.id !== this.GuestUser.id) {
       const update = async () => {
-        if (!this.currentUser.id) return;
-        const userRef = doc(this.usersCollection, this.currentUser.id);
         try {
-          await updateDoc(userRef, {
-            online: Timestamp.now()
-          });
-        } catch (error) {console.error('Fehler beim Aktualisieren des Online-Status:', error);}
-        setTimeout(update, 15000);
+          if (!this.currentUser.id) return;
+          const userRef = doc(this.usersCollection, this.currentUser.id);
+          await updateDoc(userRef, { online: Timestamp.now() });
+        } catch (error) {
+          console.error('Update failed, retrying...', error);
+        } finally {
+          this.currentUser.online = Timestamp.now();
+          setTimeout(update, 15000);
+        }
       };
       update();
     }
@@ -98,8 +108,6 @@ export class UsersService implements OnDestroy {
 
 
   showOnlineNotification(user: User) {
-    console.log(user, 'Is now Online');
-
     if (this.onUserOnlineCallback) {
       this.onUserOnlineCallback(user);
     }
@@ -137,7 +145,6 @@ export class UsersService implements OnDestroy {
     const user = new User(this.tempUser);
     try {
       const docRef = await addDoc(this.usersCollection, user.toJSON());
-      console.log('User erstellt mit ID:', docRef.id);
     } catch (error) {
       console.error('Fehler beim Erstellen des Users:', error);
     }
@@ -147,7 +154,6 @@ export class UsersService implements OnDestroy {
   setTempUser(data: Partial<User>) {
     this.tempUser = { ...this.tempUser, ...data };
     this.currentUser = { ...this.tempUser, ...data } as User;
-    console.log('TempUser gesetzt:', this.tempUser);  // Überprüfe, ob der Avatar korrekt gesetzt wird
   }
 
 
@@ -166,7 +172,6 @@ export class UsersService implements OnDestroy {
     const userDocRef = doc(this.firestore, 'users', userId);
     try {
       await updateDoc(userDocRef, updatedData);
-      console.log('User erfolgreich aktualisiert:', updatedData);
     } catch (error) {
       console.error('Fehler beim Aktualisieren des Users:', error);
       throw error;

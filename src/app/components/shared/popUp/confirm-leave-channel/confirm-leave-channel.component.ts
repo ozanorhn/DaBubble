@@ -24,7 +24,6 @@ export class ConfirmLeaveChannelComponent {
     let currentChannel = this.channelService.channels[this.channelService.selectedChannelIndex()]
     let idToRemove = this.usersService.currentUser?.id
     const updatedIds = currentChannel.members.filter(id => id !== idToRemove);
-    console.log(updatedIds);
 
     if (updatedIds.length > 0) {
       await updateDoc(

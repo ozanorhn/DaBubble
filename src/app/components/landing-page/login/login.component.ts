@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LandingPageService } from '../../../pageServices/navigates/landing-nav.service';
 import { UsersService } from '../../../services/users/users.service';
@@ -15,7 +15,7 @@ import { Auth, sendEmailVerification, signInWithEmailAndPassword } from '@angula
 @Component({
   selector: 'app-login',
   imports: [
-    RouterLink,
+    // RouterLink,
     FormsModule,
     CommonModule,
   ],
@@ -38,16 +38,8 @@ export class LoginComponent {
     public userService: UsersService,
     public authService: AuthService,
     public localStorageS: LocalStorageService,
-    // public channelsService: ChannelsService
-    private auth: Auth,
-  ) {
-    if (!authService.isLoggedIn) {
-      authService.loadCurrentUserFromStorage();
-      if (userService.currentUser.id) {
-        this.router.navigate(['/main']);
-      }
-    }
-  }
+    private auth: Auth
+  ) { }
 
 
   getErrorMessage(code: string): string {
@@ -86,7 +78,7 @@ export class LoginComponent {
         this.error = 'Benutzerprofil konnte nicht gefunden werden.';
         return;
       }
-
+      this.userService.componentExsits = false;
       this.userService.currentUser = profile;
       if (!gast) {
         this.localStorageS.saveObject('currentUser', profile);

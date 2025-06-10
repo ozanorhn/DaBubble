@@ -28,26 +28,12 @@ export class AvatarComponent {
 
   changeAvatar(i: number) {
     this.currentAvatar = i;
-    console.log('Aktueller Avatar:', this.currentAvatar);
   }
 
   goBack() {
     this.landing.landing.set('register');
   }
 
-  /*   goForward() {
-      this.userService.setTempUser({
-        avatar: `/assets/imgs/avatar${this.currentAvatar}.svg`,
-      });
-      this.authService.completeUserRegistration(); // add und regist
-  
-      console.log('Konto erstellt');
-      this.openMessage();
-  
-      setTimeout(() => {
-        this.landing.landing.set('login');
-      }, 3000); // Navigation erfolgt nach 5 Sek.
-    } */
 
   openMessage(message: string) {
     this.messageText = message;

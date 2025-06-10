@@ -7,9 +7,11 @@ import { ResetpwConfirmComponent } from './resetpw-confirm/resetpw-confirm.compo
 import { CommonModule } from '@angular/common';
 import { LandingPageService } from '../../pageServices/navigates/landing-nav.service';
 import { SplashScreenComponent } from './splash-screen/splash-screen.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { UsersService } from '../../services/users/users.service';
+import { User } from '../../classes/user.class';
 @Component({
   selector: 'app-landing-page',
   standalone: true,
@@ -34,10 +36,26 @@ export class LandingPageComponent {
     public landingService: LandingPageService,
     private route: ActivatedRoute,
     public landing: LandingPageService,
-    public authService: AuthService
+    public authService: AuthService,
+    public usersService: UsersService,
+    private router: Router
   ) {
-
+    const lastVisitedComponent = sessionStorage.getItem('lastVisitedComponent');
+    if (lastVisitedComponent !== 'landing') {
+      if (localStorage.getItem('currentUser') !== null) {
+        authService.loadCurrentUserFromStorage();
+        router.navigate(['/main']);
+      } else {
+        usersService.currentUser = new User();
+      }
+    }
+    usersService.componentExsits = true;
+    let id = setTimeout(() => {
+      sessionStorage.setItem('lastVisitedComponent', 'landing');
+      clearTimeout(id);
+    }, 100);
   }
+
 
   ngOnInit() {
     this.route.url.subscribe(urlSegments => {
@@ -50,7 +68,6 @@ export class LandingPageComponent {
         this.landingService.landing.set('register');
       }
     });
-
     setTimeout(() => {
       this.showContent = true;
       setTimeout(() => {
@@ -58,15 +75,11 @@ export class LandingPageComponent {
       }, 700);
     }, 950);
 
-    const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
-    if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-      console.log('Seite wurde neu geladen (Browser-Refresh)');
+    const reloaded = sessionStorage.getItem('reloaded');
+    if (reloaded === 'true') {
       this.showSplash = false;
-    } else {
-      console.log('Normale Navigation (kein Reload)');
-      this.showSplash = true;
+      this.showContent = true;
     }
-
   }
 
 

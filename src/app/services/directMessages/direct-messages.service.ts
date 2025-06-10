@@ -132,7 +132,6 @@ export class DirectMessagesService implements OnDestroy {
           id: docSnapshot.id,
           ...data
         });
-        console.log('Echtzeit-Update:', this.directMessage);
       }
     }, (error) => {
       console.error('Fehler bei Echtzeit-Updates:', error);
@@ -261,7 +260,6 @@ export class DirectMessagesService implements OnDestroy {
    * Updates the current thread and synchronizes the response data in the DM.
    */
   async updateThread() {
-    console.log(this.threadService.threadMessage);
     const threadData = await this.threadDMsService.updateThread();
     this.directMessage.content[this.selectedMessageIndex].answers = threadData.answers;
     this.directMessage.content[this.selectedMessageIndex].lastAnswer = threadData.lastAnswer;

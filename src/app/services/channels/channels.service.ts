@@ -62,7 +62,6 @@ export class ChannelsService implements OnInit, OnDestroy {
         return data;
       })
       this.isLoadingChannels = false;
-      console.log('Channels updated:', this.channels); // 👈 Fügen Sie diesen Log hinzu
     })
   }
 
@@ -137,7 +136,6 @@ export class ChannelsService implements OnInit, OnDestroy {
     let channelIndex = this.channels.findIndex(channel => channel.id == obj.id)
     if (obj && channelIndex != -1) {
       this.selectedChannelIndex.set(channelIndex);
-      console.log('current channel Index', channelIndex);
     }
   }
 

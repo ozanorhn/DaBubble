@@ -1,5 +1,6 @@
 <section
-  class="flex items-center justify-between box-border bg-white min-h-[90px] py-[13px] px-10 header rounded-ss-[30px] rounded-se-[30px]">
+  class="flex items-center justify-between box-border bg-white min-h-[90px] py-[13px] px-11 max-md:px-0 header rounded-ss-[30px] rounded-se-[30px]"
+  [ngClass]="{'max-md:px-0': chatType === 'new', 'max-md:px-4': chatType !== 'new'}">
   @switch (chatType) {
   @case ('channel') {
   <div

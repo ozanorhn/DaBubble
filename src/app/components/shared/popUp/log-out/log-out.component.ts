@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { OverlayService } from '../../../../pageServices/overlays/overlay.service';
 import { LocalStorageService } from '../../../../services/localStorage/local-storage.service';
 import { User } from '../../../../classes/user.class';
@@ -18,11 +18,17 @@ export class LogOutComponent {
     public overlayService: OverlayService,
     public localStorageS: LocalStorageService,
     public usersService: UsersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   logOut() {
+    this.usersService.componentExsits = false;
     this.usersService.currentUser = new User();
-    this.authService.isLoggedIn = false;
+    this.authService.isLoggedIn.set(false);
+    let id = setTimeout(() => {
+      this.router.navigate(['/']);
+      clearTimeout(id);
+    }, 100);
   }
 }

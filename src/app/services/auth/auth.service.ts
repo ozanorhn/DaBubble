@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -18,13 +18,24 @@ import { User } from '../../classes/user.class';
 })
 export class AuthService {
   private auth = inject(Auth);
-  isLoggedIn = false;
+  isLoggedIn = signal(false);
 
 
   constructor(
     public userService: UsersService,
     private readonly localStorageService: LocalStorageService
-  ) { }
+  ) {
+    effect(() => {
+      const showChannel = this.isLoggedIn();
+      if (this.isLoggedIn()) {
+        userService.updateOnlineStatus();
+      }
+      // let id = setTimeout(() => {
+      //   this.setReactionsAmount();
+      //   clearTimeout(id);
+      // }, 100);
+    });
+  }
 
 
   /**
@@ -33,10 +44,11 @@ export class AuthService {
    */
   loadCurrentUserFromStorage() {
     let currentUser = new User(this.localStorageService.loadObject('currentUser'))
+    currentUser.online = new Timestamp(currentUser.online.seconds, currentUser.online.nanoseconds);
     if (currentUser.id) {
-      console.log('Eingeloggt als: ', currentUser);
       this.userService.currentUser = currentUser;
     }
+    this.isLoggedIn.set(true);
   }
 
 
@@ -45,16 +57,15 @@ export class AuthService {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
       // this.verifyEmailOrThrow(user)
-      console.log('Login erfolgreich:', user.email);
-      this.isLoggedIn = true;
+      this.isLoggedIn.set(true);
       return user;
     } catch (error: unknown) {
       throw error;
     }
   }
 
-  
-  verifyEmailOrThrow(user:FirebaseUser) {
+
+  verifyEmailOrThrow(user: FirebaseUser) {
     if (!user.emailVerified) {
       const error: any = new Error('E-Mail nicht verifiziert. Bitte überprüfe dein Postfach.');
       error.code = 'auth/email-not-verified';
@@ -109,7 +120,7 @@ export class AuthService {
     const userDocRef = doc(this.userService.usersCollection, existingUser.id);
     await updateDoc(userDocRef, { online: Timestamp.now() });
     this.localStorageService.saveObject('currentUser', existingUser);
-    this.isLoggedIn = true;
+    this.isLoggedIn.set(true);
   }
 
 
@@ -129,10 +140,12 @@ export class AuthService {
 
 
   checkLoggedInUser() {
-    const storedUserData = this.localStorageService.loadObject('currentUser');
+    let storedUserData = this.localStorageService.loadObject('currentUser') as User;
+    storedUserData.online = Timestamp.now();
     if (storedUserData) {
       this.userService.tempUser = storedUserData;
-      console.log('Lokal User: ', storedUserData);
     }
   }
+
+
 }

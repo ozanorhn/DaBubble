@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UsersService } from '../../../../services/users/users.service';
@@ -46,7 +46,6 @@ export class ProfileComponent {
     profileData.name = this.changeName;
     profileData.avatar = this.overlayService.profileObj.avatar;
     profileData.password = ''
-    console.log(profileData);
 
     try {
       await updateDoc(
@@ -61,7 +60,7 @@ export class ProfileComponent {
     }
   }
 
-  
+
   selectAvatar(i: number) {
     this.overlayService.profileObj.avatar = `/assets/imgs/avatar${i}.svg`;
   }
@@ -71,11 +70,16 @@ export class ProfileComponent {
     return this.userService.isUserOnline(user.online);
   }
 
+  // checkObj(o): User | undefined{
+  //   return this.userService.users.indexOf((u)=> { return u.id == localObj.id})
+  // }
 
-  clickToDm(profileObj: User){
-     this.mainNavService.openChannel(true);
-        this.dmService.openOrCreateDirectMessageConversation(profileObj);
-        this.mainNavService.markedUser(profileObj);
-        this.overlayService.profileOverlay(true, this.userService.currentUser)
+
+
+  clickToDm(profileObj: User) {
+    this.mainNavService.openChannel(true);
+    this.dmService.openOrCreateDirectMessageConversation(profileObj);
+    this.mainNavService.markedUser(profileObj);
+    this.overlayService.profileOverlay(true, this.userService.currentUser)
   }
 }

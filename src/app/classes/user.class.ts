@@ -6,7 +6,7 @@ export class User {
     email: string;
     avatar:  string; 
     online: Timestamp;
-    createdAt: number | Timestamp;
+    createdAt: Timestamp;
     password?: string;
 
 
