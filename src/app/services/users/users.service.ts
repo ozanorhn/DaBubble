@@ -75,12 +75,12 @@ export class UsersService implements OnDestroy {
         } catch (error) {
           console.error('Update failed, retrying...', error);
         } finally {
+          this.currentUser.online = Timestamp.now();
           setTimeout(update, 15000);
         }
       };
       update();
     }
-    this.currentUser.online = Timestamp.now();
   }
 
 
