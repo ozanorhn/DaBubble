@@ -156,8 +156,6 @@ export class ChatInputComponent implements OnInit {
         }
         break;
       case 'new':
-        console.log('Message', this.newMessageText);
-
         this.filterService.newMessageChannels.forEach(channel => {
           this.sendNewMessages(this.newMessageText, channel)
         });

@@ -46,7 +46,6 @@ export class AuthService {
     let currentUser = new User(this.localStorageService.loadObject('currentUser'))
     currentUser.online = new Timestamp(currentUser.online.seconds, currentUser.online.nanoseconds);
     if (currentUser.id) {
-      console.log('Eingeloggt als: ', currentUser);
       this.userService.currentUser = currentUser;
     }
     this.isLoggedIn.set(true);
@@ -58,7 +57,6 @@ export class AuthService {
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
       // this.verifyEmailOrThrow(user)
-      console.log('Login erfolgreich:', user.email);
       this.isLoggedIn.set(true);
       return user;
     } catch (error: unknown) {
@@ -146,7 +144,6 @@ export class AuthService {
     storedUserData.online = Timestamp.now();
     if (storedUserData) {
       this.userService.tempUser = storedUserData;
-      console.log('Lokal User: ', storedUserData);
     }
   }
 

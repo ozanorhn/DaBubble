@@ -102,7 +102,6 @@ export class AddMembersComponent implements OnInit {
 
 
   async addUser() {
-    console.log('Current Channel', this.channelService.channels[this.channelService.selectedChannelIndex()]);
     let channelId: string = this.channelService.channels[this.channelService.selectedChannelIndex()].id
     let channelData = this.channelService.channels[this.channelService.selectedChannelIndex()]
     channelData.members.push(this.addMember.id)

@@ -100,7 +100,6 @@ export class MainPageComponent implements AfterViewInit, OnInit {
       }
     }
     userService.componentExsits = true;
-    console.log('MainPage Constructor');
     let id = setTimeout(() => {
       sessionStorage.setItem('lastVisitedComponent', 'main');
       clearTimeout(id);

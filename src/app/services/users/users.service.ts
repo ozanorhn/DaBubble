@@ -77,7 +77,6 @@ export class UsersService implements OnDestroy {
         } finally {
           setTimeout(update, 15000);
         }
-        console.log('Update OnlineStatus:', this.currentUser);
       };
       update();
     }
@@ -109,8 +108,6 @@ export class UsersService implements OnDestroy {
 
 
   showOnlineNotification(user: User) {
-    console.log(user, 'Is now Online');
-
     if (this.onUserOnlineCallback) {
       this.onUserOnlineCallback(user);
     }
@@ -148,7 +145,6 @@ export class UsersService implements OnDestroy {
     const user = new User(this.tempUser);
     try {
       const docRef = await addDoc(this.usersCollection, user.toJSON());
-      console.log('User erstellt mit ID:', docRef.id);
     } catch (error) {
       console.error('Fehler beim Erstellen des Users:', error);
     }
@@ -158,7 +154,6 @@ export class UsersService implements OnDestroy {
   setTempUser(data: Partial<User>) {
     this.tempUser = { ...this.tempUser, ...data };
     this.currentUser = { ...this.tempUser, ...data } as User;
-    console.log('TempUser gesetzt:', this.tempUser);  // Überprüfe, ob der Avatar korrekt gesetzt wird
   }
 
 
@@ -177,7 +172,6 @@ export class UsersService implements OnDestroy {
     const userDocRef = doc(this.firestore, 'users', userId);
     try {
       await updateDoc(userDocRef, updatedData);
-      console.log('User erfolgreich aktualisiert:', updatedData);
     } catch (error) {
       console.error('Fehler beim Aktualisieren des Users:', error);
       throw error;

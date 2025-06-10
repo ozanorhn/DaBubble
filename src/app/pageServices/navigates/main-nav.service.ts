@@ -31,9 +31,7 @@ export class MainNavService {
   constructor(
     public channelsService: ChannelsService,
     public messageService: MessagesService
-  ) {
-    console.log('MainNav Constructor');
-  }
+  ) { }
 
 
   openNewMessage() {

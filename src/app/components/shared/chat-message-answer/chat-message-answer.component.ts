@@ -30,8 +30,6 @@ export class ChatMessageAnswerComponent {
 
 
 openThread() {
-    console.log('i: ', this.i, ' message: ',' chattype: ', this.chatType, this.message);
-    
     if (this.chatType === 'channel') {
     this.threadService.chatType = 'channel';
       this.messageService.openChannelThread(this.message as Message);

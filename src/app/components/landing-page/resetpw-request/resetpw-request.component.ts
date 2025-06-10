@@ -32,7 +32,6 @@ export class ResetpwRequestComponent {
 
   async sendeResetAnfrage() {
     if (!this.email) {
-      console.log('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
       return;
     }
     try {

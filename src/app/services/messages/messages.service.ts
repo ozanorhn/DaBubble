@@ -115,12 +115,10 @@ export class MessagesService implements OnDestroy {
    * @returns {Promise<void>} A promise that resolves when the update is complete.
    */
   async editMessage(message: Message = this.message): Promise<void> {
-    console.log('Message.toJSON', message);
     await updateDoc(
       doc(this.messageCollection, message.id),
       message.toJSON()
     );
-    console.log('Message editiert:', message);
   }
 
 
@@ -195,7 +193,6 @@ export class MessagesService implements OnDestroy {
     const threadData = await this.threadMessagesService.updateThread();
     this.message.answers = threadData.answers;
     this.message.lastAnswer = threadData.lastAnswer;
-    console.log('UPDATE MESSAGE', this.message);
     this.editMessage(this.message);
   }
 

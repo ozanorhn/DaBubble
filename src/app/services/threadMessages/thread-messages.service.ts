@@ -27,7 +27,6 @@ export class ThreadMessagesService {
     const newThread = new Thread({ messageId });
     try {
       const docRef = await addDoc(this.threadService.threadCollection, newThread.toJSON());
-      console.log('Thread added with ID', docRef.id);
       return docRef.id;
     } catch (error) {
       console.error('Error adding thread', error);
@@ -41,7 +40,6 @@ export class ThreadMessagesService {
    * @returns {Promise<{ answers: number, lastAnswer: any }>} An object containing the updated number of answers and the last reply's timestamp.
    */
   async updateThread() {
-    console.log(this.currentMessage);
     this.threadService.currentThread().threadId = this.currentMessage.threadId;
     await this.threadService.updateThread();
     return {

@@ -38,21 +38,8 @@ export class LoginComponent {
     public userService: UsersService,
     public authService: AuthService,
     public localStorageS: LocalStorageService,
-    // public channelsService: ChannelsService
-    private auth: Auth,
-  ) {
-    // const navEntries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
-    // if (navEntries.length > 0 && navEntries[0].type === 'reload') { }
-    // console.log('navEntries login: ');
-    // console.warn(navEntries[0].type);
-    
-    // if (!this.authService.isLoggedIn || (navEntries.length > 0 && (navEntries[0].type === 'reload' || navEntries[0].type === 'back_forward'))) {
-    //   this.authService.loadCurrentUserFromStorage();
-    //   if (this.userService.currentUser.id !== userService.GuestUser.id && this.userService.currentUser.id) {
-    //     this.router.navigate(['/main']);
-    //   }
-    // }
-  }
+    private auth: Auth
+  ) { }
 
 
   getErrorMessage(code: string): string {

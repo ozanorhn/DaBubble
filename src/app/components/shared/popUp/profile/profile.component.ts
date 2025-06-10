@@ -46,7 +46,6 @@ export class ProfileComponent {
     profileData.name = this.changeName;
     profileData.avatar = this.overlayService.profileObj.avatar;
     profileData.password = ''
-    console.log(profileData);
 
     try {
       await updateDoc(
