@@ -66,22 +66,20 @@ export class UsersService implements OnDestroy {
 
 
   updateOnlineStatus() {
-    if (this.currentUser.id !== this.GuestUser.id) {
-      const update = async () => {
-        try {
-          this.currentUser.online = Timestamp.now();
-          if (!this.currentUser.id) return;
-          const userRef = doc(this.usersCollection, this.currentUser.id);
-          await updateDoc(userRef, { online: Timestamp.now() });
-        } catch (error) {
-          console.error('Update failed, retrying...', error);
-        } finally {
-          setTimeout(update, 15000); // Immer neu planen
-        }
-        console.log('Update OnlineStatus:', this.currentUser);
-      };
-      update();
-    }
+    const update = async () => {
+      try {
+        if (!this.currentUser.id) return;
+        const userRef = doc(this.usersCollection, this.currentUser.id);
+        await updateDoc(userRef, { online: Timestamp.now() });
+        this.currentUser.online = Timestamp.now();
+      } catch (error) {
+        console.error('Update failed, retrying...', error);
+      } finally {
+        setTimeout(update, 15000); // Immer neu planen
+      }
+      console.log('Update OnlineStatus:', this.currentUser);
+    };
+    update();
   }
 
 

@@ -48,8 +48,7 @@
     <div class="flex items-center gap-4">
 
 
-      @if (updateOnlineStatus(overlayService.profileObj) || this.userService.currentUser.id ===
-      this.userService.GuestUser.id) {
+      @if (updateOnlineStatus(overlayService.profileObj)) {
       <div class="rounded-[50%] size-4 bg-online"></div>
       <span>Aktiv</span>
       }@else {
