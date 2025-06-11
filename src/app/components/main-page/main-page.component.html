@@ -4,7 +4,7 @@
 <!-- [calc(100vh-114px)] -->
 <section class="relative flex h-[calc(100vh-80px)] md:h-[calc(100vh-100px)] gap-3 md:pt-[5px] md:pb-[25px] md:px-5 bg-primary">
   <div
-    class="size-[60px] fixed bottom-10 right-4 rounded-[100px] bg-purple1 z-10 flex items-center justify-center cursor-pointer md:hidden hover:scale-[1.1] active:scale-[0.9] duration-150"
+    class="size-[60px] fixed bottom-10 right-4 rounded-[100px] bg-purple1 z-[1] flex items-center justify-center cursor-pointer md:hidden hover:scale-[1.1] active:scale-[0.9] duration-150"
     Add commentMore actions (click)="switchContent()"
     [ngClass]="{'hidden': !navService.showNav()}">
     <img src="assets/icons/edit_square2.svg" alt="" class="pl-[4px] w-8 h-8" />
@@ -33,45 +33,45 @@
 <!--Overlays-->
 
 <div (click)="overlayService.addCannelOverlay()" [class.active]="!overlayService.hideAddChannel"
-  class="overlay-backdrop absolute flex top-0 bottom-0 left-0 right-0 z-[1] bg-white lg:bg-[rgba(0,0,0,0.4)] justify-center lg:items-center">
+  class="overlay-backdrop fixed flex top-0 bottom-0 left-0 right-0 z-[1] bg-white lg:bg-[rgba(0,0,0,0.4)] justify-center lg:items-center">
   <app-add-channel (click)="$event.stopPropagation()" class="overlay-panel top-[20%]">
   </app-add-channel>
 </div>
 
 <div (click)="overlayService.addUserOverlay()" [class.active]="!overlayService.hideAddUser"
-  class="absolute top-0 bottom-0 left-0 right-0 flex items-end z-[1] lg:bg-[rgba(0,0,0,0.4)] justify-center overlay-backdrop lg:items-center">
+  class="fixed top-0 bottom-0 left-0 right-0 flex items-end z-[1] lg:bg-[rgba(0,0,0,0.4)] justify-center overlay-backdrop lg:items-center">
   <app-add-user (click)="$event.stopPropagation()" class="overlay-panel w-full lg:max-w-[710px]">
   </app-add-user>
 </div>
 
 <div (click)="overlayService.addMembersOverlay()" [class.active]="!overlayService.hideAddMembersOverlay"
-  class="absolute overlay-backdrop top-0 bottom-0 left-0 z-[1] right-0 flex items-end justify-center lg:items-center lg:bg-[rgba(0,0,0,0.4)]">
+  class="fixed overlay-backdrop top-0 bottom-0 left-0 z-[1] right-0 flex items-end justify-center lg:items-center bg-[rgba(0,0,0,0.4)]">
   <app-add-members (click)="$event.stopPropagation()"
     class="overlay-panel absolute top-[200px] right-[20px]"></app-add-members>
 </div>
 
 <div (click)="overlayService.editChannel()" [class.active]="!overlayService.hideEditChannel"
-  class="flex overlay-backdrop justify-center items-center absolute top-0 z-[1] bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.4)]">
+  class="flex overlay-backdrop justify-center items-center fixed top-0 z-[1] bottom-0 left-0 right-0 bg-white lg:bg-[rgba(0,0,0,0.4)]">
   <app-edit-channel class="overlay-panel" (click)="$event.stopPropagation()"></app-edit-channel>
 </div>
 
 <div (click)="overlayService.profileOverlay(false, userService.currentUser)" [class.active]="!overlayService.hideProfileOverlay"
-  class="absolute overlay-backdrop top-0 bottom-0 left-0 right-0 flex items-center justify-center z-[1] bg-[rgba(0,0,0,0.4)]">
+  class="fixed overlay-backdrop top-0 bottom-0 left-0 right-0 flex items-center justify-center z-[1] bg-[rgba(0,0,0,0.4)]">
   <app-profile (click)="$event.stopPropagation()" class="w-full max-w-lg overlay-panel"></app-profile>
 </div>
 
 <div (click)="overlayService.logoutOvelay()" [class.active]="!overlayService.hideLogoutOverlay"
-  class="absolute overlay-backdrop top-0 bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
+  class="fixed overlay-backdrop top-0 bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
   <app-log-out class="w-full overlay-panel lg:w-fit lg:mt-24 lg:mr-4"></app-log-out>
 </div>
 
 <div (click)="overlayService.membersOverlay()" [class.active]="!overlayService.hideMembersOverlay"
-  class="absolute top-0 overlay-backdrop bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
+  class="fixed top-0 overlay-backdrop bottom-0 left-0 right-0 flex items-end justify-center z-[1] lg:items-start lg:justify-end bg-[rgba(0,0,0,0.4)]">
   <app-members class="absolute overlay-panel top-[180px] right-3" (click)="$event.stopPropagation()"></app-members>
 </div>
 
 <div (click)="overlayService.confirmLeaveChannel()" [class.active]="!overlayService.hideConfirmLeaveChannel"
-  class="absolute top-0 overlay-backdrop bottom-0 left-0 right-0 flex z-[1] justify-center items-center bg-[rgba(0,0,0,0.4)]">
+  class="fixed top-0 overlay-backdrop bottom-0 left-0 right-0 flex z-[1] justify-center items-center bg-[rgba(0,0,0,0.4)]">
   <app-confirm-leave-channel (click)="$event.stopPropagation()" class="absolute"></app-confirm-leave-channel>
 </div>
 

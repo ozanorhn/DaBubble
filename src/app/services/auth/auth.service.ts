@@ -89,7 +89,7 @@ export class AuthService {
   async createFirebaseUserAndProfile(email: string, password: string) {
     const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
     const firebaseUser = userCredential.user;
-    await sendEmailVerification(firebaseUser);
+    // await sendEmailVerification(firebaseUser);
     const user = new User(this.userService.tempUser);
     user.email = firebaseUser.email || '';
     user.avatar = user.avatar || '/assets/imgs/avatar1.svg';

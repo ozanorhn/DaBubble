@@ -23,6 +23,7 @@ export class LogOutComponent {
   ) { }
 
   logOut() {
+    this.overlayService.logoutOvelay();
     this.usersService.componentExsits = false;
     this.usersService.currentUser = new User();
     this.authService.isLoggedIn.set(false);
