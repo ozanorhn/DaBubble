@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ChannelsComponent } from "./channels/channels.component";
 import { DirectMessagesComponent } from './direct-messages/direct-messages.component';
 import { CommonModule } from '@angular/common';
-import { UserComponent } from "../shared/user/user.component";
 import { User } from '../../classes/user.class';
 import { Channel } from '../../classes/channel.class';
 import { MainNavService } from '../../pageServices/navigates/main-nav.service';
@@ -20,8 +19,7 @@ import { UsersService } from '../../services/users/users.service';
   imports: [
     ChannelsComponent,
     DirectMessagesComponent,
-    CommonModule,
-    UserComponent
+    CommonModule
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
