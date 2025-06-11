@@ -1,10 +1,10 @@
 <app-header></app-header>
 
 <app-devspace-btn class="hidden md:block" ></app-devspace-btn>
-
-<section class="flex h-[calc(100vh-80px)] gap-3 p-3 bg-primary">
+<!-- [calc(100vh-114px)] -->
+<section class="flex h-[calc(100vh-80px)] md:h-[calc(100vh-100px)] gap-3 md:p-3 bg-primary">
   <div [class.active]="mainNavService.showNav()"
-    class="nav-container flex flex-col w-full h-[calc(100% - 3rem)] md:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white">
+    class="nav-container flex flex-col w-full h-max-[calc(50vh - 178px)] md+:max-w-[366px] py-8 px-4 md:px-0 md:py-0 md:my-6 md:rounded-[30px] overflow-y-auto bg-white">
     <app-search class="lg:hidden"></app-search>
     <app-navigation class="w-full h-full"></app-navigation>
     <div
