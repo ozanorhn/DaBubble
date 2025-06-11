@@ -26,6 +26,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   error: string = '';
+  isLoginDataValid = false;
 
   loginData = {
     email: '',
@@ -59,7 +60,7 @@ export class LoginComponent {
     }
   }
 
-  async guestLogin(gast = false) {
+  async login(gast = false) {
     if (gast) {
       this.loginData.email = 'gast@user.de'
       this.loginData.password = 'gast123'
