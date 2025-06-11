@@ -160,6 +160,8 @@ export class MainNavService {
       this.channel.set(false);
     } else if (!this.nav() && !this.channel() && this.thread()) {
       this.channel.set(true);
+    } else {
+      this.channel.set(true);
     }
   }
 

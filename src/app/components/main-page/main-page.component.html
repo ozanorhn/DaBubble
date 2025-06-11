@@ -1,20 +1,21 @@
 <app-header></app-header>
 
 <app-devspace-btn class="hidden md:block" ></app-devspace-btn>
-
-<section class="flex h-[calc(100vh-80px)] gap-3 p-3 bg-primary">
+<!-- [calc(100vh-114px)] -->
+<section class="relative flex h-[calc(100vh-80px)] md:h-[calc(100vh-100px)] gap-3 md:pt-[5px] md:pb-[25px] md:px-5 bg-primary">
+  <div
+    class="size-[60px] fixed bottom-10 right-4 rounded-[100px] bg-purple1 z-10 flex items-center justify-center cursor-pointer md:hidden hover:scale-[1.1] active:scale-[0.9] duration-150"
+    Add commentMore actions (click)="switchContent()"
+    [ngClass]="{'hidden': !navService.showNav()}">
+    <img src="assets/icons/edit_square2.svg" alt="" class="pl-[4px] w-8 h-8" />
+  </div>
   <div [class.active]="mainNavService.showNav()"
-    class="nav-container flex flex-col w-full h-[calc(100% - 3rem)] md:max-w-[366px] my-6 rounded-[30px] overflow-hidden bg-white">
-    <app-search class="lg:hidden"></app-search>
+    class="nav-container flex flex-col w-full h-max-[calc(50vh - 178px)] md+:max-w-[366px] py-8 px-4 md:px-0 md:py-0 md:rounded-[30px] overflow-y-auto bg-white">
+    <app-search class="md:hidden"></app-search>
     <app-navigation class="w-full h-full"></app-navigation>
-    <div
-      class="size-[60px] absolute bottom-10 right-4 rounded-[100px] bg-purple1 z-10 flex items-center justify-center cursor-pointer lg:hidden hover:scale-[1.1] active:scale-[0.9] duration-150"
-      Add commentMore actions (click)="switchContent()">
-      <img src="assets/icons/edit_square2.svg" alt="" class="pl-[4px] w-8 h-8" />
-    </div>
   </div>
 
-  <div #channel [class.active]="mainNavService.showChannel()" class="flex-1 w-full xs:min-w-[400px] my-6 channel-container">
+  <div #channel [class.active]="mainNavService.showChannel()" class="flex-1 w-full xs:min-w-[400px] channel-container">
     @if (mainNavService.newMessage) {
     <app-new-message class="flex flex-col w-full h-full pb-4 bg-white rounded-[30px]"></app-new-message>
     } @else if (mainNavService.directMessage) {
@@ -25,7 +26,7 @@
   </div>
 
   @if (mainNavService.showThread()) {
-  <app-thread #thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px] my-6"></app-thread>
+  <app-thread #thread class="w-full h-[calc(100% - 3rem)] xl:max-w-[485px]"></app-thread>
   }
 </section>
 

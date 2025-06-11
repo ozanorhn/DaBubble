@@ -6,7 +6,8 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   sendEmailVerification,
-  User as FirebaseUser
+  User as FirebaseUser,
+  applyActionCode
 } from '@angular/fire/auth';
 import { addDoc, doc, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { UsersService } from '../users/users.service';
@@ -146,6 +147,4 @@ export class AuthService {
       this.userService.tempUser = storedUserData;
     }
   }
-
-
 }

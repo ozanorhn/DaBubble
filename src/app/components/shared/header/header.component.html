@@ -1,32 +1,33 @@
-<div class="flex items-center justify-between w-full p-4 border border-black bg-primary">
+<div class="flex items-center justify-between w-full px-4 py-[15px] bg-primary">
 
-  <img id="logo" src="assets/imgs/logo.svg" alt="DaBubble Logo" class="hidden h-16 mt-4 md:block" />
+  <img id="logo" src="assets/imgs/logo.svg" alt="DaBubble Logo" class="hidden h-[70px]  md:block" />
 
-  <div 
-  class="flex items-center gap-2 cursor-pointer md:hidden "
-  (click)="!mainNavService.showAltLogo && switchLogo()"
-  [class.cursor-pointer]="!mainNavService.showAltLogo">
+  <div class="flex items-center gap-2 cursor-pointer md:hidden " (click)="!mainNavService.showAltLogo && switchLogo()"
+    [class.cursor-pointer]="!mainNavService.showAltLogo">
 
-  @if (navService.showChannel() && !mainNavService.showAltLogo) {
-    <img src="/assets/icons/keyboard_arrow_down.svg" alt="Arrow Down" />
-  }
+    @if (navService.showChannel() && !mainNavService.showAltLogo) {
+      <img src="/assets/icons/keyboard_arrow_down.svg" alt="Arrow Down" />
+    }
 
-  <img [src]="
+    <img [src]="
         mainNavService.showAltLogo
           ? 'assets/imgs/logo.svg'
           : '/assets/imgs/workspace-logo.svg'
-      " alt="Workspace Logo" 
-      [ngClass]="{
+      " alt="Workspace Logo" [ngClass]="{
         'hover:scale-[1.1] active:scale-[0.9] duration-150': !mainNavService.showAltLogo
-      }"/>
+      }" class="h-[45px]" />
 
-  @if (!mainNavService.showAltLogo) {
-    <p class="text-xl font-bold">DevSpace</p>
-  }
-</div>
+    @if (!mainNavService.showAltLogo) {
+      <p class="text-xl font-bold">DevSpace</p>
+    }
+  </div>
 
-  <app-search class="w-[50%] hidden lg:block self-end"></app-search>
-
-  <img src="{{ usersService.currentUser.avatar }}" (click)="overlayService.logoutOvelay()"
-    class="h-16 mt-4 rounded-full cursor-pointer hover:scale-[1.1] duration-150" alt="DaBubble avatar" />
+  <app-search class="w-[50%] hidden md:block self-end"></app-search>
+  <div class="flex items-center gap-5">
+    <span class="text-[32px] font-bold"
+      [ngClass]="{'hidden': !navService.bigScreen()}">{{ usersService.currentUser.name }}</span>
+    <img src="{{ usersService.currentUser.avatar }}" (click)="overlayService.logoutOvelay()"
+      class="size-[50px] md:size-[70px] rounded-full cursor-pointer hover:scale-[1.1] duration-150"
+      alt="DaBubble avatar" />
+  </div>
 </div>
