@@ -262,8 +262,11 @@ export class ChatInputComponent implements OnInit {
     this.filterService.searchNewTag.set('');
   }
 
-
-
-
+  handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();  // verhindert Zeilenumbruch
+      this.sendMessage();
+    }
+  }
 
 }
