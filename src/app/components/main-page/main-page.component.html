@@ -5,7 +5,8 @@
 <section class="relative flex h-[calc(100vh-80px)] md:h-[calc(100vh-100px)] gap-3 md:pt-[5px] md:pb-[25px] md:px-5 bg-primary">
   <div
     class="size-[60px] fixed bottom-10 right-4 rounded-[100px] bg-purple1 z-10 flex items-center justify-center cursor-pointer md:hidden hover:scale-[1.1] active:scale-[0.9] duration-150"
-    Add commentMore actions (click)="switchContent()">
+    Add commentMore actions (click)="switchContent()"
+    [ngClass]="{'hidden': !navService.showNav()}">
     <img src="assets/icons/edit_square2.svg" alt="" class="pl-[4px] w-8 h-8" />
   </div>
   <div [class.active]="mainNavService.showNav()"
