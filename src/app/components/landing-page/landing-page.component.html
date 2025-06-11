@@ -1,12 +1,17 @@
 <section class="flex flex-col items-center justify-center w-full h-screen max-h-screen bg-primary">
   @if (showSplash) {
-  <app-splash-screen class="splash-screen"></app-splash-screen>
+  <app-splash-screen class="absolute top-0 bottom-0 left-0 right-0 z-30 splash-screen"></app-splash-screen>
   }
 
   <div class="flex flex-col items-center justify-center w-full gap-5">
 
-    <img src="assets/imgs/icons/logo.svg" alt="Logo"
-      class="md:absolute h-12 xs:h-14 md:h-16 lg:h-18 top-[5%] md:block md:top-4 md:left-4" />
+    <!-- <img src="assets/imgs/icons/logo.svg" alt="Logo"
+      class="md:absolute h-12 xs:h-14 md:h-16 lg:h-18 top-[5%] md:block md:top-4 md:left-4" /> -->
+
+    <div class="xl:absolute top-[75px] left-[75px] flex items-center justify-center h-[70px] text-3xl gap-4">
+      <img src="assets/icons/Logo.png" alt="DA-Bubble Logo" class="h-full" />
+      <h1 class="font-bold animate-text">DABubble</h1>
+    </div>
 
     @if (landingService.landing() == 'login') {
     <app-login class="flex items-center justify-center"></app-login>

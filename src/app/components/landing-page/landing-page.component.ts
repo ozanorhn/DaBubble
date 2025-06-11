@@ -29,7 +29,6 @@ import { User } from '../../classes/user.class';
   styleUrls: ['./landing-page.component.scss'],
 })
 export class LandingPageComponent {
-  showContent = false;
   showSplash = true;
 
   constructor(
@@ -68,17 +67,15 @@ export class LandingPageComponent {
         this.landingService.landing.set('register');
       }
     });
+
     setTimeout(() => {
-      this.showContent = true;
-      setTimeout(() => {
-        this.showSplash = false;
-      }, 700);
-    }, 950);
+      this.showSplash = false;
+    }, 2000);
+
 
     const reloaded = sessionStorage.getItem('reloaded');
     if (reloaded === 'true') {
       this.showSplash = false;
-      this.showContent = true;
     }
   }
 
