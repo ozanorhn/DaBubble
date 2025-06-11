@@ -21,7 +21,7 @@ export class RegisterComponent {
   }
 
   checkbox = false;
-  imageUrl = '/assets/icons/check_box_outline_blank.svg';
+  imageUrl = 'assets/icons/check_box_outline_blank.svg';
   checkboxError = false;
 
   constructor(
@@ -49,13 +49,13 @@ export class RegisterComponent {
 
   resetCheckbox() {
     this.checkbox = false;
-    this.imageUrl = '/assets/icons/check_box_outline_blank.svg';
+    this.imageUrl = 'assets/icons/check_box_outline_blank.svg';
   }
 
 
   checkCheckbox() {
     if (this.checkbox == false) {
-      this.imageUrl = '/assets/icons/check_box_outline_blank_red.svg';
+      this.imageUrl = 'assets/icons/check_box_outline_blank_red.svg';
       this.checkboxError = true;
     } else {
       this.checkboxError = false;
@@ -68,9 +68,9 @@ export class RegisterComponent {
     this.checkboxError = false;
 
     if (this.checkbox) {
-      this.imageUrl = '/assets/icons/check_box.svg';
+      this.imageUrl = 'assets/icons/check_box.svg';
     } else {
-      this.imageUrl = '/assets/icons/check_box_outline_blank.svg';
+      this.imageUrl = 'assets/icons/check_box_outline_blank.svg';
     }
   }
 

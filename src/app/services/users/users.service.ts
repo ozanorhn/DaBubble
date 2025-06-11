@@ -24,7 +24,7 @@ export class UsersService implements OnDestroy {
     id: 'ALomQ9jH69QnE7Q7zjnA',
     name: 'Gast',
     email: 'gast@user.de',
-    avatar: '/assets/imgs/avatar4.svg'
+    avatar: 'assets/imgs/avatar4.svg'
   }
 
 

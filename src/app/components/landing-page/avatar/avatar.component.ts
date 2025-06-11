@@ -45,7 +45,7 @@ export class AvatarComponent {
 
   async goForward() {
     this.userService.setTempUser({
-      avatar: `/assets/imgs/avatar${this.currentAvatar}.svg`,
+      avatar: `assets/imgs/avatar${this.currentAvatar}.svg`,
     });
 
     try {

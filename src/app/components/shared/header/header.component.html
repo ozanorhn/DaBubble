@@ -6,13 +6,13 @@
     [class.cursor-pointer]="!mainNavService.showAltLogo">
 
     @if (navService.showChannel() && !mainNavService.showAltLogo) {
-      <img src="/assets/icons/keyboard_arrow_down.svg" alt="Arrow Down" />
+      <img src="assets/icons/keyboard_arrow_down.svg" alt="Arrow Down" />
     }
 
     <img [src]="
         mainNavService.showAltLogo
           ? 'assets/imgs/logo.svg'
-          : '/assets/imgs/workspace-logo.svg'
+          : 'assets/imgs/workspace-logo.svg'
       " alt="Workspace Logo" [ngClass]="{
         'hover:scale-[1.1] active:scale-[0.9] duration-150': !mainNavService.showAltLogo
       }" class="h-[45px]" />

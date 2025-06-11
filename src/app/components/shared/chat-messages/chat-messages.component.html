@@ -16,7 +16,7 @@
                         class="flex items-center w-full max-w-[200px] justify-between gap-3 p-5 bg-white rounded-[30px] shadow-md">
                         <span>#{{ channel.name }}</span>
                         <button (click)="filterService.removeFromSelection(channel)" class="text-red-500">
-                            <img class="size-7 hover:scale-[1.1] duration-150" src="/assets/icons/trash.png" alt="">
+                            <img class="size-7 hover:scale-[1.1] duration-150" src="assets/icons/trash.png" alt="">
                         </button>
                     </li>
                     }
@@ -39,7 +39,7 @@
                         class="flex items-center justify-between w-full max-w-[300px] p-2 bg-white rounded-[30px] shadow-md">
                         <app-user [userInfo]="person"></app-user>
                         <button (click)="filterService.removeFromSelection(person)" class="ml-2 text-red-500">
-                            <img class="size-7 hover:scale-[1.1] duration-150" src="/assets/icons/trash.png" alt="">
+                            <img class="size-7 hover:scale-[1.1] duration-150" src="assets/icons/trash.png" alt="">
                         </button>
                     </li>
                     }
