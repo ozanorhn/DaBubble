@@ -5,28 +5,28 @@
 
     <div (click)="overlayService.profileOverlay(false, usersService.currentUser)"
       class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.05] active:scale-[0.9]">
-      <img src="/assets/icons/account_circle.svg" alt="" />
+      <img src="assets/icons/account_circle.svg" alt="" />
       <span>Profile</span>
     </div>
 
 
     <div routerLink="/legal" (click)="overlayService.logoutOvelay()"
       class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.05] active:scale-[0.9]">
-      <img class="size-8" src="/assets/icons/imprint.png" alt="" />
+      <img class="size-8" src="assets/icons/imprint.png" alt="" />
       <span>Imprint</span>
     </div>
 
 
     <div routerLink="/privacy" (click)="overlayService.logoutOvelay()"
       class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.05] active:scale-[0.9]">
-      <img class="size-7" src="/assets/icons/policy.png" alt="" />
+      <img class="size-7" src="assets/icons/policy.png" alt="" />
       <span>Privacy Policy</span>
     </div>
 
 
     <div (click)="localStorageS.remove('currentUser'); overlayService.logoutOvelay(); logOut();"
       class="flex items-center gap-4 py-2 px-7 h-[50%] rounded-[100px] hover:bg-primary cursor-pointer hover:text-purple3 duration-200 hover:scale-[1.05] active:scale-[0.9]">
-      <img src="/assets/icons/logout.svg" alt="" />
+      <img src="assets/icons/logout.svg" alt="" />
       <span>Log out</span>
     </div>
 

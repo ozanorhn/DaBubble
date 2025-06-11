@@ -92,7 +92,7 @@ export class AuthService {
     // await sendEmailVerification(firebaseUser);
     const user = new User(this.userService.tempUser);
     user.email = firebaseUser.email || '';
-    user.avatar = user.avatar || '/assets/imgs/avatar1.svg';
+    user.avatar = user.avatar || 'assets/imgs/avatar1.svg';
     const now = Timestamp.now();
     user.online = now;
     user.createdAt = now;
@@ -129,7 +129,7 @@ export class AuthService {
     const newUser = new User({
       name: user.displayName ?? 'Google Nutzer',
       email: user.email ?? '',
-      avatar: user.photoURL ?? '/assets/imgs/avatar1.svg',
+      avatar: user.photoURL ?? 'assets/imgs/avatar1.svg',
       online: Timestamp.now(),
       createdAt: Timestamp.now(),
     });

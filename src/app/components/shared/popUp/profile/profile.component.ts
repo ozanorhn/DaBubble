@@ -62,7 +62,7 @@ export class ProfileComponent {
 
 
   selectAvatar(i: number) {
-    this.overlayService.profileObj.avatar = `/assets/imgs/avatar${i}.svg`;
+    this.overlayService.profileObj.avatar = `assets/imgs/avatar${i}.svg`;
   }
 
 
