@@ -21,13 +21,11 @@
     class="flex items-center w-full max-w-[500px] relative bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
     [ngClass]="{'invalid': !name.valid && (name.touched || contactForm.submitted), 'valid': name.valid}">
     <img src="assets/imgs/icons/person_filled.svg" alt="User Icon" class="size-5" />
-    <input #name="ngModel" type="text" placeholder="Name und Nachname" class="flex-1 outline-none bg-primary"
+    <input pattern="^([a-zA-Z ]+)" minlength="3" #name="ngModel" type="text" placeholder="Name und Nachname" class="flex-1 outline-none bg-primary"
       [(ngModel)]="registerData.name" name="name" required />
     @if(!name.valid && (name.touched || contactForm.submitted)){
     <span
-      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
-      enter
-      name</span>
+      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Bitte Namen eingeben (Min. 3 Buchstaben).</span>
     }
   </div>
 
@@ -40,10 +38,9 @@
       [(ngModel)]="registerData.email" name="email" required
       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" />
     @if(!email.valid && (email.touched || contactForm.submitted)){
-    <span
-      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
-      enter
-      email</span>
+    <span class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Bitte gültige E-Maial-Adresse eingeben.</span>
+    } @else if (usersAlreadyExsits()) {
+    <span class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">E-Mail existiert bereits.</span>
     }
   </div>
 
@@ -52,13 +49,11 @@
     class="relative flex items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
     [ngClass]="{'invalid': !password.valid && (password.touched || contactForm.submitted), 'valid': password.valid}">
     <img src="assets/imgs/icons/lock.svg" alt="Lock Icon" class="size-5" />
-    <input #password="ngModel" type="password" placeholder="Passwort" class="flex-1 outline-none bg-primary"
+    <input #password="ngModel" type="password" minlength="6" placeholder="Passwort" class="flex-1 outline-none bg-primary"
       [(ngModel)]="registerData.password" name="password" required />
     @if(!password.valid && (password.touched || contactForm.submitted)){
     <span
-      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Pleace
-      enter
-      password</span>
+      class="shake-animation absolute w-full text-center text-base  sm:text-lg text-red-500 bottom-[-22px] sm:bottom-[-30px]">Min. 6 Zeichen</span>
     }
   </div>
 
@@ -70,10 +65,16 @@
     <span>Ich stimme der <a class="text-purple1" href="privacy">Datenschutzerklärung</a> zu.</span>
   </div>
 
-
-  <button type="submit" (click)="checkCheckbox()"
-    class="w-28 h-14 cursor-pointer self-end text-white rounded-[30px] hover:scale-[1.1] active:scale-[0.9] duration-150 bg-purple1">
-    Weiter
-  </button>
+  @if (name.valid && email.valid && password.valid && !checkboxError && !usersAlreadyExsits()) {
+    <button type="submit" (click)="checkCheckbox()"
+      class="w-28 h-14 cursor-pointer self-end text-white rounded-[30px] hover:scale-[1.1] active:scale-[0.9] duration-150 bg-purple1">
+      Weiter
+    </button>
+  } @else {
+    <button type="submit" (click)="checkCheckbox()" disabled
+      class="w-28 h-14 self-end text-white rounded-[30px] duration-150 bg-textgray">
+      Weiter
+    </button>
+  }
 
 </form>

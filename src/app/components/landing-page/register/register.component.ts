@@ -31,7 +31,7 @@ export class RegisterComponent {
 
 
   goToAvatar(ngForm: NgForm) {
-    if (!this.checkbox) {
+    if (this.usersAlreadyExsits()) {
       return;
     }
 
@@ -44,6 +44,11 @@ export class RegisterComponent {
     if (ngForm.valid) {
       this.landing.landing.set('avatar');
     }
+  }
+
+
+  usersAlreadyExsits(): boolean {
+    return this.userService.users.some(user => user.email.toLowerCase() === this.registerData.email.toLowerCase());
   }
 
 
