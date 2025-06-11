@@ -2,23 +2,23 @@
     class="relative h-[145px] p-3 mx-4 flex flex-1 flex-col bg-white rounded-[20px] border-lightpurple border-[1px]">
 
     @if (edit) {
-    <textarea #messageEditInput [(ngModel)]="editText" class="flex-1 resize-none focus-visible:outline-none" type="text"
+    <textarea #messageEditInput  (keydown)="handleKeyDown($event)" [(ngModel)]="editText" class="flex-1 resize-none focus-visible:outline-none" type="text"
         placeholder="Antworten...">
       </textarea>
     } @else {
     @switch (chatType) {
     @case ('dm') {
-    <textarea #messageInput [(ngModel)]="directMessageService.newMessage.message"
+    <textarea #messageInput  (keydown)="handleKeyDown($event)" [(ngModel)]="directMessageService.newMessage.message"
         class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
           </textarea>
     }
     @case ('channel') {
-    <textarea #messageInput [(ngModel)]="messageService.messageInput"
+    <textarea #messageInput  (keydown)="handleKeyDown($event)" [(ngModel)]="messageService.messageInput"
         class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
           </textarea>
     }
     @case ('thread') {
-    <textarea #messageInput [(ngModel)]="threadService.threadMessage.message"
+    <textarea #messageInput  (keydown)="handleKeyDown($event)" [(ngModel)]="threadService.threadMessage.message"
         class="flex-1 resize-none focus-visible:outline-none" type="text" placeholder="Antworten...">
           </textarea>
     }
