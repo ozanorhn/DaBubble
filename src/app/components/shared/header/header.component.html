@@ -23,8 +23,11 @@
   </div>
 
   <app-search class="w-[50%] hidden md:block self-end"></app-search>
-
-  <img src="{{ usersService.currentUser.avatar }}" (click)="overlayService.logoutOvelay()"
-    class="size-[50px] md:size-[70px] rounded-full cursor-pointer hover:scale-[1.1] duration-150"
-    alt="DaBubble avatar" />
+  <div class="flex items-center gap-5">
+    <span class="text-[32px] font-bold"
+      [ngClass]="{'hidden': !navService.bigScreen()}">{{ usersService.currentUser.name }}</span>
+    <img src="{{ usersService.currentUser.avatar }}" (click)="overlayService.logoutOvelay()"
+      class="size-[50px] md:size-[70px] rounded-full cursor-pointer hover:scale-[1.1] duration-150"
+      alt="DaBubble avatar" />
+  </div>
 </div>
