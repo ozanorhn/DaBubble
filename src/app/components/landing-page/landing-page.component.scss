@@ -1,0 +1,20 @@
+@media (max-height: 850px) {
+    section {
+        padding: 4px;
+    }
+
+  .btn-box {
+    margin-top: 4px;
+  }
+
+  .registration-btn-box {
+    gap: 4px;
+    position: unset;
+  }
+}
+
+@media (max-height: 650px) {
+    section {
+        justify-content: flex-start;
+    }
+}

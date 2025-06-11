@@ -22,3 +22,9 @@
 .shake-animation {
   animation: shake 0.5s ease-in-out;
 }
+
+@media (max-height: 650px) {
+  p {
+    display: none;
+  }
+}

@@ -1,4 +1,4 @@
-<section class="flex flex-col items-center justify-center w-full min-h-[800px] h-screen max-h-screen bg-primary">
+<section class="flex flex-col items-center justify-center w-full h-screen max-h-screen bg-primary">
   @if (showSplash) {
   <app-splash-screen class="splash-screen"></app-splash-screen>
   }
@@ -25,7 +25,7 @@
     }
 
     @if (landingService.landing() == 'login') {
-    <div class="md:absolute bottom-[3%] flex-col gap-5 h-fit md:flex md:top-4 md:right-4">
+    <div class="registration-btn-box md:absolute bottom-[3%] flex-col gap-5 h-fit md:flex md:top-4 md:right-4">
       <p class="text-base text-black">Neu bei DABubble?</p>
       <button (click)="goToRegister()"
         class="px-6 py-2 text-sm font-semibold transition border opacity-[0.8] hover:opacity-[1] hover:scale-[1.1] active:scale-[0.9] border-purple1 rounded-full text-purple1">
@@ -35,7 +35,7 @@
     }
   </div>
 
-  <div class="flex gap-4 mt-5 bottom-12">
+  <div class="flex gap-4 mt-5 btn-box bottom-12">
     <button routerLink="legal"
       class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border opacity-[0.8] hover:opacity-[1] hover:border-textgray rounded-full text-purple1">Impressum
     </button>

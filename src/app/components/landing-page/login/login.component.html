@@ -15,7 +15,7 @@
 
 
   <div
-    class="flex items-center w-full max-w-[500px] relative bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
+    class="input-box flex items-center w-full max-w-[500px] relative bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
     [ngClass]="{'invalid': !email.valid && (email.touched || contactForm.submitted), 'valid': email.valid}">
     <img src="assets/imgs/icons/mail.svg" alt="Mail Icon" class="size-5" />
     <input #email="ngModel" type="email" placeholder="beispielname@email.com" class="flex-1 outline-none bg-primary"
@@ -28,7 +28,7 @@
 
 
   <div
-    class="flex relative items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
+    class="input-box flex relative items-center w-full max-w-[500px] bg-primary px-4 py-3 gap-2 rounded-[100px] input-container"
     [ngClass]="{'invalid': !password.valid && (password.touched || contactForm.submitted), 'valid': password.valid}">
     <img src="assets/imgs/icons/lock.svg" alt="Lock Icon" class="size-5" />
     <input #password="ngModel" type="password" placeholder="Passwort" minlength="6"

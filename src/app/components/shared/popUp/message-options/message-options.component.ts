@@ -5,11 +5,13 @@ import { DirectMessagesService } from '../../../../services/directMessages/direc
 import { Message } from '../../../../classes/message.class';
 import { MessagesService } from '../../../../services/messages/messages.service';
 import { EmojisService } from '../../../../services/emojis/emojis.service';
+import { CommonModule } from '@angular/common';
+import { UsersService } from '../../../../services/users/users.service';
 
 @Component({
   standalone: true,
   selector: 'app-message-options',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './message-options.component.html',
   styleUrl: './message-options.component.scss'
 })
@@ -33,7 +35,8 @@ export class MessageOptionsComponent {
     public threadService: ThreadsService,
     public dmService: DirectMessagesService,
     public messageService: MessagesService,
-    public emojisService: EmojisService
+    public emojisService: EmojisService,
+    public usersService: UsersService
   ) { }
 
 
