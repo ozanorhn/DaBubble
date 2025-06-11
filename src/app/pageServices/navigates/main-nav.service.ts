@@ -90,6 +90,10 @@ export class MainNavService {
   */
   showChannel(): boolean {
     // this.channelIsShown.set(this.channel && this.mobile && !this.thread && !this.nav || this.mediumScreen && this.channel || this.bigScreen)
+    console.log( this.channel());
+    
+    // console.log((this.channel() && this.mobile() && !this.thread() && !this.nav()) || (this.mediumScreen() && this.channel()) || this.bigScreen());
+    
     return this.channel() && this.mobile() && !this.thread() && !this.nav() || this.mediumScreen() && this.channel() || this.bigScreen();
   }
 
@@ -113,6 +117,8 @@ export class MainNavService {
       this.setScreen('big');
       this.setHeaderMembers();
     } else if (window.innerWidth >= 810) {
+      console.log('medium');
+      
       this.setScreen('medium');
       this.adjustMediumScreen();
     } else {
@@ -159,6 +165,8 @@ export class MainNavService {
     if (this.thread() && this.nav()) {
       this.channel.set(false);
     } else if (!this.nav() && !this.channel() && this.thread()) {
+      this.channel.set(true);
+    } else {
       this.channel.set(true);
     }
   }
