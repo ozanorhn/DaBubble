@@ -32,8 +32,8 @@ import { UsersService } from '../../../services/users/users.service';
   styleUrls: ['./chat-input.component.scss']
 })
 export class ChatInputComponent implements OnInit {
-  @ViewChild('messageInput') messageInputRef!: ElementRef;
-  @ViewChild('messageEditInput') messageEditInputRef!: ElementRef;
+  @ViewChild('messageInput') messageInputRef?: ElementRef;
+  @ViewChild('messageEditInput') messageEditInputRef?: ElementRef;
   @Input() chatType: 'new' | 'thread' | 'dm' | 'channel' = 'new';
   @Input() edit: boolean = false;
   @Input() message: Message | DM = new Message();
@@ -76,7 +76,13 @@ export class ChatInputComponent implements OnInit {
 
 
   focusInput() {
-    this.messageInputRef.nativeElement.focus();
+    if (this.messageEditInputRef) {
+      this.messageEditInputRef.nativeElement.focus();
+
+    } else if (this.messageInputRef) {
+      this.messageInputRef.nativeElement.focus();
+
+    }
   }
 
   toggleEmojiPicker() {
@@ -237,29 +243,33 @@ export class ChatInputComponent implements OnInit {
 
 
   ngAfterViewInit(): void {
-    this.filterService.setTextareaRef(this.messageInputRef);
+    if (this.messageInputRef) {
+      this.filterService.setTextareaRef(this.messageInputRef);
+    }
   }
 
 
   insertTag(tag: string) {
-    const textarea = this.messageInputRef.nativeElement;
-    const caretPos = textarea.selectionStart;
-    const textBeforeCursor = this.newMessageText.substring(0, caretPos);
-    const textAfterCursor = this.newMessageText.substring(caretPos);
-    const match = textBeforeCursor.match(/(?:^|\s)([@#][\w-]*)$/);
-    if (!match) return;
-    const tagStartIndex = caretPos - match[1].length;
-    const newTextBefore = textBeforeCursor.substring(0, tagStartIndex);
-    const finalText = `${newTextBefore}${match[1][0]}${tag}${textAfterCursor}`;
-    this.newMessageText = finalText;
-    // Cursor neu setzen
-    setTimeout(() => {
-      textarea.focus();
-      const newCaretPos = (newTextBefore + match[1][0] + tag).length;
-      textarea.setSelectionRange(newCaretPos, newCaretPos);
-    });
+    if (this.messageInputRef) {
+      const textarea = this.messageInputRef.nativeElement;
+      const caretPos = textarea.selectionStart;
+      const textBeforeCursor = this.newMessageText.substring(0, caretPos);
+      const textAfterCursor = this.newMessageText.substring(caretPos);
+      const match = textBeforeCursor.match(/(?:^|\s)([@#][\w-]*)$/);
+      if (!match) return;
+      const tagStartIndex = caretPos - match[1].length;
+      const newTextBefore = textBeforeCursor.substring(0, tagStartIndex);
+      const finalText = `${newTextBefore}${match[1][0]}${tag}${textAfterCursor}`;
+      this.newMessageText = finalText;
+      // Cursor neu setzen
+      setTimeout(() => {
+        textarea.focus();
+        const newCaretPos = (newTextBefore + match[1][0] + tag).length;
+        textarea.setSelectionRange(newCaretPos, newCaretPos);
+      });
 
-    this.filterService.searchNewTag.set('');
+      this.filterService.searchNewTag.set('');
+    }
   }
 
   handleKeyDown(event: KeyboardEvent): void {
