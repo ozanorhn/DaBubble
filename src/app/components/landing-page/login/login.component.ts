@@ -26,7 +26,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   error: string = '';
-  isLoginDataValid = false;
+  isLoginDataValid = true;
 
   loginData = {
     email: '',
@@ -72,7 +72,6 @@ export class LoginComponent {
         this.userService.waitUntilUsersLoaded(),
       ]);
 
-
       const profile = this.userService.getUserByEmail(user.email || '');
 
       if (!profile) {
@@ -88,6 +87,7 @@ export class LoginComponent {
 
     } catch (error: any) {
       if (error instanceof FirebaseError) {
+        this.isLoginDataValid = false;
         this.error = this.getErrorMessage(error.code);
       } else {
         this.error = error.message || 'Unbekannter Fehler beim Login.';
