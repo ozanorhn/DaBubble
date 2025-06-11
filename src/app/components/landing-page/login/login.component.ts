@@ -95,7 +95,7 @@ export class LoginComponent {
 
       setTimeout(() => {
         this.error = '';
-      }, 5000);
+      }, 2500);
     }
 
   }

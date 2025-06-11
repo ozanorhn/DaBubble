@@ -1,9 +1,9 @@
-<section class="flex flex-col items-center justify-center w-full h-screen max-h-screen bg-primary">
+<section class="flex flex-col items-center justify-center w-full min-h-[800px] h-screen max-h-screen bg-primary">
   @if (showSplash) {
   <app-splash-screen class="splash-screen"></app-splash-screen>
   }
 
-  <div class="flex flex-col gap-5 items-center justify-center min-h-[700px] w-full">
+  <div class="flex flex-col items-center justify-center w-full gap-5">
 
     <img src="assets/imgs/icons/logo.svg" alt="Logo"
       class="md:absolute h-12 xs:h-14 md:h-16 lg:h-18 top-[5%] md:block md:top-4 md:left-4" />
@@ -35,14 +35,12 @@
     }
   </div>
 
-  <div class="absolute flex gap-32 bottom-12">
+  <div class="flex gap-4 mt-5 bottom-12">
     <button routerLink="legal"
-      class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border opacity-[0.8] hover:opacity-[1] hover:border-textgray rounded-full text-purple1">Legal
-      Notice
+      class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border opacity-[0.8] hover:opacity-[1] hover:border-textgray rounded-full text-purple1">Impressum
     </button>
     <button routerLink="privacy"
-      class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border opacity-[0.8] hover:opacity-[1] hover:border-textgray rounded-full text-purple1">Privacy
-      Policy
+      class="hover:scale-[1.1] active:scale-[0.9] duration-150 px-3 py-2 border opacity-[0.8] hover:opacity-[1] hover:border-textgray rounded-full text-purple1">Datenschutz
     </button>
   </div>
 </section>
