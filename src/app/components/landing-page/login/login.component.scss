@@ -45,3 +45,25 @@
 .shake-animation {
   animation: shake 0.5s ease-in-out;
 }
+
+
+@media (max-height: 850px) {
+  form {
+    gap: 18px;
+  }
+
+  p {
+    display: none;
+  }
+}
+
+
+@media (max-height: 650px) {
+  form {
+    gap: 4px;
+  }
+
+  .input-box {
+    margin-bottom: 14px;
+  }
+}

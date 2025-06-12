@@ -26,6 +26,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   error: string = '';
+  isLoginDataValid = true;
 
   loginData = {
     email: '',
@@ -59,7 +60,7 @@ export class LoginComponent {
     }
   }
 
-  async guestLogin(gast = false) {
+  async login(gast = false) {
     if (gast) {
       this.loginData.email = 'gast@user.de'
       this.loginData.password = 'gast123'
@@ -70,7 +71,6 @@ export class LoginComponent {
       await Promise.all([
         this.userService.waitUntilUsersLoaded(),
       ]);
-
 
       const profile = this.userService.getUserByEmail(user.email || '');
 
@@ -87,6 +87,7 @@ export class LoginComponent {
 
     } catch (error: any) {
       if (error instanceof FirebaseError) {
+        this.isLoginDataValid = false;
         this.error = this.getErrorMessage(error.code);
       } else {
         this.error = error.message || 'Unbekannter Fehler beim Login.';
@@ -94,7 +95,7 @@ export class LoginComponent {
 
       setTimeout(() => {
         this.error = '';
-      }, 5000);
+      }, 2500);
     }
 
   }

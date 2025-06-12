@@ -11,26 +11,27 @@ body {
     width: 100%;
     max-height: 100vh;
     height: 100vh;
+    background-color: #ECEEFE;
     // overflow-y: hidden;
 }
 
 @font-face {
     font-family: 'Nunito';
-    src: url('/assets/fonts/Nunito/static/Nunito-Light.ttf') format('truetype');
+    src: url('../public/assets/fonts/Nunito/static/Nunito-Light.ttf') format('truetype');
     font-weight: 300;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Nunito';
-    src: url('/assets/fonts/Nunito/static/Nunito-Regular.ttf') format('truetype');
+    src: url('../public/assets/fonts/Nunito/static/Nunito-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Nunito';
-    src: url('/assets/fonts/Nunito/static/Nunito-Bold.ttf') format('truetype');
+    src: url('../public/assets/fonts/Nunito/static/Nunito-Bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
 }
