@@ -3,10 +3,11 @@ import { LandingPageService } from '../../../pageServices/navigates/landing-nav.
 import { UsersService } from '../../../services/users/users.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth/auth.service';
+import { LoadingScreenComponent } from "../../shared/loading-screen/loading-screen.component";
 
 @Component({
   selector: 'app-avatar',
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingScreenComponent],
   templateUrl: './avatar.component.html',
   styleUrl: './avatar.component.scss',
 })
@@ -16,6 +17,8 @@ export class AvatarComponent {
   showMessage: boolean = false;
   userName: string = '';
   messageText: string = '';
+
+  isLoadingAvatar = false;
 
   constructor(
     public landing: LandingPageService,
@@ -51,9 +54,11 @@ export class AvatarComponent {
     try {
       await this.authService.completeUserRegistration();
       this.openMessage('Bestätigungs-E-Mail gesendet. Bitte Postfach prüfen.');
+      this.isLoadingAvatar = true;
       setTimeout(() => {
+        this.isLoadingAvatar = false;
         this.landing.landing.set('login');
-      }, 5000);
+      }, 2000);
     } catch (error) {
       console.error('Registrierung fehlgeschlagen:', error);
       this.openMessage('Registrierung fehlgeschlagen.');
