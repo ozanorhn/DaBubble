@@ -20,8 +20,9 @@ export class UsersService implements OnDestroy {
   tempUser: Partial<User> = {};
   currentUser: User = new User();
   componentExsits = false;
+  
   GuestUser = {
-    id: 'ALomQ9jH69QnE7Q7zjnA',
+    id: '8NKbc9VNUrGbVjXJKEjT',
     name: 'Gast',
     email: 'gast@user.de',
     avatar: 'assets/imgs/avatar4.svg'
